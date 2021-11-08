@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0ebea" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="51.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
+         <font>
+            <Font name="Arial Black" size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="697.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="697.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Gunther">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Text>
+      <ImageView blendMode="DARKEN" fitHeight="52.0" fitWidth="50.0" layoutX="639.0" layoutY="17.0" preserveRatio="true">
+         <image>
+            <Image url="@images/random-user.jpg" />
+         </image>
+      </ImageView>
+      <Text layoutX="92.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you can">
+         <font>
+            <Font name="Arial" size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="745.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="283.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" underline="true">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Text>
+      <ImageView blendMode="DARKEN" fitHeight="52.0" fitWidth="50.0" layoutX="714.0" layoutY="459.0" style="-fx-rotate: 90;">
+         <image>
+            <Image url="@images/arrow.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView blendMode="DARKEN" fitHeight="52.0" fitWidth="50.0" layoutX="74.0" layoutY="459.0" style="-fx-rotate: -90;">
+         <image>
+            <Image url="@images/arrow.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="358.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I'm craving for...">
+         <font>
+            <Font name="Arial Italic" size="17.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="145.0" layoutY="449.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/vivino-logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="234.0" layoutY="449.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/japanika-logo.jpg" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="381.0" layoutY="449.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;">
+         <image>
+            <Image url="@images/dominos_logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="525.0" layoutY="449.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/bbb-logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="615.0" layoutY="449.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/mcdonalds-logo.jpg" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="304.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There you are...">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Text>
+      <Text layoutX="223.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Now we can finally order!">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Text>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <ImageView blendMode="DARKEN" fitHeight="33.0" fitWidth="38.0" layoutX="545.0" layoutY="31.0">
+         <image>
+            <Image url="@images/bag-icon.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+   </children>
+</AnchorPane>
