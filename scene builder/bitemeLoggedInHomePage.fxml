@@ -5,19 +5,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0ebea" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Text layoutX="51.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
-         <font>
-            <Font name="Arial Black" size="30.0" />
-         </font>
-      </Text>
       <Text layoutX="697.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -33,11 +28,6 @@
             <Image url="@images/random-user.jpg" />
          </image>
       </ImageView>
-      <Text layoutX="92.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you can">
-         <font>
-            <Font name="Arial" size="17.0" />
-         </font>
-      </Text>
       <Text layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Arial" size="18.0" />
@@ -48,7 +38,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text layoutX="283.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" underline="true">
+      <Text layoutX="283.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
          <font>
             <Font name="Arial" size="18.0" />
          </font>
@@ -131,5 +121,11 @@
          </image>
       </ImageView>
       <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="48.666656494140625" endY="-7.62939453125E-6" layoutX="285.0" layoutY="67.0" startX="-1.333343505859375" startY="-7.62939453125E-6" strokeWidth="2.0" />
+      <ImageView blendMode="DARKEN" fitHeight="67.0" fitWidth="200.0" layoutX="23.0" layoutY="10.0">
+         <image>
+            <Image url="@images/biteme-logo.jpeg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
