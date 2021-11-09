@@ -1,43 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.Avatar?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0ebea" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Text layoutX="47.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
-         <font>
-            <Font name="Arial Black" size="30.0" />
-         </font>
-      </Text>
-      <Text layoutX="693.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <Text layoutX="693.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Guest">
-         <font>
-            <Font name="Arial Bold" size="14.0" />
-         </font>
-      </Text>
-      <ImageView blendMode="DARKEN" fitHeight="52.0" fitWidth="50.0" layoutX="635.0" layoutY="17.0" preserveRatio="true">
-         <image>
-            <Image url="@images/guest-avatar.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="88.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you can">
-         <font>
-            <Font name="Arial" size="17.0" />
-         </font>
-      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0ceeb00" height="188.0" layoutX="228.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="375.0">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -78,5 +55,36 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
+      <Text layoutX="692.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Avatar layoutX="651.0" layoutY="27.0">
+         <image>
+            <Image url="@images/guest-avatar.png" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="558.0" layoutY="29.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="555.0" layoutY="37.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="552.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="87.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="15.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="129.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
