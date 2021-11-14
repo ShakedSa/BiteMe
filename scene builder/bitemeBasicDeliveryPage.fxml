@@ -131,7 +131,7 @@
       <Text layoutX="103.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
       <TextField layoutX="242.0" layoutY="356.0" promptText="Last Name" />
       <ComboBox layoutX="247.0" layoutY="396.0" prefHeight="27.0" prefWidth="72.0" promptText="050" />
-      <Text fill="#3180bc" layoutX="103.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*This delivery method includes extra pay" />
+      <Text fill="#3180bc" layoutX="103.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This delivery method includes extra pay" />
       <Text fill="RED" layoutX="103.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" />
       <Text fill="RED" layoutX="228.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fill="RED" layoutX="169.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
