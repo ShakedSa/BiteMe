@@ -30,7 +30,7 @@ public class Client implements ChatIF {
 				this.client.handleMessageFromClientUI(message);
 			}
 		} catch (Exception ex) {
-			System.out.println("Unexpected error while reading from console!!");
+			System.out.println("Unexpected error while reading from console!");
 		}
 	}
 
