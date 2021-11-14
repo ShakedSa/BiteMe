@@ -3,9 +3,14 @@ package ClientServerCommunication;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+import java.util.ArrayList;
+
+import Config.ReadPropertyFile;
+import JDBC.mysqlConnection;
 public class Server extends AbstractServer {
 
-	public static final int DEFAULT_PORT = 5555;
+	//private mysqlConnection jdbc=new mysqlConnection();
+	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
 
 	public Server(int port) {
 		super(port);
@@ -14,7 +19,22 @@ public class Server extends AbstractServer {
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		System.out.println("Msg recieved:" + msg);
-		sendToAllClients(msg);
+		@SuppressWarnings("unchecked")
+		ArrayList<String> m = (ArrayList<String>) msg;
+		switch(m.get(0)){
+		case "show":
+			sendToAllClients(mysqlConnection.printOrders());
+			break;
+		case "update":
+			sendToAllClients(mysqlConnection.updateOrderInfo(m.get(1), m.get(2)));
+				
+			break;
+		case "server":
+			showConnectionInfo();
+		default:
+			sendToAllClients("default");
+			break;
+		}
 	}
 
 	protected void serverStarted() {
@@ -25,6 +45,9 @@ public class Server extends AbstractServer {
 		System.out.println("Server has stopped listening for connections.");
 	}
 
+	protected void showConnectionInfo() {
+		System.out.println(this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive());
+	}
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -37,7 +60,7 @@ public class Server extends AbstractServer {
 		try {
 			sv.listen();
 		} catch (Exception ex) {
-			System.out.println("ERROR - Could not listen for clients!");
+			System.out.println("ERROR - Could not listen for clients!!");
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import ClientServerComm.ChatIF;
 import ocsf.client.AbstractClient;
@@ -9,7 +10,6 @@ public class ChatClient extends AbstractClient{
 
 	ChatIF clientUI;
 	public String res;
-
 	public ChatClient(String host, int port, ChatIF clientUI) throws IOException {
 		super(host, port);
 		this.clientUI = clientUI;
@@ -39,7 +39,7 @@ public class ChatClient extends AbstractClient{
 	}
 
 	public void display(String message) {
-		System.out.println("DISPLAY: " + message);
+		System.out.println("DISPLAY: \n" + message);
 	}
 
 	public void getResultFromServer(String message) {

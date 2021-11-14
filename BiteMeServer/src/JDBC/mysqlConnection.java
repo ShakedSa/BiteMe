@@ -39,25 +39,29 @@ public class mysqlConnection {
 
 	// this method stores the information of the orders table and display it to the
 	// user.
-	public static void printOrders() {
+	public static String printOrders() {
 		Statement stmt;
+		StringBuilder str=new StringBuilder();
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM bm.order;");
 			while (rs.next()) {
-				// Print out the values
-				System.out.println(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  "
+				 //Print out the values
+				str.append(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  "
 						+ rs.getString(4) + "  " + rs.getString(5) + "  " + rs.getString(6));
+				str.append('\n');
 			}
 			rs.close();
+			return str.toString();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	// update order adress+ type of order
-	public static void updateOrderInfo(String s, TypeOfOrder t) {
+	// update order address+ type of order
+	public static String updateOrderInfo(String OrderAddress, String TypeOfOrder) {
 		{
 			PreparedStatement stmt;
 			try {
@@ -65,14 +69,17 @@ public class mysqlConnection {
 				// update order address query:
 				String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?";
 				stmt = con.prepareStatement(sql);
-				stmt.setString(1, s);
-				stmt.setString(2, t.toString());
+				stmt.setString(1, OrderAddress);
+				stmt.setString(2, TypeOfOrder);
 				stmt.executeUpdate();
-
 				stmt.close();
+				System.out.println("update finished\n");
+				return "Update success";
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			System.out.println("update failed\n");
+			return "Update fail";
 		}
 
 	}
