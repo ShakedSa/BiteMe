@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#3180bc" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/random-user.gif" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
+      <Line endX="88.0" layoutX="368.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Line>
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="143.0" layoutY="509.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return to Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="336.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="387.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="410.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="484.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select delivery method:">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#ffffff00" height="36.0" layoutX="701.0" layoutY="478.0" stroke="BLACK" strokeType="INSIDE" width="72.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Rectangle>
+      <Text layoutX="721.0" layoutY="501.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Next">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ComboBox layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Basic Delivery" />
+      <Text layoutX="104.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address / Workplace" />
+      <Text layoutX="102.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+      <Text layoutX="104.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
+      <TextField layoutX="241.0" layoutY="282.0" promptText="Address / Workplace" />
+      <TextField layoutX="241.0" layoutY="316.0" promptText="First Name" />
+      <TextField layoutX="320.0" layoutY="395.0" prefHeight="26.0" prefWidth="72.0" promptText="1234567" />
+      <Text layoutX="103.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+      <TextField layoutX="242.0" layoutY="356.0" promptText="Last Name" />
+      <ComboBox layoutX="247.0" layoutY="396.0" prefHeight="27.0" prefWidth="72.0" promptText="050" />
+      <Text fill="#3180bc" layoutX="103.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*This delivery method includes extra pay" />
+      <Text fill="RED" layoutX="103.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" />
+      <Text fill="RED" layoutX="228.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="169.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="169.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="194.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+   </children>
+</AnchorPane>

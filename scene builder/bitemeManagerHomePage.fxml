@@ -26,7 +26,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text layoutX="313.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -39,14 +39,14 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fill="#3180bc" layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+      <Text fill="#3180bc" layoutX="254.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
       <Avatar layoutX="650.0" layoutY="25.0">
          <image>
-            <Image url="@images/random-user.gif" />
+            <Image url="@images/manager-avatar.png" />
          </image>
       </Avatar>
       <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="714.0" layoutY="430.0" style="-fx-rotate: 90;">
@@ -117,7 +117,7 @@
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
       <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-      <Line endX="44.0" layoutX="287.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
+      <Line endX="44.0" layoutX="256.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -132,7 +132,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="215.0" layoutY="295.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="501.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="500.0" layoutY="300.0" rotate="-10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="59.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="263.0" layoutY="301.0" rotate="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?import javafx.scene.layout.AnchorPane?&gt;&lt;AnchorPane layoutX=&quot;-190.0&quot; layoutY=&quot;57.0&quot; opacity=&quot;0.9&quot; prefHeight=&quot;375.0&quot; prefWidth=&quot;689.0&quot; style=&quot;-fx-background-color: #60bada; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);&quot; xmlns=&quot;http://javafx.com/javafx/17&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; /&gt;;" width="62.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="263.0" layoutY="301.0" rotate="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="62.0" />
       <Circle layoutX="412.0" layoutY="235.0" radius="130.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),5,0,0,0);">
          <fill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
@@ -163,12 +163,17 @@
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="357.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Gunther">
+      <Text fill="WHITE" layoutX="357.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Mark">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
       <Polygon fill="#eeeeee" layoutX="236.0" layoutY="317.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="-23.2" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
       <Polygon fill="#eeeeee" layoutX="605.0" layoutY="326.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="156.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Text layoutX="415.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

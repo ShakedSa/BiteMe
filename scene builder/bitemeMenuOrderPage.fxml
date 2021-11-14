@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#3180bc" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/random-user.gif" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="88.0" layoutX="368.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Line>
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="143.0" layoutY="509.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return to Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="336.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="387.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="410.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="484.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <TabPane layoutX="35.0" layoutY="149.0" prefHeight="312.0" prefWidth="756.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Entrees">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="63.0" layoutY="45.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="66.0" layoutY="49.0">
+                           <image>
+                              <Image url="@images/pickles-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="121.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pickles">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="305.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="62.0" layoutY="167.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="66.0" layoutY="171.0">
+                           <image>
+                              <Image url="@images/wings-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="128.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wings">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="274.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="28/44₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="62.0" layoutY="108.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="66.0" layoutY="112.0">
+                           <image>
+                              <Image url="@images/cauliflower-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="128.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Coated Cauliflower">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="298.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="34₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="379.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="382.0" layoutY="50.0">
+                           <image>
+                              <Image url="@images/portobello-crunch-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="437.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Portobello Crunch">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="621.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="39₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="378.0" layoutY="168.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="382.0" layoutY="172.0">
+                           <image>
+                              <Image url="@images/asian-salad-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="444.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Asain Salad">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="615.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="39₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#1f93ff00" height="43.0" layoutX="378.0" layoutY="109.0" stroke="BLACK" strokeType="INSIDE" width="285.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Rectangle>
+                        <Avatar layoutX="382.0" layoutY="113.0">
+                           <image>
+                              <Image url="@images/Chiliconcarne-avatar.jpg" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Avatar>
+                        <Text layoutX="444.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chili Con Carne Soup">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                        <Text layoutX="615.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="26₪">
+                           <font>
+                              <Font name="Berlin Sans FB" size="18.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Burgers">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+            <Tab text="Sandwiches">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Side Dishes">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </TabPane>
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#ffffff00" height="36.0" layoutX="711.0" layoutY="488.0" stroke="BLACK" strokeType="INSIDE" width="72.0" />
+      <Text layoutX="731.0" layoutY="511.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Next">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
