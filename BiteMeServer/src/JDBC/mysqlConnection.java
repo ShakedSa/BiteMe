@@ -10,9 +10,12 @@ import types.*;
 
 public class mysqlConnection {
 
-	public static String arg0 = Config.ReadPropertyFile.getInstance().getProp("jdbcScheme");
-	public static String arg1 = Config.ReadPropertyFile.getInstance().getProp("jdbcId");
-	public static String arg2 = Config.ReadPropertyFile.getInstance().getProp("jdbcPass");
+//	public static String arg0 = Config.ReadPropertyFile.getInstance().getProp("jdbcScheme");
+	public static String arg0 = "jdbc:mysql://localhost/bm_order?serverTimezone=IST";
+//	public static String arg1 = Config.ReadPropertyFile.getInstance().getProp("jdbcId");
+	public static String arg1 = "root";
+//	public static String arg2 = Config.ReadPropertyFile.getInstance().getProp("jdbcPass");
+	public static String arg2 = "88888888";
 
 	public static void main(String[] args) {
 		try {
@@ -41,15 +44,15 @@ public class mysqlConnection {
 	// user.
 	public static String printOrders() {
 		Statement stmt;
-		StringBuilder str=new StringBuilder();
+		StringBuilder str = new StringBuilder();
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM bm.order;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM bm_order.order;");
 			while (rs.next()) {
-				 //Print out the values
-				str.append(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  "
-						+ rs.getString(4) + "  " + rs.getString(5) + "  " + rs.getString(6));
+				// Print out the values
+				str.append(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  " + rs.getString(4)
+						+ "  " + rs.getString(5) + "  " + rs.getString(6));
 				str.append('\n');
 			}
 			rs.close();
@@ -62,26 +65,23 @@ public class mysqlConnection {
 
 	// update order address+ type of order
 	public static String updateOrderInfo(String OrderAddress, String TypeOfOrder) {
-		{
-			PreparedStatement stmt;
-			try {
-				Connection con = DriverManager.getConnection(arg0, arg1, arg2);
-				// update order address query:
-				String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?";
-				stmt = con.prepareStatement(sql);
-				stmt.setString(1, OrderAddress);
-				stmt.setString(2, TypeOfOrder);
-				stmt.executeUpdate();
-				stmt.close();
-				System.out.println("update finished\n");
-				return "Update success";
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			System.out.println("update failed\n");
-			return "Update fail";
+		PreparedStatement stmt;
+		try {
+			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
+			// update order address query:
+			String sql = "UPDATE bm_order.order SET OrderAddress=?, TypeOfOrder=?";
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, OrderAddress);
+			stmt.setString(2, TypeOfOrder);
+			stmt.executeUpdate();
+			stmt.close();
+			System.out.println("update finished\n");
+			return "Update success";
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-
+		System.out.println("update failed\n");
+		return "Update fail";
 	}
 
 }

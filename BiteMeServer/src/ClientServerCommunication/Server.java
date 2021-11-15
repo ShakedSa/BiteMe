@@ -1,17 +1,15 @@
 package ClientServerCommunication;
 
-import ocsf.server.AbstractServer;
-import ocsf.server.ConnectionToClient;
-
 import java.util.ArrayList;
 
-import Config.ReadPropertyFile;
 import JDBC.mysqlConnection;
+import ocsf.server.AbstractServer;
+import ocsf.server.ConnectionToClient;
 public class Server extends AbstractServer {
 
 	//private mysqlConnection jdbc=new mysqlConnection();
-	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
-
+//	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
+	public static final int DEFAULT_PORT = 5555;
 	public Server(int port) {
 		super(port);
 	}
