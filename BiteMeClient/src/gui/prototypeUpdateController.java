@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ClientServerComm.Client;
 import Config.TypeOfOrder;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,19 +44,19 @@ public class prototypeUpdateController {
     	this.client = client;
     }
     
-    public void setCombo(ComboBox<TypeOfOrder> typeOfOrder) {
-    	this.typeOfOrder = typeOfOrder;
+    public void setCombo() {
+    	typeOfOrder.getItems().addAll(TypeOfOrder.values());
     }
     
     @FXML
     void updateDB(ActionEvent event) {
     	String address = orderAddress.getText();
-    	ObservableList<TypeOfOrder> type = typeOfOrder.getItems();
-    	//System.out.println(type);
-    	//client.update(address, type);
+    	String type = typeOfOrder.getSelectionModel().getSelectedItem().toString();
+    	client.update(address, type);
     	Alert displayMessage = new Alert(AlertType.INFORMATION);
     	displayMessage.setHeaderText(address+ " "+type);
-    	//orderAddress.clear();
+    	orderAddress.clear();
+    	typeOfOrder.getSelectionModel().clearSelection();
     	displayMessage.show();
     }
     

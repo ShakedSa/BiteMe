@@ -49,17 +49,7 @@ public class prototypeGUIController {
     		controller = loader.getController();
     		controller.setStage(stage);
     		controller.setClient(client);
-    		ObservableList<?> options = 
-    		        FXCollections.observableArrayList(
-    		            TypeOfOrder.basicDelivery,
-    		            TypeOfOrder.takeaway,
-    		            TypeOfOrder.preorderDelivery,
-    		            TypeOfOrder.robotDelivery,
-    		            TypeOfOrder.sharedDelivery
-    		        );
-    		ComboBox<TypeOfOrder> typeOfOrder = new ComboBox<>();
-    		typeOfOrder.getItems().addAll(TypeOfOrder.values());
-       		controller.setCombo(typeOfOrder);
+    		controller.setCombo();
     		Scene updateScene = new Scene(updateContainer);
     		stage.setScene(updateScene);
     		stage.show();
