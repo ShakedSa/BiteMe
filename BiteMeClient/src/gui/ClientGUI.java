@@ -10,9 +10,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ClientGUI extends Application {
-	public static final int DEFAULT_PORT = 5555;// Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
-//	public static final String DEFAULT_IP = ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
-	public static final String DEFAULT_IP = "192.168.1.128";
+	public static final int DEFAULT_PORT = 5555; //Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
+	public static final String DEFAULT_IP = "10.0.0.16";//ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
+//	public static final String DEFAULT_IP = "192.168.43.225";
 	
 	@Override
 	public void start(Stage primaryStage) {

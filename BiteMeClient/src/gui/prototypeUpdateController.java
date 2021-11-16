@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import ClientServerComm.Client;
 import javafx.event.ActionEvent;
@@ -11,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,17 +20,18 @@ import javafx.stage.Stage;
 public class prototypeUpdateController {
 	Client client;
 	private Stage stage;
-	@FXML
-    private TextField orderAddress;
-
+	
     @FXML
-    private TextField typeOfOrder;
+    private TextField orderAddress;
 
     @FXML
     private Button updateBtn;
 
     @FXML
     private ImageView back;
+
+    @FXML
+    private ComboBox<?> typeOfOrder;
     
     public void setStage(Stage stage) {
     	this.stage = stage;
@@ -40,15 +41,18 @@ public class prototypeUpdateController {
     	this.client = client;
     }
     
+    public void setCombo(ComboBox<?> typeOfOrder) {
+    	this.typeOfOrder = typeOfOrder;
+    }
+    
     @FXML
     void updateDB(ActionEvent event) {
     	String address = orderAddress.getText();
-    	String type = typeOfOrder.getText();
+    	String type = typeOfOrder.getValue().toString();
     	client.update(address, type);
     	Alert displayMessage = new Alert(AlertType.INFORMATION);
     	displayMessage.setHeaderText(address + " " + type);
     	orderAddress.clear();
-    	typeOfOrder.clear();
     	displayMessage.show();
     }
     

@@ -11,7 +11,7 @@ import types.*;
 public class mysqlConnection {
 
 //	public static String arg0 = Config.ReadPropertyFile.getInstance().getProp("jdbcScheme");
-	public static String arg0 = "jdbc:mysql://localhost/bm_order?serverTimezone=IST";
+	public static String arg0 = "jdbc:mysql://localhost/bm?serverTimezone=IST";
 //	public static String arg1 = Config.ReadPropertyFile.getInstance().getProp("jdbcId");
 	public static String arg1 = "root";
 //	public static String arg2 = Config.ReadPropertyFile.getInstance().getProp("jdbcPass");
@@ -48,7 +48,7 @@ public class mysqlConnection {
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM bm_order.order;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM bm.order;");
 			while (rs.next()) {
 				// Print out the values
 				str.append(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  " + rs.getString(4)
@@ -69,7 +69,7 @@ public class mysqlConnection {
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			// update order address query:
-			String sql = "UPDATE bm_order.order SET OrderAddress=?, TypeOfOrder=?";
+			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?";
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, OrderAddress);
 			stmt.setString(2, TypeOfOrder);

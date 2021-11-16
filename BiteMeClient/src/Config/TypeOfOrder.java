@@ -2,9 +2,9 @@ package Config;
 
 public enum TypeOfOrder 
 {
-	BasicDelivery,
+	basicDelivery,
 	takeaway,
 	preorderDelivery,
 	sharedDelivery,
-	RobotDelivery;
+	robotDelivery;
 }

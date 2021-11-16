@@ -1,6 +1,7 @@
 package Config;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 public class ReadPropertyFile {
@@ -15,8 +16,9 @@ public class ReadPropertyFile {
             
 			try {
 				prop=new Properties();
-				FileInputStream fin = new FileInputStream("C:/Users/Eden/git/BiteMe/BiteMeServer/src/Config/config.properties");
-				prop.load(fin);
+				InputStream is = new URL("https://github.com/ShakedSa/BiteMe/blob/master/BiteMeServer/src/Config/config.properties").openStream();
+//				FileInputStream fin = new FileInputStream("src\\Config\\config.properties");
+				prop.load(is);
 			}catch (Exception e) {}
 		}
 
