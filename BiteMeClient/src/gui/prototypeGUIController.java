@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class prototypeGUIController {
 	Client client;
@@ -48,7 +49,7 @@ public class prototypeGUIController {
     		controller = loader.getController();
     		controller.setStage(stage);
     		controller.setClient(client);
-    		ObservableList<TypeOfOrder> options = 
+    		ObservableList<?> options = 
     		        FXCollections.observableArrayList(
     		            TypeOfOrder.basicDelivery,
     		            TypeOfOrder.takeaway,
@@ -56,8 +57,9 @@ public class prototypeGUIController {
     		            TypeOfOrder.robotDelivery,
     		            TypeOfOrder.sharedDelivery
     		        );
-    		ComboBox<?> typeOfOrder = new ComboBox<>(options);
-    		controller.setCombo(typeOfOrder);
+    		ComboBox<TypeOfOrder> typeOfOrder = new ComboBox<>();
+    		typeOfOrder.getItems().addAll(TypeOfOrder.values());
+       		controller.setCombo(typeOfOrder);
     		Scene updateScene = new Scene(updateContainer);
     		stage.setScene(updateScene);
     		stage.show();

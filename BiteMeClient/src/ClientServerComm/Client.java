@@ -9,7 +9,7 @@ import client.ChatClient;
 
 public class Client implements ChatIF {
 	public static final int DEFAULT_PORT = 5555;// Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
-	public static final String DEFAULT_IP = "10.0.0.16";//ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
+	public static final String DEFAULT_IP = "10.0.0.4";//ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
 	ChatClient client;
 	public String res;
 

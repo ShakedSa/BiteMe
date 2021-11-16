@@ -3,6 +3,8 @@ package gui;
 import java.io.IOException;
 
 import ClientServerComm.Client;
+import Config.TypeOfOrder;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +33,7 @@ public class prototypeUpdateController {
     private ImageView back;
 
     @FXML
-    private ComboBox<?> typeOfOrder;
+    private ComboBox<TypeOfOrder> typeOfOrder;
     
     public void setStage(Stage stage) {
     	this.stage = stage;
@@ -41,18 +43,19 @@ public class prototypeUpdateController {
     	this.client = client;
     }
     
-    public void setCombo(ComboBox<?> typeOfOrder) {
+    public void setCombo(ComboBox<TypeOfOrder> typeOfOrder) {
     	this.typeOfOrder = typeOfOrder;
     }
     
     @FXML
     void updateDB(ActionEvent event) {
     	String address = orderAddress.getText();
-    	String type = typeOfOrder.getValue().toString();
-    	client.update(address, type);
+    	ObservableList<TypeOfOrder> type = typeOfOrder.getItems();
+    	//System.out.println(type);
+    	//client.update(address, type);
     	Alert displayMessage = new Alert(AlertType.INFORMATION);
-    	displayMessage.setHeaderText(address + " " + type);
-    	orderAddress.clear();
+    	displayMessage.setHeaderText(address+ " "+type);
+    	//orderAddress.clear();
     	displayMessage.show();
     }
     
