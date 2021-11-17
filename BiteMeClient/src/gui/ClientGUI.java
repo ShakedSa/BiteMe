@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 
 import ClientServerComm.Client;
+import Config.ReadPropertyFile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,9 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ClientGUI extends Application {
-	public static final int DEFAULT_PORT = 5555; //Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
-	public static final String DEFAULT_IP = "10.0.0.4";//ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
-//	public static final String DEFAULT_IP = "192.168.43.225";
+	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
+	public static final String DEFAULT_IP = ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
 	
 	@Override
 	public void start(Stage primaryStage) {

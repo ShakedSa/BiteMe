@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -33,21 +33,40 @@
       </Rectangle>
       <Text layoutX="281.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Address">
          <font>
-            <Font size="19.0" />
+            <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
       <Text layoutX="281.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of Order">
          <font>
-            <Font size="19.0" />
+            <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
       <TextField fx:id="orderAddress" layoutX="406.0" layoutY="217.0" />
-      <Button fx:id="updateBtn" layoutX="375.0" layoutY="323.0" mnemonicParsing="false" onAction="#updateDB" prefHeight="36.0" prefWidth="73.0" text="Update" />
       <ImageView fx:id="back" fitHeight="97.0" fitWidth="73.0" layoutX="92.0" layoutY="444.0" onMouseClicked="#returnToMain" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
       </ImageView>
       <ComboBox fx:id="typeOfOrder" layoutX="406.0" layoutY="264.0" prefWidth="150.0" promptText="Order Types" />
+      <Label fx:id="errorMsg" layoutX="360.0" layoutY="298.0" textFill="RED">
+         <font>
+            <Font name="Berlin Sans FB" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Label>
+      <Rectangle fx:id="updateBG" arcHeight="5.0" arcWidth="5.0" fill="#ebebeb00" height="45.0" layoutX="360.0" layoutY="320.0" onMouseClicked="#updateDB" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" stroke="BLACK" strokeType="INSIDE" width="90.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Rectangle>
+      <Text fx:id="updateBtn" layoutX="380.0" layoutY="347.0" onMouseClicked="#updateDB" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" strokeType="OUTSIDE" strokeWidth="0.0" text="Update">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
    </children>
 </AnchorPane>
