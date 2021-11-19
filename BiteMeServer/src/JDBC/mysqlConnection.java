@@ -10,12 +10,12 @@ import types.*;
 
 public class mysqlConnection {
 
-//	public static String arg0 = Config.ReadPropertyFile.getInstance().getProp("jdbcScheme");
+	//public static String arg0 = Config.ReadPropertyFile.getInstance().getProp("jdbcScheme");
 	public static String arg0 = "jdbc:mysql://localhost/bm?serverTimezone=IST";
-//	public static String arg1 = Config.ReadPropertyFile.getInstance().getProp("jdbcId");
+	//public static String arg1 = Config.ReadPropertyFile.getInstance().getProp("jdbcId");
 	public static String arg1 = "root";
-//	public static String arg2 = Config.ReadPropertyFile.getInstance().getProp("jdbcPass");
-	public static String arg2 = "88888888";
+	//public static String arg2 = Config.ReadPropertyFile.getInstance().getProp("jdbcPass");
+	public static String arg2 = "1231233";
 
 	public static void main(String[] args) {
 		try {

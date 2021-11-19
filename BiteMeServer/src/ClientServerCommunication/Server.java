@@ -44,10 +44,13 @@ public class Server extends AbstractServer {
 		System.out.println("Server has stopped listening for connections.");
 	}
 
-	protected void showConnectionInfo() {
-		System.out.println(this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive());
+	public String showConnectionInfo() {
+		if(this.getClientConnections().length>0)
+			return this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive();
+		else return "No Connections !";
+		//System.out.println(this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive());
 	}
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		int port = 0;
 		try {
 			port = Integer.parseInt(args[0]);
@@ -61,5 +64,5 @@ public class Server extends AbstractServer {
 		} catch (Exception ex) {
 			System.out.println("ERROR - Could not listen for clients!!");
 		}
-	}
+	}*/
 }
