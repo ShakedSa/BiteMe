@@ -16,7 +16,6 @@ public class ServerUI extends Application{
 		aFrame.start(primaryStage);
 	}
 	
-
 	public static void runServer(String p)
 	{
 		 int port = 0; //Port to listen on

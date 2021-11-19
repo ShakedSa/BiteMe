@@ -8,8 +8,6 @@ import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 public class Server extends AbstractServer {
 
-	//private mysqlConnection jdbc=new mysqlConnection();
-//	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
 	public static final int DEFAULT_PORT = 5555;
 	public Server(int port) {
 		super(port);
@@ -28,8 +26,8 @@ public class Server extends AbstractServer {
 			sendToAllClients(mysqlConnection.updateOrderInfo(m.get(1), m.get(2)));
 				
 			break;
-		case "server":
-			showConnectionInfo();
+		//case "server":
+			//showConnectionInfo();
 		default:
 			sendToAllClients("default");
 			break;
@@ -46,23 +44,14 @@ public class Server extends AbstractServer {
 
 	public String showConnectionInfo() {
 		if(this.getClientConnections().length>0)
-			return this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive();
+		{
+			String str;
+			String[] connectionInfo= this.getClientConnections()[0].toString().split(" ");
+			str= "IP: "+ connectionInfo[0] + "\nHost: "+  connectionInfo[1] + "\nStatus: Connected.";
+			return str;
+		}
+			//return this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive();
 		else return "No Connections !";
-		//System.out.println(this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive());
 	}
-/*	public static void main(String[] args) {
-		int port = 0;
-		try {
-			port = Integer.parseInt(args[0]);
-		} catch (Throwable t) {
-			port = DEFAULT_PORT;
-		}
 
-		Server sv = new Server(port);
-		try {
-			sv.listen();
-		} catch (Exception ex) {
-			System.out.println("ERROR - Could not listen for clients!!");
-		}
-	}*/
 }

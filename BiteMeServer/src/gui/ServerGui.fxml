@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -8,27 +9,84 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="604.0" prefWidth="933.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerGUIController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerGUIController">
    <children>
-      <Label layoutX="186.0" layoutY="30.0" text="Server Configuration">
+      <Label layoutX="98.0" layoutY="34.0" text="Server Configuration">
          <font>
-            <Font size="25.0" />
+            <Font name="Berlin Sans FB" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="46.0" layoutY="100.0" text="IP:" />
-      <Label layoutX="46.0" layoutY="143.0" text="Port:" />
-      <Label layoutX="45.0" layoutY="187.0" text="DB name:" />
-      <Label layoutX="45.0" layoutY="283.0" text="DB password:" />
-      <Label layoutX="44.0" layoutY="234.0" text="DB user:" />
-      <TextField editable="false" layoutX="155.0" layoutY="95.0" prefHeight="1.0" prefWidth="114.0" text="localhost" />
-      <TextField fx:id="txtPort" layoutX="157.0" layoutY="140.0" prefHeight="1.0" prefWidth="114.0" text="5555" />
-      <TextField fx:id="txtDbPath" layoutX="159.0" layoutY="184.0" prefHeight="25.0" prefWidth="276.0" text="jdbc:mysql://localhost/bm?serverTimezone=IST" />
-      <TextField fx:id="txtDBuser" layoutX="155.0" layoutY="228.0" prefHeight="1.0" prefWidth="114.0" text="root" />
-      <PasswordField fx:id="txtDbPass" layoutX="153.0" layoutY="279.0" prefHeight="8.0" prefWidth="118.0" text="1231233" />
-      <Button fx:id="btnConnectDB" layoutX="186.0" layoutY="314.0" mnemonicParsing="false" onAction="#ConnectDB" text="Connect" />
-      <Button fx:id="btnDiconnectDB" layoutX="186.0" layoutY="351.0" mnemonicParsing="false" onAction="#disconnectDB" text="Disconnect" />
-      <Button fx:id="btnClientInfo" layoutX="643.0" layoutY="130.0" mnemonicParsing="false" onAction="#getClientInfo" text="Client Info" />
-      <TextArea fx:id="txtFieldClientInfo" editable="false" layoutX="503.0" layoutY="179.0" prefHeight="214.0" prefWidth="357.0" />
-      <Button fx:id="btnClose" layoutX="776.0" layoutY="542.0" mnemonicParsing="false" onAction="#closeServer" text="Close" />
+      <Label layoutX="98.0" layoutY="107.0" text="IP:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Label>
+      <Label layoutX="98.0" layoutY="150.0" text="Port:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Label>
+      <Label layoutX="97.0" layoutY="194.0" text="DB name:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Label>
+      <Label layoutX="97.0" layoutY="290.0" text="DB password:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Label>
+      <Label layoutX="96.0" layoutY="241.0" text="DB user:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Label>
+      <TextField editable="false" layoutX="207.0" layoutY="102.0" prefHeight="1.0" prefWidth="114.0" text="localhost">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="txtPort" layoutX="207.0" layoutY="146.0" prefHeight="1.0" prefWidth="114.0" text="5555">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="txtDbPath" layoutX="205.0" layoutY="190.0" prefHeight="26.0" prefWidth="284.0" text="jdbc:mysql://localhost/bm?serverTimezone=IST">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="txtDBuser" layoutX="205.0" layoutY="237.0" prefHeight="1.0" prefWidth="114.0" text="root">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></TextField>
+      <PasswordField fx:id="txtDbPass" layoutX="203.0" layoutY="286.0" prefHeight="8.0" prefWidth="118.0" text="1231233">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></PasswordField>
+      <Button fx:id="btnConnectDB" layoutX="142.0" layoutY="342.0" mnemonicParsing="false" onAction="#ConnectDB" style="-fx-background-color: #84e482;" text="Connect">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btnDiconnectDB" disable="true" layoutX="303.0" layoutY="342.0" mnemonicParsing="false" onAction="#disconnectDB" style="-fx-background-color: #dd6464;" text="Disconnect">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btnClientInfo" layoutX="96.0" layoutY="407.0" mnemonicParsing="false" onAction="#getClientInfo" text="Client Info">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <TextArea fx:id="txtFieldClientInfo" editable="false" layoutX="96.0" layoutY="438.0" prefHeight="109.0" prefWidth="302.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font></TextArea>
+      <Button fx:id="btnClose" layoutX="507.0" layoutY="566.0" mnemonicParsing="false" onAction="#closeServer" text="Close">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
    </children>
 </Pane>

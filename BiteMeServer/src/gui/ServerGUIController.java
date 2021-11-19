@@ -2,7 +2,10 @@ package gui;
 
 import java.io.IOException;
 
+import JDBC.mysqlConnection;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ServerGUIController {
 
@@ -51,49 +55,55 @@ public class ServerGUIController {
 		//scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
 		primaryStage.setTitle("Server Configuration");
 		primaryStage.setScene(scene);
+		primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
+		    @Override
+		    public void handle(WindowEvent t) {
+		        Platform.exit();
+		        System.exit(0);
+		    }
+		});
 		primaryStage.show();		
 	}
 	
     @FXML
     void ConnectDB(ActionEvent event) {
+    	//data extraction from gui:
 		String p;
-		
+		String[] arr= {txtDbPath.getText(),txtDBuser.getText(),txtDbPass.getText()};
 		p=txtPort.getText();
 		if(p.trim().isEmpty()) {// NEED TO CHECK IF INSERTED PORT IN INTEGER !!!
-			System.out.println("You must enter a port number");			
+			txtFieldClientInfo.setText("You must enter a port number");	
 		}
 		else
 		{
-			//((Node)event.getSource()).getScene().getWindow().hide(); //hiding primary window
-			//Stage primaryStage = new Stage();
-			//FXMLLoader loader = new FXMLLoader();
-			ServerUI.runServer(p);
+			//setup sql+server:
+			mysqlConnection.setConnection(arr);
+			ServerUI.runServer(p);	
+			btnDiconnectDB.setDisable(false);
 		}
     }
 
     @FXML
     void closeServer(ActionEvent event) {
 	    // get a handle to the stage
-	    Stage stage = (Stage) btnClose.getScene().getWindow();
+	   // Stage stage = (Stage) btnClose.getScene().getWindow();
 	    // do what you have to do
-	    stage.close();
+	    //stage.close();
+    	System.exit(0);
     }
 
     @FXML
     void disconnectDB(ActionEvent event) {
-    	if(ServerUI.sv!=null) 
-    	{
+
         	try {
         		//ServerUI.sv.stopListening();
         		ServerUI.sv.close();
+    			btnDiconnectDB.setDisable(true);
     			
     		} catch (IOException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
-    	}
-    	else 
-    		txtFieldClientInfo.setText("Server is offline,\n cannot disconnect !");
 
     }
 

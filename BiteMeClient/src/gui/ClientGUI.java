@@ -5,10 +5,13 @@ import java.io.IOException;
 import ClientServerComm.Client;
 import Config.ReadPropertyFile;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ClientGUI extends Application {
 	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
@@ -27,6 +30,13 @@ public class ClientGUI extends Application {
 			controller.setStage(primaryStage);
 			controller.setClient(new Client(DEFAULT_IP, DEFAULT_PORT));
 			primaryStage.setScene(mainScene);
+			primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
+			    @Override
+			    public void handle(WindowEvent t) {
+			        Platform.exit();
+			        System.exit(0);
+			    }
+			});
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
