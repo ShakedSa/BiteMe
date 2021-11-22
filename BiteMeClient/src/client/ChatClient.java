@@ -17,7 +17,7 @@ public class ChatClient extends AbstractClient{
 	}
 
 	public void handleMessageFromServer(Object msg) {
-		display((String)msg);
+		clientUI.getResultFromServer((String)msg);
 	}
 
 	public void handleMessageFromClientUI(Object message) {
@@ -38,9 +38,6 @@ public class ChatClient extends AbstractClient{
 		System.exit(0);
 	}
 
-	public void display(String message) {
-		System.out.println("DISPLAY: \n" + message);
-	}
 
 	public void getResultFromServer(String message) {
 	}

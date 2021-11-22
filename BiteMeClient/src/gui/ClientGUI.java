@@ -16,7 +16,7 @@ import javafx.stage.WindowEvent;
 public class ClientGUI extends Application {
 	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
 	public static final String DEFAULT_IP = ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
-	
+	public static Client client = new Client(DEFAULT_IP, DEFAULT_PORT);
 	@Override
 	public void start(Stage primaryStage) {
 		AnchorPane mainContainer;
@@ -28,7 +28,6 @@ public class ClientGUI extends Application {
 			controller = loader.getController();
 			Scene mainScene = new Scene(mainContainer);
 			controller.setStage(primaryStage);
-			controller.setClient(new Client(DEFAULT_IP, DEFAULT_PORT));
 			primaryStage.setScene(mainScene);
 			primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
 			    @Override

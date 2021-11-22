@@ -58,9 +58,9 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM bm.order;");
 			while (rs.next()) {
 				// Print out the values
-				str.append(rs.getString(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + "  " + rs.getString(4)
-						+ "  " + rs.getString(5) + "  " + rs.getString(6));
-				str.append('\n');
+				str.append(rs.getString(1) + "_" + rs.getString(2) + "_" + rs.getString(3) + "_" + rs.getString(4)
+						+ "_" + rs.getString(5) + "_" + rs.getString(6));
+				str.append('_');
 			}
 			rs.close();
 			return str.toString();

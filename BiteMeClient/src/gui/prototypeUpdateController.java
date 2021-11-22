@@ -1,27 +1,27 @@
 package gui;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ClientServerComm.Client;
 import Config.TypeOfOrder;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class prototypeUpdateController {
-	Client client;
+	
 	private Stage stage;
 	@FXML
 	private TextField orderAddress;
@@ -45,10 +45,6 @@ public class prototypeUpdateController {
 		this.stage = stage;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
-
 	public void setCombo() {
 		typeOfOrder.getItems().addAll(TypeOfOrder.values());
 	}
@@ -56,23 +52,31 @@ public class prototypeUpdateController {
 	@FXML
 	void updateDB(MouseEvent event) {
 		if (orderAddress.getText().equals("")) {
+			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Must fill Order Address field");
 			return;
 		}
+		//Check if order address contains special characters
+		String address = orderAddress.getText();
+		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(address);
+		boolean b = m.find();
+		if(b) {
+			errorMsg.setTextFill(Color.web("red"));
+			errorMsg.setText("Address can't contains special characters");
+			return;
+		}
 		if (typeOfOrder.getValue() == null) {
+			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Must choose a delivery method");
 			return;
 		}
-		String address = orderAddress.getText();
 		String type = typeOfOrder.getSelectionModel().getSelectedItem().toString();
-		client.update(address, type);
-//		Alert displayMessage = new Alert(AlertType.INFORMATION);
+		ClientGUI.client.update(address, type);
 		errorMsg.setText(address + " " + type);
-		errorMsg.setStyle("-fx-color:green;");
+		errorMsg.setTextFill(Color.web("green"));
 		orderAddress.clear();
 		typeOfOrder.getSelectionModel().clearSelection();
-//		errorMsg.setText("");
-//		displayMessage.show();
 	}
 
 	@FXML
