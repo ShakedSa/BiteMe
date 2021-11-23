@@ -71,15 +71,17 @@ public class mysqlConnection {
 	}
 
 	// update order address+ type of order
-	public static String updateOrderInfo(String OrderAddress, String TypeOfOrder) {
+	public static String updateOrderInfo(String OrderNumber, String OrderAddress, String TypeOfOrder, String PhoneNumber) {
 		PreparedStatement stmt;
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			// update order address query:
-			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?";
+			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?, PhoneNumber=? WHERE OrderNumber=?";
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, OrderAddress);
 			stmt.setString(2, TypeOfOrder);
+			stmt.setString(3, PhoneNumber);
+			stmt.setString(4, OrderNumber);
 			stmt.executeUpdate();
 			stmt.close();
 			System.out.println("update finished\n");
@@ -90,5 +92,27 @@ public class mysqlConnection {
 		System.out.println("update failed\n");
 		return "Update fail";
 	}
-
+	
+	public static String getOrderInfo(String orderNumber) {
+		PreparedStatement stmt;
+		try {
+			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
+			String sql = "SELECT * FROM bm.order WHERE OrderNumber = ?";
+			stmt = con.prepareStatement(sql);
+			stmt.setString(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			String result;
+			if(rs.next()) {
+				result = rs.getString(1) + "_" + rs.getString(2) + "_" + rs.getString(3) + "_" + rs.getString(4)
+				+ "_" + rs.getString(5) + "_" + rs.getString(6);
+			}else {
+				result = "";
+			}
+			return result;
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("fetch failed\n");
+		return "Fetch fail";
+	}
 }

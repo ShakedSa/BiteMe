@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ClientServerComm.Client;
 import Config.TypeOfOrder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,11 +19,34 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Update GUI controller.
+ * 
+ * @author Aviel Malayev
+ * @author Natali Krief
+ * @author Michael Ben Israel
+ * @author Eden Ben Abu
+ * @author Shaked Sabag
+ * @version November 2021 (1.0)
+ */
 public class prototypeUpdateController {
-	
+
 	private Stage stage;
+
 	@FXML
-	private TextField orderAddress;
+	private TextField orderAddressTxt;
+
+	@FXML
+	private TextField orderNumTxt;
+
+	@FXML
+	private TextField orderTimeTxt;
+
+	@FXML
+	private TextField phoneNumberTxt;
+
+	@FXML
+	private TextField restaurantTxt;
 
 	@FXML
 	private ImageView back;
@@ -41,51 +63,121 @@ public class prototypeUpdateController {
 	@FXML
 	private Text updateBtn;
 
+	/**
+	 * Getting the stage of the application.
+	 * 
+	 * @param stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Creating combobox for types of order delivery methods.
+	 */
 	public void setCombo() {
 		typeOfOrder.getItems().addAll(TypeOfOrder.values());
 	}
 
+	/**
+	 * Setting default values of the order.
+	 * 
+	 * @param result
+	 */
+	public void setFields(String result) {
+		String[] arr = result.split("_");
+		orderNumTxt.setText(arr[0]);
+		restaurantTxt.setText(arr[1]);
+		orderTimeTxt.setText(arr[2]);
+		phoneNumberTxt.setText(arr[3]);
+		orderAddressTxt.setText(arr[5]);
+		for (TypeOfOrder t : TypeOfOrder.values()) {
+			if (arr[4].equals(t.toString())) {
+				typeOfOrder.getSelectionModel().select(t);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * On click event handler. Sending a server request to update the order address
+	 * and the type of order.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void updateDB(MouseEvent event) {
-		if (orderAddress.getText().equals("")) {
+		String address = orderAddressTxt.getText();
+		String phoneNumber = phoneNumberTxt.getText();
+		TypeOfOrder type = typeOfOrder.getValue();
+		if (!checkInput(address)) {
 			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Must fill Order Address field");
 			return;
 		}
-		//Check if order address contains special characters
-		String address = orderAddress.getText();
-		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(address);
-		boolean b = m.find();
-		if(b) {
+		if (checkSpecialCharacters(address)) {
 			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Address can't contains special characters");
 			return;
 		}
-		if (typeOfOrder.getValue() == null) {
+		if (!checkInput(phoneNumber)) {
+			errorMsg.setTextFill(Color.web("red"));
+			errorMsg.setText("Must fill Phone Number field");
+			return;
+		}
+		if (checkSpecialCharacters(phoneNumber)) {
+			errorMsg.setTextFill(Color.web("red"));
+			errorMsg.setText("Phone number can't contains special characters");
+			return;
+		}
+		if (!checkInput(type)) {
 			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Must choose a delivery method");
 			return;
 		}
-		String type = typeOfOrder.getSelectionModel().getSelectedItem().toString();
-		ClientGUI.client.update(address, type);
-		errorMsg.setText(address + " " + type);
+		String validType = type.toString();
+		ClientGUI.client.update(orderNumTxt.getText(), address, validType, phoneNumber);
 		errorMsg.setTextFill(Color.web("green"));
-		orderAddress.clear();
-		typeOfOrder.getSelectionModel().clearSelection();
+		errorMsg.setText("Updated!");
 	}
 
+	/**
+	 * Checking if a single string is valid by standard definition. Not empty string
+	 * or a null.
+	 * 
+	 * @param input
+	 */
+	public boolean checkInput(Object input) {
+		if (input == null || input.equals("")) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Checking for special characters in a string.
+	 * 
+	 * @param input
+	 */
+	public boolean checkSpecialCharacters(String input) {
+		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(input);
+		return m.find();
+	}
+
+	/**
+	 * On click event handler to switch back scenes to the main scene of BiteMe
+	 * prototype.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToMain(MouseEvent event) {
 		AnchorPane updateContainer;
-		prototypeGUIController controller;
+		prototypeSelectOrderController controller;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("prototypeGUI.fxml"));
+			loader.setLocation(getClass().getResource("prototypeSelectOrderGUI.fxml"));
 			updateContainer = loader.load();
 			controller = loader.getController();
 			controller.setStage(stage);
@@ -98,11 +190,21 @@ public class prototypeUpdateController {
 		}
 	}
 
+	/**
+	 * Creating hover effect on all the buttons.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void mouseEnter(MouseEvent event) {
 		updateBG.setStyle("-fx-fill:#2197ff;");
 	}
 
+	/**
+	 * Creating hover effect on all the buttons.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void mouseExit(MouseEvent event) {
 		updateBG.setStyle("-fx-fill:#ededed;");

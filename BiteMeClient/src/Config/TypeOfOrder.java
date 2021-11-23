@@ -1,5 +1,15 @@
 package Config;
 
+/**
+ * Enum representing a type of order delivery method.
+ * 
+ * @author Aviel Malayev
+ * @author Natali Krief
+ * @author Michael Ben Israel
+ * @author Eden Ben Abu
+ * @author Shaked Sabag
+ * @version November 2021 (1.0)
+ * */
 public enum TypeOfOrder 
 {
 	basicDelivery,
