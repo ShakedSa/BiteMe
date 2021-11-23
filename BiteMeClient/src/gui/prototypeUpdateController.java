@@ -89,6 +89,10 @@ public class prototypeUpdateController {
 		orderNumTxt.setText(arr[0]);
 		restaurantTxt.setText(arr[1]);
 		orderTimeTxt.setText(arr[2]);
+		orderNumTxt.setDisable(true);
+		restaurantTxt.setDisable(true);
+		orderTimeTxt.setDisable(true);
+		phoneNumberTxt.setDisable(true);
 		phoneNumberTxt.setText(arr[3]);
 		orderAddressTxt.setText(arr[5]);
 		for (TypeOfOrder t : TypeOfOrder.values()) {
@@ -120,23 +124,13 @@ public class prototypeUpdateController {
 			errorMsg.setText("Address can't contains special characters");
 			return;
 		}
-		if (!checkInput(phoneNumber)) {
-			errorMsg.setTextFill(Color.web("red"));
-			errorMsg.setText("Must fill Phone Number field");
-			return;
-		}
-		if (checkSpecialCharacters(phoneNumber)) {
-			errorMsg.setTextFill(Color.web("red"));
-			errorMsg.setText("Phone number can't contains special characters");
-			return;
-		}
 		if (!checkInput(type)) {
 			errorMsg.setTextFill(Color.web("red"));
 			errorMsg.setText("Must choose a delivery method");
 			return;
 		}
 		String validType = type.toString();
-		ClientGUI.client.update(orderNumTxt.getText(), address, validType, phoneNumber);
+		ClientGUI.client.update(orderNumTxt.getText(), address, validType);
 		errorMsg.setTextFill(Color.web("green"));
 		errorMsg.setText("Updated!");
 	}

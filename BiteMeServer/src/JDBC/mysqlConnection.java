@@ -38,7 +38,6 @@ public class mysqlConnection {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 		}
-
 	}
 
 	public static void setConnection(String[] args) {
@@ -71,17 +70,16 @@ public class mysqlConnection {
 	}
 
 	// update order address+ type of order
-	public static String updateOrderInfo(String OrderNumber, String OrderAddress, String TypeOfOrder, String PhoneNumber) {
+	public static String updateOrderInfo(String OrderNumber, String OrderAddress, String TypeOfOrder) {
 		PreparedStatement stmt;
 		try {
 			Connection con = DriverManager.getConnection(arg0, arg1, arg2);
 			// update order address query:
-			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=?, PhoneNumber=? WHERE OrderNumber=?";
+			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=? WHERE OrderNumber=?";
 			stmt = con.prepareStatement(sql);
 			stmt.setString(1, OrderAddress);
 			stmt.setString(2, TypeOfOrder);
-			stmt.setString(3, PhoneNumber);
-			stmt.setString(4, OrderNumber);
+			stmt.setString(3, OrderNumber);
 			stmt.executeUpdate();
 			stmt.close();
 			System.out.println("update finished\n");

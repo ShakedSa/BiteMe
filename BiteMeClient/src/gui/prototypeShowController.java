@@ -50,7 +50,7 @@ public class prototypeShowController {
 	public void setTable() {
 		ClientGUI.client.show();
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

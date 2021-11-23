@@ -18,11 +18,6 @@ import client.ChatClient;
  */
 public class Client implements ChatIF {
 
-	/** Default port reading from default values file. */
-	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
-	/** Default ip reading from default values file. */
-	public static final String DEFAULT_IP = ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
-
 	/** A client logic for client-server communication */
 	ChatClient client;
 
@@ -68,14 +63,13 @@ public class Client implements ChatIF {
 	 * @param orderAddress
 	 * @param typeOfOrder
 	 */
-	public void update(String orderNumber, String orderAddress, String typeOfOrder, String phoneNumber) {
+	public void update(String orderNumber, String orderAddress, String typeOfOrder) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("update");
 			arr.add(orderNumber);
 			arr.add(orderAddress);
 			arr.add(typeOfOrder);
-			arr.add(phoneNumber);
 			this.client.handleMessageFromClientUI(arr);
 		} catch (Exception ex) {
 			System.out.println("Unexpected error while sending update command!");
