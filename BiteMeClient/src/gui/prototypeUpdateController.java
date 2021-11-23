@@ -112,7 +112,6 @@ public class prototypeUpdateController {
 	@FXML
 	void updateDB(MouseEvent event) {
 		String address = orderAddressTxt.getText();
-		String phoneNumber = phoneNumberTxt.getText();
 		TypeOfOrder type = typeOfOrder.getValue();
 		if (!checkInput(address)) {
 			errorMsg.setTextFill(Color.web("red"));

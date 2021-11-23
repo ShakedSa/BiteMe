@@ -19,6 +19,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Server GUI Controller
+ * 
+ * 
+ * @author Aviel Malayev
+ * @author Natali Krief
+ * @author Michael Ben Israel
+ * @author Eden Ben Abu
+ * @author Shaked Sabag
+ * @version November 2021 (1.0)
+ */
 public class ServerGUIController {
 
 	@FXML
@@ -48,13 +59,18 @@ public class ServerGUIController {
 	@FXML
 	private Button btnClose;
 
+	/**
+	 * Starting method for the server, setting the scene.
+	 * 
+	 * @param primaryStage 
+	 * 
+	 * @throws Exception
+	 */
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/gui/ServerGui.fxml"));
-
 		Scene scene = new Scene(root);
-		// scene.getStylesheets().add(getClass().getResource("/gui/ServerPort.css").toExternalForm());
 		primaryStage.setTitle("Server Configuration");
-		primaryStage.setScene(scene);
+		primaryStage.setScene(scene); 
 		primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
@@ -65,26 +81,64 @@ public class ServerGUIController {
 		primaryStage.show();
 	}
 
+	/**
+	 * On click event handler. Connecting to the server.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void ConnectDB(ActionEvent event) {
-		// data extraction from gui:
+		/**
+		 * Getting data from the gui
+		 */
 		String p;
 		String[] arr = { txtDbPath.getText(), txtDBuser.getText(), txtDbPass.getText() };
+
 		p = txtPort.getText();
-		if (p.trim().isEmpty()) {// NEED TO CHECK IF INSERTED PORT IN INTEGER !!!
-			txtFieldClientInfo.setText("You must enter a port number");
-		} else {
-			// setup sql+server:
-			mysqlConnection.setConnection(arr);
-			ServerUI.runServer(p);
-			btnDiconnectDB.setDisable(false);
-			btnConnectDB.setDisable(true);
-			if (ServerUI.sv != null) {
-				ServerUI.sv.setController(this);
-			}
+		if (!checkInput(arr[0]) || !checkInput(arr[1]) || !checkInput(arr[2]) || !checkInput(p)) {
+			setMessage("Must fill all fields!");
+			return;
+		}
+		if (p.trim().isEmpty()) {
+			/** Checks if the inserted port is integer */
+			setMessage("Must enter a port number");
+			return;
+		}
+		if (Integer.parseInt(p) < 0 || Integer.parseInt(p) > 65535) {
+			/** Checks if the inserted port is in the right range */
+			setMessage("Port needs to be in range of 0 to 65535");
+			return;
+		}
+		/** Connecting to the db. */
+		mysqlConnection.setConnection(arr);
+		ServerUI.runServer(p);
+		btnDiconnectDB.setDisable(false);
+		btnConnectDB.setDisable(true);
+
+		/** Setting the server ui controller to the server. */
+		if (ServerUI.sv != null) {
+			ServerUI.sv.setController(this);
 		}
 	}
 
+	/**
+	 * Checking if a single string is valid by standard definition. Not empty string
+	 * or a null.
+	 * 
+	 * @param input
+	 */
+	public boolean checkInput(Object input) {
+		if (input == null || input.equals("")) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Closing the server.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void closeServer(ActionEvent event) {
 		// get a handle to the stage
@@ -94,41 +148,47 @@ public class ServerGUIController {
 		System.exit(0);
 	}
 
+	/**
+	 * Disconnecting the server connection.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void disconnectDB(ActionEvent event) {
 
 		try {
-			// ServerUI.sv.stopListening();
 			ServerUI.sv.close();
 			btnDiconnectDB.setDisable(true);
 			btnConnectDB.setDisable(false);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Getting the connected clients information.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void getClientInfo(ActionEvent event) {
 		if (ServerUI.sv != null)
 			if (ServerUI.sv.isListening())
 				setMessage(ServerUI.sv.showConnectionInfo());
-//				txtFieldClientInfo.setText(ServerUI.sv.showConnectionInfo());
 			else
 				setMessage("Server is offline, cannot check connections !");
-//				txtFieldClientInfo.setText("Server is offline, cannot check connections !");
 	}
 
+	/**
+	 * Setting a new message in the textarea with a time stamp.
+	 * 
+	 * @param msg
+	 */
 	public void setMessage(String msg) {
-//		String text = txtFieldClientInfo.getText();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
-//		if (text != null && !text.equals("")) {
-//			txtFieldClientInfo.setText(dtf.format(now) + " " + msg + "\n" + text);
-//		} else {
-			txtFieldClientInfo.setText(dtf.format(now) + " " + msg);
-//		}
+		txtFieldClientInfo.setText(dtf.format(now) + " " + msg);
 	}
 }
