@@ -30,7 +30,7 @@ public class ClientGUI extends Application {
 	/** Default ip reading from default values file. */
 	public static final String DEFAULT_IP = ReadPropertyFile.getInstance().getProp("ClientDefaultIP");
 	/** Client logic of server-client communication. */
-	public static Client client = new Client(DEFAULT_IP, DEFAULT_PORT);
+	public static Client client;
 
 	/**
 	 * Overriding the default method in Application to run our GUI.
@@ -40,14 +40,14 @@ public class ClientGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		AnchorPane mainContainer;
-		prototypeGUIController controller;
+		prototypeEnterGUIController controller;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("prototypeGUI.fxml"));
+			loader.setLocation(getClass().getResource("prototypeEnterGUI.fxml"));
 			mainContainer = loader.load();
 			controller = loader.getController();
-			Scene mainScene = new Scene(mainContainer);
 			controller.setStage(primaryStage);
+			Scene mainScene = new Scene(mainContainer);
 			primaryStage.setScene(mainScene);
 			primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {
 				/** Setting the 'X' button to close the application. */
