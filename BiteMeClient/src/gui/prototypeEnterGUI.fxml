@@ -17,12 +17,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="87.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="15.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="129.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Rectangle fx:id="exitBG" arcHeight="50.0" arcWidth="50.0" fill="#1f93ff00" height="52.0" layoutX="617.0" layoutY="475.0" onMouseClicked="#closeApplication" onMouseEntered="#mouseEnter" onMouseExited="#mouseExit" stroke="BLACK" strokeType="INSIDE" width="149.0">
