@@ -2,7 +2,6 @@ package ClientServerCommunication;
 
 import java.util.ArrayList;
 
-import Config.ReadPropertyFile;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -18,6 +17,8 @@ import ocsf.server.ConnectionToClient;
  * @author Shaked Sabag
  * @version November 2021 (1.0)
  */
+
+
 public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
@@ -53,20 +54,33 @@ public class Server extends AbstractServer {
 		case "update":
 			text = mysqlConnection.updateOrderInfo(m.get(1), m.get(2), m.get(3));
 			controller.setMessage(text);
-			sendToAllClients(text);
+			sendToClient(text,client);
 			break;
 		case "getOrder":
 			text = mysqlConnection.getOrderInfo(m.get(1));
 			controller.setMessage(text);
-			sendToAllClients(text);
+			sendToClient(text,client);
 			break;
 		default:
-			sendToAllClients("default");
+			sendToClient("default",client);
 			break;
 		}
 
 	}
 
+	  /**
+	   * sendToClient method will send the received msg to a specific client
+	 * @param msg - object to send
+	 * @param client - receiving client
+	 */
+	public void sendToClient(Object msg, ConnectionToClient client) {
+	      try
+	      {		
+	    	  client.sendToClient(msg);
+	      }
+	      catch (Exception ex) {System.out.println(" Error sending msg to client !");}
+	  }
+	
 	/**
 	 * Overridden method from AbstractServer. Gets invoke when the server starts and
 	 * sending a message to the gui.

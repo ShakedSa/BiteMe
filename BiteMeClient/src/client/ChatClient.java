@@ -43,7 +43,8 @@ public class ChatClient extends AbstractClient {
 	 * @param msg
 	 */
 	public void handleMessageFromServer(Object msg) {
-		clientUI.getResultFromServer((String) msg);
+		if(msg instanceof String)
+			clientUI.getResultFromServer((String) msg);
 	}
 
 	/**
