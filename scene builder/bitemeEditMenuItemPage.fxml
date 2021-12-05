@@ -73,7 +73,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ImageView fitHeight="67.0" fitWidth="78.0" layoutX="57.0" layoutY="486.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+      <ImageView fitHeight="67.0" fitWidth="78.0" layoutX="53.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@images/arrow.gif" />
          </image>
@@ -98,7 +98,7 @@
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="129.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+      <Text layoutX="129.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
@@ -109,10 +109,10 @@
       <TextField layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
       <TextField layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
       <Spinner editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
-      <TextArea layoutX="377.0" layoutY="351.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
+      <TextArea layoutX="377.0" layoutY="391.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
       <ComboBox layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="29.0" layoutX="580.0" layoutY="489.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
-      <Text fill="#04b84f" layoutX="592.0" layoutY="510.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="29.0" layoutX="695.0" layoutY="512.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
+      <Text fill="#04b84f" layoutX="707.0" layoutY="533.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -125,6 +125,17 @@
       <Text fill="RED" layoutX="126.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* fields are required">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="131.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Picture">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="29.0" layoutX="385.0" layoutY="353.0" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+      <Text layoutX="432.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
    </children>

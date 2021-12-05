@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.gluonhq.charm.glisten.control.Avatar?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -25,7 +24,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fill="#3294ba" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text fill="#3180bc" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -85,37 +84,22 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Text fill="#a8a1a1" layoutX="105.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="336.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="387.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="410.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
-      <Circle fill="#1f93ff00" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="484.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please state the time of the order:">
+      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select delivery method:">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <DatePicker editable="false" layoutX="102.0" layoutY="236.0" promptText="Pick Date">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </DatePicker>
-      <ComboBox editable="true" layoutX="102.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <ComboBox editable="true" layoutX="173.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
       <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#ffffff00" height="36.0" layoutX="701.0" layoutY="478.0" stroke="BLACK" strokeType="INSIDE" width="72.0">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -129,21 +113,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text fill="#a8a1a1" layoutX="177.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <Text fill="#a8a1a1" layoutX="104.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
+      <ComboBox layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Shared Delivery" />
+      <Text layoutX="104.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address / Workplace" />
+      <Text layoutX="102.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+      <Text layoutX="104.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
+      <TextField layoutX="241.0" layoutY="282.0" promptText="Address / Workplace" />
+      <TextField layoutX="241.0" layoutY="316.0" promptText="First Name" />
+      <TextField layoutX="320.0" layoutY="395.0" prefHeight="26.0" prefWidth="72.0" promptText="1234567" />
+      <Text layoutX="103.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+      <TextField layoutX="242.0" layoutY="356.0" promptText="Last Name" />
+      <ComboBox layoutX="247.0" layoutY="396.0" prefHeight="27.0" prefWidth="72.0" promptText="050" />
+      <Text fill="#3180bc" layoutX="103.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This delivery method includes extra pay" />
+      <Text fill="RED" layoutX="103.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" />
+      <Text fill="RED" layoutX="228.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="169.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="169.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="194.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
    </children>
 </AnchorPane>
