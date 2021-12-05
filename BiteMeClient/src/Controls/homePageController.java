@@ -7,13 +7,13 @@ import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -54,8 +54,10 @@ public class homePageController {
 	@FXML
 	private Text userFirstName;
 
+//	@FXML
+//	private ImageView avatar;
 	@FXML
-	private ImageView avatar;
+	private Rectangle avatar;
 
 	@FXML
 	void caruasalLeftClicked(MouseEvent event) {
@@ -82,6 +84,7 @@ public class homePageController {
 			mainContainer = loader.load();
 			controller = loader.getController();
 			controller.setStage(stage);
+			controller.setAvatar();
 			Scene mainScene = new Scene(mainContainer);
 			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 			stage.setTitle("BiteMe - Login");
@@ -134,6 +137,24 @@ public class homePageController {
 		restaurantBtn.setVisible(val);
 		homePageBtn.setVisible(val);
 		loginBtn.setVisible(!val);
+	}
+
+	/**
+	 * Setting the avatar image of the user.
+	 */
+	public void setAvatar() {
+		try {
+			avatar.setArcWidth(65);
+			avatar.setArcHeight(65);
+			ImagePattern pattern = new ImagePattern(
+					new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			avatar.setFill(pattern);
+			avatar.setEffect(new DropShadow(3, Color.BLACK));
+			avatar.setStyle("-fx-border-width: 0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@FXML

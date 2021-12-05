@@ -82,6 +82,7 @@ public class EnterGUIController {
 			mainContainer = loader.load();
 			controller = loader.getController();
 			controller.setStage(stage);
+			controller.setAvatar();
 			Scene mainScene = new Scene(mainContainer);
 			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 			stage.setTitle("BiteMe - HomePage");

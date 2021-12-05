@@ -12,9 +12,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -43,6 +48,9 @@ public class loginController {
 
 	@FXML
 	private TextField usernameTxt;
+
+	@FXML
+	private Rectangle avatar;
 
 	/**
 	 * Onclick event handler, returning to homepage.
@@ -90,7 +98,7 @@ public class loginController {
 			return;
 		}
 		ClientGUI.client.setUser((User) ClientGUI.client.getResult());
-		if(ClientGUI.client.getUser() == null) {
+		if (ClientGUI.client.getUser() == null) {
 			errorMsg.setText("Wrong username or password");
 			return;
 		}
@@ -99,7 +107,7 @@ public class loginController {
 
 	/**
 	 * Changing the current scene to homepage.
-	 * */
+	 */
 	private void changeScenes() {
 		AnchorPane mainContainer;
 		homePageController controller;
@@ -109,7 +117,8 @@ public class loginController {
 			mainContainer = loader.load();
 			controller = loader.getController();
 			controller.setStage(stage);
-			if(ClientGUI.client.getUser() != null) {
+			controller.setAvatar();
+			if (ClientGUI.client.getUser() != null) {
 				controller.setProfile();
 			}
 			Scene mainScene = new Scene(mainContainer);
@@ -122,6 +131,7 @@ public class loginController {
 			return;
 		}
 	}
+
 	/**
 	 * Checks if the string is not empty.
 	 * 
@@ -154,6 +164,20 @@ public class loginController {
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+	
+	public void setAvatar() {
+		try {
+		avatar.setArcWidth(65);
+		avatar.setArcHeight(65);
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		avatar.setFill(pattern);
+		avatar.setEffect(new DropShadow(3,Color.BLACK));
+		avatar.setStyle("-fx-border-width: 0");
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 }

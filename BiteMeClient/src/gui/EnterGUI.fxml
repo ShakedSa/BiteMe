@@ -34,7 +34,7 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <TextField fx:id="ipTxt" layoutX="234.0" layoutY="239.0" prefHeight="26.0" prefWidth="172.0" text="192.168.0.10" />
+      <TextField fx:id="ipTxt" layoutX="234.0" layoutY="239.0" prefHeight="26.0" prefWidth="172.0" text="localhost" />
       <Label fx:id="errorMsg" layoutX="168.0" layoutY="285.0" textFill="RED">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
