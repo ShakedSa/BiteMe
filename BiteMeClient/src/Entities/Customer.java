@@ -1,5 +1,7 @@
 package Entities;
 
+import java.io.File;
+
 public class Customer extends User {
 
 	/**
@@ -7,9 +9,49 @@ public class Customer extends User {
 	 */
 	private static final long serialVersionUID = -4046991480431316453L;
 
+	private W4CCard w4c;
+	private float refundedBalance;
+
+	/**
+	 * @param userName
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param id
+	 * @param email
+	 * @param phoneNumber
+	 * @param userType
+	 * @param organization
+	 * @param mainBranch
+	 * @param role
+	 * @param status
+	 * @param avatar
+	 * @param w4c
+	 * @param refundedBalance
+	 */
 	public Customer(String userName, String password, String firstName, String lastName, String id, String email,
-			String phoneNumber, Role role, String organization, Branch mainBranch) {
-		super(userName, password, firstName, lastName, id, email, phoneNumber, role, organization, mainBranch);
+			String phoneNumber, UserType userType, String organization, Branch mainBranch, String role, Status status,
+			File avatar, W4CCard w4c, float refundedBalance) {
+		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role,
+				status, avatar);
+		this.w4c = w4c;
+		this.refundedBalance = refundedBalance;
 	}
-	
+
+	public W4CCard getW4c() {
+		return w4c;
+	}
+
+	public float getRefundedBalance() {
+		return refundedBalance;
+	}
+
+	public void setW4c(W4CCard w4c) {
+		this.w4c = w4c;
+	}
+
+	public void setRefundedBalance(float refundedBalance) {
+		this.refundedBalance = refundedBalance;
+	}
+
 }

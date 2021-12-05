@@ -1,5 +1,5 @@
 package Entities;
 
-public enum Role {
+public enum UserType {
 	Customer, BusinessCustomer, BranchManager, CEO, Supplier, EmployerHR;
 }

@@ -3,7 +3,6 @@ package client;
 import java.io.IOException;
 
 import Controls.EnterGUIController;
-import Entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;

@@ -1,5 +1,6 @@
 package Entities;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -20,12 +21,32 @@ public abstract class User implements Serializable {
 	private String id;
 	private String email;
 	private String phoneNumber;
-	private Role role;
+	private UserType userType;
 	private String organization;
 	private Branch mainBranch;
-
+	private String role;
+	private Status status;
+	private File avatar;
+	
+	/**
+	 * @param userName
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param id
+	 * @param email
+	 * @param phoneNumber
+	 * @param userType
+	 * @param organization
+	 * @param mainBranch
+	 * @param role
+	 * @param status
+	 * @param avatar
+	 */
 	public User(String userName, String password, String firstName, String lastName, String id, String email,
-			String phoneNumber, Role role, String organization, Branch mainBranch) {
+			String phoneNumber, UserType userType, String organization, Branch mainBranch, String role, Status status,
+			File avatar) {
+		super();
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
@@ -33,73 +54,144 @@ public abstract class User implements Serializable {
 		this.id = id;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.role = role;
+		this.userType = userType;
 		this.organization = organization;
 		this.mainBranch = mainBranch;
+		this.role = role;
+		this.status = status;
+		this.avatar = avatar;
 	}
+	
+	
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
 
 	public String getFirstName() {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+
 
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+
+
+	public UserType getUserType() {
+		return userType;
 	}
 
-	public Role getRole() {
-		return role;
-	}
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
 
 	public String getOrganization() {
 		return organization;
 	}
 
-	public void setOrganization(String organization) {
-		this.organization = organization;
-	}
+
 
 	public Branch getMainBranch() {
 		return mainBranch;
 	}
 
+
+
+	public String getRole() {
+		return role;
+	}
+
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+
+	public File getAvatar() {
+		return avatar;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+
+
 	public void setMainBranch(Branch mainBranch) {
 		this.mainBranch = mainBranch;
+	}
+
+
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+
+	public void setAvatar(File avatar) {
+		this.avatar = avatar;
 	}
 
 	public String getUserName() {

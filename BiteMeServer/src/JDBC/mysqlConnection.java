@@ -1,5 +1,6 @@
 package JDBC;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,8 +11,10 @@ import java.sql.Statement;
 import Config.ReadPropertyFile;
 import Entities.Branch;
 import Entities.Customer;
-import Entities.Role;
+import Entities.Status;
 import Entities.User;
+import Entities.UserType;
+import Entities.W4CCard;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -71,17 +74,59 @@ public class mysqlConnection {
 			stmt.setString(1, userName);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				if(rs.getInt(11) == 1 || !rs.getString(2).equals(password)) {
+				if (rs.getInt(12) == 1 || !rs.getString(2).equals(password) || rs.getString(8).equals("User")) {
 					return user;
 				}
-				Branch branch = Branch.valueOf(rs.getString(10));
-				Role role = Role.valueOf(rs.getString(8));
-				user = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6), rs.getString(7), role, rs.getString(9), branch);
+				System.out.println("DId the first query :)");
+				String firstName = rs.getString(3);
+				String lastName = rs.getString(4);
+				String id = rs.getString(5);
+				String email = rs.getString(6);
+				String phoneNumber = rs.getString(7);
+				UserType userType = UserType.valueOf(rs.getString(8));
+				String role = rs.getString(9);
+				String organization = rs.getString(10);
+				Branch branch = Branch.valueOf(rs.getString(11));
+				File avatar=null;
+				Status status = Status.valueOf(rs.getString(13));				
+				int cusID = 0, w4cID=0;
+				float refBalance=0, monthlyBudget=0, balance=0, dailyBudget=0;
+				String employerID="", qrCode="", creditCardNumber="";
 				query = "UPDATE bitemedb.users SET IsLoggedIn = 1 WHERE UserName = ?";
 				stmt = conn.prepareStatement(query);
 				stmt.setString(1, userName);
 				stmt.executeUpdate();
+				System.out.println("Updated user logged in");
+				if (userType == UserType.Customer || userType == UserType.BusinessCustomer) {
+					System.out.println("user is of type customer or business customer");
+					query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setString(1, userName);
+					rs = stmt.executeQuery();
+					if (rs.next()) {
+						cusID = rs.getInt(1);
+						refBalance = rs.getFloat(3);
+					}
+					System.out.println("got customer's info");
+					query = "SELECT * FROM bitemedb.w4ccards WHERE CustomerID = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setInt(1, cusID);
+					rs = stmt.executeQuery();
+					if (rs.next()) {
+						w4cID = rs.getInt(1);
+						employerID = rs.getString(3);
+						qrCode = rs.getString(4);
+						creditCardNumber = rs.getString(5);
+						monthlyBudget = rs.getFloat(6);
+						dailyBudget = rs.getFloat(7);
+						balance = rs.getFloat(8);
+					}
+					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
+							organization, branch, role, status, avatar, new W4CCard(w4cID, employerID, qrCode,
+									creditCardNumber, monthlyBudget, balance, dailyBudget),
+							refBalance);
+					System.out.println(user);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
