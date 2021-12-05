@@ -1,0 +1,32 @@
+#btn{
+	-fx-border-width: 1.0;
+	-fx-border-color: black;
+	-fx-border-radius: 40.0;
+	-fx-padding: 10.0 35.0;
+	-fx-cursor: hand;
+}
+
+#btn:hover{
+	-fx-background-color: #2197ff;
+	-fx-background-radius: 40.0;
+}
+
+#active{
+	-fx-fill: #3180bc;
+	-fx-underline: true;
+	-fx-border-width: 0.0 0.0 2.0 0.0;
+	-fx-border-color: #3180bc;
+	-fx-padding: 0.0 0.0 3.0 0.0;
+}
+
+#link:hover{
+	-fx-fill: #3180bc;
+	-fx-underline: true;
+	-fx-border-width: 0.0 0.0 2.0 0.0;
+	-fx-border-color: #3180bc;
+	-fx-padding: 0.0 0.0 3.0 0.0;
+}
+
+#avatar{
+	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.5), 5, 0.0, 0.0, 0.0);
+}

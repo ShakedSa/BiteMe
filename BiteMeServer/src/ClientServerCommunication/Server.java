@@ -2,6 +2,7 @@ package ClientServerCommunication;
 
 import java.util.ArrayList;
 
+import Entities.User;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -46,20 +47,13 @@ public class Server extends AbstractServer {
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
-		String text;
 		switch (m.get(0)) {
-		case "show":
-			sendToAllClients(mysqlConnection.dispalyOrder());
+		case "login":
+			User user = mysqlConnection.login(m.get(1), m.get(2));
+			this.sendToClient(user, client);
 			break;
-		case "update":
-			text = mysqlConnection.updateOrderInfo(m.get(1), m.get(2), m.get(3));
-			controller.setMessage(text);
-			sendToClient(text,client);
-			break;
-		case "getOrder":
-			text = mysqlConnection.getOrderInfo(m.get(1));
-			controller.setMessage(text);
-			sendToClient(text,client);
+		case "logout":
+			this.sendToClient(mysqlConnection.logout(m.get(1)), client);
 			break;
 		default:
 			sendToClient("default",client);
@@ -86,6 +80,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}
 

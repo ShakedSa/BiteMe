@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.loginController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0ceeb00" height="235.0" layoutX="228.0" layoutY="175.0" stroke="BLACK" strokeType="INSIDE" width="375.0">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Rectangle>
+      <Text layoutX="285.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="285.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <TextField fx:id="usernameTxt" layoutX="407.0" layoutY="193.0" />
+      <Text layoutX="304.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password?" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="420.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot username?" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text layoutX="691.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="28.0">
+         <image>
+            <Image url="@../images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="36.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="729.0" layoutX="98.0" layoutY="86.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Label id="btn" fx:id="loginBtn" layoutX="351.0" layoutY="302.0" onMouseClicked="#loginClicked" text="Login">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorMsg" layoutX="286.0" layoutY="277.0" style="-fx-fill: red;" textFill="#fc0000">
+         <font>
+            <Font name="Berlin Sans FB" size="15.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="back" fitHeight="85.0" fitWidth="86.0" layoutX="95.0" layoutY="464.0" onMouseClicked="#backToHomePage" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@../images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <PasswordField fx:id="passwordTxt" layoutX="407.0" layoutY="242.0" />
+   </children>
+</AnchorPane>

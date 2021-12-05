@@ -189,6 +189,11 @@ public class ServerGUIController {
 	public void setMessage(String msg) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
-		txtFieldClientInfo.setText(dtf.format(now) + " " + msg);
+		String txt = txtFieldClientInfo.getText();
+		if(txt == null || txt.equals("")) {
+			txtFieldClientInfo.setText(dtf.format(now) + " " + msg);
+		}else {
+			txtFieldClientInfo.setText(dtf.format(now) + " " + msg + "\n" + txt);
+		}
 	}
 }

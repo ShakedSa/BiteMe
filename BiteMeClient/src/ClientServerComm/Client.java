@@ -1,13 +1,13 @@
 package ClientServerComm;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
-import Config.ReadPropertyFile;
-import client.ChatClient;
+import Entities.User;
+import client.ClientIF;
+import ocsf.client.AbstractClient;
 
 /**
- * Logic of the client GUI.
+ * Client logic of server-client communication.
  * 
  * @author Aviel Malayev
  * @author Natali Krief
@@ -16,95 +16,61 @@ import client.ChatClient;
  * @author Shaked Sabag
  * @version November 2021 (1.0)
  */
-public class Client implements ChatIF {
+public class Client extends AbstractClient {
 
-	/** A client logic for client-server communication */
-	ChatClient client;
-
-	/** Storing response from the server. */
-	public String res;
+	/** Client gui logic */
+	ClientIF clientUI;
 
 	/**
-	 * Constructor. Creating a new client, on creation failed close the application
-	 * and notify the user.
+	 * Constructor Creating new server-client communication logic.
 	 * 
 	 * @param host
 	 * @param port
-	 */
-	public Client(String host, int port) {
-		try {
-			this.client = new ChatClient(host, port, this);
-		} catch (IOException exception) {
-			System.out.println("Error: Can't setup connection! Terminating client.");
-			System.exit(1);
-		}
-	}
-
-	/**
-	 * Sending a single order request to the server.
+	 * @param clientUI
 	 * 
-	 * @param orderNumber
+	 * @throws IOException
 	 */
-	public void getOrder(String orderNumber) {
-		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("getOrder");
-			arr.add(orderNumber);
-			this.client.handleMessageFromClientUI(arr);
-		} catch (Exception ex) {
-			System.out.println("Unexpected error while sending update command!");
-			ex.printStackTrace();
-		}
+	public Client(String host, int port, ClientIF clientUI) throws IOException {
+		super(host, port);
+		this.clientUI = clientUI;
+		openConnection();
 	}
 
 	/**
-	 * Updating the db using the server-client communication logic.
+	 * Overridden method from AbstractClient. Getting response from server and
+	 * setting it in the client ui logic.
 	 * 
-	 * @param orderAddress
-	 * @param typeOfOrder
+	 * @param msg
 	 */
-	public void update(String orderNumber, String orderAddress, String typeOfOrder) {
-		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("update");
-			arr.add(orderNumber);
-			arr.add(orderAddress);
-			arr.add(typeOfOrder);
-			this.client.handleMessageFromClientUI(arr);
-		} catch (Exception ex) {
-			System.out.println("Unexpected error while sending update command!");
-			ex.printStackTrace();
+	public void handleMessageFromServer(Object msg) {
+		if(msg instanceof User) {
+			clientUI.getResultFromServer(msg);
 		}
 	}
 
 	/**
-	 * Send a server request to get all the order table from db.
-	 */
-	public void show() {
-		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("show");
-			this.client.handleMessageFromClientUI(arr);
-		} catch (Exception ex) {
-			System.out.println("Unexpected error while sending show command!");
-		}
-	}
-
-	/**
-	 * A must implemented method from ChatIF interface.
+	 * Getting a message from the client ui and sending a request to the server.
 	 * 
 	 * @param message
 	 */
-	public void display(String message) {
+	public void handleMessageFromClientUI(Object message) {
+		try {
+			sendToServer(message);
+		} catch (IOException e) {
+			this.clientUI.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
 	}
 
 	/**
-	 * Setting the message from the server to res.
-	 * 
-	 * @param message
+	 * Killing this client connection
 	 */
-	public void getResultFromServer(String message) {
-		this.res = message;
+	public void quit() {
+		try {
+			closeConnection();
+		} catch (IOException localIOException) {
+		}
+		System.out.println("BYE");
+		System.exit(0);
 	}
-
 }
