@@ -1,66 +1,124 @@
 package ClientServerCommunication;
 
+import java.util.ArrayList;
+
+import JDBC.mysqlConnection;
+import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-import java.util.ArrayList;
+/**
+ * Server Logic
+ * 
+ * @author Aviel Malayev
+ * @author Natali Krief
+ * @author Michael Ben Israel
+ * @author Eden Ben Abu
+ * @author Shaked Sabag
+ * @version November 2021 (1.0)
+ */
 
-import Config.ReadPropertyFile;
-import JDBC.mysqlConnection;
+
 public class Server extends AbstractServer {
 
-	//private mysqlConnection jdbc=new mysqlConnection();
-	public static final int DEFAULT_PORT = Integer.parseInt(ReadPropertyFile.getInstance().getProp("DefaultPort"));
+	/** Server gui controller for message handling between gui and logic */
+	private ServerGUIController controller;
+	public static final int DEFAULT_PORT = 5555;
 
+	/**
+	 * Constructor. Building new server logic object.
+	 * 
+	 * @param port
+	 */
 	public Server(int port) {
 		super(port);
 	}
 
+	/**
+	 * Overridden method from AbstractServer. Handling message received from a
+	 * client. At this moment can handle message from only 1 single client.
+	 * 
+	 * @param msg
+	 * @param client
+	 */
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println("Msg recieved:" + msg);
+		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
-		switch(m.get(0)){
+		String text;
+		switch (m.get(0)) {
 		case "show":
-			sendToAllClients(mysqlConnection.printOrders());
+			sendToAllClients(mysqlConnection.dispalyOrder());
 			break;
 		case "update":
-			sendToAllClients(mysqlConnection.updateOrderInfo(m.get(1), m.get(2)));
-				
+			text = mysqlConnection.updateOrderInfo(m.get(1), m.get(2), m.get(3));
+			controller.setMessage(text);
+			sendToClient(text,client);
 			break;
-		case "server":
-			showConnectionInfo();
+		case "getOrder":
+			text = mysqlConnection.getOrderInfo(m.get(1));
+			controller.setMessage(text);
+			sendToClient(text,client);
+			break;
 		default:
-			sendToAllClients("default");
+			sendToClient("default",client);
 			break;
 		}
+
 	}
 
+	  /**
+	   * sendToClient method will send the received msg to a specific client
+	 * @param msg - object to send
+	 * @param client - receiving client
+	 */
+	public void sendToClient(Object msg, ConnectionToClient client) {
+	      try
+	      {		
+	    	  client.sendToClient(msg);
+	      }
+	      catch (Exception ex) {System.out.println(" Error sending msg to client !");}
+	  }
+	
+	/**
+	 * Overridden method from AbstractServer. Gets invoke when the server starts and
+	 * sending a message to the gui.
+	 */
 	protected void serverStarted() {
-		System.out.println("Server listening for connections on port " + getPort());
+		controller.setMessage("Server listening for connections on port " + getPort());
 	}
 
+	/**
+	 * Overridden method from AbstractServer. Gets invoke when the server stopped
+	 * and sending a message to the gui.
+	 */
 	protected void serverStopped() {
-		System.out.println("Server has stopped listening for connections.");
+		controller.setMessage("Server has stopped listening for connections.");
 	}
 
-	protected void showConnectionInfo() {
-		System.out.println(this.getClientConnections()[0].toString()+ "Status: "+this.getClientConnections()[0].isAlive());
+	/**
+	 * Method to get the connected client from the server.
+	 * 
+	 * @return str
+	 */
+	public String showConnectionInfo() {
+		if (this.getClientConnections().length > 0) {
+			String str;
+			String[] connectionInfo = this.getClientConnections()[0].toString().split(" ");
+			str = "IP: " + connectionInfo[0] + "\n\tHost: " + connectionInfo[1] + "\n\tStatus: Connected.";
+			return str;
+		} else
+			return "No Connections !";
 	}
-	public static void main(String[] args) {
-		int port = 0;
-		try {
-			port = Integer.parseInt(args[0]);
-		} catch (Throwable t) {
-			port = DEFAULT_PORT;
-		}
 
-		Server sv = new Server(port);
-		try {
-			sv.listen();
-		} catch (Exception ex) {
-			System.out.println("ERROR - Could not listen for clients!!");
-		}
+	/**
+	 * Setting a ServerGUIController.
+	 * 
+	 * @param controller
+	 */
+	public void setController(ServerGUIController controller) {
+		this.controller = controller;
 	}
+
 }

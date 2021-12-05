@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="313.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="254.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/manager-avatar.png" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" style="-fx-rotate: -90;">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="115.0" layoutX="414.0" layoutY="64.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text fill="#3180bc" layoutX="415.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="36.0" layoutX="448.0" layoutY="197.0" stroke="BLACK" strokeType="INSIDE" width="336.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="36.0" layoutX="448.0" layoutY="260.0" stroke="BLACK" strokeType="INSIDE" width="336.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="36.0" layoutX="447.0" layoutY="327.0" stroke="BLACK" strokeType="INSIDE" width="336.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="36.0" layoutX="447.0" layoutY="391.0" stroke="BLACK" strokeType="INSIDE" width="336.0" />
+      <Text layoutX="507.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open customer account">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="469.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open business customer account">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="535.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new supplier">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="496.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update user information">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="240.0" fitWidth="262.0" layoutX="62.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/managerPanelImage.png" />
+         </image>
+      </ImageView>
+      <Text fill="#17adff" layoutX="81.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wheels of Craving">
+         <font>
+            <Font name="Berlin Sans FB" size="30.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

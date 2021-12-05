@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="313.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="254.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/manager-avatar.png" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" style="-fx-rotate: -90;">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="116.0" layoutX="414.0" layoutY="61.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text fill="#3180bc" layoutX="415.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open Business Account">
+         <font>
+            <Font name="Berlin Sans FB" size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="88.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="89.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="89.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="88.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="451.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="450.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Name">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="450.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Debit">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField layoutX="223.0" layoutY="211.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="223.0" layoutY="254.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="223.0" layoutY="301.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="591.0" layoutY="206.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="591.0" layoutY="250.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="300.0" layoutY="346.0" prefHeight="26.0" prefWidth="99.0" />
+      <ComboBox layoutX="223.0" layoutY="348.0" prefHeight="27.0" prefWidth="74.0" promptText="050" />
+      <Spinner layoutX="591.0" layoutY="302.0" prefHeight="26.0" prefWidth="178.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="33.0" layoutX="572.0" layoutY="472.0" stroke="BLACK" strokeType="INSIDE" width="161.0" />
+      <Text layoutX="577.0" layoutY="495.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send for approval">
+         <font>
+            <Font name="Berlin Sans FB" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="520.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/sendIcon.gif" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
