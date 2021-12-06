@@ -9,6 +9,7 @@ import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -156,36 +158,70 @@ public class restaurantSelectionController {
 	}
 
 	/**
-	 * Creating the card for each restaurant and add it to the mainScene.
-	 * TO be continued!!! :)
-	 * @param restaurants
+	 * Creating the card for each restaurant and add it to the mainScene. Displaying
+	 * at a given moment up to 6 restaurants!
+	 * 
+	 * @param HashMap<String, File> restaurants
 	 */
 	private void createRestaurants(HashMap<String, File> restaurants) {
-		int i = 1;
-		for (String s : restaurants.keySet()) {
-			System.out.println(s);
+		for (int i = 0; i < 6; i++) {
 			Rectangle base = new Rectangle();
 			base.setHeight(188);
 			base.setWidth(136);
 			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/goomba-logo.jpg").toString()));
+					new Image(getClass().getResource("../images/japanika-logo.jpg").toString()));
 			base.setFill(pattern);
 			base.setEffect(new DropShadow(1, Color.BLACK));
-			root.getChildren().add(base);
-			if (i == 1) {
+			base.setArcHeight(15);
+			base.setArcWidth(15);
+			Label orderNow = new Label("Order Now");
+			orderNow.setId("order");
+			orderNow.setFont(new Font("Berlin Sans FB", 14));
+			orderNow.setOnMouseClicked(e -> {
+				/**
+				 * Send request to get restaurant's info from the server. also switch scenes to
+				 * the restaurant's page.
+				 */
+			});
+			root.getChildren().addAll(base, orderNow);
+			switch (i) {
+			case 0:
 				base.setLayoutX(177);
-			}else {
-				base.setLayoutX(177*i - 5);
-			}
-			if (i <= 3) {
 				base.setLayoutY(157);
-			} else {
+				orderNow.setLayoutX(177);
+				orderNow.setLayoutY(317);
+				break;
+			case 1:
+				base.setLayoutX(177 * 2 - 5);
+				base.setLayoutY(157);
+				orderNow.setLayoutX(199 * 2 - 49);
+				orderNow.setLayoutY(317);
+				break;
+			case 2:
+				base.setLayoutX(177 * 3 - 11);
+				base.setLayoutY(157);
+				orderNow.setLayoutX(199 * 3 - 77);
+				orderNow.setLayoutY(317);
+				break;
+			case 3:
+				base.setLayoutX(177);
 				base.setLayoutY(366);
+				orderNow.setLayoutX(177);
+				orderNow.setLayoutY(526);
+				break;
+			case 4:
+				base.setLayoutX(177 * 2 - 5);
+				base.setLayoutY(366);
+				orderNow.setLayoutX(199 * 2 - 49);
+				orderNow.setLayoutY(526);
+				break;
+			case 5:
+				base.setLayoutX(177 * 3 - 11);
+				base.setLayoutY(366);
+				orderNow.setLayoutX(199 * 3 - 77);
+				orderNow.setLayoutY(526);
+				break;
 			}
-			if (i == 3) {
-				i = 0;
-			}
-			i++;
 		}
 	}
 

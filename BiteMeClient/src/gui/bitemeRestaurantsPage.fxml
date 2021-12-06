@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -24,102 +23,6 @@
             <Image url="@../images/search-icon.gif" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="177.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="188.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/dominos_logo.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="195.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Domino's Pizza">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="177.0" layoutY="320.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="175.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="186.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/golda-logo.jpg" />
-         </image>
-      </ImageView>
-      <Text layoutX="224.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Golda">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="175.0" layoutY="529.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="349.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="360.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/ruben-logo.jpg" />
-         </image>
-      </ImageView>
-      <Text layoutX="394.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ruben">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="349.0" layoutY="320.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="347.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="358.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/bbb-logo.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="397.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BBB">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="347.0" layoutY="529.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="520.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="531.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/mcdonalds-logo.jpg" />
-         </image>
-      </ImageView>
-      <Text layoutX="552.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="McDonald's">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="520.0" layoutY="320.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="518.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
-      <ImageView fitHeight="115.0" fitWidth="115.0" layoutX="529.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/vivino-logo.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="569.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vivino">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#3180bc" height="25.0" layoutX="518.0" layoutY="529.0" stroke="BLACK" strokeType="INSIDE" style="-fx-border-radius: 30;" width="136.0">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Rectangle>
       <ImageView fx:id="rightArrowBtn" blendMode="DARKEN" fitHeight="102.0" fitWidth="83.0" layoutX="694.0" layoutY="310.0" onMouseClicked="#moveRightClicked" pickOnBounds="true" preserveRatio="true" style="-fx-rotate: 90;">
          <image>
             <Image url="@../images/arrow.gif" />
@@ -183,54 +86,6 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Label layoutX="204.0" layoutY="322.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label layoutX="376.0" layoutY="322.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label layoutX="548.0" layoutY="322.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label layoutX="201.0" layoutY="531.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label layoutX="375.0" layoutY="531.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <Label layoutX="547.0" layoutY="531.0" text="Order Now" textFill="WHITE">
-         <font>
-            <Font name="Berlin Sans FB" size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="637.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>
