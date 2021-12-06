@@ -3,7 +3,7 @@ package Entities;
 import java.util.ArrayList;
 
 /**
- * @author Eden
+ * @author Eden test
  * Product class, stores :
  * int productID, String type, String dishName, ArrayList<Component> components, float price
  */
