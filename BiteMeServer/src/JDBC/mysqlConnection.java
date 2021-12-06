@@ -7,12 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.CEO;
 import Entities.Customer;
 import Entities.EmployerHR;
+import Entities.Product;
 import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
@@ -92,8 +94,6 @@ public class mysqlConnection {
 				Branch branch = Branch.valueOf(rs.getString(11));
 				File avatar = null;
 				Status status = Status.valueOf(rs.getString(13));
-				int cusID = 0;
-				float refBalance = 0;
 				/** If the user is customer or business customer get his w4c card info. */
 				switch (userType) {
 				case Customer:
@@ -102,6 +102,8 @@ public class mysqlConnection {
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
+					int cusID = 0;
+					float refBalance = 0;
 					if (rs.next()) {
 						cusID = rs.getInt(1);
 						refBalance = rs.getFloat(3);
@@ -111,6 +113,16 @@ public class mysqlConnection {
 							organization, branch, role, status, avatar, w4cCard, refBalance);
 					break;
 				case Supplier:
+					query = "SELECT * FROM bitemedb.supplier WHERE UserName = ?";
+					stmt = conn.prepareStatement(query);
+					rs = stmt.executeQuery();
+					String restaurantName = "";
+					int monthlyComission = 12;
+					if(rs.next()) {
+						restaurantName = rs.getString(1);
+						monthlyComission = rs.getInt(3);
+					}
+					ArrayList<Product> menu = getMenu(restaurantName);
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
 							organization, branch, role, status, avatar);
 					break;
@@ -187,6 +199,19 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	private static ArrayList<Product> getMenu(String restaurantName){
+		try {
+			String query = "SELECT * FROM bitemedb.products WHERE RestaurantName = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			ResultSet rs = stmt.executeQuery();
+			ArrayList<Product> menu = new ArrayList<>();
+			while(rs.next()) {
+				menu.add(new Product());
+			}
+		}
 	}
 
 	/**
