@@ -9,12 +9,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Config.ReadPropertyFile;
-import Entities.Branch;
 import Entities.Customer;
-import Entities.Status;
 import Entities.User;
-import Entities.UserType;
 import Entities.W4CCard;
+import Enums.Branch;
+import Enums.Status;
+import Enums.UserType;
 
 /**
  * MySQL Connection class. Using a single connector to the db.

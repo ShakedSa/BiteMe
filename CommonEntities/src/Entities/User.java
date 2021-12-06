@@ -3,6 +3,10 @@ package Entities;
 import java.io.File;
 import java.io.Serializable;
 
+import Enums.Branch;
+import Enums.Status;
+import Enums.UserType;
+
 /**
  * Abstract class to describe a User. Implements Serializable for ocsf.
  * 

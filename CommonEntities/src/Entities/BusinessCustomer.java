@@ -2,6 +2,10 @@ package Entities;
 
 import java.io.File;
 
+import Enums.Branch;
+import Enums.Status;
+import Enums.UserType;
+
 public class BusinessCustomer extends Customer {
 
 	/**
