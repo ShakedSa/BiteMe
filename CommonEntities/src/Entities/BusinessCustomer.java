@@ -15,6 +15,24 @@ public class BusinessCustomer extends Customer {
 	
 	private Employer employer;
 
+	/**
+	 * @param userName
+	 * @param password
+	 * @param firstName
+	 * @param lastName
+	 * @param id
+	 * @param email
+	 * @param phoneNumber
+	 * @param userType
+	 * @param organization
+	 * @param mainBranch
+	 * @param role
+	 * @param status
+	 * @param avatar
+	 * @param w4c
+	 * @param refundedBalance
+	 * @param employer
+	 */
 	public BusinessCustomer(String userName, String password, String firstName, String lastName, String id,
 			String email, String phoneNumber, UserType userType, String organization, Branch mainBranch, String role,
 			Status status, File avatar, W4CCard w4c, float refundedBalance, Employer employer) {

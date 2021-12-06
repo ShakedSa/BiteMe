@@ -97,7 +97,6 @@ public class loginController {
 			e.printStackTrace();
 			return;
 		}
-		ClientGUI.client.setUser((User) ClientGUI.client.getResult());
 		if (ClientGUI.client.getUser() == null) {
 			errorMsg.setText("Wrong username or password");
 			return;

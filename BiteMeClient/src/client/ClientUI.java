@@ -21,7 +21,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	User clientUser;
+	User clientUser = null;
 
 	/** Storing response from the server. */
 	Object res;

@@ -188,5 +188,25 @@
       </Text>
       <Line endX="44.0" layoutX="286.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" visible="false" />
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="633.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Text id="link" fx:id="managerBtn" layoutX="367.0" layoutY="53.0" onMouseClicked="#managerBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="supplierBtn" layoutX="369.0" layoutY="53.0" onMouseClicked="#supplierBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="ceoBtn" layoutX="368.0" layoutY="54.0" onMouseClicked="#ceoBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="employerHRBtn" layoutX="370.0" layoutY="54.0" onMouseClicked="#employerHRBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
