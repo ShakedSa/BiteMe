@@ -92,7 +92,7 @@ public class loginController {
 		errorMsg.setText("");
 		ClientGUI.client.login(userName, password);
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
