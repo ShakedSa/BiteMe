@@ -42,6 +42,13 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
+	/**
+	 * Sending the server a login request.
+	 * 
+	 * @param userName
+	 * @param password
+	 * 
+	 * */
 	public void login(String userName, String password) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -53,10 +60,30 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	/**
+	 * Sending the server a logout request.
+	 * 
+	 * @param userName
+	 * */
 	public void logout(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList("logout", userName));
+			client.handleMessageFromClientUI(arr);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending the server a restaurants request.
+	 * Getting all the restaurants from the db.
+	 * */
+	public void getRestaurants() {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("getRestaurants");
 			client.handleMessageFromClientUI(arr);
 		}catch(Exception e) {
 			e.printStackTrace();
