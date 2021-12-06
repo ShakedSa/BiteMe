@@ -1,7 +1,6 @@
 package ClientServerCommunication;
 
 import java.util.ArrayList;
-
 import Entities.User;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
