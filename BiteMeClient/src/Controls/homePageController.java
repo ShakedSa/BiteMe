@@ -54,10 +54,20 @@ public class homePageController {
 	@FXML
 	private Text userFirstName;
 
-//	@FXML
-//	private ImageView avatar;
 	@FXML
 	private Rectangle avatar;
+
+	@FXML
+	private Text ceoBtn;
+
+	@FXML
+	private Text managerBtn;
+
+	@FXML
+	private Text supplierBtn;
+
+	@FXML
+	private Text employerHRBtn;
 
 	@FXML
 	void caruasalLeftClicked(MouseEvent event) {
@@ -66,6 +76,26 @@ public class homePageController {
 
 	@FXML
 	void caruasalRight(MouseEvent event) {
+
+	}
+
+	@FXML
+	void ceoBtnClicked(MouseEvent event) {
+
+	}
+
+	@FXML
+	void managerBtnClicked(MouseEvent event) {
+
+	}
+
+	@FXML
+	void supplierBtnClicked(MouseEvent event) {
+
+	}
+
+	@FXML
+	void employerHRBtnClicked(MouseEvent event) {
 
 	}
 
@@ -106,7 +136,7 @@ public class homePageController {
 	public void setProfile() {
 		User user = ClientGUI.client.getUser();
 		userFirstName.setText(user.getFirstName());
-		setDefaults(true);
+		setDefaults(user, true);
 		logOutBtn.setStyle("-fx-cursor: hand;");
 		profileBtn.setStyle("-fx-cursor: hand;");
 		restaurantBtn.setStyle("-fx-cursor: hand;");
@@ -120,23 +150,56 @@ public class homePageController {
 	 */
 	@FXML
 	void logOutBtnClicked(MouseEvent event) {
-		ClientGUI.client.logout(ClientGUI.client.getUser().getUserName());
-		ClientGUI.client.setUser(null);
-		userFirstName.setText("Guest");
-		setDefaults(false);
+		User user = ClientGUI.client.getUser();
+		if (user != null) {
+			ClientGUI.client.logout(user.getUserName());
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			ClientGUI.client.setUser(null);
+			userFirstName.setText("Guest");
+			setDefaults(user, false);
+		}
 	}
 
 	/**
-	 * Creating the illusion of logging out.
+	 * Changing the homepage interface depending on the user permissions.
 	 * 
 	 * @param boolean val
 	 */
 	private void setDefaults(boolean val) {
 		logOutBtn.setVisible(val);
 		profileBtn.setVisible(val);
-		restaurantBtn.setVisible(val);
 		homePageBtn.setVisible(val);
 		loginBtn.setVisible(!val);
+	}
+
+	/**
+	 * Changing the homepage interface depending on the user permissions.
+	 * */
+	private void setDefaults(User user, boolean val) {
+		setDefaults(val);
+		switch (user.getUserType()) {
+		case Customer:
+		case BusinessCustomer:
+			restaurantBtn.setVisible(val);
+			break;
+		case BranchManager:
+			managerBtn.setVisible(val);
+			break;
+		case Supplier:
+			supplierBtn.setVisible(val);
+			break;
+		case CEO:
+			ceoBtn.setVisible(val);
+			break;
+		case EmployerHR:
+			employerHRBtn.setVisible(val);
+			break;
+		}
 	}
 
 	/**

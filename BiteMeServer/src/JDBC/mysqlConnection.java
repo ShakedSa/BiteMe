@@ -9,7 +9,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import Config.ReadPropertyFile;
+import Entities.BranchManager;
+import Entities.CEO;
 import Entities.Customer;
+import Entities.EmployerHR;
+import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
 import Enums.Branch;
@@ -91,7 +95,9 @@ public class mysqlConnection {
 				int cusID = 0;
 				float refBalance = 0;
 				/** If the user is customer or business customer get his w4c card info. */
-				if (userType == UserType.Customer || userType == UserType.BusinessCustomer) {
+				switch (userType) {
+				case Customer:
+				case BusinessCustomer:
 					query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
@@ -103,6 +109,23 @@ public class mysqlConnection {
 					W4CCard w4cCard = getW4CCard(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
 							organization, branch, role, status, avatar, w4cCard, refBalance);
+					break;
+				case Supplier:
+					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
+							organization, branch, role, status, avatar);
+					break;
+				case BranchManager:
+					user = new BranchManager(userName, password, firstName, lastName, id, email, phoneNumber, userType,
+							organization, branch, role, status, avatar);
+					break;
+				case CEO:
+					user = new CEO(userName, password, firstName, lastName, id, email, phoneNumber, userType,
+							organization, branch, role, status, avatar);
+					break;
+				case EmployerHR:
+					user = new EmployerHR(userName, password, firstName, lastName, id, email, phoneNumber, userType,
+							organization, branch, role, status, avatar);
+					break;
 				}
 				/** Updating the user logged in status */
 				if (!updateIsLoggedIn(userName, 1)) {

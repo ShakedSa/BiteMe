@@ -26,3 +26,7 @@
 	-fx-border-color: #3180bc;
 	-fx-padding: 0.0 0.0 3.0 0.0;
 }
+
+#link{
+	-fx-cursor: hand;
+}

@@ -32,16 +32,6 @@
          </font>
       </Text>
       <TextField fx:id="usernameTxt" layoutX="407.0" layoutY="193.0" />
-      <Text layoutX="304.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot password?" underline="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <Text layoutX="420.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forgot username?" underline="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
       <Text layoutX="691.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -68,12 +58,12 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Label id="btn" fx:id="loginBtn" layoutX="351.0" layoutY="302.0" onMouseClicked="#loginClicked" text="Login">
+      <Label id="btn" fx:id="loginBtn" layoutX="351.0" layoutY="342.0" onMouseClicked="#loginClicked" text="Login">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="errorMsg" layoutX="286.0" layoutY="277.0" style="-fx-fill: red;" textFill="#fc0000">
+      <Label fx:id="errorMsg" layoutX="285.0" layoutY="299.0" style="-fx-fill: red;" textFill="#fc0000">
          <font>
             <Font name="Berlin Sans FB" size="15.0" />
          </font>

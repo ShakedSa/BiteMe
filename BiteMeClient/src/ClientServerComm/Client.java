@@ -43,7 +43,14 @@ public class Client extends AbstractClient {
 	 * @param msg
 	 */
 	public void handleMessageFromServer(Object msg) {
+		if(msg == null) {
+			clientUI.setUser(null);
+			clientUI.getResultFromServer(null);
+			return;
+		}
 		if(msg instanceof User) {
+			clientUI.setUser((User)msg);
+		}else {
 			clientUI.getResultFromServer(msg);
 		}
 	}
