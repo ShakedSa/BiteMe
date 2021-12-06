@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="313.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="254.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/supplier-avatar.png" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="107.0" layoutX="416.0" layoutY="61.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text fill="#3180bc" layoutX="415.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="67.0" fitWidth="78.0" layoutX="53.0" layoutY="500.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+      </ImageView>
+      <Text layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text layoutX="130.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text layoutX="129.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Optional Components">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text layoutX="129.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text layoutX="129.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text fill="RED" layoutX="196.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="184.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <TextField layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
+      <TextField layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
+      <Spinner editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
+      <TextArea layoutX="377.0" layoutY="393.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
+      <ComboBox layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="29.0" layoutX="622.0" layoutY="518.0" stroke="BLACK" strokeType="INSIDE" width="162.0" />
+      <Text fill="#04b84f" layoutX="634.0" layoutY="539.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add item to menu">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
+         <font>
+            <Font name="Berlin Sans FB" size="39.0" />
+         </font>
+      </Text>
+      <Text fill="RED" layoutX="126.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* fields are required">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="129.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Picture">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="29.0" layoutX="384.0" layoutY="354.0" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+      <Text layoutX="430.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

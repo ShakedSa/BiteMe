@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.Avatar?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fill="#3180bc" layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Avatar layoutX="650.0" layoutY="25.0">
+         <image>
+            <Image url="@images/random-user.gif" />
+         </image>
+      </Avatar>
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="714.0" layoutY="430.0" style="-fx-rotate: 90;">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="52.0" fitWidth="50.0" layoutX="74.0" layoutY="429.0" style="-fx-rotate: -90;">
+         <image>
+            <Image url="@images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="358.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I'm craving for...">
+         <font>
+            <Font name="Arial Italic" size="17.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="145.0" layoutY="421.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/vivino-logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="234.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/japanika-logo.jpg" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="379.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;">
+         <image>
+            <Image url="@images/dominos_logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="525.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/bbb-logo.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="73.0" fitWidth="78.0" layoutX="615.0" layoutY="421.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
+         <image>
+            <Image url="@images/mcdonalds-logo.jpg" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="44.0" layoutX="287.0" layoutY="60.0" startX="1.0" stroke="#3180bc" strokeWidth="2.0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="215.0" layoutY="295.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="501.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="500.0" layoutY="300.0" rotate="-10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="59.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="263.0" layoutY="301.0" rotate="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?import javafx.scene.layout.AnchorPane?&gt;&lt;AnchorPane layoutX=&quot;-190.0&quot; layoutY=&quot;57.0&quot; opacity=&quot;0.9&quot; prefHeight=&quot;375.0&quot; prefWidth=&quot;689.0&quot; style=&quot;-fx-background-color: #60bada; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);&quot; xmlns=&quot;http://javafx.com/javafx/17&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; /&gt;;" width="62.0" />
+      <Circle layoutX="412.0" layoutY="235.0" radius="130.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),5,0,0,0);">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.20723684132099152" green="0.4840460419654846" blue="0.7105262875556946" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.05098039284348488" green="0.20000000298023224" blue="0.3294117748737335" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Circle>
+      <Circle fill="#2197ff00" layoutX="412.0" layoutY="235.0" radius="130.0" stroke="#85e7ff" strokeType="INSIDE" style="-fx-scale-x: .9; -fx-scale-y: .9; -fx-stroke-dash-array: 7;" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="45.0" layoutX="261.0" layoutY="271.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="301.0" />
+      <Text fill="WHITE" layoutX="327.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There you are...">
+         <font>
+            <Font name="Berlin Sans FB" size="28.0" />
+         </font>
+      </Text>
+      <Text layoutX="272.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Now we can finally order!">
+         <font>
+            <Font name="Berlin Sans FB" size="26.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="357.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello Gunther">
+         <font>
+            <Font name="Berlin Sans FB" size="20.0" />
+         </font>
+      </Text>
+      <Polygon fill="#eeeeee" layoutX="236.0" layoutY="317.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="-23.2" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Polygon fill="#eeeeee" layoutX="605.0" layoutY="326.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="156.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+   </children>
+</AnchorPane>
