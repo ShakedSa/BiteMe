@@ -3,7 +3,7 @@ package Entities;
 import java.io.File;
 import java.util.ArrayList;
 
-import Enums.Branch;
+import Enums.BranchName;
 import Enums.Status;
 import Enums.UserType;
 
@@ -19,12 +19,12 @@ public class Supplier extends User{
 	String restaurantName;
 	ArrayList<Product> Menu;
 	int monthlyComissionPercent;
-	Branch relatedBranch;
+	BranchName relatedBranch;
 
 	public Supplier(String userName, String password, String firstName, String lastName, String id, String email,
 					String phoneNumber, UserType userType, String organization,
-					Branch mainBranch, String role, Status status,File avatar,
-					String restaurantName, ArrayList<Product> Menu, int monthlyComissionPercent,Branch relatedBranch) 
+					BranchName mainBranch, String role, Status status,File avatar,
+					String restaurantName, ArrayList<Product> Menu, int monthlyComissionPercent,BranchName relatedBranch) 
 	{
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role, status,
 				avatar);
@@ -58,7 +58,7 @@ public class Supplier extends User{
 	/**
 	 * @return the relatedBranch
 	 */
-	public Branch getRelatedBranch() {
+	public BranchName getRelatedBranch() {
 		return relatedBranch;
 	}
 
@@ -86,7 +86,7 @@ public class Supplier extends User{
 	/**
 	 * @param relatedBranch the relatedBranch to set
 	 */
-	public void setRelatedBranch(Branch relatedBranch) {
+	public void setRelatedBranch(BranchName relatedBranch) {
 		this.relatedBranch = relatedBranch;
 	}
 
