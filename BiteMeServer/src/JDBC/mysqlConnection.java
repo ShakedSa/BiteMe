@@ -77,7 +77,6 @@ public class mysqlConnection {
 				if (rs.getInt(12) == 1 || !rs.getString(2).equals(password) || rs.getString(8).equals("User")) {
 					return user;
 				}
-				System.out.println("DId the first query :)");
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
 				String id = rs.getString(5);
@@ -87,18 +86,12 @@ public class mysqlConnection {
 				String role = rs.getString(9);
 				String organization = rs.getString(10);
 				Branch branch = Branch.valueOf(rs.getString(11));
-				File avatar=null;
-				Status status = Status.valueOf(rs.getString(13));				
-				int cusID = 0, w4cID=0;
-				float refBalance=0, monthlyBudget=0, balance=0, dailyBudget=0;
-				String employerID="", qrCode="", creditCardNumber="";
-				query = "UPDATE bitemedb.users SET IsLoggedIn = 1 WHERE UserName = ?";
-				stmt = conn.prepareStatement(query);
-				stmt.setString(1, userName);
-				stmt.executeUpdate();
-				System.out.println("Updated user logged in");
+				File avatar = null;
+				Status status = Status.valueOf(rs.getString(13));
+				int cusID = 0;
+				float refBalance = 0;
+				/** If the user is customer or business customer get his w4c card info. */
 				if (userType == UserType.Customer || userType == UserType.BusinessCustomer) {
-					System.out.println("user is of type customer or business customer");
 					query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
@@ -107,31 +100,70 @@ public class mysqlConnection {
 						cusID = rs.getInt(1);
 						refBalance = rs.getFloat(3);
 					}
-					System.out.println("got customer's info");
-					query = "SELECT * FROM bitemedb.w4ccards WHERE CustomerID = ?";
-					stmt = conn.prepareStatement(query);
-					stmt.setInt(1, cusID);
-					rs = stmt.executeQuery();
-					if (rs.next()) {
-						w4cID = rs.getInt(1);
-						employerID = rs.getString(3);
-						qrCode = rs.getString(4);
-						creditCardNumber = rs.getString(5);
-						monthlyBudget = rs.getFloat(6);
-						dailyBudget = rs.getFloat(7);
-						balance = rs.getFloat(8);
-					}
+					W4CCard w4cCard = getW4CCard(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, new W4CCard(w4cID, employerID, qrCode,
-									creditCardNumber, monthlyBudget, balance, dailyBudget),
-							refBalance);
-					System.out.println(user);
+							organization, branch, role, status, avatar, w4cCard, refBalance);
+				}
+				/** Updating the user logged in status */
+				if (!updateIsLoggedIn(userName, 1)) {
+					return user;
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;
+	}
+
+	/**
+	 * Query to get the w4ccard of a certain customer.
+	 * 
+	 * @param customerID
+	 * 
+	 * @return W4CCard
+	 */
+	private static W4CCard getW4CCard(int customerID) {
+		try {
+			String query = "SELECT * FROM bitemedb.w4ccards WHERE CustomerID = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, customerID);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int w4cID = rs.getInt(1);
+				String employerID = rs.getString(3);
+				String qrCode = rs.getString(4);
+				String creditCardNumber = rs.getString(5);
+				float monthlyBudget = rs.getFloat(6);
+				float dailyBudget = rs.getFloat(7);
+				float balance = rs.getFloat(8);
+				return new W4CCard(w4cID, employerID, qrCode, creditCardNumber, monthlyBudget, balance, dailyBudget);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Query to update the user logged in status.
+	 * 
+	 * @param userName
+	 * @param isLoggedIn
+	 * 
+	 * @return boolean
+	 */
+	private static boolean updateIsLoggedIn(String userName, int isLoggedIn) {
+		try {
+			String query = "UPDATE bitemedb.users SET IsLoggedIn = ? WHERE UserName = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, isLoggedIn);
+			stmt.setString(2, userName);
+			stmt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/**
@@ -143,14 +175,7 @@ public class mysqlConnection {
 	 * @return String msg
 	 */
 	public static String logout(String userName) {
-		PreparedStatement stmt;
-		try {
-			String query = "UPDATE bitemedb.users SET IsLoggedIn = 0 WHERE UserName = ?";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, userName);
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (!updateIsLoggedIn(userName, 0)) {
 			return "Failed to logout";
 		}
 		return "Logout successful";
