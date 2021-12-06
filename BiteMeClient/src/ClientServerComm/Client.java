@@ -1,6 +1,8 @@
 package ClientServerComm;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import Entities.User;
 import client.ClientIF;
@@ -42,6 +44,7 @@ public class Client extends AbstractClient {
 	 * 
 	 * @param msg
 	 */
+	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
 		if(msg == null) {
 			clientUI.setUser(null);
@@ -50,6 +53,8 @@ public class Client extends AbstractClient {
 		}
 		if(msg instanceof User) {
 			clientUI.setUser((User)msg);
+		}else if(msg instanceof HashMap){
+			clientUI.setRestaurants((HashMap<String, File>) msg);
 		}else {
 			clientUI.getResultFromServer(msg);
 		}

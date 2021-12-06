@@ -1,6 +1,8 @@
 package Controls;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import Entities.User;
 import client.ClientGUI;
@@ -22,7 +24,7 @@ import javafx.stage.Stage;
 public class restaurantSelectionController {
 
 	private Stage stage;
-	
+
 	@FXML
 	private Rectangle avatar;
 
@@ -46,6 +48,9 @@ public class restaurantSelectionController {
 
 	@FXML
 	private TextField searchRestaurantFieldTxt;
+
+	@FXML
+	private AnchorPane root;
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -85,7 +90,7 @@ public class restaurantSelectionController {
 	void returnToHomePage(MouseEvent event) {
 		changeSceneToHomePage(true);
 	}
-	
+
 	void changeSceneToHomePage(boolean val) {
 		AnchorPane mainContainer;
 		homePageController controller;
@@ -119,7 +124,7 @@ public class restaurantSelectionController {
 
 	/**
 	 * Setting user avatar.
-	 * */
+	 */
 	public void setAvatar() {
 		try {
 			avatar.setArcWidth(65);
@@ -134,12 +139,54 @@ public class restaurantSelectionController {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Getting restaurants from the db.
-	 * */
+	 */
 	public void setRestaurants() {
-		ClientGUI.client.getRestaurants();
+		ClientGUI.client.restaurantsRequest();
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		HashMap<String, File> restaurants = ClientGUI.client.getRestaurants();
+		createRestaurants(restaurants);
+	}
+
+	/**
+	 * Creating the card for each restaurant and add it to the mainScene.
+	 * TO be continued!!! :)
+	 * @param restaurants
+	 */
+	private void createRestaurants(HashMap<String, File> restaurants) {
+		int i = 1;
+		for (String s : restaurants.keySet()) {
+			System.out.println(s);
+			Rectangle base = new Rectangle();
+			base.setHeight(188);
+			base.setWidth(136);
+			ImagePattern pattern = new ImagePattern(
+					new Image(getClass().getResource("../images/goomba-logo.jpg").toString()));
+			base.setFill(pattern);
+			base.setEffect(new DropShadow(1, Color.BLACK));
+			root.getChildren().add(base);
+			if (i == 1) {
+				base.setLayoutX(177);
+			}else {
+				base.setLayoutX(177*i - 5);
+			}
+			if (i <= 3) {
+				base.setLayoutY(157);
+			} else {
+				base.setLayoutY(366);
+			}
+			if (i == 3) {
+				i = 0;
+			}
+			i++;
+		}
 	}
 
 }

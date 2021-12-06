@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -161,6 +162,28 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	/**
+	 * Query to get all the restaurants in the db.
+	 * 
+	 * @return ArrayList<String>
+	 * */
+	public static HashMap<String, File> getRestaurants(){
+		PreparedStatement stmt;
+		HashMap<String, File> names = new HashMap<>();
+		try {
+			String query = "SELECT RestaurantName, Image FROM bitemedb.suppliers";
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				names.put(rs.getString(1), null);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return names;
 	}
 
 	/**
