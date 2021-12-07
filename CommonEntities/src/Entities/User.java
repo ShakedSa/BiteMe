@@ -3,7 +3,7 @@ package Entities;
 import java.io.File;
 import java.io.Serializable;
 
-import Enums.Branch;
+import Enums.BranchName;
 import Enums.Status;
 import Enums.UserType;
 
@@ -27,7 +27,7 @@ public abstract class User implements Serializable {
 	private String phoneNumber;
 	private UserType userType;
 	private String organization;
-	private Branch mainBranch;
+	private BranchName mainBranch;
 	private String role;
 	private Status status;
 	private File avatar;
@@ -48,7 +48,7 @@ public abstract class User implements Serializable {
 	 * @param avatar
 	 */
 	public User(String userName, String password, String firstName, String lastName, String id, String email,
-			String phoneNumber, UserType userType, String organization, Branch mainBranch, String role, Status status,
+			String phoneNumber, UserType userType, String organization, BranchName mainBranch, String role, Status status,
 			File avatar) {
 		super();
 		this.userName = userName;
@@ -110,7 +110,7 @@ public abstract class User implements Serializable {
 
 
 
-	public Branch getMainBranch() {
+	public BranchName getMainBranch() {
 		return mainBranch;
 	}
 
@@ -176,7 +176,7 @@ public abstract class User implements Serializable {
 
 
 
-	public void setMainBranch(Branch mainBranch) {
+	public void setMainBranch(BranchName mainBranch) {
 		this.mainBranch = mainBranch;
 	}
 

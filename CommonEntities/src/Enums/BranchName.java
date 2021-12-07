@@ -1,5 +1,5 @@
 package Enums;
 
-public enum Branch {
+public enum BranchName {
 	North, Central, South;
 }
