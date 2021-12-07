@@ -1,11 +1,14 @@
 package Controls;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -26,8 +29,10 @@ import javafx.stage.Stage;
  * 
  * @version December 05 2021, v1.0
  */
-public class homePageController {
+public class homePageController implements Initializable {
 
+	private Router router;
+	
 	private Stage stage;
 
 	@FXML
@@ -253,6 +258,13 @@ public class homePageController {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		router=Router.getInstance();
+		router.setHomePageController(this);
+		
 	}
 
 }

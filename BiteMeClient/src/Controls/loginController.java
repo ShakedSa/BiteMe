@@ -1,6 +1,8 @@
 package Controls;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,7 @@ import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -30,8 +33,10 @@ import javafx.stage.Stage;
  * 
  * @version December 05 2021, v1.0
  */
-public class loginController {
+public class loginController implements Initializable {
 
+	private Router router;
+	
 	private Stage stage;
 
 	@FXML
@@ -177,6 +182,13 @@ public class loginController {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		router=Router.getInstance();
+		router.setLogincontroller(this);
+		
 	}
 
 }

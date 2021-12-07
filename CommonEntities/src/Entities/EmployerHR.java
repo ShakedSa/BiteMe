@@ -12,6 +12,10 @@ import Enums.UserType;
  */
 public class EmployerHR extends User{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8631032615035425968L;
 	private String employerID;
 	
 	public EmployerHR(String userName, String password, String firstName, String lastName,

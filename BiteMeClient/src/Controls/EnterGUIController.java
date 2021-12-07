@@ -1,11 +1,14 @@
 package Controls;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import client.ClientGUI;
 import client.ClientUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,8 +27,10 @@ import javafx.stage.Stage;
  * @version December 05 2021, v1.0
  *
  */
-public class EnterGUIController {
+public class EnterGUIController implements Initializable {
 
+	private Router router;
+	
 	private Stage stage;
 
 	@FXML
@@ -92,6 +97,13 @@ public class EnterGUIController {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		router=Router.getInstance();
+		router.setEnterguicontroller(this);
+		
 	}
 
 }

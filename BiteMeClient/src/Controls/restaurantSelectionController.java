@@ -2,12 +2,15 @@ package Controls;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,8 +26,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class restaurantSelectionController {
+public class restaurantSelectionController implements Initializable{
 
+	private Router router;
+	
 	private Stage stage;
 
 	@FXML
@@ -226,6 +231,13 @@ public class restaurantSelectionController {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		router=Router.getInstance();
+		router.setRestaurantselectionController(this);
+		
 	}
 
 }
