@@ -1,8 +1,14 @@
 package Controls;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import Entities.User;
 import client.ClientGUI;
@@ -32,8 +38,14 @@ import javafx.stage.Stage;
 public class homePageController implements Initializable {
 
 	private Router router;
-	
+
 	private Stage stage;
+
+	private HashMap<String, File> favRestaurants;
+
+	private Queue<String> favResOrderLeft = new LinkedList<>();
+
+	private Queue<String> favResOrderRight = new LinkedList<>();
 
 	@FXML
 	private ImageView caruasalLeft;
@@ -75,13 +87,50 @@ public class homePageController implements Initializable {
 	private Text employerHRBtn;
 
 	@FXML
-	void caruasalLeftClicked(MouseEvent event) {
+	private ImageView res1;
 
+	@FXML
+	private ImageView res2;
+
+	@FXML
+	private ImageView res3;
+
+	@FXML
+	void caruasalLeftClicked(MouseEvent event) {
+		Set<String> resSet = favRestaurants.keySet();
+		List<String> filteredSet = resSet.stream().filter(r -> !res1.getId().equals(r.toLowerCase())
+				&& !res2.getId().equals(r.toLowerCase()) && !res3.getId().equals(r.toLowerCase())).toList();
+		for (String resName : filteredSet) {
+			if (!favResOrderLeft.contains(resName)) {
+				favResOrderLeft.add(resName);
+			}
+		}
+		String resName = favResOrderLeft.poll().toLowerCase();
+		res1.setImage(res2.getImage());
+		res2.setImage(res3.getImage());
+		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
+		res1.setId(res2.getId());
+		res2.setId(res3.getId());
+		res3.setId(resName);
 	}
 
 	@FXML
 	void caruasalRight(MouseEvent event) {
-
+		Set<String> resSet = favRestaurants.keySet();
+		List<String> filteredSet = resSet.stream().filter(r -> !res1.getId().equals(r.toLowerCase())
+				&& !res2.getId().equals(r.toLowerCase()) && !res3.getId().equals(r.toLowerCase())).toList();
+		for (String resName : filteredSet) {
+			if (!favResOrderRight.contains(resName)) {
+				favResOrderRight.add(resName);
+			}
+		}
+		String resName = favResOrderRight.poll().toLowerCase();
+		res3.setImage(res2.getImage());
+		res2.setImage(res1.getImage());
+		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
+		res3.setId(res2.getId());
+		res2.setId(res1.getId());
+		res1.setId(resName);
 	}
 
 	@FXML
@@ -262,9 +311,22 @@ public class homePageController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		router=Router.getInstance();
+		router = Router.getInstance();
 		router.setHomePageController(this);
-		
+	}
+
+	public void setFavRestaurants() {
+		favRestaurants = ClientGUI.client.getFavRestaurants();
+		if (favRestaurants == null) {
+			ClientGUI.client.favRestaurantsRequest();
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			favRestaurants = ClientGUI.client.getFavRestaurants();
+		}
+		System.out.println(favRestaurants);
 	}
 
 }

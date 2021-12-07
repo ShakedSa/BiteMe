@@ -145,7 +145,7 @@ public class mysqlConnection {
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
 					String employerID = "";
-					if(rs.next()) {
+					if (rs.next()) {
 						employerID = rs.getString(2);
 					}
 					user = new EmployerHR(userName, password, firstName, lastName, id, email, phoneNumber, userType,
@@ -163,23 +163,23 @@ public class mysqlConnection {
 		}
 		return user;
 	}
-	
+
 	/**
 	 * Query to get all the restaurants in the db.
 	 * 
 	 * @return ArrayList<String>
-	 * */
-	public static HashMap<String, File> getRestaurants(){
+	 */
+	public static HashMap<String, File> getRestaurants() {
 		PreparedStatement stmt;
 		HashMap<String, File> names = new HashMap<>();
 		try {
 			String query = "SELECT RestaurantName, Image FROM bitemedb.suppliers";
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				names.put(rs.getString(1), null);
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -294,6 +294,23 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	public static HashMap<String, File> favRestaurants() {
+		Statement stmt;
+		HashMap<String, File> favRestaurants = new HashMap<>();
+		try {
+			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while (rs.next() ) {
+				favRestaurants.put(rs.getString(1), null);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return favRestaurants;
 	}
 	/*---------------------------------------------------*/
 	// Prototype

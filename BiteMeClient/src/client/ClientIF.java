@@ -12,4 +12,5 @@ public interface ClientIF {
 	public void setUser(User user);
 	public User getUser();
 	public void setRestaurants(HashMap<String, File> restaurants);
+	public void setFavRestaurants(HashMap<String, File> favRestaurants);
 }
