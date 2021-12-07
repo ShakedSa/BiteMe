@@ -19,7 +19,7 @@ import Entities.Product;
 import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
-import Enums.Branch;
+import Enums.BranchName;
 import Enums.Status;
 import Enums.UserType;
 
@@ -92,7 +92,7 @@ public class mysqlConnection {
 				UserType userType = UserType.valueOf(rs.getString(8));
 				String role = rs.getString(9);
 				String organization = rs.getString(10);
-				Branch branch = Branch.valueOf(rs.getString(11));
+				BranchName branch = BranchName.valueOf(rs.getString(11));
 				File avatar = null;
 				Status status = Status.valueOf(rs.getString(13));
 				/** If the user is customer or business customer get his w4c card info. */

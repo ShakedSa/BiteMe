@@ -146,14 +146,17 @@ public class restaurantSelectionController {
 	 * Getting restaurants from the db.
 	 */
 	public void setRestaurants() {
-		ClientGUI.client.restaurantsRequest();
-		try {
-			Thread.sleep(500);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
 		HashMap<String, File> restaurants = ClientGUI.client.getRestaurants();
+		if (restaurants == null) {
+			ClientGUI.client.restaurantsRequest();
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			restaurants = ClientGUI.client.getRestaurants();
+		}
 		createRestaurants(restaurants);
 	}
 
