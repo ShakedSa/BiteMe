@@ -92,7 +92,7 @@ public class loginController {
 		errorMsg.setText("");
 		ClientGUI.client.login(userName, password);
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(500);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -118,7 +118,7 @@ public class loginController {
 			controller.setStage(stage);
 			controller.setAvatar();
 			if (ClientGUI.client.getUser() != null) {
-				controller.setProfile();
+				controller.setProfile(true);
 			}
 			Scene mainScene = new Scene(mainContainer);
 			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());

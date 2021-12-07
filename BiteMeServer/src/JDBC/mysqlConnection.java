@@ -7,12 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.CEO;
 import Entities.Customer;
 import Entities.EmployerHR;
+import Entities.Product;
 import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
@@ -92,8 +95,6 @@ public class mysqlConnection {
 				Branch branch = Branch.valueOf(rs.getString(11));
 				File avatar = null;
 				Status status = Status.valueOf(rs.getString(13));
-				int cusID = 0;
-				float refBalance = 0;
 				/** If the user is customer or business customer get his w4c card info. */
 				switch (userType) {
 				case Customer:
@@ -102,6 +103,8 @@ public class mysqlConnection {
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
+					int cusID = 0;
+					float refBalance = 0;
 					if (rs.next()) {
 						cusID = rs.getInt(1);
 						refBalance = rs.getFloat(3);
@@ -109,10 +112,24 @@ public class mysqlConnection {
 					W4CCard w4cCard = getW4CCard(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
 							organization, branch, role, status, avatar, w4cCard, refBalance);
+					stmt.close();
 					break;
 				case Supplier:
+					/** get restaurant's info of the supplier */
+					query = "SELECT * FROM bitemedb.suppliers WHERE UserName = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setString(1, userName);
+					rs = stmt.executeQuery();
+					String restaurantName = "";
+					int monthlyComission = 12;
+					if (rs.next()) {
+						restaurantName = rs.getString(1);
+						monthlyComission = rs.getInt(3);
+					}
+					ArrayList<Product> menu = getMenu(restaurantName);
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar);
+							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission, branch);
+					stmt.close();
 					break;
 				case BranchManager:
 					user = new BranchManager(userName, password, firstName, lastName, id, email, phoneNumber, userType,
@@ -123,8 +140,17 @@ public class mysqlConnection {
 							organization, branch, role, status, avatar);
 					break;
 				case EmployerHR:
+					query = "SELECT * FROM bitemedb.employers_hr WHERE UserName = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setString(1, userName);
+					rs = stmt.executeQuery();
+					String employerID = "";
+					if(rs.next()) {
+						employerID = rs.getString(2);
+					}
 					user = new EmployerHR(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar);
+							organization, branch, role, status, avatar, employerID);
+					stmt.close();
 					break;
 				}
 				/** Updating the user logged in status */
@@ -136,6 +162,28 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 		return user;
+	}
+	
+	/**
+	 * Query to get all the restaurants in the db.
+	 * 
+	 * @return ArrayList<String>
+	 * */
+	public static HashMap<String, File> getRestaurants(){
+		PreparedStatement stmt;
+		HashMap<String, File> names = new HashMap<>();
+		try {
+			String query = "SELECT RestaurantName, Image FROM bitemedb.suppliers";
+			stmt = conn.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				names.put(rs.getString(1), null);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return names;
 	}
 
 	/**
@@ -187,6 +235,31 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+	 * Query to get all the products of a given restaurant.
+	 * 
+	 * @param restaurantName
+	 * 
+	 * @return ArrayList<Product>
+	 */
+	private static ArrayList<Product> getMenu(String restaurantName) {
+		ArrayList<Product> menu = new ArrayList<>();
+		try {
+			String query = "SELECT * FROM bitemedb.products WHERE RestaurantName = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				menu.add(new Product(restaurantName, rs.getString(3), rs.getString(2), null, rs.getInt(4),
+						rs.getString(5)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return menu;
 	}
 
 	/**

@@ -1,8 +1,10 @@
 package client;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import ClientServerComm.Client;
 import Entities.User;
@@ -22,7 +24,7 @@ public class ClientUI implements ClientIF {
 	/** A client logic for client-server communication */
 	Client client;
 	User clientUser = null;
-
+	HashMap<String, File> restaurants;
 	/** Storing response from the server. */
 	Object res;
 
@@ -42,6 +44,13 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
+	/**
+	 * Sending the server a login request.
+	 * 
+	 * @param userName
+	 * @param password
+	 * 
+	 * */
 	public void login(String userName, String password) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -53,10 +62,30 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	/**
+	 * Sending the server a logout request.
+	 * 
+	 * @param userName
+	 * */
 	public void logout(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList("logout", userName));
+			client.handleMessageFromClientUI(arr);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending the server a restaurants request.
+	 * Getting all the restaurants from the db.
+	 * */
+	public void restaurantsRequest() {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("getRestaurants");
 			client.handleMessageFromClientUI(arr);
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -96,6 +125,14 @@ public class ClientUI implements ClientIF {
 	
 	public User getUser() {
 		return clientUser;
+	}
+	
+	public void setRestaurants(HashMap<String, File> restaurants) {
+		this.restaurants = restaurants;
+	}
+	
+	public HashMap<String, File> getRestaurants(){
+		return restaurants;
 	}
 
 	/*---------------------------------------------------*/

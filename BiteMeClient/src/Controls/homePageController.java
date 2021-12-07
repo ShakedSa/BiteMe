@@ -99,6 +99,39 @@ public class homePageController {
 
 	}
 
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+
+	}
+
+	/**
+	 * Onclicked event handler, switching scenes to restaurant selection scene.
+	 * 
+	 * @param MouseEvent event
+	 */
+	@FXML
+	void restaurantBtnClicked(MouseEvent event) {
+		AnchorPane mainContainer;
+		restaurantSelectionController controller;
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+			mainContainer = loader.load();
+			controller = loader.getController();
+			controller.setStage(stage);
+			controller.setAvatar();
+			controller.setRestaurants();
+			Scene mainScene = new Scene(mainContainer);
+			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+			stage.setTitle("BiteMe - Restaurants");
+			stage.setScene(mainScene);
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
 	/**
 	 * Switching scenes to login page.
 	 * 
@@ -117,7 +150,7 @@ public class homePageController {
 			controller.setAvatar();
 			Scene mainScene = new Scene(mainContainer);
 			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-			stage.setTitle("BiteMe - Login");
+			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(mainScene);
 			stage.show();
 		} catch (IOException e) {
@@ -133,10 +166,11 @@ public class homePageController {
 	/**
 	 * Setting homepage to match user's permissions.
 	 */
-	public void setProfile() {
+	public void setProfile(boolean val) {
 		User user = ClientGUI.client.getUser();
-		userFirstName.setText(user.getFirstName());
-		setDefaults(user, true);
+		if (user != null)
+			userFirstName.setText(user.getFirstName());
+		setDefaults(user, val);
 		logOutBtn.setStyle("-fx-cursor: hand;");
 		profileBtn.setStyle("-fx-cursor: hand;");
 		restaurantBtn.setStyle("-fx-cursor: hand;");
@@ -179,27 +213,28 @@ public class homePageController {
 
 	/**
 	 * Changing the homepage interface depending on the user permissions.
-	 * */
+	 */
 	private void setDefaults(User user, boolean val) {
 		setDefaults(val);
-		switch (user.getUserType()) {
-		case Customer:
-		case BusinessCustomer:
-			restaurantBtn.setVisible(val);
-			break;
-		case BranchManager:
-			managerBtn.setVisible(val);
-			break;
-		case Supplier:
-			supplierBtn.setVisible(val);
-			break;
-		case CEO:
-			ceoBtn.setVisible(val);
-			break;
-		case EmployerHR:
-			employerHRBtn.setVisible(val);
-			break;
-		}
+		if (user != null)
+			switch (user.getUserType()) {
+			case Customer:
+			case BusinessCustomer:
+				restaurantBtn.setVisible(val);
+				break;
+			case BranchManager:
+				managerBtn.setVisible(val);
+				break;
+			case Supplier:
+				supplierBtn.setVisible(val);
+				break;
+			case CEO:
+				ceoBtn.setVisible(val);
+				break;
+			case EmployerHR:
+				employerHRBtn.setVisible(val);
+				break;
+			}
 	}
 
 	/**
@@ -218,16 +253,6 @@ public class homePageController {
 			e.printStackTrace();
 			return;
 		}
-	}
-
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-
-	}
-
-	@FXML
-	void restaurantBtnClicked(MouseEvent event) {
-
 	}
 
 }
