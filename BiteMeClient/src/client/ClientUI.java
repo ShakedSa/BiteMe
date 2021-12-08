@@ -24,7 +24,7 @@ public class ClientUI implements ClientIF {
 	/** A client logic for client-server communication */
 	Client client;
 	User clientUser = null;
-	HashMap<String, File> restaurants;
+	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
 
@@ -50,7 +50,7 @@ public class ClientUI implements ClientIF {
 	 * @param userName
 	 * @param password
 	 * 
-	 * */
+	 */
 	public void login(String userName, String password) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -61,33 +61,44 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending the server a logout request.
 	 * 
 	 * @param userName
-	 * */
+	 */
 	public void logout(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList("logout", userName));
 			client.handleMessageFromClientUI(arr);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
-	 * Sending the server a restaurants request.
-	 * Getting all the restaurants from the db.
-	 * */
+	 * Sending the server a restaurants request. Getting all the restaurants from
+	 * the db.
+	 */
 	public void restaurantsRequest() {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("getRestaurants");
 			client.handleMessageFromClientUI(arr);
-		}catch(Exception e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	public void favRestaurantsRequest() {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("favRestaurants");
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
@@ -122,17 +133,25 @@ public class ClientUI implements ClientIF {
 	public Object getResult() {
 		return res;
 	}
-	
+
 	public User getUser() {
 		return clientUser;
 	}
-	
+
 	public void setRestaurants(HashMap<String, File> restaurants) {
 		this.restaurants = restaurants;
 	}
-	
-	public HashMap<String, File> getRestaurants(){
+
+	public HashMap<String, File> getRestaurants() {
 		return restaurants;
+	}
+
+	public void setFavRestaurants(HashMap<String, File> favRestaurants) {
+		this.favRestaurants = favRestaurants;
+	}
+
+	public HashMap<String, File> getFavRestaurants() {
+		return favRestaurants;
 	}
 
 	/*---------------------------------------------------*/

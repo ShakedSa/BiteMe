@@ -54,7 +54,7 @@ public class Client extends AbstractClient {
 		if(msg instanceof User) {
 			clientUI.setUser((User)msg);
 		}else if(msg instanceof HashMap){
-			clientUI.setRestaurants((HashMap<String, File>) msg);
+			clientUI.setFavRestaurants((HashMap<String, File>) msg);
 		}else {
 			clientUI.getResultFromServer(msg);
 		}

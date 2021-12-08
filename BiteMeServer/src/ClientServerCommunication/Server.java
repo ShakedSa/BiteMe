@@ -56,6 +56,10 @@ public class Server extends AbstractServer {
 			break;
 		case "getRestaurants":
 			this.sendToClient(mysqlConnection.getRestaurants(), client);
+			break;
+		case "favRestaurants":
+			this.sendToClient(mysqlConnection.favRestaurants(), client);
+			break;
 		default:
 			sendToClient("default",client);
 			break;
