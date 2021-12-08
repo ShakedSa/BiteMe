@@ -19,7 +19,6 @@ public class Router {
 	 */
 	public void setLogincontroller(loginController logincontroller) {
 		this.logincontroller = logincontroller; 
-		System.out.println("test");
 	}
 	/**
 	 * @param enterguicontroller the enterguicontroller to set
@@ -37,7 +36,7 @@ public class Router {
 	 * @param homePageController the homePageController to set
 	 */
 	public void setHomePageController(homePageController homePageController) {
-		HomePageController = homePageController;
+		HomePageController = homePageController; 
 	}
 
 	public loginController getLogincontroller() {

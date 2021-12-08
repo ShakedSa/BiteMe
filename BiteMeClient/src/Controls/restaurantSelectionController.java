@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Set;
 
+import Entities.ServerResponse;
 import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
@@ -31,6 +33,8 @@ public class restaurantSelectionController implements Initializable{
 	private Router router;
 	
 	private Stage stage;
+	
+	private Scene scene;
 
 	@FXML
 	private Rectangle avatar;
@@ -61,17 +65,13 @@ public class restaurantSelectionController implements Initializable{
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
-		User user = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.client.getUser();
+		User user = (User)resUser.getServerResponse();
 		if (user != null) {
 			ClientGUI.client.logout(user.getUserName());
-			try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
 			ClientGUI.client.setUser(null);
 		}
+		router.getHomePageController().setProfile(false);
 		changeSceneToHomePage(false);
 	}
 
@@ -99,25 +99,30 @@ public class restaurantSelectionController implements Initializable{
 	}
 
 	void changeSceneToHomePage(boolean val) {
-		AnchorPane mainContainer;
-		homePageController controller;
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
-			mainContainer = loader.load();
-			controller = loader.getController();
-			controller.setStage(stage);
-			controller.setAvatar();
-			controller.setProfile(val);
-			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-			stage.setTitle("BiteMe - HomePage");
-			stage.setScene(mainScene);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+		stage.setTitle("BiteMe - HomePage");
+		stage.setScene(router.getHomePageController().getScene());
+		stage.show();
+		
+//		AnchorPane mainContainer;
+//		homePageController controller;
+//		try {
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
+//			mainContainer = loader.load();
+//			controller = loader.getController();
+//			controller.setStage(stage);
+//			controller.setAvatar();
+//			controller.setProfile(val);
+//			controller.setFavRestaurants();
+//			Scene mainScene = new Scene(mainContainer);
+//			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+//			stage.setTitle("BiteMe - HomePage");
+//			stage.setScene(mainScene);
+//			stage.show();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return;
+//		}
 	}
 
 	/**
@@ -150,19 +155,37 @@ public class restaurantSelectionController implements Initializable{
 	/**
 	 * Getting restaurants from the db.
 	 */
+	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-		HashMap<String, File> restaurants = ClientGUI.client.getRestaurants();
+		ServerResponse restaurants = ClientGUI.client.getRestaurants();
+		System.out.println(restaurants);
 		if (restaurants == null) {
 			ClientGUI.client.restaurantsRequest();
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (ClientGUI.client.getRestaurants() == null) {
+						synchronized (ClientGUI.monitor) {
+							try {
+								ClientGUI.monitor.wait();
+							} catch (Exception e) {
+								e.printStackTrace();
+								return;
+							}
+						}
+					}
+				}
+			});
+			t.start();
 			try {
-				Thread.sleep(500);
+				t.join();
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
 			}
 			restaurants = ClientGUI.client.getRestaurants();
 		}
-		createRestaurants(restaurants);
+		createRestaurants((HashMap<String, File>)restaurants.getServerResponse());
 	}
 
 	/**
@@ -172,12 +195,14 @@ public class restaurantSelectionController implements Initializable{
 	 * @param HashMap<String, File> restaurants
 	 */
 	private void createRestaurants(HashMap<String, File> restaurants) {
-		for (int i = 0; i < 6; i++) {
+		Set<String> resSet = restaurants.keySet();
+		int i = 0;
+		for (String resName : resSet) {
 			Rectangle base = new Rectangle();
 			base.setHeight(188);
 			base.setWidth(136);
 			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/japanika-logo.jpg").toString()));
+					new Image(getClass().getResource("../images/" + resName.toLowerCase() + "-logo.jpg").toString()));
 			base.setFill(pattern);
 			base.setEffect(new DropShadow(1, Color.BLACK));
 			base.setArcHeight(15);
@@ -230,6 +255,7 @@ public class restaurantSelectionController implements Initializable{
 				orderNow.setLayoutY(526);
 				break;
 			}
+			i++;
 		}
 	}
 
@@ -238,6 +264,14 @@ public class restaurantSelectionController implements Initializable{
 		router=Router.getInstance();
 		router.setRestaurantselectionController(this);
 		
+	}
+	
+	public void setScene(Scene scene) {
+		this.scene=scene;
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 }

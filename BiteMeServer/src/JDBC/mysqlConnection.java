@@ -16,6 +16,7 @@ import Entities.CEO;
 import Entities.Customer;
 import Entities.EmployerHR;
 import Entities.Product;
+import Entities.ServerResponse;
 import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
@@ -70,9 +71,10 @@ public class mysqlConnection {
 	 * @param String userName
 	 * @param String password
 	 * 
-	 * @return User user
+	 * @return ServerResponse serverResponse
 	 */
-	public static User login(String userName, String password) {
+	public static ServerResponse login(String userName, String password) {
+		ServerResponse serverResponse = new ServerResponse("User");
 		PreparedStatement stmt;
 		User user = null;
 		try {
@@ -81,8 +83,20 @@ public class mysqlConnection {
 			stmt.setString(1, userName);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				if (rs.getInt(12) == 1 || !rs.getString(2).equals(password) || rs.getString(8).equals("User")) {
-					return user;
+				if (rs.getInt(12) == 1) {
+					serverResponse.setMsg("Already Logged In");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
+				}
+				if(!rs.getString(2).equals(password)) {
+					serverResponse.setMsg("Wrong Password");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
+				}
+				if(rs.getString(8).equals("User")) {
+					serverResponse.setMsg("Not Authorized");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
 				}
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
@@ -155,21 +169,26 @@ public class mysqlConnection {
 				}
 				/** Updating the user logged in status */
 				if (!updateIsLoggedIn(userName, 1)) {
-					return user;
+					serverResponse.setMsg("Internal Error");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return user;
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(user);
+		return serverResponse;
 	}
 
 	/**
 	 * Query to get all the restaurants in the db.
 	 * 
-	 * @return ArrayList<String>
+	 * @return ServerResponse serverResponse
 	 */
-	public static HashMap<String, File> getRestaurants() {
+	public static ServerResponse getRestaurants() {
+		ServerResponse serverResponse = new ServerResponse("Restaurants");
 		PreparedStatement stmt;
 		HashMap<String, File> names = new HashMap<>();
 		try {
@@ -181,9 +200,13 @@ public class mysqlConnection {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
 		}
-		return names;
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(names);
+		return serverResponse;
 	}
 
 	/**
@@ -300,8 +323,10 @@ public class mysqlConnection {
 	 * Getting the 6 favourite restaurants from the db to display on the main page.
 	 * The restaurants are order by their name.
 	 * 
+	 * @return ServerResponse
 	 */
-	public static HashMap<String, File> favRestaurants() {
+	public static ServerResponse favRestaurants() {
+		ServerResponse serverResponse = new ServerResponse("FavRestaurants");
 		Statement stmt;
 		HashMap<String, File> favRestaurants = new HashMap<>();
 		try {
@@ -313,92 +338,12 @@ public class mysqlConnection {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
 		}
-		return favRestaurants;
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(favRestaurants);
+		return serverResponse;
 	}
-	/*---------------------------------------------------*/
-	// Prototype
-//	/**
-//	 * Method stores the order table information from the db and send it back to the
-//	 * user
-//	 * 
-//	 * @return strResult
-//	 */
-//	public static String dispalyOrder() {
-//		Statement stmt;
-//		StringBuilder strResult = new StringBuilder();
-//		try {
-//			stmt = conn.createStatement();
-//			ResultSet rs = stmt.executeQuery("SELECT * FROM bm.order;");
-//			while (rs.next()) {
-//				strResult.append(rs.getString(1) + "_" + rs.getString(2) + "_" + rs.getString(3) + "_" + rs.getString(4)
-//						+ "_" + rs.getString(5) + "_" + rs.getString(6));
-//				strResult.append("_");
-//			}
-//			rs.close();
-//			return strResult.toString(); 
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return "Fetch failed";
-//	}
-//
-//	/**
-//	 * Updating a single order by OrderNumber.
-//	 * 
-//	 * @param OrderNumber
-//	 * @param OrderAddress
-//	 * @param TypeOfOrder
-//	 * @return string
-//	 */
-//	public static String updateOrderInfo(String OrderNumber, String OrderAddress, String TypeOfOrder) {
-//		PreparedStatement stmt;
-//		try {
-//			/**
-//			 * update order address query:
-//			 */
-//			String sql = "UPDATE bm.order SET OrderAddress=?, TypeOfOrder=? WHERE OrderNumber=?";
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setString(1, OrderAddress);
-//			stmt.setString(2, TypeOfOrder);
-//			stmt.setString(3, OrderNumber);
-//			stmt.executeUpdate();
-//			stmt.close();
-//			return "Update success";
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return "Update failed";
-//	}
-//
-//	/**
-//	 * Getting information on a single order from the db and send it to the user.
-//	 * 
-//	 * @param orderNumber
-//	 * @return strResult
-//	 */
-//	public static String getOrderInfo(String orderNumber) {
-//		PreparedStatement stmt;
-//		try {
-//			String sql = "SELECT * FROM bm.order WHERE OrderNumber = ?";
-//			stmt = conn.prepareStatement(sql);
-//			stmt.setString(1, orderNumber);
-//			ResultSet rs = stmt.executeQuery();
-//			String strResult;
-//			/**
-//			 * if the query didn't return 1 line return an empty string.
-//			 */
-//			if (rs.next()) {
-//				strResult = rs.getString(1) + "_" + rs.getString(2) + "_" + rs.getString(3) + "_" + rs.getString(4)
-//						+ "_" + rs.getString(5) + "_" + rs.getString(6);
-//			} else {
-//				strResult = "";
-//			}
-//			return strResult;
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return "Fetch fail";
-//	}
 }

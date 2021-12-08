@@ -1,10 +1,9 @@
 package ClientServerComm;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 
-import Entities.User;
+import Entities.ServerResponse;
+import client.ClientGUI;
 import client.ClientIF;
 import ocsf.client.AbstractClient;
 
@@ -46,18 +45,30 @@ public class Client extends AbstractClient {
 	 */
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
-		if(msg == null) {
-			clientUI.setUser(null);
-			clientUI.getResultFromServer(null);
+		if (msg instanceof String) {
+			System.out.println((String) msg);
+			synchronized (ClientGUI.monitor) {
+				ClientGUI.monitor.notifyAll();
+			}
 			return;
 		}
-		if(msg instanceof User) {
-			clientUI.setUser((User)msg);
-		}else if(msg instanceof HashMap){
-			clientUI.setFavRestaurants((HashMap<String, File>) msg);
-		}else {
-			clientUI.getResultFromServer(msg);
+		ServerResponse serverResponse = (ServerResponse) msg;
+		switch (serverResponse.getDataType()) {
+		case "User":
+			clientUI.setUser(serverResponse);
+			break;
+		case "Restaurants":
+			clientUI.setRestaurants(serverResponse);
+			break;
+		case "FavRestaurants":
+			clientUI.setFavRestaurants(serverResponse); 
+			break;
+		default:
+			System.out.println("Null");
 		}
+		synchronized (ClientGUI.monitor) {
+			ClientGUI.monitor.notifyAll();
+		} 
 	}
 
 	/**

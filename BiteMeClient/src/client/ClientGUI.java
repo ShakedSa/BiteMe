@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 
 import Controls.EnterGUIController;
+import Entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ public class ClientGUI extends Application {
 
 	/** Client logic of server-client communication. */
 	public static ClientUI client;
+	public static Object monitor = new Object();
 
 	/**
 	 * Overriding the default method in Application to run our GUI.
@@ -38,7 +40,7 @@ public class ClientGUI extends Application {
 		AnchorPane mainContainer;
 		EnterGUIController controller;
 		try {
-			FXMLLoader loader = new FXMLLoader(); 
+			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("../gui/EnterGUI.fxml"));
 			mainContainer = loader.load();
 			controller = loader.getController();
@@ -57,7 +59,10 @@ public class ClientGUI extends Application {
 					 */
 					if (client != null) {
 						if (client.getUser() != null) {
-							client.logout(client.getUser().getUserName());
+							User user = (User) client.getUser().getServerResponse();
+							if (user != null) {
+								client.logout(user.getUserName());
+							}
 						}
 					}
 					Platform.exit();

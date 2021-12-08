@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import Entities.ServerResponse;
 import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
@@ -39,8 +40,10 @@ public class homePageController implements Initializable {
 	private Router router;
 
 	private Stage stage;
-	
-	private static Scene scene = null;
+
+	private Scene scene = null;
+
+	private AnchorPane mainContainer;
 
 	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
 	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
@@ -161,24 +164,31 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void restaurantBtnClicked(MouseEvent event) {
-		AnchorPane mainContainer;
-		restaurantSelectionController controller;
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
-			mainContainer = loader.load();
-			controller = loader.getController();
-			controller.setStage(stage);
-			controller.setAvatar();
-			controller.setRestaurants();
-			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			restaurantSelectionController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setStage(stage);
+				controller.setAvatar();
+				controller.setRestaurants();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Restaurants");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
 			stage.setTitle("BiteMe - Restaurants");
-			stage.setScene(mainScene);
+			stage.setScene(router.getRestaurantselectionController().getScene());
 			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
 		}
 	}
 
@@ -189,24 +199,35 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void displayLoginScreen(MouseEvent event) {
-		AnchorPane mainContainer;
-		loginController controller;
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/bitemeLoginPage.fxml"));
-			mainContainer = loader.load();
-			controller = loader.getController();
-			controller.setStage(stage);
-			controller.setAvatar();
-			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-			stage.setTitle("BiteMe - Restaurants");
-			stage.setScene(mainScene);
+		if (router.getLogincontroller() == null) {
+			AnchorPane mainContainer;
+			loginController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeLoginPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setStage(stage);
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Restaurants");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Login");
+			stage.setScene(router.getLogincontroller().getScene());
 			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
 		}
+	}
+
+	public AnchorPane getMainContainer() {
+		return mainContainer;
 	}
 
 	public void setStage(Stage stage) {
@@ -217,7 +238,8 @@ public class homePageController implements Initializable {
 	 * Setting homepage to match user's permissions.
 	 */
 	public void setProfile(boolean val) {
-		User user = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.client.getUser();
+		User user = (User) resUser.getServerResponse();
 		if (user != null)
 			userFirstName.setText(user.getFirstName());
 		setDefaults(user, val);
@@ -234,15 +256,10 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void logOutBtnClicked(MouseEvent event) {
-		User user = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.client.getUser();
+		User user = (User) resUser.getServerResponse();
 		if (user != null) {
 			ClientGUI.client.logout(user.getUserName());
-			try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
 			ClientGUI.client.setUser(null);
 			userFirstName.setText("Guest");
 			setDefaults(user, false);
@@ -307,48 +324,52 @@ public class homePageController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("Homepage controller init");
 		router = Router.getInstance();
 		router.setHomePageController(this);
 	}
-	
-	public void setScene(Stage stage) {
-		if(scene == null) {
-			AnchorPane mainContainer;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
-				mainContainer = loader.load();
-				setStage(stage);
-				setAvatar();
-				setFavRestaurants();
-				scene = new Scene(mainContainer);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(scene);
-		stage.show();
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 	/**
 	 * Getting the favourite restaurants in the db.
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	public void setFavRestaurants() {
-		HashMap<String, File> favRestaurants = ClientGUI.client.getFavRestaurants();
-		if (favRestaurants == null) {
+		ServerResponse ResFavRestaurants = ClientGUI.client.getFavRestaurants();
+		HashMap<String, File> favRestaurants;
+		if (ResFavRestaurants == null) {
 			ClientGUI.client.favRestaurantsRequest();
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (ClientGUI.client.getFavRestaurants() == null) {
+						synchronized (ClientGUI.monitor) {
+							try {
+								ClientGUI.monitor.wait();
+							} catch (Exception e) {
+								e.printStackTrace();
+								return;
+							}
+						}
+					}
+				}
+			});
+			t.start();
 			try {
-				Thread.sleep(500);
+				t.join();
 			} catch (Exception e) {
 				e.printStackTrace();
+				return;
 			}
-			favRestaurants = ClientGUI.client.getFavRestaurants();
 		}
-		System.out.println(favRestaurants);
+		favRestaurants = (HashMap<String, File>) ClientGUI.client.getFavRestaurants().getServerResponse();
 		Set<String> resSet = favRestaurants.keySet();
 		String[] res = new String[resSet.size()];
 		int j = 0;
@@ -381,5 +402,9 @@ public class homePageController implements Initializable {
 		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
 		res3.setId(resName);
 		favListDisplayed.addLast(resName);
+	}
+
+	public void setContainer(AnchorPane mainContainer) {
+		this.mainContainer = mainContainer;
 	}
 }

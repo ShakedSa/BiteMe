@@ -48,8 +48,7 @@ public class Server extends AbstractServer {
 		ArrayList<String> m = (ArrayList<String>) msg;
 		switch (m.get(0)) {
 		case "login":
-			User user = mysqlConnection.login(m.get(1), m.get(2));
-			this.sendToClient(user, client);
+			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
 			break;
 		case "logout":
 			this.sendToClient(mysqlConnection.logout(m.get(1)), client);

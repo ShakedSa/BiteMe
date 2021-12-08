@@ -39,6 +39,8 @@ public class loginController implements Initializable {
 
 	private Stage stage;
 
+	private Scene scene;
+
 	@FXML
 	private ImageView back;
 
@@ -96,15 +98,41 @@ public class loginController implements Initializable {
 		}
 		errorMsg.setText("");
 		ClientGUI.client.login(userName, password);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
 		try {
-			Thread.sleep(500);
+			t.join();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getUser() == null) {
-			errorMsg.setText("Wrong username or password");
+		switch (ClientGUI.client.getUser().getMsg().toLowerCase()) {
+		case "already logged in":
+			errorMsg.setText("This user is already logged in");
 			return;
+		case "not found":
+			errorMsg.setText("Username or password are incorrect");
+			return;
+		case "not authorized":
+			errorMsg.setText("User not authorized to use the system");
+			return;
+		case "internal error":
+			errorMsg.setText("Server error, can't logged in");
+		default:
+			usernameTxt.clear();
+			passwordTxt.clear();
 		}
 		changeScenes();
 	}
@@ -113,27 +141,12 @@ public class loginController implements Initializable {
 	 * Changing the current scene to homepage.
 	 */
 	private void changeScenes() {
-		AnchorPane mainContainer;
-		homePageController controller;
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
-			mainContainer = loader.load();
-			controller = loader.getController();
-			controller.setStage(stage);
-			controller.setAvatar();
-			if (ClientGUI.client.getUser() != null) {
-				controller.setProfile(true);
-			}
-			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-			stage.setTitle("BiteMe - HomePage");
-			stage.setScene(mainScene);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
+		if (ClientGUI.client.getUser() != null) {
+			router.getHomePageController().setProfile(true);
 		}
+		stage.setTitle("BiteMe - HomePage");
+		stage.setScene(router.getHomePageController().getScene());
+		stage.show();
 	}
 
 	/**
@@ -191,4 +204,11 @@ public class loginController implements Initializable {
 		router.setLogincontroller(this);
 	}
 
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
 }

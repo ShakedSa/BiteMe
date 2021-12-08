@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Entities.User;
+import Entities.ServerResponse;
 
 /**
  * Logic of the client GUI.
@@ -23,7 +23,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	User clientUser = null;
+	ServerResponse user, ResRestaurants, ResFavRestaurants;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -98,9 +98,9 @@ public class ClientUI implements ClientIF {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("favRestaurants");
 			client.handleMessageFromClientUI(arr);
-		} catch (Exception e) {
+		} catch (Exception e) { 
 			e.printStackTrace();
-			return;
+			return; 
 		}
 	}
 
@@ -126,83 +126,32 @@ public class ClientUI implements ClientIF {
 	 * 
 	 * @param User user
 	 */
-	public void setUser(User user) {
-		this.clientUser = user;
+	public void setUser(ServerResponse user) {
+		this.user = user;
 	}
 
 	public Object getResult() {
 		return res;
 	}
 
-	public User getUser() {
-		return clientUser;
+	public ServerResponse getUser() {
+		return user;
 	}
 
-	public void setRestaurants(HashMap<String, File> restaurants) {
-		this.restaurants = restaurants;
+	public void setRestaurants(ServerResponse restaurants) {
+		this.ResRestaurants = restaurants;
 	}
 
-	public HashMap<String, File> getRestaurants() {
-		return restaurants;
+	public ServerResponse getRestaurants() {
+		return ResRestaurants;
 	}
 
-	public void setFavRestaurants(HashMap<String, File> favRestaurants) {
-		this.favRestaurants = favRestaurants;
+	public void setFavRestaurants(ServerResponse favRestaurants) {
+		this.ResFavRestaurants = favRestaurants;
+		
 	}
 
-	public HashMap<String, File> getFavRestaurants() {
-		return favRestaurants;
+	public ServerResponse getFavRestaurants() {
+		return ResFavRestaurants;
 	}
-
-	/*---------------------------------------------------*/
-	// Prototype
-//	/**
-//	 * Sending a single order request to the server.
-//	 * 
-//	 * @param orderNumber
-//	 */
-//	public void getOrder(String orderNumber) {
-//		try {
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("getOrder");
-//			arr.add(orderNumber);
-//			this.client.handleMessageFromClientUI(arr);
-//		} catch (Exception ex) {
-//			System.out.println("Unexpected error while sending update command!");
-//			ex.printStackTrace();
-//		}
-//	}
-//
-//	/**
-//	 * Updating the db using the server-client communication logic.
-//	 * 
-//	 * @param orderAddress
-//	 * @param typeOfOrder
-//	 */
-//	public void update(String orderNumber, String orderAddress, String typeOfOrder) {
-//		try {
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("update");
-//			arr.add(orderNumber);
-//			arr.add(orderAddress);
-//			arr.add(typeOfOrder);
-//			this.client.handleMessageFromClientUI(arr);
-//		} catch (Exception ex) {
-//			System.out.println("Unexpected error while sending update command!");
-//			ex.printStackTrace();
-//		}
-//	}
-//
-//	/**
-//	 * Send a server request to get all the order table from db.
-//	 */
-//	public void show() {
-//		try {
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("show");
-//			this.client.handleMessageFromClientUI(arr);
-//		} catch (Exception ex) {
-//			System.out.println("Unexpected error while sending show command!");
-//		}
-//	}
 }
