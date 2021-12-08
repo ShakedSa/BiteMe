@@ -79,25 +79,16 @@
          </font>
       </Text>
       <ImageView id="japanika" fx:id="res1" fitHeight="73.0" fitWidth="78.0" layoutX="233.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
-         <image>
-            <Image url="@../images/japanika-logo.jpg" />
-         </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
       <ImageView id="burgerim" fx:id="res2" fitHeight="73.0" fitWidth="78.0" layoutX="378.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;">
-         <image>
-            <Image url="@../images/burgerim-logo.jpg" />
-         </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
       <ImageView id="vong" fx:id="res3" fitHeight="73.0" fitWidth="78.0" layoutX="524.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
-         <image>
-            <Image url="@../images/vong-logo.jpg" />
-         </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

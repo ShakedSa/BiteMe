@@ -3,10 +3,9 @@ package Controls;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -40,12 +39,11 @@ public class homePageController implements Initializable {
 	private Router router;
 
 	private Stage stage;
+	
+	private static Scene scene = null;
 
-	private HashMap<String, File> favRestaurants;
-
-	private Queue<String> favResOrderLeft = new LinkedList<>();
-
-	private Queue<String> favResOrderRight = new LinkedList<>();
+	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
+	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 
 	@FXML
 	private ImageView caruasalLeft;
@@ -95,41 +93,39 @@ public class homePageController implements Initializable {
 	@FXML
 	private ImageView res3;
 
+	/**
+	 * Moving the carousel 1 step backward.
+	 * 
+	 * @param MouseEvent event
+	 */
 	@FXML
 	void caruasalLeftClicked(MouseEvent event) {
-		Set<String> resSet = favRestaurants.keySet();
-		List<String> filteredSet = resSet.stream().filter(r -> !res1.getId().equals(r.toLowerCase())
-				&& !res2.getId().equals(r.toLowerCase()) && !res3.getId().equals(r.toLowerCase())).toList();
-		for (String resName : filteredSet) {
-			if (!favResOrderLeft.contains(resName)) {
-				favResOrderLeft.add(resName);
-			}
-		}
-		String resName = favResOrderLeft.poll().toLowerCase();
+		String resName = favListHidden.pollLast().toLowerCase();
+		favListHidden.addFirst(res1.getId());
+		favListDisplayed.addLast(resName);
 		res1.setImage(res2.getImage());
-		res2.setImage(res3.getImage());
-		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
 		res1.setId(res2.getId());
+		res2.setImage(res3.getImage());
 		res2.setId(res3.getId());
+		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
 		res3.setId(resName);
 	}
 
+	/**
+	 * Moving the carousel 1 step forward
+	 * 
+	 * @param MouseEvent event
+	 */
 	@FXML
 	void caruasalRight(MouseEvent event) {
-		Set<String> resSet = favRestaurants.keySet();
-		List<String> filteredSet = resSet.stream().filter(r -> !res1.getId().equals(r.toLowerCase())
-				&& !res2.getId().equals(r.toLowerCase()) && !res3.getId().equals(r.toLowerCase())).toList();
-		for (String resName : filteredSet) {
-			if (!favResOrderRight.contains(resName)) {
-				favResOrderRight.add(resName);
-			}
-		}
-		String resName = favResOrderRight.poll().toLowerCase();
+		String resName = favListHidden.pollFirst().toLowerCase();
+		favListHidden.addLast(res3.getId());
+		favListDisplayed.addFirst(resName);
 		res3.setImage(res2.getImage());
-		res2.setImage(res1.getImage());
-		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
 		res3.setId(res2.getId());
+		res2.setImage(res1.getImage());
 		res2.setId(res1.getId());
+		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
 		res1.setId(resName);
 	}
 
@@ -311,12 +307,38 @@ public class homePageController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		System.out.println("Homepage controller init");
 		router = Router.getInstance();
 		router.setHomePageController(this);
 	}
+	
+	public void setScene(Stage stage) {
+		if(scene == null) {
+			AnchorPane mainContainer;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
+				mainContainer = loader.load();
+				setStage(stage);
+				setAvatar();
+				setFavRestaurants();
+				scene = new Scene(mainContainer);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		stage.setTitle("BiteMe - HomePage");
+		stage.setScene(scene);
+		stage.show();
+	}
 
+	/**
+	 * Getting the favourite restaurants in the db.
+	 * 
+	 */
 	public void setFavRestaurants() {
-		favRestaurants = ClientGUI.client.getFavRestaurants();
+		HashMap<String, File> favRestaurants = ClientGUI.client.getFavRestaurants();
 		if (favRestaurants == null) {
 			ClientGUI.client.favRestaurantsRequest();
 			try {
@@ -327,6 +349,37 @@ public class homePageController implements Initializable {
 			favRestaurants = ClientGUI.client.getFavRestaurants();
 		}
 		System.out.println(favRestaurants);
+		Set<String> resSet = favRestaurants.keySet();
+		String[] res = new String[resSet.size()];
+		int j = 0;
+		for (String s : resSet) {
+			res[j] = s;
+			j++;
+		}
+		setFavDisplayed(res);
 	}
 
+	/**
+	 * Setting the queue's for the carousel.
+	 * 
+	 * @param String[] res
+	 */
+	private void setFavDisplayed(String[] res) {
+		for (int i = 0; i < 3; i++) {
+			favListDisplayed.addLast(res[i]);
+			favListHidden.addLast(res[i + 3]);
+		}
+		String resName = favListDisplayed.pollFirst().toLowerCase();
+		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
+		res1.setId(resName);
+		favListDisplayed.addLast(resName);
+		resName = favListDisplayed.pollFirst().toLowerCase();
+		res2.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
+		res2.setId(resName);
+		favListDisplayed.addLast(resName);
+		resName = favListDisplayed.pollFirst().toLowerCase();
+		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
+		res3.setId(resName);
+		favListDisplayed.addLast(resName);
+	}
 }
