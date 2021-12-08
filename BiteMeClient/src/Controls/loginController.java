@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 public class loginController implements Initializable {
 
 	private Router router;
-	
+
 	private Stage stage;
 
 	@FXML
@@ -169,16 +169,17 @@ public class loginController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
+
 	public void setAvatar() {
 		try {
-		avatar.setArcWidth(65);
-		avatar.setArcHeight(65);
-		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		avatar.setFill(pattern);
-		avatar.setEffect(new DropShadow(3,Color.BLACK));
-		avatar.setStyle("-fx-border-width: 0");
-		}catch(Exception e) {
+			avatar.setArcWidth(65);
+			avatar.setArcHeight(65);
+			ImagePattern pattern = new ImagePattern(
+					new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			avatar.setFill(pattern);
+			avatar.setEffect(new DropShadow(3, Color.BLACK));
+			avatar.setStyle("-fx-border-width: 0");
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
@@ -186,9 +187,8 @@ public class loginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		router=Router.getInstance();
+		router = Router.getInstance();
 		router.setLogincontroller(this);
-		
 	}
 
 }

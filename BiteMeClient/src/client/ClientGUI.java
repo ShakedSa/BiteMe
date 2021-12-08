@@ -38,7 +38,7 @@ public class ClientGUI extends Application {
 		AnchorPane mainContainer;
 		EnterGUIController controller;
 		try {
-			FXMLLoader loader = new FXMLLoader();
+			FXMLLoader loader = new FXMLLoader(); 
 			loader.setLocation(getClass().getResource("../gui/EnterGUI.fxml"));
 			mainContainer = loader.load();
 			controller = loader.getController();

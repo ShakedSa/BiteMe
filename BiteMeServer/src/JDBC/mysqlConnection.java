@@ -296,6 +296,11 @@ public class mysqlConnection {
 		}
 	}
 
+	/**
+	 * Getting the 6 favourite restaurants from the db to display on the main page.
+	 * The restaurants are order by their name.
+	 * 
+	 */
 	public static HashMap<String, File> favRestaurants() {
 		Statement stmt;
 		HashMap<String, File> favRestaurants = new HashMap<>();
@@ -303,7 +308,7 @@ public class mysqlConnection {
 			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next() ) {
+			while (rs.next()) {
 				favRestaurants.put(rs.getString(1), null);
 			}
 		} catch (SQLException e) {

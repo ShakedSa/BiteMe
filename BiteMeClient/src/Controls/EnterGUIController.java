@@ -79,25 +79,26 @@ public class EnterGUIController implements Initializable {
 			return;
 		}
 		ClientGUI.client = new ClientUI(ip, 5555);
-		AnchorPane mainContainer;
-		homePageController controller;
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
-			mainContainer = loader.load();
-			controller = loader.getController();
-			controller.setStage(stage);
-			controller.setAvatar();
-			controller.setFavRestaurants();
-			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-			stage.setTitle("BiteMe - HomePage");
-			stage.setScene(mainScene);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+//		AnchorPane mainContainer;
+//		homePageController controller;
+//		try {
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
+//			mainContainer = loader.load();
+//			controller = loader.getController();
+//			controller.setStage(stage);
+//			controller.setAvatar();
+//			controller.setFavRestaurants();
+//			Scene mainScene = new Scene(mainContainer);
+//			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+//			stage.setTitle("BiteMe - HomePage");
+//			stage.setScene(mainScene);
+//			stage.show();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			return;
+//		}
+		(new homePageController()).setScene(stage);
 	}
 
 	@Override
