@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 /**
  * Controller for the landing page of the application. user needs to provide the
- * server ip.
+ * server IP.
  * 
  * @author Shaked
  * @author Natali
@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  * @version December 05 2021, v1.0
  *
  */
-public class EnterGUIController implements Initializable {
+public class enterGUIController implements Initializable {
 
 	private Router router;
 
@@ -55,7 +55,7 @@ public class EnterGUIController implements Initializable {
 	}
 
 	/**
-	 * Onclick event handler, closing the application.
+	 * OnClick event handler, closing the application.
 	 * 
 	 * @param MouseEvent event
 	 */
@@ -65,8 +65,8 @@ public class EnterGUIController implements Initializable {
 	}
 
 	/**
-	 * Onclick event handler, checking if the ip is a valid string and switch scenes
-	 * to the homepage scene.
+	 * OnClick event handler, checking if the IP is a valid string and switch scenes
+	 * to the homePage scene.
 	 * 
 	 * @param MouseEvent event.
 	 */

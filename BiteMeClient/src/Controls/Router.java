@@ -2,11 +2,12 @@ package Controls;
 
 public class Router {
 	private static Router router = null;
-	private loginController logincontroller;
-	private EnterGUIController Enterguicontroller;
-	private restaurantSelectionController restaurantselectionController;
+	private loginController Logincontroller;
+	private enterGUIController Enterguicontroller;
+	private restaurantSelectionController RestaurantselectionController;
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
+	private supplierPanelController SupplierPanelController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -16,24 +17,24 @@ public class Router {
 	}
 
 	/**
-	 * @param logincontroller the logincontroller to set
+	 * @param logincontroller the loginController to set
 	 */
 	public void setLogincontroller(loginController logincontroller) {
-		this.logincontroller = logincontroller;
+		Logincontroller = logincontroller;
 	}
 
 	/**
-	 * @param enterguicontroller the enterguicontroller to set
+	 * @param enterguicontroller the enterguiController to set
 	 */
-	public void setEnterguicontroller(EnterGUIController enterguicontroller) {
-		Enterguicontroller = enterguicontroller;
+	public void setEnterguicontroller(enterGUIController enterGUIController) {
+		Enterguicontroller = enterGUIController;
 	}
 
 	/**
 	 * @param restaurantselectionController the restaurantselectionController to set
 	 */
-	public void setRestaurantselectionController(restaurantSelectionController restaurantselectionController) {
-		this.restaurantselectionController = restaurantselectionController;
+	public void setRestaurantselectionController(restaurantSelectionController restaurantSelectionController) {
+		RestaurantselectionController = restaurantSelectionController;
 	}
 
 	/**
@@ -49,17 +50,24 @@ public class Router {
 	public void setManagerPanelController(managerPanelController managerPanelController) {
 		ManagerPanelController = managerPanelController;
 	}
-
-	public loginController getLogincontroller() {
-		return logincontroller;
+	
+	/**
+	 * @param supplierPanelController the supplierPanelController to set
+	 */
+	public void setSupplierPanelController(supplierPanelController supplierPanelController) {
+		SupplierPanelController = supplierPanelController;
 	}
 
-	public EnterGUIController getEnterguicontroller() {
+	public loginController getLogincontroller() {
+		return Logincontroller;
+	}
+
+	public enterGUIController getEnterguicontroller() {
 		return Enterguicontroller;
 	}
 
 	public restaurantSelectionController getRestaurantselectionController() {
-		return restaurantselectionController;
+		return RestaurantselectionController;
 	}
 
 	public homePageController getHomePageController() {
@@ -68,6 +76,10 @@ public class Router {
 
 	public managerPanelController getManagerPanelController() {
 		return ManagerPanelController;
+	}
+	
+	public supplierPanelController getSupplierPanelController() {
+		return SupplierPanelController;
 	}
 
 	/*

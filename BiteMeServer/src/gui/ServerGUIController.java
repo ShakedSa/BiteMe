@@ -89,7 +89,7 @@ public class ServerGUIController {
 	@FXML
 	void ConnectDB(ActionEvent event) {
 		/**
-		 * Getting data from the gui
+		 * Getting data from the GUI
 		 */
 		String p;
 		String[] arr = { txtDbPath.getText(), txtDBuser.getText(), txtDbPass.getText() };
@@ -109,13 +109,13 @@ public class ServerGUIController {
 			setMessage("Port needs to be in range of 0 to 65535");
 			return;
 		}
-		/** Connecting to the db. */
+		/** Connecting to the DB. */
 		mysqlConnection.setConnection(arr);
 		ServerUI.runServer(p);
 		btnDiconnectDB.setDisable(false);
 		btnConnectDB.setDisable(true);
 
-		/** Setting the server ui controller to the server. */
+		/** Setting the server UI controller to the server. */
 		if (ServerUI.sv != null) {
 			ServerUI.sv.setController(this);
 		}
@@ -182,7 +182,7 @@ public class ServerGUIController {
 	}
 
 	/**
-	 * Setting a new message in the textarea with a time stamp.
+	 * Setting a new message in the textArea with a time stamp.
 	 * 
 	 * @param msg
 	 */

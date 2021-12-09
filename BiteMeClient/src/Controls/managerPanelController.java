@@ -68,7 +68,6 @@ public class managerPanelController implements Initializable {
     	
 	@FXML
 	void logoutClicked(MouseEvent event) {
-		
 		ServerResponse resUser = ClientGUI.client.getUser();
 		User user = (User)resUser.getServerResponse();
 		if (user != null) {
@@ -88,11 +87,6 @@ public class managerPanelController implements Initializable {
 	void returnToHomePage(MouseEvent event) {
 		changeSceneToHomePage(true);
 	}
-	
-    @FXML
-    void managerPanelClicked(MouseEvent event) {
-
-    }
 
 	/**
 	 * Setting the avatar image of the user.
@@ -181,7 +175,6 @@ public class managerPanelController implements Initializable {
     void viewMonthlyReportsClicked(MouseEvent event) {
 
     }
-	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -201,7 +194,6 @@ public class managerPanelController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage=stage;
 	}
-
 
 
 }

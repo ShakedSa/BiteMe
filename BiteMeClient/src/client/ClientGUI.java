@@ -2,7 +2,7 @@ package client;
 
 import java.io.IOException;
 
-import Controls.EnterGUIController;
+import Controls.enterGUIController;
 import Entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -38,7 +38,7 @@ public class ClientGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		AnchorPane mainContainer;
-		EnterGUIController controller;
+		enterGUIController controller;
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("../gui/EnterGUI.fxml"));

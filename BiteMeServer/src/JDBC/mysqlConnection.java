@@ -175,7 +175,6 @@ public class mysqlConnection {
 				}
 			}
 			else {
-					System.out.println("rs is null");
 					serverResponse.setMsg("not found");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
@@ -326,7 +325,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Getting the 6 favourite restaurants from the db to display on the main page.
+	 * Getting the 6 favourite restaurants from the DB to display on the main page.
 	 * The restaurants are order by their name.
 	 * 
 	 * @return ServerResponse

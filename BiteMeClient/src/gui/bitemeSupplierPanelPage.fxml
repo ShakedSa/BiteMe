@@ -16,7 +16,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
          <image>
-            <Image url="@images/bag-icon.gif" />
+            <Image url="@../../../scene%20builder/images/bag-icon.gif" />
          </image>
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
@@ -24,17 +24,17 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/biteme-logo.gif" />
+            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/bitme-slogan.gif" />
+            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="287.0" fitWidth="494.0" layoutX="51.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/ruben-supplier-panel.png" />
+            <Image url="@../../../scene%20builder/images/ruben-supplier-panel.png" />
          </image>
       </ImageView>
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SupplierPanel">
@@ -70,24 +70,24 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="createMenuBtn" alignment="CENTER" layoutX="615.0" layoutY="234.0" onMouseClicked="#createOrderClicked" prefHeight="25.0" prefWidth="150.0" text="Create Menu">
+      <Label id="btn" fx:id="createMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="230.0" onMouseClicked="#createOrderClicked" prefHeight="25.0" prefWidth="250.0" text="Create Menu">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="613.0" layoutY="305.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="150.0" text="Update Menu">
+      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="563.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="610.0" layoutY="377.0" onMouseClicked="#updateOrederClucked" prefHeight="25.0" prefWidth="150.0" text="Update Orders">
+      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="560.0" layoutY="373.0" onMouseClicked="#updateOrederClucked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
       <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnToHomePage" style="-fx-rotate: -90;">
          <image>
-            <Image url="@images/arrow.gif" />
+            <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

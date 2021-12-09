@@ -147,9 +147,8 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				//controller.setStage(stage);
-				controller.setAvatar();
 				controller.setStage(stage);
+				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -169,7 +168,31 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void supplierBtnClicked(MouseEvent event) {
-
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			supplierPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setStage(stage);
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Supplier Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
@@ -183,7 +206,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Onclicked event handler, switching scenes to restaurant selection scene.
+	 * OnClicked event handler, switching scenes to restaurant selection scene.
 	 * 
 	 * @param MouseEvent event
 	 */
@@ -275,7 +298,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Onclicked event handler, logout.
+	 * OnClicked event handler, logout.
 	 * 
 	 * @param MouseEvent event
 	 */
@@ -292,7 +315,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Changing the homepage interface depending on the user permissions.
+	 * Changing the homePage interface depending on the user permissions.
 	 * 
 	 * @param boolean val
 	 */
@@ -305,7 +328,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Changing the homepage interface depending on the user permissions.
+	 * Changing the homePage interface depending on the user permissions.
 	 */
 	private void setDefaults(User user, boolean val) { // after logout: null,false, after login: manager,true
 		setDefaults(val);
@@ -313,6 +336,7 @@ public class homePageController implements Initializable {
 		{
 			managerBtn.setVisible(val);
 			restaurantBtn.setVisible(val);
+			userFirstName.setText("Guest");
 		}
 		else
 		{
@@ -372,7 +396,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Getting the favourite restaurants in the db.
+	 * Getting the favourite restaurants in the DB.
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
