@@ -141,14 +141,15 @@ public class homePageController implements Initializable {
 	void managerBtnClicked(MouseEvent event) {
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
-			restaurantSelectionController controller;
+			managerPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
+				//controller.setStage(stage);
 				controller.setAvatar();
+				controller.setStage(stage);
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -300,32 +301,42 @@ public class homePageController implements Initializable {
 		profileBtn.setVisible(val);
 		homePageBtn.setVisible(val);
 		loginBtn.setVisible(!val);
+
 	}
 
 	/**
 	 * Changing the homepage interface depending on the user permissions.
 	 */
-	private void setDefaults(User user, boolean val) {
+	private void setDefaults(User user, boolean val) { // after logout: null,false, after login: manager,true
 		setDefaults(val);
-		if (user != null)
-			switch (user.getUserType()) {
-			case Customer:
-			case BusinessCustomer:
-				restaurantBtn.setVisible(val);
-				break;
-			case BranchManager:
-				managerBtn.setVisible(val);
-				break;
-			case Supplier:
-				supplierBtn.setVisible(val);
-				break;
-			case CEO:
-				ceoBtn.setVisible(val);
-				break;
-			case EmployerHR:
-				employerHRBtn.setVisible(val);
-				break;
+		if (user==null)
+		{
+			managerBtn.setVisible(val);
+			restaurantBtn.setVisible(val);
+		}
+		else
+		{
+				switch (user.getUserType()) {
+				case Customer:
+				case BusinessCustomer:
+					restaurantBtn.setVisible(val);
+					break;
+				case BranchManager:
+					managerBtn.setVisible(val);
+					break;
+				case Supplier:
+					supplierBtn.setVisible(val);
+					break;
+				case CEO:
+					ceoBtn.setVisible(val);
+					break;
+				case EmployerHR:
+					employerHRBtn.setVisible(val);
+					break;
 			}
+		}
+
+
 	}
 
 	/**

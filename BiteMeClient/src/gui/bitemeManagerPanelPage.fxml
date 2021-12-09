@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="managerPanelController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.managerPanelController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Text fx:id="logoutBtn" layoutX="691.0" layoutY="48.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
@@ -30,7 +30,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="homePageBtn" fill="#3180bc" layoutX="277.0" layoutY="54.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+      <Text fx:id="homePageBtn" fill="#3180bc" layoutX="277.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -38,7 +38,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnHomePage" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>

@@ -62,13 +62,18 @@ public class managerPanelController implements Initializable {
 	@FXML
 	private Text profileBtn;
 
+    @FXML
+    private Label viewMonthlyReports;
+
+    	
 	@FXML
 	void logoutClicked(MouseEvent event) {
+		
 		ServerResponse resUser = ClientGUI.client.getUser();
-		User user = (User) resUser.getServerResponse();
+		User user = (User)resUser.getServerResponse();
 		if (user != null) {
 			ClientGUI.client.logout(user.getUserName());
-			ClientGUI.client.setUser(null);
+			ClientGUI.client.getUser().setServerResponse(null);
 		}
 		router.getHomePageController().setProfile(false);
 		changeSceneToHomePage(false);
@@ -172,6 +177,11 @@ public class managerPanelController implements Initializable {
 		// stage.setScene(router.getHomePageController().getScene());
 		// stage.show();
 	}
+    @FXML
+    void viewMonthlyReportsClicked(MouseEvent event) {
+
+    }
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -179,6 +189,7 @@ public class managerPanelController implements Initializable {
 		router.setManagerPanelController(this);
 	}
 
+    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -186,5 +197,11 @@ public class managerPanelController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
+
+	public void setStage(Stage stage) {
+		this.stage=stage;
+	}
+
+
 
 }

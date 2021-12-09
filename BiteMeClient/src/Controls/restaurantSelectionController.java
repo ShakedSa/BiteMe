@@ -69,7 +69,7 @@ public class restaurantSelectionController implements Initializable{
 		User user = (User)resUser.getServerResponse();
 		if (user != null) {
 			ClientGUI.client.logout(user.getUserName());
-			ClientGUI.client.setUser(null);
+			ClientGUI.client.getUser().setServerResponse(null);
 		}
 		router.getHomePageController().setProfile(false);
 		changeSceneToHomePage(false);
@@ -102,7 +102,6 @@ public class restaurantSelectionController implements Initializable{
 		stage.setTitle("BiteMe - HomePage");
 		stage.setScene(router.getHomePageController().getScene());
 		stage.show();
-		
 //		AnchorPane mainContainer;
 //		homePageController controller;
 //		try {

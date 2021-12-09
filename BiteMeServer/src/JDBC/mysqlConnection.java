@@ -174,6 +174,12 @@ public class mysqlConnection {
 					return serverResponse;
 				}
 			}
+			else {
+					System.out.println("rs is null");
+					serverResponse.setMsg("not found");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
