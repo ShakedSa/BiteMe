@@ -16,7 +16,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+      <Text fx:id="logoutBtn" layoutX="691.0" layoutY="48.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -24,7 +24,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fill="#3180bc" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -32,7 +32,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text fx:id="profileBtn" layoutX="745.0" layoutY="48.0" onMouseClicked="#openProfile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -40,7 +40,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+      <Text fx:id="homePageBtn" layoutX="287.0" layoutY="54.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -80,10 +80,16 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <TextField layoutX="82.0" layoutY="272.0" promptText="W4C Code" />
-      <Button layoutX="645.0" layoutY="270.0" mnemonicParsing="false" text="QR Reader" />
-      <Button layoutX="82.0" layoutY="307.0" mnemonicParsing="false" text="Identify" />
-      <ImageView fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+      <TextField fx:id="w4cCodeFieldTxt" layoutX="82.0" layoutY="272.0" promptText="W4C Code" />
+      <Button fx:id="QRBtn" layoutX="645.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#QRClicked" text="QR Reader">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="identifyBtn" layoutX="82.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#identifyClicked" text="Identify">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToRestaurants" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@images/arrow.gif" />
          </image>

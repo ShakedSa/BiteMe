@@ -139,7 +139,31 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void managerBtnClicked(MouseEvent event) {
-
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			restaurantSelectionController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setStage(stage);
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Manager Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Manager Panel");
+			stage.setScene(router.getManagerPanelController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
@@ -235,7 +259,7 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Setting homepage to match user's permissions.
+	 * Setting homePage to match user's permissions.
 	 */
 	public void setProfile(boolean val) {
 		ServerResponse resUser = ClientGUI.client.getUser();

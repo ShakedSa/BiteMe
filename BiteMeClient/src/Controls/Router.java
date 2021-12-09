@@ -1,42 +1,53 @@
 package Controls;
 
 public class Router {
-	private static Router router=null;
+	private static Router router = null;
 	private loginController logincontroller;
 	private EnterGUIController Enterguicontroller;
 	private restaurantSelectionController restaurantselectionController;
 	private homePageController HomePageController;
+	private managerPanelController ManagerPanelController;
 
 	public static Router getInstance() {
-		if(router==null)
-			router=new Router();
+		if (router == null)
+			router = new Router();
 		return router;
-		
+
 	}
-	
+
 	/**
 	 * @param logincontroller the logincontroller to set
 	 */
 	public void setLogincontroller(loginController logincontroller) {
-		this.logincontroller = logincontroller; 
+		this.logincontroller = logincontroller;
 	}
+
 	/**
 	 * @param enterguicontroller the enterguicontroller to set
 	 */
 	public void setEnterguicontroller(EnterGUIController enterguicontroller) {
 		Enterguicontroller = enterguicontroller;
 	}
+
 	/**
 	 * @param restaurantselectionController the restaurantselectionController to set
 	 */
 	public void setRestaurantselectionController(restaurantSelectionController restaurantselectionController) {
 		this.restaurantselectionController = restaurantselectionController;
 	}
+
 	/**
 	 * @param homePageController the homePageController to set
 	 */
 	public void setHomePageController(homePageController homePageController) {
-		HomePageController = homePageController; 
+		HomePageController = homePageController;
+	}
+
+	/**
+	 * @param managerPanelController the managerPanelController to set
+	 */
+	public void setManagerPanelController(managerPanelController managerPanelController) {
+		ManagerPanelController = managerPanelController;
 	}
 
 	public loginController getLogincontroller() {
@@ -54,14 +65,17 @@ public class Router {
 	public homePageController getHomePageController() {
 		return HomePageController;
 	}
-	
-	
-	
-/*	public static void show(Object c) { // router.show(loginController.getClass());
-		switch(c)
-		case loginController:  open logincontroller;
-		case EnterGUIController: open Enterguicontroller
-		
-	}*/
-	
+
+	public managerPanelController getManagerPanelController() {
+		return ManagerPanelController;
+	}
+
+	/*
+	 * public static void show(Object c) { //
+	 * router.show(loginController.getClass()); switch(c) case loginController: open
+	 * logincontroller; case EnterGUIController: open Enterguicontroller
+	 * 
+	 * }
+	 */
+
 }

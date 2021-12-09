@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.gluonhq.charm.glisten.control.Avatar?>
-<?import javafx.geometry.Point3D?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +15,7 @@
 <AnchorPane disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Text fx:id="logoutBtn" layoutX="691.0" layoutY="48.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+      <Text layoutX="691.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -25,7 +23,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text fill="#3180bc" layoutX="369.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -33,7 +31,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text fx:id="profileBtn" layoutX="745.0" layoutY="48.0" onMouseClicked="#openProfile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text layoutX="745.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -41,7 +39,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="homePageBtn" layoutX="287.0" layoutY="54.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+      <Text layoutX="287.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -77,7 +75,7 @@
             <Image url="@images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToPickDateAndTime" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+      <ImageView fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
          <image>
             <Image url="@images/arrow.gif" />
          </image>
@@ -85,6 +83,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Text layoutX="143.0" layoutY="509.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Return to Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
@@ -93,10 +99,10 @@
       <Line endX="42.0" endY="9.0" layoutX="410.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="484.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
-      <Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select delivery method:">
+      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select payment method:">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
@@ -114,11 +120,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ComboBox fx:id="deliveryMethodBox" editable="true" layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Delivery Method" />
-      <Label layoutX="273.0" layoutY="403.0" text="Label">
-         <rotationAxis>
-            <Point3D />
-         </rotationAxis>
-      </Label>
+      <RadioButton layoutX="105.0" layoutY="232.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="119.0" text="Business Account">
+         <font>
+            <Font name="Berlin Sans FB" size="12.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="228.0" layoutY="232.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="119.0" selected="true" text="Private Account">
+         <font>
+            <Font name="Berlin Sans FB" size="12.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>
