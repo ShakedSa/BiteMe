@@ -1,7 +1,10 @@
 package Controls;
 
+import javafx.stage.Stage;
+
 public class Router {
 	private static Router router = null;
+	private Stage stage;
 	private loginController Logincontroller;
 	private enterGUIController Enterguicontroller;
 	private restaurantSelectionController RestaurantselectionController;
@@ -126,7 +129,19 @@ public class Router {
 		return CEOPanelController;
 	}
 
-	
+	/**
+	 * @return the stage
+	 */
+	public Stage getStage() {
+		return stage;
+	}
+
+	/**
+	 * @param stage the stage to set
+	 */
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 	
 
 	

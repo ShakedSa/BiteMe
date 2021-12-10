@@ -52,6 +52,7 @@ public class enterGUIController implements Initializable {
 	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
+		router.setStage(stage);
 	}
 
 	/**
@@ -80,7 +81,6 @@ public class enterGUIController implements Initializable {
 		}
 		ClientGUI.client = new ClientUI(ip, 5555);
 		AnchorPane mainContainer;
-		router = Router.getInstance();
 		if (router.getHomePageController() == null) {
 			homePageController controller;
 			try {
@@ -88,7 +88,6 @@ public class enterGUIController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeHomePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				controller.setFavRestaurants();
 				Scene mainScene = new Scene(mainContainer);
@@ -112,7 +111,7 @@ public class enterGUIController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setEnterguicontroller(this);
-
+		setStage(router.getStage());
 	}
 
 }

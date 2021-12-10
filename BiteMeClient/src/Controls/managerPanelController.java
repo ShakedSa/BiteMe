@@ -205,6 +205,7 @@ public class managerPanelController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setManagerPanelController(this);
+		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {
