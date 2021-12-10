@@ -36,6 +36,10 @@ import javafx.stage.Stage;
  * 
  * @version December 05 2021, v1.0
  */
+/**
+ * @author Eden
+ *
+ */
 public class homePageController implements Initializable {
 
 	private Router router;
@@ -248,32 +252,7 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
-		if (router.getProfileController() == null) {
-			AnchorPane mainContainer;
-			profileController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				controller.initProfile();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Home Page");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			router.getProfileController().initProfile();
-			stage.setTitle("BiteMe - Profile");
-			stage.setScene(router.getProfileController().getScene());
-			stage.show();
-		}
+		router.showProfile();
 	}
 
 	/**
@@ -352,11 +331,12 @@ public class homePageController implements Initializable {
 	}
 
 	/**
-	 * Setting homePage to match user's permissions.
+	 * Setting homePage buttons to match user's permissions.
 	 */
 	public void setProfile(boolean val) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) {
+		if (resUser != null) 
+		{
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				userFirstName.setText(user.getFirstName());
@@ -366,7 +346,9 @@ public class homePageController implements Initializable {
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
 			homePageBtn.setStyle("-fx-cursor: hand;");
-		}else {
+		}
+		else
+		{
 			userFirstName.setText("Guest");
 			setDefaults(null,false);
 		}
@@ -436,6 +418,10 @@ public class homePageController implements Initializable {
 
 	}
 
+	/**
+	 * 
+	 * @return ImagePattern relevant to user permissions
+	 */
 	private ImagePattern getAvatarImage() {
 		ServerResponse userResponse = ClientGUI.client.getUser();
 		if (userResponse == null) {

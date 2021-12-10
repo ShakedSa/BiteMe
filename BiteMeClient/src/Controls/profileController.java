@@ -23,7 +23,22 @@ public class profileController implements Initializable{
 	private Router router;
 	private Stage stage;
 	private Scene scene;
+	
+    @FXML
+    private Text restaurantBtn;
+    
+    @FXML
+    private Text managerBtn;
 
+    @FXML
+    private Text supplierBtn;
+
+    @FXML
+    private Text ceoBtn;
+
+    @FXML
+    private Text employerHRBtn;
+    
     @FXML
     private Text CEOPanelBtn;
 
@@ -64,6 +79,8 @@ public class profileController implements Initializable{
     private Text statusTxt;
     
     public void initProfile() {
+    	setAvatar();
+    	setProfile();
     	User user = (User) ClientGUI.client.getUser().getServerResponse();
     	firstNameTxt.setText(user.getFirstName());
     	lastNameTxt.setText(user.getLastName());
@@ -106,14 +123,41 @@ public class profileController implements Initializable{
 		try {
 			avatar.setArcWidth(65);
 			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+			ImagePattern pattern = getAvatarImage();
 			avatar.setFill(pattern);
 			avatar.setEffect(new DropShadow(3, Color.BLACK));
 			avatar.setStyle("-fx-border-width: 0");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
+		}
+	}
+	/**
+	 * 
+	 * @return ImagePattern relevant to user permissions
+	 */
+	private ImagePattern getAvatarImage() {
+		ServerResponse userResponse = ClientGUI.client.getUser();
+		if (userResponse == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		User user = (User) userResponse.getServerResponse();
+		if (user == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		switch (user.getUserType()) {
+		case Supplier:
+			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
+		case BranchManager:
+			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+		case CEO:
+			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+		case Customer:
+			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
+		case EmployerHR:
+			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
+		default:
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
 	}
 
@@ -137,6 +181,75 @@ public class profileController implements Initializable{
 	public void setStage(Stage stage) {
 		this.stage=stage;
 	}
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
+	
+	/**
+	 * Setting Profile page buttons to match user's permissions.
+	 */
+	public void setProfile() {
+		boolean val=true;
+		ServerResponse resUser = ClientGUI.client.getUser();
+		User user = (User) resUser.getServerResponse();
+		switch (user.getUserType()) {
+		case Customer:
+			restaurantBtn.setVisible(val);
+			break;
+		case BranchManager:
+			managerBtn.setVisible(val);
+			break;
+		case Supplier:
+			supplierBtn.setVisible(val);
+			break;
+		case CEO:
+			ceoBtn.setVisible(val);
+			break;
+		case EmployerHR:
+			employerHRBtn.setVisible(val);
+			break;
+		default:
+			break;
+		}
+			logoutBtn.setStyle("-fx-cursor: hand;");
+			profileBtn.setStyle("-fx-cursor: hand;");
+			homePageBtn.setStyle("-fx-cursor: hand;");
+	}
+	
+	//////////////
+	
+
+    @FXML
+    void ceoBtnClicked(MouseEvent event) {
+    	router.getHomePageController().ceoBtnClicked(event);
+    }
+
+    @FXML
+    void employerHRBtnClicked(MouseEvent event) {
+
+    }
+
+
+
+    @FXML
+    void managerBtnClicked(MouseEvent event) {
+
+    }
+
+
+
+    @FXML
+    void restaurantBtnClicked(MouseEvent event) {
+
+    }
+
+
+    @FXML
+    void supplierBtnClicked(MouseEvent event) {
+
+    }
+	///
 
 }
 

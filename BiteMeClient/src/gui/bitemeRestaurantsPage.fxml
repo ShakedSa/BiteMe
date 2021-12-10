@@ -95,7 +95,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="profileBtn" layoutX="745.0" layoutY="51.0" onMouseClicked="#openProfile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text id="link" fx:id="profileBtn" layoutX="745.0" layoutY="51.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

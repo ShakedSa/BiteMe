@@ -313,5 +313,9 @@ public class restaurantSelectionController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
 }

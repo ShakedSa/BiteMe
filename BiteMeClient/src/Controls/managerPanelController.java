@@ -219,5 +219,10 @@ public class managerPanelController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+	
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
 }

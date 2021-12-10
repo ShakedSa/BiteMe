@@ -104,6 +104,7 @@ public class loginController implements Initializable {
 		}
 		checkServerResponse();
 		changeScenes();
+
 	}
 
 	/**
