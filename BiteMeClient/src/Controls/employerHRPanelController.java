@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ceoPanelController implements Initializable{
+public class employerHRPanelController implements Initializable{
 	
 	private Router router;
 	private Stage stage;
@@ -45,9 +45,6 @@ public class ceoPanelController implements Initializable{
     private Text profileBtn;
 
     @FXML
-    private Label viewAllReportBtn;
-
-    @FXML
     private Label viewPDFReportBtn;
 
     @FXML
@@ -58,26 +55,6 @@ public class ceoPanelController implements Initializable{
 
     }
 
-    @FXML
-    void openProfile(MouseEvent event) {
-    	
-    }
-    
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	changeSceneToHomePage(true);
-    }
-    
-    @FXML
-    void updateMenuClicked(MouseEvent event) {
-    	
-    }
-    
-    @FXML
-    void updateOrederClucked(MouseEvent event) {
-    	
-    }
-    
     @FXML
     void logoutClicked(MouseEvent event) {
     	ServerResponse resUser = ClientGUI.client.getUser();
@@ -97,6 +74,21 @@ public class ceoPanelController implements Initializable{
 		stage.setScene(router.getHomePageController().getScene());
 		stage.show();
 	}
+
+    @FXML
+    void openProfile(MouseEvent event) {
+
+    }
+
+    @FXML
+    void returnToHomePage(MouseEvent event) {
+    	changeSceneToHomePage(true);
+    }
+
+    @FXML
+    void updateMenuClicked(MouseEvent event) {
+
+    }
     
     /**
 	 * Setting the avatar image of the user.
@@ -106,7 +98,7 @@ public class ceoPanelController implements Initializable{
 			avatar.setArcWidth(65);
 			avatar.setArcHeight(65);
 			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+					new Image(getClass().getResource("../images/HR-avatar.png").toString()));
 			avatar.setFill(pattern);
 			avatar.setEffect(new DropShadow(3, Color.BLACK));
 			avatar.setStyle("-fx-border-width: 0");
@@ -120,7 +112,7 @@ public class ceoPanelController implements Initializable{
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setCEOPanelController(this);
+		router.setEmployerHRPanelController(this);
 	}
 
     
@@ -137,3 +129,4 @@ public class ceoPanelController implements Initializable{
 	}
 
 }
+
