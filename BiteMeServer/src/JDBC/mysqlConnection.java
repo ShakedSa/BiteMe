@@ -112,7 +112,6 @@ public class mysqlConnection {
 				/** If the user is customer or business customer get his w4c card info. */
 				switch (userType) {
 				case Customer:
-				case BusinessCustomer:
 					query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
@@ -135,15 +134,17 @@ public class mysqlConnection {
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
 					String restaurantName = "";
+					String restaurantAddress = "";
 					int monthlyComission = 12;
 					ArrayList<Product> menu = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
+						restaurantAddress = rs.getString(6); // added RestaurantAddress to supplier in DB - aviel
 						monthlyComission = rs.getInt(3);
 						menu = getMenu(restaurantName);
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission, branch);
+							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission, restaurantAddress); // change last input from branch to restaurantAddress - aviel
 					stmt.close();
 					break;
 				case BranchManager:
@@ -229,13 +230,13 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int w4cID = rs.getInt(1);
-				String employerID = rs.getString(3);
+				String employerCode = rs.getString(3);
 				String qrCode = rs.getString(4);
 				String creditCardNumber = rs.getString(5);
 				float monthlyBudget = rs.getFloat(6);
 				float dailyBudget = rs.getFloat(7);
 				float balance = rs.getFloat(8);
-				return new W4CCard(w4cID, employerID, qrCode, creditCardNumber, monthlyBudget, balance, dailyBudget);
+				return new W4CCard(w4cID, employerCode, qrCode, creditCardNumber, monthlyBudget, balance, dailyBudget);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
