@@ -120,6 +120,7 @@ public class supplierPanelController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setSupplierPanelController(this);
+		setStage(router.getStage());
 	}
 
     

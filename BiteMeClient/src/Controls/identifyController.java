@@ -138,7 +138,6 @@ public class identifyController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeMenuOrderPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				controller.setRestaurantName(restaurantsName);
 				Scene mainScene = new Scene(mainContainer);
@@ -210,6 +209,7 @@ public class identifyController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setIdentifyController(this);
+		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {

@@ -2,6 +2,7 @@ package client;
 
 import java.io.IOException;
 
+import Controls.Router;
 import Controls.enterGUIController;
 import Entities.User;
 import javafx.application.Application;
@@ -29,6 +30,7 @@ public class ClientGUI extends Application {
 	/** Client logic of server-client communication. */
 	public static ClientUI client;
 	public static Object monitor = new Object();
+	private Router router;
 
 	/**
 	 * Overriding the default method in Application to run our GUI.
@@ -39,12 +41,13 @@ public class ClientGUI extends Application {
 	public void start(Stage primaryStage) {
 		AnchorPane mainContainer;
 		enterGUIController controller;
+		router=Router.getInstance();
+		router.setStage(primaryStage);
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("../gui/EnterGUI.fxml"));
 			mainContainer = loader.load();
 			controller = loader.getController();
-			controller.setStage(primaryStage);
 			Scene mainScene = new Scene(mainContainer);
 			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 			primaryStage.setTitle("Connect to server");

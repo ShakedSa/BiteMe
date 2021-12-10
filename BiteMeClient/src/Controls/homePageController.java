@@ -143,7 +143,6 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -172,7 +171,6 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -201,7 +199,6 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -269,7 +266,6 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				controller.setRestaurants();
 				Scene mainScene = new Scene(mainContainer);
@@ -304,7 +300,6 @@ public class homePageController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeLoginPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setStage(stage);
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -464,6 +459,7 @@ public class homePageController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setHomePageController(this);
+		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {

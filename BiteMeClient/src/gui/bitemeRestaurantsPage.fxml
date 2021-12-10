@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.restaurantSelectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.restaurantSelectionController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <TextField fx:id="searchRestaurantFieldTxt" layoutX="109.0" layoutY="110.0" promptText="Search Restaurant...">
@@ -90,7 +90,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="active" fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text id="active" fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

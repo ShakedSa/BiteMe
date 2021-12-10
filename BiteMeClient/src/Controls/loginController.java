@@ -80,23 +80,7 @@ public class loginController implements Initializable {
 	void loginClicked(MouseEvent event) {
 		String userName = usernameTxt.getText();
 		String password = passwordTxt.getText();
-		if (!checkValidText(userName)) {
-			errorMsg.setText("Must fill username");
-			return;
-		}
-		if (checkSpecialCharacters(userName)) {
-			errorMsg.setText("Special characters aren't allowed in username");
-			return;
-		}
-		if (!checkValidText(password)) {
-			errorMsg.setText("Must fill password");
-			return;
-		}
-		if (checkSpecialCharacters(password)) {
-			errorMsg.setText("Special characters aren't allowed in password");
-			return;
-		}
-		errorMsg.setText("");
+		CheckUserInput(userName, password);
 		ClientGUI.client.login(userName, password);
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -118,6 +102,15 @@ public class loginController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
+		checkServerResponse();
+		changeScenes();
+	}
+
+	/**
+	 * checks the user information received from Server.
+	 * display relevant information.
+	 */
+	private void checkServerResponse() {
 		switch (ClientGUI.client.getUser().getMsg().toLowerCase()) {
 		case "already logged in":
 			errorMsg.setText("This user is already logged in");
@@ -134,7 +127,26 @@ public class loginController implements Initializable {
 			usernameTxt.clear();
 			passwordTxt.clear();
 		}
-		changeScenes();
+	}
+
+	private void CheckUserInput(String userName, String password) {
+		if (!checkValidText(userName)) {
+			errorMsg.setText("Must fill username");
+			return;
+		}
+		if (checkSpecialCharacters(userName)) {
+			errorMsg.setText("Special characters aren't allowed in username");
+			return;
+		}
+		if (!checkValidText(password)) {
+			errorMsg.setText("Must fill password");
+			return;
+		}
+		if (checkSpecialCharacters(password)) {
+			errorMsg.setText("Special characters aren't allowed in password");
+			return;
+		}
+		errorMsg.setText("");
 	}
 
 	/**
@@ -204,6 +216,7 @@ public class loginController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setLogincontroller(this);
+		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {

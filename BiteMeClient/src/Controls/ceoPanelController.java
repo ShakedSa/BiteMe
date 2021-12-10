@@ -121,6 +121,7 @@ public class ceoPanelController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setCEOPanelController(this);
+		setStage(router.getStage());
 	}
 
     
