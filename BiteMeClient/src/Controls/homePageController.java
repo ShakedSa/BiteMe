@@ -135,7 +135,31 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void ceoBtnClicked(MouseEvent event) {
-
+		if (router.getManagerPanelController() == null) {
+			AnchorPane mainContainer;
+			managerPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setStage(stage);
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - CEO Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - CEO Panel");
+			stage.setScene(router.getManagerPanelController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML

@@ -10,12 +10,12 @@ public class Router {
 	private supplierPanelController SupplierPanelController;
 	private identifyController IdentifyController;
 	private restaurantMenuController RestaurantMenuController;
+	private ceoPanelController CEOPanelController;
 
 	public static Router getInstance() {
 		if (router == null)
 			router = new Router();
 		return router;
-
 	}
 
 	/**
@@ -59,6 +59,27 @@ public class Router {
 	public void setSupplierPanelController(supplierPanelController supplierPanelController) {
 		SupplierPanelController = supplierPanelController;
 	}
+	
+	/**
+	 * @param ceoPanelController the ceoPanelController to set
+	 */
+	public void setCEOPanelController(ceoPanelController ceoPanelController) {
+		CEOPanelController = ceoPanelController;
+	}
+	
+	/**
+	 * @param restaurantMenuController the restaurantMenuController to set
+	 */
+	public void setRestaurantMenuController(restaurantMenuController restaurantMenuController) {
+		RestaurantMenuController = restaurantMenuController;
+	}
+	
+	/**
+	 * @param identifyController the identifyController to set
+	 */
+	public void setIdentifyController(identifyController identifyController) {
+		IdentifyController = identifyController;
+	}
 
 	public loginController getLogincontroller() {
 		return Logincontroller;
@@ -92,25 +113,21 @@ public class Router {
 	}
 
 	/**
-	 * @param identifyController the identifyController to set
-	 */
-	public void setIdentifyController(identifyController identifyController) {
-		IdentifyController = identifyController;
-	}
-
-	/**
 	 * @return the restaurantMenuController
 	 */
 	public restaurantMenuController getRestaurantMenuController() {
 		return RestaurantMenuController;
 	}
-
+	
 	/**
-	 * @param restaurantMenuController the restaurantMenuController to set
+	 * @return the restaurantMenuController
 	 */
-	public void setRestaurantMenuController(restaurantMenuController restaurantMenuController) {
-		RestaurantMenuController = restaurantMenuController;
+	public ceoPanelController getCEOPanelController() {
+		return CEOPanelController;
 	}
+
+	
+	
 
 	
 	/*
