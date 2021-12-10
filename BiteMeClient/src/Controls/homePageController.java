@@ -248,7 +248,32 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
-
+		if (router.getProfileController() == null) {
+			AnchorPane mainContainer;
+			profileController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.initProfile();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getProfileController().initProfile();
+			stage.setTitle("BiteMe - Profile");
+			stage.setScene(router.getProfileController().getScene());
+			stage.show();
+		}
 	}
 
 	/**
@@ -392,7 +417,6 @@ public class homePageController implements Initializable {
 		} else {
 			switch (user.getUserType()) {
 			case Customer:
-			case BusinessCustomer:
 				restaurantBtn.setVisible(val);
 				break;
 			case BranchManager:
@@ -429,7 +453,6 @@ public class homePageController implements Initializable {
 		case CEO:
 			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
 		case Customer:
-		case BusinessCustomer:
 			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
 		case EmployerHR:
 			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));

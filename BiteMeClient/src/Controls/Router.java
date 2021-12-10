@@ -15,6 +15,7 @@ public class Router {
 	private restaurantMenuController RestaurantMenuController;
 	private ceoPanelController CEOPanelController;
 	private employerHRPanelController EmployerHRPanelController;
+	private profileController ProfileController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -91,6 +92,13 @@ public class Router {
 	public void setIdentifyController(identifyController identifyController) {
 		IdentifyController = identifyController;
 	}
+	
+	/**
+	 * @param profileController the profileController to set
+	 */
+	public void setProfileController(profileController profileController) {
+		ProfileController = profileController;
+	}
 
 	/**
 	 * @return the Logincontroller
@@ -155,6 +163,21 @@ public class Router {
 		return CEOPanelController;
 	}
 
+	/**
+	 * @return the employerHRPanelController
+	 */
+	public employerHRPanelController getEmployerHRPanelController() {
+		return EmployerHRPanelController;
+	}
+	
+	/**
+	 * @return the employerHRPanelController
+	 */
+	public profileController getProfileController() {
+		return ProfileController;
+	}
+	
+	
 
 
 	/**
@@ -171,12 +194,7 @@ public class Router {
 		this.stage = stage;
 	}
 	
-	/**
-	 * @return the employerHRPanelController
-	 */
-	public employerHRPanelController getEmployerHRPanelController() {
-		return EmployerHRPanelController;
-	}
+	
 
 	
 	/*

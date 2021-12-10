@@ -83,6 +83,10 @@ public abstract class User implements Serializable {
 	public String getLastName() {
 		return lastName;
 	}
+	
+	public String getId() {
+		return id;
+	}
 
 
 
