@@ -155,16 +155,16 @@ public class mysqlConnection {
 							organization, branch, role, status, avatar);
 					break;
 				case EmployerHR:
-					query = "SELECT * FROM bitemedb.employers_hr WHERE UserName = ?";
+					query = "SELECT * FROM bitemedb.businesscustomer_hr WHERE UserName = ?";
 					stmt = conn.prepareStatement(query);
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
-					String employerID = "";
+					String employerCode = "";
 					if (rs.next()) {
-						employerID = rs.getString(2);
+						employerCode = rs.getString(2);
 					}
 					user = new EmployerHR(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, employerID);
+							organization, branch, role, status, avatar, employerCode);
 					stmt.close();
 					break;
 				}

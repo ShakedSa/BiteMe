@@ -14,6 +14,7 @@ public class Router {
 	private identifyController IdentifyController;
 	private restaurantMenuController RestaurantMenuController;
 	private ceoPanelController CEOPanelController;
+	private employerHRPanelController EmployerHRPanelController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -78,32 +79,57 @@ public class Router {
 	}
 	
 	/**
+	 * @param employerHRPanelController the employerHRPanelController to set
+	 */
+	public void setEmployerHRPanelController(employerHRPanelController employerHRPanelController) {
+		EmployerHRPanelController = employerHRPanelController;
+	}
+	
+	/**
 	 * @param identifyController the identifyController to set
 	 */
 	public void setIdentifyController(identifyController identifyController) {
 		IdentifyController = identifyController;
 	}
 
+	/**
+	 * @return the Logincontroller
+	 */
 	public loginController getLogincontroller() {
 		return Logincontroller;
 	}
 
+	/**
+	 * @return the Enterguicontroller
+	 */
 	public enterGUIController getEnterguicontroller() {
 		return Enterguicontroller;
 	}
 
+	/**
+	 * @return the RestaurantselectionController
+	 */
 	public restaurantSelectionController getRestaurantselectionController() {
 		return RestaurantselectionController;
 	}
 
+	/**
+	 * @return the HomePageController
+	 */
 	public homePageController getHomePageController() {
 		return HomePageController;
 	}
 
+	/**
+	 * @return the ManagerPanelController
+	 */
 	public managerPanelController getManagerPanelController() {
 		return ManagerPanelController;
 	}
 	
+	/**
+	 * @return the SupplierPanelController
+	 */
 	public supplierPanelController getSupplierPanelController() {
 		return SupplierPanelController;
 	}
@@ -129,6 +155,8 @@ public class Router {
 		return CEOPanelController;
 	}
 
+
+
 	/**
 	 * @return the stage
 	 */
@@ -143,6 +171,12 @@ public class Router {
 		this.stage = stage;
 	}
 	
+	/**
+	 * @return the employerHRPanelController
+	 */
+	public employerHRPanelController getEmployerHRPanelController() {
+		return EmployerHRPanelController;
+	}
 
 	
 	/*

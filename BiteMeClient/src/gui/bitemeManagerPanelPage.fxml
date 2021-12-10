@@ -67,7 +67,7 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="OpenCustomerAccount" alignment="CENTER" layoutX="378.0" layoutY="412.0" onMouseClicked="#OpenCustomerAccountClicked" prefHeight="25.0" prefWidth="400.0" text="Open customer account">
+      <Label id="btn" fx:id="OpenCustomerAccount" alignment="CENTER" layoutX="383.0" layoutY="412.0" onMouseClicked="#OpenCustomerAccountClicked" prefHeight="25.0" prefWidth="400.0" text="Open customer account">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -75,7 +75,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label id="btn" fx:id="OpenBusinessAccount" alignment="CENTER" layoutX="379.0" layoutY="462.0" onMouseClicked="#OpenBusinessAccountClicked" prefHeight="25.0" prefWidth="400.0" text="Open business account">
+      <Label id="btn" fx:id="OpenBusinessAccount" alignment="CENTER" layoutX="383.0" layoutY="462.0" onMouseClicked="#OpenBusinessAccountClicked" prefHeight="25.0" prefWidth="400.0" text="Open business account">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -91,7 +91,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label id="btn" fx:id="UpdateUserInformation" alignment="CENTER" layoutX="380.0" layoutY="312.0" onMouseClicked="#UpdateUserInformationClicked" prefHeight="25.0" prefWidth="400.0" text="Update user information">
+      <Label id="btn" fx:id="UpdateUserInformation" alignment="CENTER" layoutX="383.0" layoutY="312.0" onMouseClicked="#UpdateUserInformationClicked" prefHeight="25.0" prefWidth="400.0" text="Update user information">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -99,7 +99,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label id="btn" fx:id="viewMonthlyReports" alignment="CENTER" layoutX="382.0" layoutY="212.0" onMouseClicked="#viewMonthlyReportsClicked" prefHeight="25.0" prefWidth="400.0" text="View monthly reports">
+      <Label id="btn" fx:id="viewMonthlyReports" alignment="CENTER" layoutX="383.0" layoutY="212.0" onMouseClicked="#viewMonthlyReportsClicked" prefHeight="25.0" prefWidth="400.0" text="View monthly reports">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -107,7 +107,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label id="btn" fx:id="AuthorizedEmployerApproval" alignment="CENTER" layoutX="377.0" layoutY="362.0" onMouseClicked="#AuthorizedEmployerApprovalClicked" prefHeight="25.0" prefWidth="400.0" text="Authorized employer approval">
+      <Label id="btn" fx:id="AuthorizedEmployerApproval" alignment="CENTER" layoutX="383.0" layoutY="362.0" onMouseClicked="#AuthorizedEmployerApprovalClicked" prefHeight="25.0" prefWidth="400.0" text="Authorized employer approval">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -115,7 +115,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Label id="btn" fx:id="UploadQuarterlyReport" alignment="CENTER" layoutX="382.0" layoutY="262.0" onMouseClicked="#UploadQuarterlyReportClicked" prefHeight="25.0" prefWidth="400.0" text="Upload quarterly report">
+      <Label id="btn" fx:id="UploadQuarterlyReport" alignment="CENTER" layoutX="383.0" layoutY="262.0" onMouseClicked="#UploadQuarterlyReportClicked" prefHeight="25.0" prefWidth="400.0" text="Upload quarterly report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
