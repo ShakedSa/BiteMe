@@ -88,12 +88,12 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if(!rs.getString(2).equals(password)) {
+				if (!rs.getString(2).equals(password)) {
 					serverResponse.setMsg("Wrong Password");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if(rs.getString(8).equals("User")) {
+				if (rs.getString(8).equals("User")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
@@ -136,11 +136,12 @@ public class mysqlConnection {
 					rs = stmt.executeQuery();
 					String restaurantName = "";
 					int monthlyComission = 12;
+					ArrayList<Product> menu = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
 						monthlyComission = rs.getInt(3);
+						menu = getMenu(restaurantName);
 					}
-					ArrayList<Product> menu = getMenu(restaurantName);
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
 							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission, branch);
 					stmt.close();
@@ -173,12 +174,11 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
+			} else {
+				serverResponse.setMsg("not found");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
 			}
-			else {
-					serverResponse.setMsg("not found");
-					serverResponse.setServerResponse(null);
-					return serverResponse;
-				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -280,7 +280,7 @@ public class mysqlConnection {
 			stmt.setString(1, restaurantName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				menu.add(new Product(restaurantName, rs.getString(3), rs.getString(2), null, rs.getInt(4),
+				menu.add(new Product(restaurantName, rs.getString(3), rs.getString(2), null, rs.getFloat(4),
 						rs.getString(5)));
 			}
 		} catch (SQLException e) {
@@ -288,6 +288,24 @@ public class mysqlConnection {
 			return null;
 		}
 		return menu;
+	}
+
+	/**
+	 * Getting menu of a specific restaurant for orders.
+	 * 
+	 * @param restaurantName
+	 */
+	public static ServerResponse getMenuToOrder(String restaurantName) {
+		ServerResponse serverResponse = new ServerResponse("menu");
+		ArrayList<Product> menu = getMenu(restaurantName);
+		if (menu == null || menu.size() == 0) {
+			serverResponse.setMsg("Failed to get menu");
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(menu);
+		return serverResponse;
 	}
 
 	/**

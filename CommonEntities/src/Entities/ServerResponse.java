@@ -83,4 +83,9 @@ public class ServerResponse implements Serializable {
 		this.dataType = dataType;
 	}
 	
+	@Override
+	public String toString() {
+		return serverResponse.toString();
+	}
+	
 }

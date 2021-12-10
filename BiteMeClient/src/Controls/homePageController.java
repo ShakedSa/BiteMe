@@ -11,6 +11,7 @@ import java.util.Set;
 
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -139,7 +140,7 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void managerBtnClicked(MouseEvent event) {
-		if (router.getRestaurantselectionController() == null) {
+		if (router.getManagerPanelController() == null) {
 			AnchorPane mainContainer;
 			managerPanelController controller;
 			try {
@@ -168,7 +169,7 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void supplierBtnClicked(MouseEvent event) {
-		if (router.getRestaurantselectionController() == null) {
+		if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
 			supplierPanelController controller;
 			try {
@@ -287,14 +288,20 @@ public class homePageController implements Initializable {
 	 */
 	public void setProfile(boolean val) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		User user = (User) resUser.getServerResponse();
-		if (user != null)
-			userFirstName.setText(user.getFirstName());
-		setDefaults(user, val);
-		logOutBtn.setStyle("-fx-cursor: hand;");
-		profileBtn.setStyle("-fx-cursor: hand;");
-		restaurantBtn.setStyle("-fx-cursor: hand;");
-		homePageBtn.setStyle("-fx-cursor: hand;");
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				userFirstName.setText(user.getFirstName());
+				setDefaults(user, val);
+			}
+			logOutBtn.setStyle("-fx-cursor: hand;");
+			profileBtn.setStyle("-fx-cursor: hand;");
+			restaurantBtn.setStyle("-fx-cursor: hand;");
+			homePageBtn.setStyle("-fx-cursor: hand;");
+		}else {
+			userFirstName.setText("Guest");
+			setDefaults(null,false);
+		}
 	}
 
 	/**
@@ -305,12 +312,14 @@ public class homePageController implements Initializable {
 	@FXML
 	void logOutBtnClicked(MouseEvent event) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		User user = (User) resUser.getServerResponse();
-		if (user != null) {
-			ClientGUI.client.logout(user.getUserName());
-			ClientGUI.client.setUser(null);
-			userFirstName.setText("Guest");
-			setDefaults(user, false);
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				ClientGUI.client.logout(user.getUserName());
+				ClientGUI.client.setUser(null);
+				userFirstName.setText("Guest");
+				setDefaults(user, false);
+			}
 		}
 	}
 
@@ -320,6 +329,7 @@ public class homePageController implements Initializable {
 	 * @param boolean val
 	 */
 	private void setDefaults(boolean val) {
+		setAvatar();
 		logOutBtn.setVisible(val);
 		profileBtn.setVisible(val);
 		homePageBtn.setVisible(val);
@@ -332,35 +342,54 @@ public class homePageController implements Initializable {
 	 */
 	private void setDefaults(User user, boolean val) { // after logout: null,false, after login: manager,true
 		setDefaults(val);
-		if (user==null)
-		{
+		if (user == null) {
 			managerBtn.setVisible(val);
 			restaurantBtn.setVisible(val);
-			userFirstName.setText("Guest");
-		}
-		else
-		{
-				switch (user.getUserType()) {
-				case Customer:
-				case BusinessCustomer:
-					restaurantBtn.setVisible(val);
-					break;
-				case BranchManager:
-					managerBtn.setVisible(val);
-					break;
-				case Supplier:
-					supplierBtn.setVisible(val);
-					break;
-				case CEO:
-					ceoBtn.setVisible(val);
-					break;
-				case EmployerHR:
-					employerHRBtn.setVisible(val);
-					break;
+			supplierBtn.setVisible(val);
+		} else {
+			switch (user.getUserType()) {
+			case Customer:
+			case BusinessCustomer:
+				restaurantBtn.setVisible(val);
+				break;
+			case BranchManager:
+				managerBtn.setVisible(val);
+				break;
+			case Supplier:
+				supplierBtn.setVisible(val);
+				break;
+			case CEO:
+				ceoBtn.setVisible(val);
+				break;
+			case EmployerHR:
+				employerHRBtn.setVisible(val);
+				break;
 			}
 		}
 
+	}
 
+	private ImagePattern getAvatarImage() {
+		ServerResponse userResponse = ClientGUI.client.getUser();
+		if (userResponse == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		User user = (User) userResponse.getServerResponse();
+		if (user == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		switch (user.getUserType()) {
+		case Supplier:
+			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
+		case BranchManager:
+		case CEO:
+			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+		case Customer:
+		case BusinessCustomer:
+			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
+		default:
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
 	}
 
 	/**
@@ -370,8 +399,7 @@ public class homePageController implements Initializable {
 		try {
 			avatar.setArcWidth(65);
 			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			ImagePattern pattern = getAvatarImage();
 			avatar.setFill(pattern);
 			avatar.setEffect(new DropShadow(3, Color.BLACK));
 			avatar.setStyle("-fx-border-width: 0");

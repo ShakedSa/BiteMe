@@ -10,4 +10,5 @@ public interface ClientIF {
 	public ServerResponse getUser();
 	public void setRestaurants(ServerResponse restaurants);
 	public void setFavRestaurants(ServerResponse favRestaurants);
+	public void setMenu(ServerResponse menu);
 }

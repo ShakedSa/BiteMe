@@ -89,5 +89,10 @@ public class Supplier extends User{
 	public void setRelatedBranch(BranchName relatedBranch) {
 		this.relatedBranch = relatedBranch;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "Restaurant: " + restaurantName;
+	}
 
 }

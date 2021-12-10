@@ -1,5 +1,6 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,6 +8,7 @@ import Entities.ServerResponse;
 import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,6 +16,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -49,9 +52,9 @@ public class managerPanelController implements Initializable {
 
 	@FXML
 	private Text homePageBtn;
-	
-    @FXML
-    private Text managerPanelBtn;
+
+	@FXML
+	private Text managerPanelBtn;
 
 	@FXML
 	private ImageView leftArrowBtn;
@@ -62,17 +65,18 @@ public class managerPanelController implements Initializable {
 	@FXML
 	private Text profileBtn;
 
-    @FXML
-    private Label viewMonthlyReports;
+	@FXML
+	private Label viewMonthlyReports;
 
-    	
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		User user = (User)resUser.getServerResponse();
-		if (user != null) {
-			ClientGUI.client.logout(user.getUserName());
-			ClientGUI.client.getUser().setServerResponse(null);
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				ClientGUI.client.logout(user.getUserName());
+				ClientGUI.client.setUser(null);
+			}
 		}
 		router.getHomePageController().setProfile(false);
 		changeSceneToHomePage(false);
@@ -92,11 +96,31 @@ public class managerPanelController implements Initializable {
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
+		Object userResponse = ClientGUI.client.getUser();
+		Image avatarPicture = new Image(getClass().getResource("../images/guest-avatar.png").toString());
+		if (userResponse != null) {
+			User user = (User) ClientGUI.client.getUser().getServerResponse();
+			if (user != null) {
+				switch (user.getUserType()) {
+				case Supplier:
+					avatarPicture = new Image(getClass().getResource("../images/supplier-avatar.png").toString());
+					break;
+				case BranchManager:
+				case CEO:
+					avatarPicture = new Image(getClass().getResource("../images/manager-avatar.png").toString());
+					break;
+				case Customer:
+				case BusinessCustomer:
+					avatarPicture = new Image(getClass().getResource("../images/random-user.gif").toString());
+				default:
+					break;
+				}
+			}
+		}
 		try {
 			avatar.setArcWidth(65);
 			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+			ImagePattern pattern = new ImagePattern(avatarPicture);
 			avatar.setFill(pattern);
 			avatar.setEffect(new DropShadow(3, Color.BLACK));
 			avatar.setStyle("-fx-border-width: 0");
@@ -171,10 +195,11 @@ public class managerPanelController implements Initializable {
 		// stage.setScene(router.getHomePageController().getScene());
 		// stage.show();
 	}
-    @FXML
-    void viewMonthlyReportsClicked(MouseEvent event) {
 
-    }
+	@FXML
+	void viewMonthlyReportsClicked(MouseEvent event) {
+
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -182,7 +207,6 @@ public class managerPanelController implements Initializable {
 		router.setManagerPanelController(this);
 	}
 
-    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -192,8 +216,7 @@ public class managerPanelController implements Initializable {
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
 	}
-
 
 }

@@ -143,6 +143,8 @@ public class loginController implements Initializable {
 	private void changeScenes() {
 		if (ClientGUI.client.getUser() != null) {
 			router.getHomePageController().setProfile(true);
+		}else {
+			router.getHomePageController().setProfile(false);
 		}
 		stage.setTitle("BiteMe - HomePage");
 		stage.setScene(router.getHomePageController().getScene());

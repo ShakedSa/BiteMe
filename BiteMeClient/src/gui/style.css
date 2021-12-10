@@ -32,18 +32,20 @@
 }
 
 #order{
-	-fx-border-width:1;
+	-fx-border-width:0.5;
 	-fx-border-color: black;
-	-fx-border-radius: 5;
+	-fx-border-radius: 3;
 	-fx-cursor:hand;
-	-fx-padding: 5 35;
+	-fx-padding: 3 27.5;
 	-fx-background-color: #3180bc;
 	-fx-background-radius: 5;
 	-fx-font-famliy: 'Berlin Sans FB', sans-serif;
 	-fx-text-fill: white;
+	-fx-translate-x: -27.5;
+	-fx-translate-y: -5.5;
 }
 
 #order:hover{
-	-fx-background-color: #3180bc20;
+	-fx-background-color: #eee;
 	-fx-text-fill:black;
 }

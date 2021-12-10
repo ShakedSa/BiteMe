@@ -46,7 +46,6 @@ public class Client extends AbstractClient {
 	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
 		if (msg instanceof String) {
-			System.out.println((String) msg);
 			synchronized (ClientGUI.monitor) {
 				ClientGUI.monitor.notifyAll();
 			}
@@ -62,6 +61,9 @@ public class Client extends AbstractClient {
 			break;
 		case "FavRestaurants":
 			clientUI.setFavRestaurants(serverResponse); 
+			break;
+		case "menu":
+			clientUI.setMenu(serverResponse);
 			break;
 		default:
 			System.out.println("Null");

@@ -18,7 +18,6 @@ import ocsf.server.ConnectionToClient;
  * @version November 2021 (1.0)
  */
 
-
 public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
@@ -59,26 +58,30 @@ public class Server extends AbstractServer {
 		case "favRestaurants":
 			this.sendToClient(mysqlConnection.favRestaurants(), client);
 			break;
+		case "menu":
+			this.sendToClient(mysqlConnection.getMenuToOrder(m.get(1)), client);
 		default:
-			sendToClient("default",client);
+			sendToClient("default", client);
 			break;
 		}
 
 	}
 
-	  /**
-	   * sendToClient method will send the received msg to a specific client
-	 * @param msg - object to send
+	/**
+	 * sendToClient method will send the received msg to a specific client
+	 * 
+	 * @param msg    - object to send
 	 * @param client - receiving client
 	 */
 	public void sendToClient(Object msg, ConnectionToClient client) {
-	      try
-	      {		
-	    	  client.sendToClient(msg);
-	      }
-	      catch (Exception ex) {System.out.println(" Error sending msg to client !");}
-	  }
-	
+		try {
+			client.sendToClient(msg);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println(" Error sending msg to client !");
+		}
+	}
+
 	/**
 	 * Overridden method from AbstractServer. Gets invoke when the server starts and
 	 * sending a message to the gui.

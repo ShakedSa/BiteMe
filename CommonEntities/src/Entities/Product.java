@@ -1,5 +1,6 @@
 package Entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,8 +9,12 @@ import java.util.ArrayList;
  * int productID, String type, String dishName, ArrayList<Component> components, float price
  */
 
-public class Product {
+public class Product implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3079554028160660848L;
 	private String restaurantName;
 	private String type;
 	private String dishName;
@@ -88,6 +93,11 @@ public class Product {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	@Override
+	public String toString() {
+		return dishName + "<" + price + ">";
 	}
 	
 }

@@ -8,6 +8,8 @@ public class Router {
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
 	private supplierPanelController SupplierPanelController;
+	private identifyController IdentifyController;
+	private restaurantMenuController RestaurantMenuController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -81,7 +83,36 @@ public class Router {
 	public supplierPanelController getSupplierPanelController() {
 		return SupplierPanelController;
 	}
+	
+	/**
+	 * @return the identifyController
+	 */
+	public identifyController getIdentifyController() {
+		return IdentifyController;
+	}
 
+	/**
+	 * @param identifyController the identifyController to set
+	 */
+	public void setIdentifyController(identifyController identifyController) {
+		IdentifyController = identifyController;
+	}
+
+	/**
+	 * @return the restaurantMenuController
+	 */
+	public restaurantMenuController getRestaurantMenuController() {
+		return RestaurantMenuController;
+	}
+
+	/**
+	 * @param restaurantMenuController the restaurantMenuController to set
+	 */
+	public void setRestaurantMenuController(restaurantMenuController restaurantMenuController) {
+		RestaurantMenuController = restaurantMenuController;
+	}
+
+	
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open

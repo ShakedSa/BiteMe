@@ -49,7 +49,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.homePageController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Text fx:id="loginBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#displayLoginScreen" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
+      <Text id="link" fx:id="loginBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#displayLoginScreen" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -157,7 +157,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <Text fx:id="logOutBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#logOutBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true" visible="false">
+      <Text id="link" fx:id="logOutBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#logOutBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true" visible="false">
          <font>
             <Font size="14.0" />
          </font>
@@ -167,7 +167,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="profileBtn" layoutX="744.0" layoutY="48.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" visible="false">
+      <Text id="link" fx:id="profileBtn" layoutX="744.0" layoutY="48.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" visible="false">
          <font>
             <Font size="14.0" />
          </font>

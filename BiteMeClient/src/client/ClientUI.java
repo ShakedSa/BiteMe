@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import ClientServerComm.Client;
 import Entities.ServerResponse;
@@ -23,7 +24,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -103,7 +104,19 @@ public class ClientUI implements ClientIF {
 			return; 
 		}
 	}
-
+	
+	public void getRestaurantMenu(String restaurantName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("menu");
+			arr.add(restaurantName);
+			System.out.println(arr);
+			client.handleMessageFromClientUI(arr);
+		}catch(Exception e){
+			e.printStackTrace();
+			return;
+		}
+	}
 	/**
 	 * A must implemented method from ChatIF interface.
 	 * 
@@ -153,5 +166,13 @@ public class ClientUI implements ClientIF {
 
 	public ServerResponse getFavRestaurants() {
 		return ResFavRestaurants;
+	}
+	
+	public void setMenu(ServerResponse menu) {
+		ResRestaurantMenu = menu;
+	}
+	
+	public ServerResponse getMenu() {
+		return ResRestaurantMenu;
 	}
 }

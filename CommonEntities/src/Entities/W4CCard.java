@@ -76,6 +76,14 @@ public class W4CCard implements Serializable {
 	public void setDailyBudget(float dailyBudget) {
 		this.dailyBudget = dailyBudget;
 	}
+	
+	public int getW4CID() {
+		return w4cID;
+	}
+	
+	public String getQRCode() {
+		return qrCode;
+	}
 
 	
 }

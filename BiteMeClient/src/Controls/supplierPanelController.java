@@ -71,10 +71,12 @@ public class supplierPanelController implements Initializable {
     @FXML
     void logoutClicked(MouseEvent event) {
     	ServerResponse resUser = ClientGUI.client.getUser();
-		User user = (User)resUser.getServerResponse();
-		if (user != null) {
-			ClientGUI.client.logout(user.getUserName());
-			ClientGUI.client.getUser().setServerResponse(null);
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				ClientGUI.client.logout(user.getUserName());
+				ClientGUI.client.setUser(null);
+			}
 		}
 		router.getHomePageController().setProfile(false);
 		changeSceneToHomePage(false);

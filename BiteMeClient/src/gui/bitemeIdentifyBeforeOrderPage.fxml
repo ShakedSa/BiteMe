@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.identifyController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text id="link" fx:id="logoutBtn" layoutX="691.0" layoutY="48.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text id="active" fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text id="link" fx:id="profileBtn" layoutX="745.0" layoutY="48.0" onMouseClicked="#openProfile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="homePageBtn" layoutX="287.0" layoutY="54.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+         <image>
+            <Image url="@../images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering">
+         <font>
+            <Font name="Berlin Sans FB" size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="w4cCodeFieldTxt" layoutX="82.0" layoutY="272.0" promptText="W4C Code" />
+      <Button fx:id="QRBtn" layoutX="645.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#QRClicked" text="QR Reader">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="identifyBtn" layoutX="82.0" layoutY="307.0" mnemonicParsing="false" onMouseClicked="#identifyClicked" text="Identify">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToRestaurants" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@../images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <Circle fill="DODGERBLUE" layoutX="230.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="253.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="304.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="326.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="377.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="400.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="451.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="474.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="525.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="547.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#1f93ff00" layoutX="598.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="637.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Label fx:id="errorMsg" layoutX="82.0" layoutY="358.0" textFill="RED">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
