@@ -200,18 +200,7 @@ public class loginController implements Initializable {
 	}
 
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		router.setAvatar(avatar);
 	}
 
 	@Override

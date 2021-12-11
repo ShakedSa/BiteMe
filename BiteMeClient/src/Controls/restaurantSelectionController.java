@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +32,7 @@ import javafx.stage.Stage;
 
 public class restaurantSelectionController implements Initializable {
 
+	public final UserType type= UserType.Customer;
 	private Router router;
 
 	private Stage stage;

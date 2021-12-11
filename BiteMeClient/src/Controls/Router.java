@@ -7,7 +7,12 @@ import Entities.User;
 import client.ClientGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Router {
@@ -345,6 +350,46 @@ public class Router {
 		stage.setTitle("BiteMe - HomePage");
 		stage.setScene(router.getHomePageController().getScene());
 		stage.show();
+	}
+	
+	public Rectangle setAvatar(Rectangle avatar) {
+		try {
+			avatar.setArcWidth(65);
+			avatar.setArcHeight(65);
+			ImagePattern pattern = getAvatarImage();
+			avatar.setFill(pattern);
+			avatar.setEffect(new DropShadow(3, Color.BLACK));
+			avatar.setStyle("-fx-border-width: 0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return avatar;
+	}
+	
+	ImagePattern getAvatarImage() {
+		ServerResponse userResponse = ClientGUI.client.getUser();
+		if (userResponse == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		User user = (User) userResponse.getServerResponse();
+		if (user == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		switch (user.getUserType()) {
+		case Supplier:
+			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
+		case BranchManager:
+			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+		case CEO:
+			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+		case Customer:
+			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
+		case EmployerHR:
+			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
+		default:
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
 	}
 	/*
 	 * public static void show(Object c) { //

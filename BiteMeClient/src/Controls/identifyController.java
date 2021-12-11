@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import Entities.Customer;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +29,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class identifyController implements Initializable {
+/**
+ * @author Eden
+ * Controller for customer identification by QR code/W4C id
+ */
+public class identifyController implements Initializable { 
 
+	public final UserType type= UserType.Customer;
+	
 	private Router router;
 
 	private Stage stage;
@@ -236,17 +243,7 @@ public class identifyController implements Initializable {
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = getAvatarImage();
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		router.setAvatar(avatar);
 	}
 
 	public void setStage(Stage stage) {

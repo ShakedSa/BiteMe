@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,7 @@ import javafx.stage.Stage;
 
 public class restaurantMenuController implements Initializable {
 
+	public final UserType type= UserType.Customer;
 	private Router router;
 
 	private Stage stage;

@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,7 +22,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class employerHRPanelController implements Initializable{
-	
+
+	public final UserType type= UserType.EmployerHR;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -74,18 +76,7 @@ public class employerHRPanelController implements Initializable{
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/HR-avatar.png").toString()));
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		router.setAvatar(avatar);
 	}
 
     
