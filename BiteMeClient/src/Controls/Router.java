@@ -2,6 +2,9 @@ package Controls;
 
 import java.io.IOException;
 
+import Entities.ServerResponse;
+import Entities.User;
+import client.ClientGUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -292,7 +295,6 @@ public class Router {
 	}
 	
 	public void showProfile() {
-		System.out.println("test");
 		AnchorPane mainContainer;
 		if(ProfileController == null) // first time clicking profile
 		{
@@ -323,8 +325,27 @@ public class Router {
 		}
 	}
 
-
+	public void logOut()
+	{
+    	ServerResponse resUser = ClientGUI.client.getUser();
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				ClientGUI.client.logout(user.getUserName());
+				ClientGUI.client.setUser(null);
+			}
+		}
+		router.getHomePageController().setProfile(false);
+		changeSceneToHomePage();
+    }
 	
+	
+	public void changeSceneToHomePage()
+	{
+		stage.setTitle("BiteMe - HomePage");
+		stage.setScene(router.getHomePageController().getScene());
+		stage.show();
+	}
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open

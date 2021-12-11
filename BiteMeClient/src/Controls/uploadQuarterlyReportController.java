@@ -67,26 +67,13 @@ public class uploadQuarterlyReportController implements Initializable{
 
     @FXML
     void logoutClicked(MouseEvent event) {
-    	ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) {
-			User user = (User) resUser.getServerResponse();
-			if (user != null) {
-				ClientGUI.client.logout(user.getUserName());
-				ClientGUI.client.setUser(null);
-			}
-		}
-		router.getHomePageController().setProfile(false);
-		changeSceneToHomePage(false);
+    	router.logOut();
     }
 
-    @FXML
-    void openProfile(MouseEvent event) {
-
-    }
     
     @FXML
     void returnToHomePage(MouseEvent event) {
-    	changeSceneToHomePage(true);
+    	router.changeSceneToHomePage();
     }
 
     @FXML
@@ -122,12 +109,13 @@ public class uploadQuarterlyReportController implements Initializable{
 
     }
     
-    void changeSceneToHomePage(boolean val) {
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(router.getHomePageController().getScene());
-		stage.show();
-	}
     
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
+	
+	
     /**
 	 * Setting the avatar image of the user.
 	 */

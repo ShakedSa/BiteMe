@@ -342,10 +342,16 @@ public class homePageController implements Initializable {
 				userFirstName.setText(user.getFirstName());
 				setDefaults(user, val);
 			}
+			else
+			{
+				userFirstName.setText("Guest");
+				setDefaults(null,false);
+			}
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
 			homePageBtn.setStyle("-fx-cursor: hand;");
+			
 		}
 		else
 		{
@@ -361,16 +367,7 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void logOutBtnClicked(MouseEvent event) {
-		ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) {
-			User user = (User) resUser.getServerResponse();
-			if (user != null) {
-				ClientGUI.client.logout(user.getUserName());
-				ClientGUI.client.setUser(null);
-				userFirstName.setText("Guest");
-				setDefaults(user, false);
-			}
-		}
+		router.logOut();
 	}
 
 	/**
@@ -396,7 +393,10 @@ public class homePageController implements Initializable {
 			managerBtn.setVisible(val);
 			restaurantBtn.setVisible(val);
 			supplierBtn.setVisible(val);
-		} else {
+			employerHRBtn.setVisible(val);
+			ceoBtn.setVisible(val);
+		} 
+		else {
 			switch (user.getUserType()) {
 			case Customer:
 				restaurantBtn.setVisible(val);

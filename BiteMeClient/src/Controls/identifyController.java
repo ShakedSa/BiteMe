@@ -162,28 +162,7 @@ public class identifyController implements Initializable {
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
-		ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) {
-			User user = (User) resUser.getServerResponse();
-			if (user != null) {
-				ClientGUI.client.logout(user.getUserName());
-				ClientGUI.client.setUser(null);
-			}
-		}
-		router.getHomePageController().setProfile(false);
-		changeSceneToHomePage(false);
-	}
-
-	void changeSceneToHomePage(boolean val) {
-		w4cCodeFieldTxt.clear();
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(router.getHomePageController().getScene());
-		stage.show();
-	}
-
-	@FXML
-	void openProfile(MouseEvent event) {
-
+		router.logOut();
 	}
 
 	/**
@@ -191,7 +170,8 @@ public class identifyController implements Initializable {
 	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		changeSceneToHomePage(true);
+		w4cCodeFieldTxt.clear();
+		router.changeSceneToHomePage();
 	}
 
 	/**
