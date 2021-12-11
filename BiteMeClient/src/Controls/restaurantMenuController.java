@@ -292,4 +292,8 @@ public class restaurantMenuController implements Initializable {
 		desserts.setContent(dessert);
 
 	}
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 }

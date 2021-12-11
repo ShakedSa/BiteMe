@@ -1,5 +1,10 @@
 package Controls;
 
+import java.io.IOException;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Router {
@@ -286,7 +291,38 @@ public class Router {
 		this.stage = stage;
 	}
 	
-	
+	public void showProfile() {
+		System.out.println("test");
+		AnchorPane mainContainer;
+		if(ProfileController == null) // first time clicking profile
+		{
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
+				mainContainer = loader.load();
+				ProfileController = loader.getController();
+				ProfileController.setAvatar();
+				ProfileController.initProfile();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				ProfileController.setScene(mainScene);
+				stage.setTitle("BiteMe - Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		else // profile already been clicked before (not necessarily same user)
+		{
+			ProfileController.initProfile();
+			stage.setTitle("BiteMe - Profile");
+			stage.setScene(ProfileController.getScene());
+			stage.show();
+		}
+	}
+
 
 	
 	/*

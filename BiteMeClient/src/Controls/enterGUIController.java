@@ -113,5 +113,9 @@ public class enterGUIController implements Initializable {
 		router.setEnterguicontroller(this);
 		setStage(router.getStage());
 	}
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
 }

@@ -326,6 +326,7 @@ public class managerPanelController implements Initializable {
 		this.stage = stage;
 	}
 	
+
 	public AnchorPane getMainContainer() {
 		return mainContainer;
 	}
@@ -334,5 +335,11 @@ public class managerPanelController implements Initializable {
 		this.mainContainer = mainContainer;
 	}
 	
+
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
+
 
 }
