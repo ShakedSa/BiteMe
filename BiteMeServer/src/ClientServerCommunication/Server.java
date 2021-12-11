@@ -60,6 +60,10 @@ public class Server extends AbstractServer {
 			break;
 		case "menu":
 			this.sendToClient(mysqlConnection.getMenuToOrder(m.get(1)), client);
+			break;
+		case "componentsInProduct":
+			this.sendToClient(mysqlConnection.getComponentsInProduct(m.get(1), m.get(2)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

@@ -134,7 +134,6 @@ public class identifyController implements Initializable {
 	}
 
 	private void changeToRestaurantMenuPage() {
-		System.out.println(restaurantsName);
 		w4cCodeFieldTxt.clear();
 		router = Router.getInstance();
 		if(router.getRestaurantMenuController() == null) {

@@ -24,7 +24,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -94,29 +94,59 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
+	/**
+	 * Getting 6 favorite restaurants in the db to display on home page.
+	 * 
+	 */
 	public void favRestaurantsRequest() {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("favRestaurants");
 			client.handleMessageFromClientUI(arr);
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			e.printStackTrace();
-			return; 
+			return;
 		}
 	}
-	
+
+	/**
+	 * Sending a query request from the server. Getting the menu of a certain
+	 * restaurant.
+	 * 
+	 * @param restaurantName
+	 */
 	public void getRestaurantMenu(String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("menu");
 			arr.add(restaurantName);
-			System.out.println(arr);
 			client.handleMessageFromClientUI(arr);
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
+
+	/**
+	 * Sending a query request from the server, Getting the optional components for
+	 * a certain product.
+	 * 
+	 * @param restaurantName
+	 * @param productName
+	 */
+	public void componentsInProduct(String restaurantName, String productName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("componentsInProduct");
+			arr.add(restaurantName);
+			arr.add(productName);
+			client.handleMessageFromClientUI(arr);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
 	/**
 	 * A must implemented method from ChatIF interface.
 	 * 
@@ -161,18 +191,26 @@ public class ClientUI implements ClientIF {
 
 	public void setFavRestaurants(ServerResponse favRestaurants) {
 		this.ResFavRestaurants = favRestaurants;
-		
+
 	}
 
 	public ServerResponse getFavRestaurants() {
 		return ResFavRestaurants;
 	}
-	
+
 	public void setMenu(ServerResponse menu) {
 		ResRestaurantMenu = menu;
 	}
-	
+
 	public ServerResponse getMenu() {
 		return ResRestaurantMenu;
+	}
+
+	public void setOptionalComponentsInProduct(ServerResponse optionalComponents) {
+		ResComponentsInProducts = optionalComponents;
+	}
+	
+	public ServerResponse getOptionalComponentsInProduct() {
+		return ResComponentsInProducts;
 	}
 }

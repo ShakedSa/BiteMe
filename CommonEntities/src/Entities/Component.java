@@ -1,5 +1,7 @@
 package Entities;
 
+import java.io.Serializable;
+
 import Enums.Doneness;
 import Enums.Size;
 
@@ -11,7 +13,11 @@ import Enums.Size;
 	 Size size;
 	 Doneness doneness;
  */
-public class Component { 
+public class Component implements Serializable { 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9060288320679741380L;
 	private int componentId;
 	private String restrictions;
 	private Size size;
@@ -24,7 +30,7 @@ public class Component {
 	 * @param doneness
 	 * @param restrictions
 	 */
-	Component(Size size,Doneness doneness,String restrictions ) {
+	public Component(Size size,Doneness doneness,String restrictions ) {
 		this.size=size;
 		this.doneness=doneness;
 		this.restrictions=restrictions;
@@ -37,7 +43,7 @@ public class Component {
 	 * @param doneness
 	 * @param restrictions
 	 */
-	Component(int componentId, Size size,Doneness doneness,String restrictions ) {
+	public Component(int componentId, Size size,Doneness doneness,String restrictions) {
 		this.componentId=componentId;
 		this.size=size;
 		this.doneness=doneness;
@@ -55,7 +61,18 @@ public class Component {
 	public Doneness getDoneness() {
 		return doneness;
 	}
-
 	
-	
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		if(size != null) {
+			b.append(size);
+		}
+		if(doneness != null) {
+			b.append(doneness);
+		}
+		if(restrictions != null) {
+			b.append(restrictions);
+		}
+		return b.toString();
+	}
 }
