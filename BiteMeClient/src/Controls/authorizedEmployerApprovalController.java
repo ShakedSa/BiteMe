@@ -31,7 +31,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 	private Scene scene;
 	
     @FXML
-    private Text CEOPanelBtn;
+    private Text managerPanelBtn;
 
     @FXML
     private Label approvalBtn;

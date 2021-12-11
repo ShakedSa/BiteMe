@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.updateUserInformationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.updateUserInformationController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
@@ -58,7 +58,7 @@
          </cursor>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+      <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
