@@ -13,6 +13,7 @@ import java.util.HashMap;
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.CEO;
+import Entities.Component;
 import Entities.Customer;
 import Entities.EmployerHR;
 import Entities.Product;
@@ -21,6 +22,8 @@ import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
 import Enums.BranchName;
+import Enums.Doneness;
+import Enums.Size;
 import Enums.Status;
 import Enums.UserType;
 
@@ -144,7 +147,8 @@ public class mysqlConnection {
 						menu = getMenu(restaurantName);
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission, restaurantAddress); // change last input from branch to restaurantAddress - aviel
+							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission,
+							restaurantAddress); // change last input from branch to restaurantAddress - aviel
 					stmt.close();
 					break;
 				case BranchManager:
@@ -307,6 +311,58 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		serverResponse.setServerResponse(menu);
 		return serverResponse;
+	}
+
+	/**
+	 * Query to get all optional components for a certain dish.
+	 * 
+	 * @param restaurantName
+	 * @param productName
+	 */
+	public static ServerResponse getComponentsInProduct(String restaurantName, String productName) {
+		ServerResponse serverResponse = new ServerResponse("optionalComponents");
+		ArrayList<Component> components = new ArrayList<>();
+		PreparedStatement stmt;
+		try {
+			String query = "SELECT ComponentID FROM bitemedb.componentinproduct WHERE RestaurantName = ? AND DishName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setString(2, productName);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				components.add(getComponent(rs.getInt(1)));
+			}
+			serverResponse.setMsg("Success");
+			serverResponse.setServerResponse(components);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed to get components");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
+	}
+
+	private static Component getComponent(int componentID) throws SQLException {
+		Component component;
+		PreparedStatement stmt;
+		String query = "SELECT * FROM bitemedb.optionalcomponents WHERE ComponentID = ?";
+		stmt = conn.prepareStatement(query);
+		stmt.setInt(1, componentID);
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			Size size = null;
+			if(rs.getString(2) != null && !rs.getString(2).equals("")) {
+				size = Size.valueOf(rs.getString(2));
+			}
+			Doneness doneness = null;
+			if(rs.getString(3) != null && !rs.getString(3).equals("")) {
+				doneness = Doneness.valueOf(rs.getString(3));
+			}
+			component = new Component(componentID, size, doneness, rs.getString(4));
+		} else {
+			throw new SQLException("Component not found");
+		}
+		return component;
 	}
 
 	/**

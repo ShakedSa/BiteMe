@@ -65,6 +65,10 @@ public class Client extends AbstractClient {
 		case "menu":
 			clientUI.setMenu(serverResponse);
 			break;
+		case "optionalComponents":
+			System.out.println(serverResponse.getServerResponse());
+			clientUI.setOptionalComponentsInProduct(serverResponse);
+			break;
 		default:
 			System.out.println("Null");
 		}

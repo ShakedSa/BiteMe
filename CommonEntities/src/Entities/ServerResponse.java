@@ -8,7 +8,7 @@ import java.io.Serializable;
  * This class holds the object with the proper class for the request.
  * 
  * @author Shaked
- * */
+ */
 public class ServerResponse implements Serializable {
 	/**
 	 * 
@@ -17,11 +17,10 @@ public class ServerResponse implements Serializable {
 	private Object serverResponse;
 	private String msg;
 	private String dataType;
-	
-	
+
 	public ServerResponse() {
 	}
-	
+
 	/**
 	 * @param dataType
 	 */
@@ -34,8 +33,7 @@ public class ServerResponse implements Serializable {
 	 * @param msg
 	 * @param dataType
 	 */
-	public ServerResponse(Object serverReponse, String msg, String dataType)
-	{
+	public ServerResponse(Object serverReponse, String msg, String dataType) {
 		this.serverResponse = serverResponse;
 		this.msg = msg;
 		this.dataType = dataType;
@@ -82,10 +80,13 @@ public class ServerResponse implements Serializable {
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-	
+
 	@Override
 	public String toString() {
-		return serverResponse.toString();
+		if (serverResponse != null) {
+			return serverResponse.toString();
+		}
+		return "Null object";
 	}
-	
+
 }
