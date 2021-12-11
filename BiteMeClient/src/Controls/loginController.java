@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import Entities.User;
 import client.ClientGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -226,5 +227,10 @@ public class loginController implements Initializable {
 
 	public Scene getScene() {
 		return scene;
+	}
+	
+	@FXML
+	public void onEnter(ActionEvent ae){
+		loginClicked(null);
 	}
 }

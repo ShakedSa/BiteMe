@@ -75,6 +75,13 @@ public class addNewSupplierController implements Initializable{
 
     }
 
+
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
+
+	
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
