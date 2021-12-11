@@ -4,43 +4,42 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entities.ServerResponse;
-import Entities.User;
-import Enums.UserType;
-import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class addNewSupplierController implements Initializable{
+public class editMenuItemController implements Initializable{
 	
-	public final UserType type= UserType.BranchManager;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
     @FXML
-    private Label addSupplierBtn;
+    private Label addItemToMenuBtn;
 
     @FXML
     private Rectangle avatar;
 
     @FXML
+    private TextArea descriptionTxtArea;
+
+    @FXML
     private Text homePageBtn;
+
+    @FXML
+    private TextField itemsNameTxtField;
 
     @FXML
     private ImageView leftArrowBtn;
@@ -49,44 +48,36 @@ public class addNewSupplierController implements Initializable{
     private Text logoutBtn;
 
     @FXML
-    private Text managerPanelBtn;
+    private TextField optionalComponentsTxtField;
 
     @FXML
-    private ComboBox<?> monthlyCommitionBox;
+    private Spinner<?> priceSpinner;
 
     @FXML
     private Text profileBtn;
 
     @FXML
-    private TextField restaurantAddressTxtField;
+    private ComboBox<?> selectTypeBox;
 
     @FXML
-    private TextField restaurantManagerNameTxtField;
+    private Text supplierPanelBtn;
 
     @FXML
-    private TextField restaurantNameTxtField;
+    private Label uploadImageBtn;
 
     @FXML
-    private TextField restaurantTypeTxtField;
-
-    @FXML
-    private ImageView uploadImage;
-
-    @FXML
-    void addSupplierClicked(MouseEvent event) {
+    void addItemToMenuClicked(MouseEvent event) {
 
     }
 
-
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-	}
-
-	
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
+    }
+
+    @FXML
+    void profileBtnClicked(MouseEvent event) {
+    	router.showProfile();
     }
 
     @FXML
@@ -95,29 +86,29 @@ public class addNewSupplierController implements Initializable{
     }
 
     @FXML
-    void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
+    void returnToSupplierPanel(MouseEvent event) {
+    	if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
-			managerPanelController controller;
+			supplierPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
+				stage.setTitle("BiteMe - Supplier Panel");
 				stage.setScene(mainScene);
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return;
+				return; 
 			}
 		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
 			stage.show();
 		}
     }
@@ -131,14 +122,14 @@ public class addNewSupplierController implements Initializable{
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		router.setAvatar(avatar);
+		//router.setAvatar(avatar);
 	}
 
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setAddNewSupplierController(this);
+		router.setEditMenuItemController(this);
 		setStage(router.getStage());
 	}
 

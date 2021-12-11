@@ -9,22 +9,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewItemController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
-         <image>
-            <Image url="@images/bag-icon.gif" />
-         </image>
-      </ImageView>
-      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
-      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -66,7 +58,7 @@
       <Text fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <TextField fx:id="itemsNameTxtField" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
       <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
-      <Spinner fx:id="priceSpinner" editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
+      <Spinner fx:id="priceSpinner" editable="true" layoutX="383.0" layoutY="313.0" prefHeight="26.0" prefWidth="152.0" />
       <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="393.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
       <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
       <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
@@ -130,7 +122,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="uploadImageBtn" alignment="CENTER" layoutX="382.0" layoutY="355.0" onMouseClicked="#uploadImageClicked" prefHeight="25.0" prefWidth="152.0" text="upload">
+      <Label id="btn" fx:id="uploadImageBtn" alignment="CENTER" layoutX="382.0" layoutY="356.0" onMouseClicked="#uploadImageClicked" prefHeight="25.0" prefWidth="152.0" text="upload">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>

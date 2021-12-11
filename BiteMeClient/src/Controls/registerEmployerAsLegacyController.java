@@ -4,37 +4,27 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entities.ServerResponse;
-import Entities.User;
-import Enums.UserType;
-import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class addNewSupplierController implements Initializable{
+public class registerEmployerAsLegacyController implements Initializable{
 	
-	public final UserType type= UserType.BranchManager;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
     @FXML
-    private Label addSupplierBtn;
+    private Text CEOPanelBtn;
 
     @FXML
     private Rectangle avatar;
@@ -49,96 +39,74 @@ public class addNewSupplierController implements Initializable{
     private Text logoutBtn;
 
     @FXML
-    private Text managerPanelBtn;
-
-    @FXML
-    private ComboBox<?> monthlyCommitionBox;
-
-    @FXML
     private Text profileBtn;
 
     @FXML
-    private TextField restaurantAddressTxtField;
+    private Label registerBtn;
 
     @FXML
-    private TextField restaurantManagerNameTxtField;
+    private TextField userNameTxtField;
 
-    @FXML
-    private TextField restaurantNameTxtField;
-
-    @FXML
-    private TextField restaurantTypeTxtField;
-
-    @FXML
-    private ImageView uploadImage;
-
-    @FXML
-    void addSupplierClicked(MouseEvent event) {
-
-    }
-
-
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-	}
-
-	
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
     }
-
+    
     @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
+    void profileBtnClicked(MouseEvent event) {
+    	router.showProfile();
     }
 
     @FXML
-    void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
+    void registerBtnClicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void returnToEmployerHRPanel(MouseEvent event) {
+    	if (router.getEmployerHRPanelController() == null) {
 			AnchorPane mainContainer;
-			managerPanelController controller;
+			employerHRPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
+				stage.setTitle("BiteMe - Employer HR Panel");
 				stage.setScene(mainScene);
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return;
+				return; 
 			}
 		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
+			stage.setTitle("BiteMe - Employer HR Panel");
+			stage.setScene(router.getEmployerHRPanelController().getScene());
 			stage.show();
 		}
     }
 
     @FXML
-    void uploadImageClicked(MouseEvent event) {
-
+    void returnToHomePage(MouseEvent event) {
+    	router.changeSceneToHomePage();
     }
     
     /**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		router.setAvatar(avatar);
+		//router.setAvatar(avatar);
 	}
 
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setAddNewSupplierController(this);
+		router.setRegisterEmployerAsLegacyController(this);
 		setStage(router.getStage());
 	}
 

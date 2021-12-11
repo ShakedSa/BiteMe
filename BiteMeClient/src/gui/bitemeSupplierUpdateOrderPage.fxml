@@ -20,12 +20,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/biteme-logo.gif" />
+            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/bitme-slogan.gif" />
+            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="130.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Number">
@@ -59,7 +59,7 @@
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#supplierPanelClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
+      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -94,7 +94,7 @@
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
          <image>
-            <Image url="@images/arrow.gif" />
+            <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

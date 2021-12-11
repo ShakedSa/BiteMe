@@ -223,27 +223,27 @@ public class profileController implements Initializable{
 
     @FXML
     void employerHRBtnClicked(MouseEvent event) {
-
+    	router.getHomePageController().employerHRBtnClicked(event);
     }
 
 
 
     @FXML
     void managerBtnClicked(MouseEvent event) {
-
+    	router.getHomePageController().managerBtnClicked(event);
     }
 
 
 
     @FXML
     void restaurantBtnClicked(MouseEvent event) {
-
+    	router.getHomePageController().restaurantBtnClicked(event);
     }
 
 
     @FXML
     void supplierBtnClicked(MouseEvent event) {
-
+    	router.getHomePageController().supplierBtnClicked(event);
     }
 	///
 

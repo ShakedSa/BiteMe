@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entities.ServerResponse;
-import Entities.User;
-import Enums.UserType;
-import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -26,15 +24,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class addNewSupplierController implements Initializable{
+public class supplierUpdateOrderController implements Initializable{
 	
-	public final UserType type= UserType.BranchManager;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
     @FXML
-    private Label addSupplierBtn;
+    private TextField OrderNumberTxtField;
 
     @FXML
     private Rectangle avatar;
@@ -43,50 +40,64 @@ public class addNewSupplierController implements Initializable{
     private Text homePageBtn;
 
     @FXML
+    private ComboBox<?> hourBox;
+
+    @FXML
+    private RadioButton includeDeliveryBtn;
+
+    @FXML
     private ImageView leftArrowBtn;
 
     @FXML
     private Text logoutBtn;
 
     @FXML
-    private Text managerPanelBtn;
+    private ComboBox<?> minutesBox;
 
     @FXML
-    private ComboBox<?> monthlyCommitionBox;
+    private RadioButton notIncludeDeliveryBtn;
+
+    @FXML
+    private CheckBox orderIsReadyBox;
+
+    @FXML
+    private CheckBox orderReceivedBox;
 
     @FXML
     private Text profileBtn;
 
     @FXML
-    private TextField restaurantAddressTxtField;
+    private Label searchBtn;
 
     @FXML
-    private TextField restaurantManagerNameTxtField;
+    private Text supplierPanelBtn;
 
     @FXML
-    private TextField restaurantNameTxtField;
+    private Label updateOrderBtn;
 
     @FXML
-    private TextField restaurantTypeTxtField;
+    void UpdateOrderClicked(MouseEvent event) {
+    	
+    }
 
     @FXML
-    private ImageView uploadImage;
-
-    @FXML
-    void addSupplierClicked(MouseEvent event) {
+    void chooseHour(MouseEvent event) {
 
     }
 
+    @FXML
+    void chooseMinutes(MouseEvent event) {
 
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-	}
+    }
 
-	
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
+    }
+
+    @FXML
+    void profileBtnClicked(MouseEvent event) {
+    	router.showProfile();
     }
 
     @FXML
@@ -95,35 +106,35 @@ public class addNewSupplierController implements Initializable{
     }
 
     @FXML
-    void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
+    void returnToSupplierPanel(MouseEvent event) {
+    	if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
-			managerPanelController controller;
+			supplierPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
+				stage.setTitle("BiteMe - Supplier Panel");
 				stage.setScene(mainScene);
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return;
+				return; 
 			}
 		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
 			stage.show();
 		}
     }
 
     @FXML
-    void uploadImageClicked(MouseEvent event) {
+    void searchClicked(MouseEvent event) {
 
     }
     
@@ -131,14 +142,14 @@ public class addNewSupplierController implements Initializable{
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		router.setAvatar(avatar);
+		//router.setAvatar(avatar);
 	}
 
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setAddNewSupplierController(this);
+		router.setSupplierUpdateOrderController(this);
 		setStage(router.getStage());
 	}
 

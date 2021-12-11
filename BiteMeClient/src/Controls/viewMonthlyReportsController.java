@@ -124,7 +124,7 @@ public class viewMonthlyReportsController implements Initializable{
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setViewMonthlyReportController(this);
+		router.setViewMonthlyReportsController(this);
 		setStage(router.getStage());
 	}
 
