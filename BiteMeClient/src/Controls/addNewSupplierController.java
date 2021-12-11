@@ -125,12 +125,6 @@ public class addNewSupplierController implements Initializable{
 
     }
     
-    void changeSceneToHomePage(boolean val) {
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(router.getHomePageController().getScene());
-		stage.show();
-	}
-    
     /**
 	 * Setting the avatar image of the user.
 	 */

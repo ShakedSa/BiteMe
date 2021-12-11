@@ -78,7 +78,10 @@
       </ImageView>
       <Line endX="-82.0" layoutX="247.0" layoutY="455.0" startX="-100.0" strokeWidth="3.0" />
       <Line endX="-82.0" layoutX="247.0" layoutY="455.0" rotate="90.0" startX="-100.0" strokeWidth="3.0" />
-      <Circle fill="#04b84f7d" layoutX="156.0" layoutY="455.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#04b84f7d" layoutX="156.0" layoutY="455.0" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Circle>
       <Text layoutX="181.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -88,11 +91,17 @@
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Text>
       <ImageView fitHeight="46.0" fitWidth="34.0" layoutX="551.0" layoutY="434.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/createMenu-icon.gif" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
       <TableView layoutX="133.0" layoutY="202.0" prefHeight="200.0" prefWidth="565.0">
         <columns>

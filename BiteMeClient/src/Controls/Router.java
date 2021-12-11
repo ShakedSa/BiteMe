@@ -29,8 +29,18 @@ public class Router {
 	private viewMonthlyReportsController ViewMonthlyReportsController;
 	private uploadQuarterlyReportController UploadQuarterlyReportController;
 	private updateUserInformationController UpdateUserInformationController;
-	private authorizedEmployerApprovalController authorizedEmployerApprovalController;
+	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
+	//Supplier Panel pages:
+	private createMenuController CreateMenuController;
+	private addNewItemController AddNewItemController;
+	private updateMenuController UpdateMenuController;
+	private editMenuItemController EditMenuItemController;
+	//Employer HR Panel pages:
+	private registerEmployerAsLegacyController registerEmployerAsLegacyController;
+
+
+	private supplierUpdateOrderController SupplierUpdateOrderController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -125,7 +135,7 @@ public class Router {
 	/**
 	 * @param viewMonthlyReportsController the viewMonthlyReportsController to set
 	 */
-	public void setViewMonthlyReportController(viewMonthlyReportsController viewMonthlyReportsController) {
+	public void setViewMonthlyReportsController(viewMonthlyReportsController viewMonthlyReportsController) {
 		ViewMonthlyReportsController = viewMonthlyReportsController;
 	}
 	
@@ -146,9 +156,8 @@ public class Router {
 	/**
 	 * @param authorizedEmployerApprovalController the authorizedEmployerApprovalController to set
 	 */
-	public void setAuthorizedEmployerApprovalController(
-			authorizedEmployerApprovalController authorizedEmployerApprovalController) {
-		this.authorizedEmployerApprovalController = authorizedEmployerApprovalController;
+	public void setAuthorizedEmployerApprovalController(authorizedEmployerApprovalController authorizedEmployerApprovalController) {
+		AuthorizedEmployerApprovalController = authorizedEmployerApprovalController;
 	}
 	
 	/**
@@ -156,6 +165,49 @@ public class Router {
 	 */
 	public void setOpenNewAccountController(openNewAccountController openNewAccountController) {
 		OpenNewAccountController = openNewAccountController;
+	}
+	
+	/**
+	 * @param createMenuController the createMenuController to set
+	 */
+	public void setCreateMenuController(createMenuController createMenuController) {
+		CreateMenuController = createMenuController;
+	}
+	
+	/**
+	 * @param addNewItemController the addNewItemController to set
+	 */
+	public void setAddNewItemController(addNewItemController addNewItemController) {
+		AddNewItemController = addNewItemController;
+	}
+	
+	/**
+	 * @param updateMenuController the updateMenuController to set
+	 */
+	public void setUpdateMenuController(updateMenuController updateMenuController) {
+		UpdateMenuController = updateMenuController;
+	}
+	
+	/**
+	 * @param editMenuItemController the editMenuItemController to set
+	 */
+	public void setEditMenuItemController(editMenuItemController editMenuItemController) {
+		EditMenuItemController = editMenuItemController;
+	}
+	
+	/**
+	 * @param supplierUpdateOrderController the supplierUpdateOrderController to set
+	 */
+	public void setSupplierUpdateOrderController(supplierUpdateOrderController supplierUpdateOrderController) {
+		SupplierUpdateOrderController = supplierUpdateOrderController;
+	}
+	
+	/**
+	 * @param registerEmployerAsLegacyController the registerEmployerAsLegacyController to set
+	 */
+	public void setRegisterEmployerAsLegacyController(
+			registerEmployerAsLegacyController registerEmployerAsLegacyController) {
+		this.registerEmployerAsLegacyController = registerEmployerAsLegacyController;
 	}
 
 	/**
@@ -267,7 +319,7 @@ public class Router {
 	 * @return the authorizedEmployerApprovalController
 	 */
 	public authorizedEmployerApprovalController getAuthorizedEmployerApprovalController() {
-		return authorizedEmployerApprovalController;
+		return AuthorizedEmployerApprovalController;
 	}
 	
 	/**
@@ -275,6 +327,48 @@ public class Router {
 	 */
 	public openNewAccountController getOpenNewAccountController() {
 		return OpenNewAccountController;
+	}
+	
+	/**
+	 * @return the createMenuController
+	 */
+	public createMenuController getCreateMenuController() {
+		return CreateMenuController;
+	}
+	
+	/**
+	 * @return the addNewItemController
+	 */
+	public addNewItemController getAddNewItemController() {
+		return AddNewItemController;
+	}
+	
+	/**
+	 * @return the updateMenuController
+	 */
+	public updateMenuController getUpdateMenuController() {
+		return UpdateMenuController;
+	}
+	
+	/**
+	 * @return the editMenuItemController
+	 */
+	public editMenuItemController getEditMenuItemController() {
+		return EditMenuItemController;
+	}
+	
+	/**
+	 * @return the supplierUpdateOrderController
+	 */
+	public supplierUpdateOrderController getSupplierUpdateOrderController() {
+		return SupplierUpdateOrderController;
+	}
+	
+	/**
+	 * @return the registerEmployerAsLegacyController
+	 */
+	public registerEmployerAsLegacyController getRegisterEmployerAsLegacyController() {
+		return registerEmployerAsLegacyController;
 	}
 	
 	

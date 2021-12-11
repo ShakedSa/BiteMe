@@ -4,37 +4,42 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import Entities.ServerResponse;
-import Entities.User;
-import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class viewMonthlyReportsController implements Initializable{
+public class editMenuItemController implements Initializable{
 	
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
     @FXML
+    private Label addItemToMenuBtn;
+
+    @FXML
     private Rectangle avatar;
 
     @FXML
+    private TextArea descriptionTxtArea;
+
+    @FXML
     private Text homePageBtn;
+
+    @FXML
+    private TextField itemsNameTxtField;
 
     @FXML
     private ImageView leftArrowBtn;
@@ -43,96 +48,88 @@ public class viewMonthlyReportsController implements Initializable{
     private Text logoutBtn;
 
     @FXML
-    private Text managerPanelBtn;
+    private TextField optionalComponentsTxtField;
 
     @FXML
-    private ComboBox<?> monthBox;
+    private Spinner<?> priceSpinner;
 
     @FXML
     private Text profileBtn;
 
     @FXML
-    private ComboBox<?> reportTypeBox;
+    private ComboBox<?> selectTypeBox;
 
     @FXML
-    private Label showReportBtn;
+    private Text supplierPanelBtn;
 
     @FXML
-    private ComboBox<?> yearBox;
+    private Label uploadImageBtn;
+
+    @FXML
+    void addItemToMenuClicked(MouseEvent event) {
+
+    }
 
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
     }
 
-    
     @FXML
-    void showReportClicked(MouseEvent event) {
-
+    void profileBtnClicked(MouseEvent event) {
+    	router.showProfile();
     }
-    
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-	}
 
-    
     @FXML
     void returnToHomePage(MouseEvent event) {
     	router.changeSceneToHomePage();
     }
 
     @FXML
-    void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
+    void returnToSupplierPanel(MouseEvent event) {
+    	if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
-			managerPanelController controller;
+			supplierPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
+				stage.setTitle("BiteMe - Supplier Panel");
 				stage.setScene(mainScene);
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return;
+				return; 
 			}
 		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
 			stage.show();
 		}
+    }
+
+    @FXML
+    void uploadImageClicked(MouseEvent event) {
+
     }
     
     /**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = new ImagePattern(
-					new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		//router.setAvatar(avatar);
 	}
 
     
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setViewMonthlyReportsController(this);
+		router.setEditMenuItemController(this);
 		setStage(router.getStage());
 	}
 

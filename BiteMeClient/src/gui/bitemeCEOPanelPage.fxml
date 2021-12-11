@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.ceoPanelController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.ceoPanelController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
@@ -32,7 +32,7 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fitHeight="264.0" fitWidth="409.0" layoutX="53.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="264.0" fitWidth="409.0" layoutX="39.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/CEOPanelImage.jpg" />
          </image>
@@ -75,17 +75,17 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="463.0" layoutY="230.0" onMouseClicked="#createOrderClicked" prefHeight="25.0" prefWidth="350.0" text="View PDF Quarterly Report">
+      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="416.0" layoutY="230.0" onMouseClicked="#createOrderClicked" prefHeight="25.0" prefWidth="405.0" text="View PDF Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="viewRevenueReportBtn" alignment="CENTER" layoutX="461.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="350.0" text="View Revenue Quarterly Report">
+      <Label id="btn" fx:id="viewRevenueReportBtn" alignment="CENTER" layoutX="416.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="414.0" text="View Revenue Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="viewAllReportBtn" alignment="CENTER" layoutX="458.0" layoutY="373.0" onMouseClicked="#updateOrederClucked" prefHeight="25.0" prefWidth="350.0" text="View All Reports">
+      <Label id="btn" fx:id="viewAllReportBtn" alignment="CENTER" layoutX="416.0" layoutY="373.0" onMouseClicked="#updateOrederClucked" prefHeight="25.0" prefWidth="405.0" text="View All Reports">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
