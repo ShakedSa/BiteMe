@@ -183,10 +183,12 @@ public class restaurantSelectionController implements Initializable {
 		case Supplier:
 			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
 		case BranchManager:
-		case CEO:
 			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+		case CEO:
+			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+		case EmployerHR:
+			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
 		case Customer:
-		case BusinessCustomer:
 			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
 		default:
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));

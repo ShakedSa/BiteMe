@@ -28,6 +28,7 @@ public class managerPanelController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
+	private AnchorPane mainContainer;
 
 	@FXML
 	private Label AddNewSupplier;
@@ -106,11 +107,13 @@ public class managerPanelController implements Initializable {
 					avatarPicture = new Image(getClass().getResource("../images/supplier-avatar.png").toString());
 					break;
 				case BranchManager:
-				case CEO:
 					avatarPicture = new Image(getClass().getResource("../images/manager-avatar.png").toString());
+				case CEO:
+					avatarPicture = new Image(getClass().getResource("../images/CEO-avatar.png").toString());
 					break;
+				case EmployerHR:
+					avatarPicture = new Image(getClass().getResource("../images/HR-avatar.png").toString());
 				case Customer:
-				case BusinessCustomer:
 					avatarPicture = new Image(getClass().getResource("../images/random-user.gif").toString());
 				default:
 					break;
@@ -138,67 +141,170 @@ public class managerPanelController implements Initializable {
 
 	@FXML
 	void AddNewSupplierClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Add New Supplier");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
+		if (router.getAddNewSupplierController() == null) {
+			AnchorPane mainContainer;
+			addNewSupplierController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeAddNewSupplierPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Add New Supplier");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Add New Supplier");
+			stage.setScene(router.getAddNewSupplierController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
 	void AuthorizedEmployerApprovalClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Authorize Employer Approval");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
+		if (router.getAuthorizedEmployerApprovalController() == null) {
+			AnchorPane mainContainer;
+			authorizedEmployerApprovalController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeAuthorizedEmployerApprovalPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Authorized Employer Approval");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Authorized Employer Approval");
+			stage.setScene(router.getAuthorizedEmployerApprovalController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
-	void OpenBusinessAccountClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Open Business Account");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
-	}
-
-	@FXML
-	void OpenCustomerAccountClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Open Customer Account");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
+	void OpenNewAccountClicked(MouseEvent event) {
+		if (router.getOpenNewAccountController() == null) {
+			AnchorPane mainContainer;
+			openNewAccountController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeOpenNewAccountPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Open New Account");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Open New Account");
+			stage.setScene(router.getOpenNewAccountController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
 	void UpdateUserInformationClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Update User Information");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
+		if (router.getUpdateUserInformationController() == null) {
+			AnchorPane mainContainer;
+			updateUserInformationController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeUpdateUserInformationPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Update User Information");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Update User Information");
+			stage.setScene(router.getUpdateUserInformationController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
 	void UploadQuarterlyReportClicked(MouseEvent event) {
-		stage.setTitle("BiteMe - Upload Quarterly Report");
-
-		// need to add new controller
-
-		// stage.setScene(router.getHomePageController().getScene());
-		// stage.show();
+		if (router.getUploadQuarterlyReportController() == null) {
+			AnchorPane mainContainer;
+			uploadQuarterlyReportController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeUploadQuarterlyReportPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Upload Quarterly Report");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Manager Panel");
+			stage.setScene(router.getUploadQuarterlyReportController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
 	void viewMonthlyReportsClicked(MouseEvent event) {
-
+		if (router.getViewMonthlyReportsController() == null) {
+			AnchorPane mainContainer;
+			viewMonthlyReportsController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeViewMonthlyReportsPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - View Monthly Reports");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - View Monthly Reports");
+			stage.setScene(router.getViewMonthlyReportsController().getScene());
+			stage.show();
+		}
 	}
 
 	@Override
@@ -219,5 +325,14 @@ public class managerPanelController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+	
+	public AnchorPane getMainContainer() {
+		return mainContainer;
+	}
+	
+	public void setContainer(AnchorPane mainContainer) {
+		this.mainContainer = mainContainer;
+	}
+	
 
 }

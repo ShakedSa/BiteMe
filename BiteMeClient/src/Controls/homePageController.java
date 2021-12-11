@@ -135,7 +135,7 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void ceoBtnClicked(MouseEvent event) {
-		if (router.getManagerPanelController() == null) {
+		if (router.getCEOPanelController() == null) {
 			AnchorPane mainContainer;
 			ceoPanelController controller;
 			try {
@@ -219,7 +219,7 @@ public class homePageController implements Initializable {
 
 	@FXML
 	void employerHRBtnClicked(MouseEvent event) {
-		if (router.getSupplierPanelController() == null) {
+		if (router.getEmployerHRPanelController() == null) {
 			AnchorPane mainContainer;
 			employerHRPanelController controller;
 			try {
