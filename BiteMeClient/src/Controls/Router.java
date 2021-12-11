@@ -21,6 +21,13 @@ public class Router {
 	private ceoPanelController CEOPanelController;
 	private employerHRPanelController EmployerHRPanelController;
 	private profileController ProfileController;
+	//Manager Panel pages:
+	private addNewSupplierController AddNewSupplierController;
+	private viewMonthlyReportsController ViewMonthlyReportsController;
+	private uploadQuarterlyReportController UploadQuarterlyReportController;
+	private updateUserInformationController UpdateUserInformationController;
+	private authorizedEmployerApprovalController authorizedEmployerApprovalController;
+	private openNewAccountController OpenNewAccountController;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -104,6 +111,49 @@ public class Router {
 	public void setProfileController(profileController profileController) {
 		ProfileController = profileController;
 	}
+	
+	/**
+	 * @param addNewSupplierController the addNewSupplierController to set
+	 */
+	public void setAddNewSupplierController(addNewSupplierController addNewSupplierController) {
+		AddNewSupplierController = addNewSupplierController;
+	}
+	
+	/**
+	 * @param viewMonthlyReportsController the viewMonthlyReportsController to set
+	 */
+	public void setViewMonthlyReportController(viewMonthlyReportsController viewMonthlyReportsController) {
+		ViewMonthlyReportsController = viewMonthlyReportsController;
+	}
+	
+	/**
+	 * @param uploadQuarterlyReportController the uploadQuarterlyReportController to set
+	 */
+	public void setUploadQuarterlyReportController(uploadQuarterlyReportController uploadQuarterlyReportController) {
+		UploadQuarterlyReportController = uploadQuarterlyReportController;
+	}
+	
+	/**
+	 * @param updateUserInformationController the updateUserInformationController to set
+	 */
+	public void setUpdateUserInformationController(updateUserInformationController updateUserInformationController) {
+		UpdateUserInformationController = updateUserInformationController;
+	}
+	
+	/**
+	 * @param authorizedEmployerApprovalController the authorizedEmployerApprovalController to set
+	 */
+	public void setAuthorizedEmployerApprovalController(
+			authorizedEmployerApprovalController authorizedEmployerApprovalController) {
+		this.authorizedEmployerApprovalController = authorizedEmployerApprovalController;
+	}
+	
+	/**
+	 * @param openNewAccountController the openNewAccountController to set
+	 */
+	public void setOpenNewAccountController(openNewAccountController openNewAccountController) {
+		OpenNewAccountController = openNewAccountController;
+	}
 
 	/**
 	 * @return the Logincontroller
@@ -180,6 +230,48 @@ public class Router {
 	 */
 	public profileController getProfileController() {
 		return ProfileController;
+	}
+	
+	/**
+	 * @return the addNewSupplierController
+	 */
+	public addNewSupplierController getAddNewSupplierController() {
+		return AddNewSupplierController;
+	}
+	
+	/**
+	 * @return the viewMonthlyReportController
+	 */
+	public viewMonthlyReportsController getViewMonthlyReportsController() {
+		return ViewMonthlyReportsController;
+	}
+	
+	/**
+	 * @return the uploadQuarterlyReportController
+	 */
+	public uploadQuarterlyReportController getUploadQuarterlyReportController() {
+		return UploadQuarterlyReportController;
+	}
+	
+	/**
+	 * @return the updateUserInformationController
+	 */
+	public updateUserInformationController getUpdateUserInformationController() {
+		return UpdateUserInformationController;
+	}
+	
+	/**
+	 * @return the authorizedEmployerApprovalController
+	 */
+	public authorizedEmployerApprovalController getAuthorizedEmployerApprovalController() {
+		return authorizedEmployerApprovalController;
+	}
+	
+	/**
+	 * @return the openNewAccountController
+	 */
+	public openNewAccountController getOpenNewAccountController() {
+		return OpenNewAccountController;
 	}
 	
 	

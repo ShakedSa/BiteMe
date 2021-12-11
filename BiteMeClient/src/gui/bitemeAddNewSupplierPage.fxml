@@ -13,12 +13,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplier">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplierController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
          <image>
-            <Image url="@images/bag-icon.gif" />
+            <Image url="@../../../scene%20builder/images/bag-icon.gif" />
          </image>
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
@@ -26,12 +26,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/biteme-logo.gif" />
+            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/bitme-slogan.gif" />
+            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Supplier">
@@ -69,38 +69,38 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantNameTxtField" layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantAddressTxtField" layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantTypeTxtField" layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantManagerNameTxtField" layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <ComboBox layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
+      <ComboBox fx:id="monthlyCommitionBox" layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
-      <ImageView fitHeight="50.0" fitWidth="39.0" layoutX="88.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="uploadImage" fitHeight="50.0" fitWidth="39.0" layoutX="88.0" layoutY="392.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/upload.png" />
+            <Image url="@../../../scene%20builder/images/upload.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToHomePage" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
          <image>
-            <Image url="@images/arrow.gif" />
+            <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -139,7 +139,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Label id="btn" fx:id="addSupplierBtn" alignment="CENTER" layoutX="625.0" layoutY="511.0" onMouseClicked="#addSupplierClicked" prefHeight="25.0" prefWidth="148.0" text="Add Supplier">
+      <Label id="btn" fx:id="addSupplierBtn" alignment="CENTER" layoutX="535.0" layoutY="512.0" onMouseClicked="#addSupplierClicked" prefHeight="25.0" prefWidth="253.0" text="Add Supplier">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -154,7 +154,7 @@
       </Text>
       <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/greenVLogo.gif" />
+            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
    </children>

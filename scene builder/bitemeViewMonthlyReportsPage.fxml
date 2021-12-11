@@ -3,7 +3,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplier">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.ViewMonthlyReport">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
@@ -34,70 +33,21 @@
             <Image url="@images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add New Supplier">
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Monthly Reports">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name">
+      <Text layoutX="86.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific month">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Address">
+      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select report type">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Type">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text layoutX="88.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Manager Name">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text layoutX="88.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commition">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text layoutX="137.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <TextField layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-      <TextField layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-      <ComboBox layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ComboBox>
-      <ImageView fitHeight="50.0" fitWidth="39.0" layoutX="88.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/upload.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToHomePage" style="-fx-rotate: -90;">
          <image>
             <Image url="@images/arrow.gif" />
@@ -139,7 +89,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Label id="btn" fx:id="addSupplierBtn" alignment="CENTER" layoutX="625.0" layoutY="511.0" onMouseClicked="#addSupplierClicked" prefHeight="25.0" prefWidth="148.0" text="Add Supplier">
+      <Label id="btn" fx:id="showReportBtn" alignment="CENTER" layoutX="625.0" layoutY="511.0" onMouseClicked="#showReportClicked" prefHeight="25.0" prefWidth="148.0" text="Show Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -147,15 +97,18 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fill="#62d019" layoutX="137.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!">
+      <ComboBox layoutX="283.0" layoutY="318.0" prefHeight="20.0" prefWidth="119.0" promptText="November" />
+      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@images/greenVLogo.gif" />
-         </image>
-      </ImageView>
+      <ComboBox layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="80.0" promptText="2021" />
+      <ComboBox layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="132.0" promptText="Revenue" />
+      <Text fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This report doesn't exist">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
