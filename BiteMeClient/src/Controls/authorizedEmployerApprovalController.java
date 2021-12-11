@@ -61,6 +61,11 @@ public class authorizedEmployerApprovalController implements Initializable{
     void approvalClicked(MouseEvent event) {
 
     }
+    
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
     @FXML
     void logoutClicked(MouseEvent event) {

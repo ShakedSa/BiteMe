@@ -109,6 +109,11 @@ public class openNewAccountController implements Initializable{
     void privateAccountClicked(MouseEvent event) {
 
     }
+    
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
     @FXML
     void returnToHomePage(MouseEvent event) {

@@ -137,27 +137,27 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="managerBtn" layoutX="377.0" layoutY="63.0" onMouseClicked="#managerBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel" visible="false">
+      <Text id="link" fx:id="managerBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#managerBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="supplierBtn" layoutX="379.0" layoutY="63.0" onMouseClicked="#supplierBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel" visible="false">
+      <Text id="link" fx:id="supplierBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#supplierBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="ceoBtn" layoutX="378.0" layoutY="64.0" onMouseClicked="#ceoBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel" visible="false">
+      <Text id="link" fx:id="ceoBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#ceoBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="employerHRBtn" layoutX="380.0" layoutY="64.0" onMouseClicked="#employerHRBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel" visible="false">
+      <Text id="link" fx:id="employerHRBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#employerHRBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="restaurantBtn" layoutX="378.0" layoutY="64.0" onMouseClicked="#restaurantBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" visible="false">
+      <Text id="link" fx:id="restaurantBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#restaurantBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

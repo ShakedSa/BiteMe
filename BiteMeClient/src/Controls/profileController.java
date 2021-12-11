@@ -177,24 +177,24 @@ public class profileController implements Initializable{
 	 * Setting Profile page buttons to match user's permissions.
 	 */
 	public void setProfile() {
-		boolean val=true;
 		ServerResponse resUser = ClientGUI.client.getUser();
+		hideAllBtns();
 		User user = (User) resUser.getServerResponse();
 		switch (user.getUserType()) {
 		case Customer:
-			restaurantBtn.setVisible(val);
+			restaurantBtn.setVisible(true);
 			break;
 		case BranchManager:
-			managerBtn.setVisible(val);
+			managerBtn.setVisible(true);
 			break;
 		case Supplier:
-			supplierBtn.setVisible(val);
+			supplierBtn.setVisible(true);
 			break;
 		case CEO:
-			ceoBtn.setVisible(val);
+			ceoBtn.setVisible(true);
 			break;
 		case EmployerHR:
-			employerHRBtn.setVisible(val);
+			employerHRBtn.setVisible(true);
 			break;
 		default:
 			break;
@@ -204,6 +204,15 @@ public class profileController implements Initializable{
 			homePageBtn.setStyle("-fx-cursor: hand;");
 	}
 	
+	private void hideAllBtns() {
+		restaurantBtn.setVisible(false);
+		managerBtn.setVisible(false);
+		supplierBtn.setVisible(false);
+		ceoBtn.setVisible(false);
+		employerHRBtn.setVisible(false);
+		
+	}
+
 	//////////////
 	
 
