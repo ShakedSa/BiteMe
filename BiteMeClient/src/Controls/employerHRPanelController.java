@@ -60,7 +60,30 @@ public class employerHRPanelController implements Initializable{
 
     @FXML
     void confirmBusinessAccountBtnClicked(MouseEvent event) {
-
+    	if (router.getConfirmBusinessAccountController() == null) {
+			AnchorPane mainContainer;
+			confirmBusinessAccountController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeConfirmBusinessAccountPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Confirm Business Account");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Confirm Business Account");
+			stage.setScene(router.getConfirmBusinessAccountController().getScene());
+			stage.show();
+		}
     }
     
     @FXML
@@ -118,6 +141,7 @@ public class employerHRPanelController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setEmployerHRPanelController(this);
+		setStage(router.getStage());
 	}
 
     

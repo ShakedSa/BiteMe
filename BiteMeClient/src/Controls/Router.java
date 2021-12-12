@@ -31,20 +31,6 @@ public class Router {
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
 	private ceoPanelController CEOPanelController;
-	/**
-	 * @return the pickDateAndTimeController
-	 */
-	public pickDateAndTimeController getPickDateAndTimeController() {
-		return PickDateAndTimeController;
-	}
-
-	/**
-	 * @param pickDateAndTimeController the pickDateAndTimeController to set
-	 */
-	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
-		PickDateAndTimeController = pickDateAndTimeController;
-	}
-
 	private employerHRPanelController EmployerHRPanelController;
 	private profileController ProfileController;
 	// Manager Panel pages:
@@ -59,10 +45,11 @@ public class Router {
 	private addNewItemController AddNewItemController;
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
-	// Employer HR Panel pages:
-	private registerEmployerAsLegacyController registerEmployerAsLegacyController;
-
 	private supplierUpdateOrderController SupplierUpdateOrderController;
+	// Employer HR Panel pages:
+	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
+	private confirmBusinessAccountController ConfirmBusinessAccountController;
+
 
 	/** Items in order, should be available across all application. */
 	private ArrayList<Product> order = new ArrayList<>();
@@ -239,7 +226,21 @@ public class Router {
 	 */
 	public void setRegisterEmployerAsLegacyController(
 			registerEmployerAsLegacyController registerEmployerAsLegacyController) {
-		this.registerEmployerAsLegacyController = registerEmployerAsLegacyController;
+		RegisterEmployerAsLegacyController = registerEmployerAsLegacyController;
+	}
+	
+	/**
+	 * @param confirmBusinessAccountController the confirmBusinessAccountController to set
+	 */
+	public void setConfirmBusinessAccountController(confirmBusinessAccountController confirmBusinessAccountController) {
+		ConfirmBusinessAccountController = confirmBusinessAccountController;
+	}
+	
+	/**
+	 * @param pickDateAndTimeController the pickDateAndTimeController to set
+	 */
+	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
+		PickDateAndTimeController = pickDateAndTimeController;
 	}
 
 	/**
@@ -400,8 +401,24 @@ public class Router {
 	 * @return the registerEmployerAsLegacyController
 	 */
 	public registerEmployerAsLegacyController getRegisterEmployerAsLegacyController() {
-		return registerEmployerAsLegacyController;
+		return RegisterEmployerAsLegacyController;
 	}
+	
+	/**
+	 * @return the confirmBusinessAccountController
+	 */
+	public confirmBusinessAccountController getConfirmBusinessAccountController() {
+		return ConfirmBusinessAccountController;
+	}
+	
+	/**
+	 * @return the pickDateAndTimeController
+	 */
+	public pickDateAndTimeController getPickDateAndTimeController() {
+		return PickDateAndTimeController;
+	}
+	
+	
 
 	/**
 	 * @return the stage
@@ -508,9 +525,9 @@ public class Router {
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
 	}
-	
+
 	void returnToSupplierPanel(MouseEvent event) {
-    	if (router.getSupplierPanelController() == null) {
+		if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
 			supplierPanelController controller;
 			try {
@@ -527,17 +544,17 @@ public class Router {
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return; 
+				return;
 			}
 		} else {
 			stage.setTitle("BiteMe - Supplier Panel");
 			stage.setScene(router.getSupplierPanelController().getScene());
 			stage.show();
 		}
-    }
-	
+	}
+
 	void returnToEmployerHRPanel(MouseEvent event) {
-    	if (router.getEmployerHRPanelController() == null) {
+		if (router.getEmployerHRPanelController() == null) {
 			AnchorPane mainContainer;
 			employerHRPanelController controller;
 			try {
@@ -554,17 +571,17 @@ public class Router {
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return; 
+				return;
 			}
 		} else {
 			stage.setTitle("BiteMe - Employer HR Panel");
 			stage.setScene(router.getEmployerHRPanelController().getScene());
 			stage.show();
 		}
-    }
-	
+	}
+
 	void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
+		if (router.getManagerPanelController() == null) {
 			AnchorPane mainContainer;
 			managerPanelController controller;
 			try {
@@ -588,8 +605,8 @@ public class Router {
 			stage.setScene(router.getManagerPanelController().getScene());
 			stage.show();
 		}
-    }
-	
+	}
+
 	void returnToCEOPanel(MouseEvent event) {
 		if (router.getCEOPanelController() == null) {
 			AnchorPane mainContainer;
@@ -616,7 +633,7 @@ public class Router {
 			stage.show();
 		}
 	}
-	
+
 	void returnToCustomerPanel(MouseEvent event) {
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
@@ -644,7 +661,6 @@ public class Router {
 			stage.show();
 		}
 	}
-	
 
 	/**
 	 * Setting the order items
@@ -663,7 +679,7 @@ public class Router {
 	public ArrayList<Product> getBagItems() {
 		return order;
 	}
-  
+
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open
