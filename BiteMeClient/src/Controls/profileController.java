@@ -218,32 +218,32 @@ public class profileController implements Initializable{
 
     @FXML
     void ceoBtnClicked(MouseEvent event) {
-    	router.getHomePageController().ceoBtnClicked(event);
+    	//router.getHomePageController().ceoBtnClicked(event);
+    	router.returnToCEOPanel(event);
     }
 
     @FXML
     void employerHRBtnClicked(MouseEvent event) {
-    	router.getHomePageController().employerHRBtnClicked(event);
+    	//router.getHomePageController().employerHRBtnClicked(event);
+    	router.returnToEmployerHRPanel(event);
     }
-
-
 
     @FXML
     void managerBtnClicked(MouseEvent event) {
-    	router.getHomePageController().managerBtnClicked(event);
+    	//router.getHomePageController().managerBtnClicked(event);
+    	router.returnToManagerPanel(event);
     }
-
-
 
     @FXML
     void restaurantBtnClicked(MouseEvent event) {
-    	router.getHomePageController().restaurantBtnClicked(event);
+    	//router.getHomePageController().restaurantBtnClicked(event);
+    	router.returnToCustomerPanel(event);
     }
-
 
     @FXML
     void supplierBtnClicked(MouseEvent event) {
-    	router.getHomePageController().supplierBtnClicked(event);
+    	//router.getHomePageController().supplierBtnClicked(event);
+    	router.returnToSupplierPanel(event);
     }
 	///
 

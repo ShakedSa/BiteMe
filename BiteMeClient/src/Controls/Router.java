@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -43,8 +44,6 @@ public class Router {
 	private editMenuItemController EditMenuItemController;
 	//Employer HR Panel pages:
 	private registerEmployerAsLegacyController registerEmployerAsLegacyController;
-
-
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 
 	public static Router getInstance() {
@@ -485,6 +484,143 @@ public class Router {
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
 	}
+	
+	void returnToSupplierPanel(MouseEvent event) {
+    	if (router.getSupplierPanelController() == null) {
+			AnchorPane mainContainer;
+			supplierPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Supplier Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return; 
+			}
+		} else {
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
+			stage.show();
+		}
+    }
+	
+	void returnToEmployerHRPanel(MouseEvent event) {
+    	if (router.getEmployerHRPanelController() == null) {
+			AnchorPane mainContainer;
+			employerHRPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Employer HR Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return; 
+			}
+		} else {
+			stage.setTitle("BiteMe - Employer HR Panel");
+			stage.setScene(router.getEmployerHRPanelController().getScene());
+			stage.show();
+		}
+    }
+	
+	void returnToManagerPanel(MouseEvent event) {
+    	if (router.getManagerPanelController() == null) {
+			AnchorPane mainContainer;
+			managerPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Manager Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Manager Panel");
+			stage.setScene(router.getManagerPanelController().getScene());
+			stage.show();
+		}
+    }
+	
+	void returnToCEOPanel(MouseEvent event) {
+		if (router.getCEOPanelController() == null) {
+			AnchorPane mainContainer;
+			ceoPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - CEO Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - CEO Panel");
+			stage.setScene(router.getCEOPanelController().getScene());
+			stage.show();
+		}
+	}
+	
+	void returnToCustomerPanel(MouseEvent event) {
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			restaurantSelectionController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setRestaurants();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Restaurants");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Restaurants");
+			stage.setScene(router.getRestaurantselectionController().getScene());
+			stage.show();
+		}
+	}
+	
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open

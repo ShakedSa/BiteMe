@@ -6,7 +6,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -23,13 +22,6 @@
          </cursor>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
-         <image>
-            <Image url="@../../../scene%20builder/images/bag-icon.gif" />
-         </image>
-      </ImageView>
-      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
-      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -55,7 +47,7 @@
          </cursor>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+      <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -92,7 +84,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="userNameTxtField" layoutX="352.0" layoutY="206.0" promptText="Employer Code" />
+      <TextField fx:id="userNameTxtField" editable="false" layoutX="352.0" layoutY="206.0" promptText="Employer Code" />
       <Text fill="RED" layoutX="88.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -113,6 +105,6 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employerCompanyNameTxtField" layoutX="352.0" layoutY="267.0" promptText="Employer Code" />
+      <TextField fx:id="employerCompanyNameTxtField" editable="false" layoutX="352.0" layoutY="267.0" promptText="Employer Code" />
    </children>
 </AnchorPane>
