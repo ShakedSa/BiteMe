@@ -11,43 +11,35 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.authorizedEmployerApprovalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.confirmBusinessAccountController">
    <children>
-      <Label id="btn" fx:id="approvalBtn" alignment="CENTER" layoutX="620.0" layoutY="501.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="168.0" text="Approval">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm Business Account">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="65.0" layoutX="73.0" layoutY="471.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="65.0" layoutX="73.0" layoutY="471.0" onMouseClicked="#returnToEmployerHRPanel" style="-fx-rotate: -90;">
          <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
+            <Image url="@images/arrow.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+      <Text id="active" fx:id="employerHRPanelBtn" fill="#3180bc" layoutX="360.0" layoutY="57.0" onMouseClicked="#returnToEmployerHRPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -79,32 +71,40 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Code">
+      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="136.0" layoutY="289.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Text layoutX="88.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Code">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="userNameTxtField" editable="false" layoutX="352.0" layoutY="206.0" promptText="Employer Code" />
-      <Text fill="RED" layoutX="88.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval">
+      <TextField fx:id="employerCodeTxtField" layoutX="356.0" layoutY="228.0" prefHeight="26.0" prefWidth="173.0" promptText="Employer Code" />
+      <Text fill="RED" layoutX="88.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There is no business account registration for this customer">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fill="#62d019" layoutX="132.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Employer was approved successfully!">
+      <Text fill="#62d019" layoutX="132.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business customer was confirmed successfully!">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="402.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Company Name">
+      <Text layoutX="88.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer ID">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employerCompanyNameTxtField" editable="false" layoutX="352.0" layoutY="267.0" promptText="Employer Name" />
+      <TextField fx:id="customerIDTxtField" layoutX="356.0" layoutY="184.0" prefHeight="26.0" prefWidth="173.0" promptText="Customer ID" />
    </children>
 </AnchorPane>
