@@ -154,4 +154,12 @@ public class Order implements Serializable {
 		this.dateTime = dateTime;
 	}	
 	
+	public String toString() {
+		StringBuilder b = new StringBuilder();
+		b.append("Order from: " + restaurantName);
+		b.append("\nList of items: " + products);
+		b.append("\nOrder time: " + dateTime);
+		return b.toString();
+	}
+	
 }

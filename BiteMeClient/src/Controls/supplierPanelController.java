@@ -125,6 +125,7 @@ public class supplierPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.createCombos();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -136,6 +137,7 @@ public class supplierPanelController implements Initializable {
 				return;
 			}
 		} else {
+			router.getSupplierUpdateOrderController().createCombos();
 			stage.setTitle("BiteMe - Update Order");
 			stage.setScene(router.getSupplierUpdateOrderController().getScene());
 			stage.show();

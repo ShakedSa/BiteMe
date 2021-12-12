@@ -3,6 +3,7 @@ package Controls;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Entities.Order;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
@@ -30,6 +31,7 @@ public class Router {
 	private identifyController IdentifyController;
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
+	private deliveryMethodController DeliveryMethodController;
 	private ceoPanelController CEOPanelController;
 	/**
 	 * @return the pickDateAndTimeController
@@ -65,7 +67,9 @@ public class Router {
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 
 	/** Items in order, should be available across all application. */
-	private ArrayList<Product> order = new ArrayList<>();
+	private ArrayList<Product> orderItems = new ArrayList<>();
+	
+	private Order order = new Order();
 
 	public static Router getInstance() {
 		if (router == null)
@@ -404,6 +408,20 @@ public class Router {
 	}
 
 	/**
+	 * @return the deliveryMethodController
+	 */
+	public deliveryMethodController getDeliveryMethodController() {
+		return DeliveryMethodController;
+	}
+
+	/**
+	 * @param deliveryMethodController the deliveryMethodController to set
+	 */
+	public void setDeliveryMethodController(deliveryMethodController deliveryMethodController) {
+		DeliveryMethodController = deliveryMethodController;
+	}
+
+	/**
 	 * @return the stage
 	 */
 	public Stage getStage() {
@@ -428,6 +446,7 @@ public class Router {
 				ProfileController = loader.getController();
 				ProfileController.setAvatar();
 				ProfileController.initProfile();
+				ProfileController.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				ProfileController.setScene(mainScene);
@@ -628,6 +647,7 @@ public class Router {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurants();
+				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -639,6 +659,7 @@ public class Router {
 				return;
 			}
 		} else {
+			router.getRestaurantselectionController().setItemsCounter();
 			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(router.getRestaurantselectionController().getScene());
 			stage.show();
@@ -652,7 +673,7 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> order) {
-		this.order = order;
+		this.orderItems = order;
 	}
 
 	/**
@@ -661,6 +682,14 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
+		return orderItems;
+	}
+	
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	
+	public Order getOrder() {
 		return order;
 	}
   
