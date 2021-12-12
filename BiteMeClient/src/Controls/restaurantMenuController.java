@@ -500,7 +500,6 @@ public class restaurantMenuController implements Initializable {
 						router.setBagItems(productsInOrder);
 						setItemsCounter();
 						root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
-						System.out.println(productsInOrder);
 						nextBtn.setDisable(false);
 					});
 					/**
