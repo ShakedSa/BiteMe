@@ -15,7 +15,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.restaurantSelectionController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <TextField fx:id="searchRestaurantFieldTxt" focusTraversable="false" layoutX="109.0" layoutY="110.0" promptText="Search Restaurant...">
+      <TextField fx:id="searchRestaurantFieldTxt" focusTraversable="false" layoutX="109.0" layoutY="110.0" onKeyTyped="#filterRestaurants" promptText="Search Restaurant...">
          <font>
             <Font name="Arial" size="12.0" />
          </font></TextField>
@@ -24,42 +24,42 @@
             <Image url="@../images/search-icon.gif" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="177.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border1" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="177.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage1" fitHeight="115.0" fitWidth="115.0" layoutX="188.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText1" layoutX="218.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="175.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border4" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="175.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage4" fitHeight="115.0" fitWidth="115.0" layoutX="186.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText4" layoutX="224.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="349.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border2" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="349.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage2" fitHeight="115.0" fitWidth="115.0" layoutX="360.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText2" layoutX="390.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="347.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border5" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="347.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage5" fitHeight="115.0" fitWidth="115.0" layoutX="358.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText5" layoutX="397.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="520.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border3" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="520.0" layoutY="157.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage3" fitHeight="115.0" fitWidth="115.0" layoutX="531.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText3" layoutX="552.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="518.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
+      <Rectangle fx:id="border6" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="518.0" layoutY="366.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
       <ImageView fx:id="resImage6" fitHeight="115.0" fitWidth="115.0" layoutX="529.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true" />
       <Text fx:id="resText6" layoutX="569.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>

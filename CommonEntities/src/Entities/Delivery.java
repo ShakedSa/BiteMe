@@ -24,6 +24,10 @@ public class Delivery implements Serializable {
 		this.orderPrice = orderPrice;
 		this.discount = discount;
 	}
+	
+	public Delivery(float orderPrice) {
+		this.orderPrice = orderPrice;
+	}
 	/**
 	 * @return the deliveryNumber
 	 */
@@ -71,6 +75,16 @@ public class Delivery implements Serializable {
 	 */
 	public void setDiscount(float discount) {
 		this.discount = discount;
+	}
+	
+	public String toString() {
+		StringBuilder b = new StringBuilder("Delivery Details:\n");
+		if(orderAddress != null) {
+			b.append("Address: " + orderAddress);
+		}
+	    b.append("Price: " + orderPrice + "¤\n");
+	    b.append("Discount on your order: " + discount + "¤");
+	    return b.toString();
 	}
 	
 	

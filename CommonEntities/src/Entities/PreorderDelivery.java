@@ -15,6 +15,10 @@ public class PreorderDelivery extends Delivery {
 		this.deliveryTime = deliveryTime;
 		
 	}
+	
+	public PreorderDelivery(float orderPrice) {
+		super(orderPrice);
+	}
 
 	/**
 	 * @return the deliveryTime
@@ -30,6 +34,10 @@ public class PreorderDelivery extends Delivery {
 		this.deliveryTime = deliveryTime;
 	}
 	
-	
-
+	public String toString() {
+		if(deliveryTime != null) {
+			return super.toString() + "\nDelivery Scheduled to: " + deliveryTime; 
+		}
+		return super.toString();
+	}
 }

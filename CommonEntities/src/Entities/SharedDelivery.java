@@ -16,6 +16,10 @@ public class SharedDelivery extends Delivery {
 		this.amountOfPeople = amountOfPeople;
 		this.businessCode = businessCode;
 	}
+	
+	public SharedDelivery(float orderPrice) {
+		super(orderPrice);
+	}
 
 
 	/**
@@ -47,6 +51,10 @@ public class SharedDelivery extends Delivery {
 	 */
 	public void setAmountOfPeople(int amountOfPeople) {
 		this.amountOfPeople = amountOfPeople;
+	}
+	
+	public String toString() {
+		return super.toString() + "\nAmount of people in order: " + amountOfPeople;
 	}
 
 }

@@ -4,6 +4,9 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Entities.Delivery;
+import Entities.PreorderDelivery;
+import Entities.SharedDelivery;
 import Enums.TypeOfOrder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -57,6 +61,61 @@ public class deliveryMethodController implements Initializable {
 
 	@FXML
 	private Text restaurantsBtn;
+	
+	@FXML
+    private Text addStar;
+
+    @FXML
+    private Text addressText;
+
+    @FXML
+    private TextField addressTxtField;
+
+    @FXML
+    private Text amntStar;
+
+    @FXML
+    private TextField amountTextField;
+    
+    @FXML
+    private Text firstNameText;
+
+    @FXML
+    private TextField firstNameTxtField;
+
+    @FXML
+    private Text fnameStar;
+    
+    @FXML
+    private ComboBox<?> hourBox;
+    
+    @FXML
+    private ComboBox<?> minutesBox;
+    
+    @FXML
+    private Text lastNameText;
+
+    @FXML
+    private TextField lastNameTxtField;
+    
+    @FXML
+    private Text lnameStar;
+    
+    @FXML
+    private Text phoneNumberText;
+
+    @FXML
+    private TextField phoneNumberTxtField;
+
+    @FXML
+    private Text pickStar;
+
+    @FXML
+    private Text pnumberStar;
+
+    @FXML
+    private ComboBox<?> prefixPhoneNumberBox;
+
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -75,10 +134,25 @@ public class deliveryMethodController implements Initializable {
 			return;
 		}
 		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
+		Delivery newDelivery;
+		switch (typeOfOrder) {
+		case BasicDelivery:
+			newDelivery = new Delivery(25);
+			break;
+		case preorderDelivery:
+			newDelivery = new PreorderDelivery(25);
+			break;
+		case takeaway:
+			newDelivery = null;
+			break;
+		case sharedDelivery:
+			newDelivery = new SharedDelivery(25);
+			break;
+		default:
+			return;
+		}
+		router.setDelivery(newDelivery);
 		errorMsg.setText("");
-		/**
-		 * Move to the next step in the order. Will wait for order - delivery conflict ><
-		 */
 	}
 
 	@FXML

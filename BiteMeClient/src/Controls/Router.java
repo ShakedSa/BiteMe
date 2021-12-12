@@ -3,6 +3,7 @@ package Controls;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Entities.Delivery;
 import Entities.Order;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -57,6 +58,8 @@ public class Router {
 	private ArrayList<Product> orderItems = new ArrayList<>();
 	
 	private Order order = new Order();
+	
+	private Delivery delivery;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -709,6 +712,21 @@ public class Router {
 		return order;
 	}
 
+	/**
+	 * @return the delivery
+	 */
+	public Delivery getDelivery() {
+		return delivery;
+	}
+
+	/**
+	 * @param delivery the delivery to set
+	 */
+	public void setDelivery(Delivery delivery) {
+		this.delivery = delivery;
+	}
+
+	
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open
