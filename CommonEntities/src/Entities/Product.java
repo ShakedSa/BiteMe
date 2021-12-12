@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * @author Eden test
- * Product class, stores :
- * int productID, String type, String dishName, ArrayList<Component> components, float price
+ * @author Eden test Product class, stores : int productID, String type, String
+ *         dishName, ArrayList<Component> components, float price
  */
 
 public class Product implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -21,8 +20,7 @@ public class Product implements Serializable {
 	private ArrayList<Component> components;
 	private float price;
 	private String description;
-	
-	
+
 	/**
 	 * @param restaurantName
 	 * @param type
@@ -42,26 +40,21 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-
 	public String getType() {
 		return type;
 	}
-
 
 	public String getDishName() {
 		return dishName;
 	}
 
-
 	public ArrayList<Component> getComponents() {
 		return components;
 	}
 
-
 	public float getPrice() {
 		return price;
 	}
-
 
 	public String getDescription() {
 		return description;
@@ -75,29 +68,27 @@ public class Product implements Serializable {
 		this.type = type;
 	}
 
-
 	public void setDishName(String dishName) {
 		this.dishName = dishName;
 	}
-
 
 	public void setComponents(ArrayList<Component> components) {
 		this.components = components;
 	}
 
-
 	public void setPrice(float price) {
 		this.price = price;
 	}
 
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	@Override
 	public String toString() {
+		if (components != null)
+			return dishName + "<" + price + ">" + "components: " + components;
 		return dishName + "<" + price + ">";
 	}
-	
+
 }

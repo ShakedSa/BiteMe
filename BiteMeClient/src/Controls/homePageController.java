@@ -11,18 +11,16 @@ import java.util.Set;
 
 import Entities.ServerResponse;
 import Entities.User;
-import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -101,6 +99,9 @@ public class homePageController implements Initializable {
 	@FXML
 	private ImageView res3;
 
+	@FXML
+	private Text itemsCounter;
+
 	/**
 	 * Moving the carousel 1 step backward.
 	 * 
@@ -170,6 +171,32 @@ public class homePageController implements Initializable {
 	@FXML
 	void restaurantBtnClicked(MouseEvent event) {
 		router.returnToCustomerPanel(event);
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			restaurantSelectionController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setRestaurants();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Restaurants");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getRestaurantselectionController().setItemsCounter();
+			stage.setTitle("BiteMe - Restaurants");
+			stage.setScene(router.getRestaurantselectionController().getScene());
+			stage.show();
+		}
 	}
 
 	/**
@@ -218,28 +245,23 @@ public class homePageController implements Initializable {
 	 */
 	public void setProfile(boolean val) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) 
-		{
+		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				userFirstName.setText(user.getFirstName());
 				setDefaults(user, val);
-			}
-			else
-			{
+			} else {
 				userFirstName.setText("Guest");
-				setDefaults(null,false);
+				setDefaults(null, false);
 			}
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
 			homePageBtn.setStyle("-fx-cursor: hand;");
-			
-		}
-		else
-		{
+
+		} else {
 			userFirstName.setText("Guest");
-			setDefaults(null,false);
+			setDefaults(null, false);
 		}
 	}
 
@@ -278,8 +300,7 @@ public class homePageController implements Initializable {
 			supplierBtn.setVisible(val);
 			employerHRBtn.setVisible(val);
 			ceoBtn.setVisible(val);
-		} 
-		else {
+		} else {
 			switch (user.getUserType()) {
 			case Customer:
 				restaurantBtn.setVisible(val);
@@ -300,36 +321,7 @@ public class homePageController implements Initializable {
 		}
 
 	}
-
-	/**
-	 * 
-	 * @return ImagePattern relevant to user permissions
-	 */
-	private ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.client.getUser();
-		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		User user = (User) userResponse.getServerResponse();
-		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		switch (user.getUserType()) {
-		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
-		case BranchManager:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
-		case Customer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
-		case EmployerHR:
-			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
-		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-	}
-
+  
 	/**
 	 * Setting the avatar image of the user.
 	 */
@@ -422,5 +414,9 @@ public class homePageController implements Initializable {
 
 	public void setContainer(AnchorPane mainContainer) {
 		this.mainContainer = mainContainer;
+	}
+	
+	public void setItemsCounter() {
+		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 }

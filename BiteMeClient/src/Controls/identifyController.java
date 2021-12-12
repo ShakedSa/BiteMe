@@ -74,6 +74,9 @@ public class identifyController implements Initializable {
 
 	@FXML
 	private Label errorMsg;
+	
+	@FXML
+    private Text itemsCounter;
 
 	@FXML
 	void QRClicked(MouseEvent event) {
@@ -92,7 +95,7 @@ public class identifyController implements Initializable {
 		if (input == null || input.equals("")) {
 			return false;
 		}
-		return true;
+		return true; 
 	}
 
 	/**
@@ -162,7 +165,7 @@ public class identifyController implements Initializable {
 			stage.setScene(router.getRestaurantMenuController().getScene());
 			router.getRestaurantMenuController().setRestaurantName(restaurantsName);
 			router.getRestaurantMenuController().setMenu();
-			stage.show();
+			stage.show(); 
 		}
 	}
 
@@ -186,6 +189,7 @@ public class identifyController implements Initializable {
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		w4cCodeFieldTxt.clear();
+		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
 		stage.show();
@@ -215,30 +219,6 @@ public class identifyController implements Initializable {
 		this.restaurantsName = restaurantName;
 	}
 
-	private ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.client.getUser();
-		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		User user = (User) userResponse.getServerResponse();
-		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		switch (user.getUserType()) {
-		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
-		case BranchManager:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
-		case Customer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
-		case EmployerHR:
-			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
-		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-	}
 
 	/**
 	 * Setting the avatar image of the user.
@@ -254,5 +234,8 @@ public class identifyController implements Initializable {
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
-
+	
+	public void setItemsCounter() {
+		itemsCounter.setText(router.getBagItems().size() + "");
+	}
 }

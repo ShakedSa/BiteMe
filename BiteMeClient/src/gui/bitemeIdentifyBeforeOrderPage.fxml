@@ -54,7 +54,7 @@
          </image>
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
-      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Text fx:id="itemsCounter" layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>

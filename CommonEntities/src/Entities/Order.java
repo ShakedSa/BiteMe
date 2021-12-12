@@ -1,6 +1,8 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import Enums.PaymentMethod;
 
 public class Order implements Serializable {
@@ -11,7 +13,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = -8005643298429981017L;
 	private int orderNumber;
 	private String restaurantName;
-	private Product[] products;
+	private ArrayList<Product> products;
 	private PaymentMethod paymentMethod;
 	private String OrdeTime;
 	private float orderPrice;
@@ -19,7 +21,7 @@ public class Order implements Serializable {
 	private String dateTime;
 	
 	
-	public Order(int orderNumber, String restaurantName, Product[] products, PaymentMethod paymentMethod,
+	public Order(int orderNumber, String restaurantName, ArrayList<Product> products, PaymentMethod paymentMethod,
 			String ordeTime, float orderPrice, String orderRecieved, String dateTime) {
 		super();
 		this.orderNumber = orderNumber;
@@ -31,6 +33,8 @@ public class Order implements Serializable {
 		this.orderRecieved = orderRecieved;
 		this.dateTime = dateTime;
 	}
+	
+	public Order() {}
 	/**
 	 * @return the orderNumber
 	 */
@@ -50,7 +54,7 @@ public class Order implements Serializable {
 	/**
 	 * @return the products
 	 */
-	public Product[] getProducts() {
+	public ArrayList<Product> getProducts() {
 		return products;
 	}
 
@@ -106,7 +110,7 @@ public class Order implements Serializable {
 	/**
 	 * @param products the products to set
 	 */
-	public void setProducts(Product[] products) {
+	public void setProducts(ArrayList<Product> products) {
 		this.products = products;
 	}
 

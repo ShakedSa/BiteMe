@@ -81,7 +81,9 @@ public class loginController implements Initializable {
 	void loginClicked(MouseEvent event) {
 		String userName = usernameTxt.getText();
 		String password = passwordTxt.getText();
-		CheckUserInput(userName, password);
+		if(!CheckUserInput(userName, password)) {
+			return;
+		}
 		ClientGUI.client.login(userName, password);
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -103,7 +105,9 @@ public class loginController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		checkServerResponse();
+		if(!checkServerResponse()) {
+			return;
+		}
 		changeScenes();
 
 	}
@@ -112,43 +116,46 @@ public class loginController implements Initializable {
 	 * checks the user information received from Server.
 	 * display relevant information.
 	 */
-	private void checkServerResponse() {
+	private boolean checkServerResponse() {
 		switch (ClientGUI.client.getUser().getMsg().toLowerCase()) {
 		case "already logged in":
 			errorMsg.setText("This user is already logged in");
-			return;
+			return false;
 		case "not found":
 			errorMsg.setText("Username or password are incorrect");
-			return;
+			return false;
 		case "not authorized":
 			errorMsg.setText("User not authorized to use the system");
-			return;
+			return false;
 		case "internal error":
 			errorMsg.setText("Server error, can't logged in");
+			return false;
 		default:
 			usernameTxt.clear();
 			passwordTxt.clear();
+			return true;
 		}
 	}
 
-	private void CheckUserInput(String userName, String password) {
+	private boolean CheckUserInput(String userName, String password) {
 		if (!checkValidText(userName)) {
 			errorMsg.setText("Must fill username");
-			return;
+			return false;
 		}
 		if (checkSpecialCharacters(userName)) {
 			errorMsg.setText("Special characters aren't allowed in username");
-			return;
+			return false;
 		}
 		if (!checkValidText(password)) {
 			errorMsg.setText("Must fill password");
-			return;
+			return false;
 		}
 		if (checkSpecialCharacters(password)) {
 			errorMsg.setText("Special characters aren't allowed in password");
-			return;
+			return false;
 		}
 		errorMsg.setText("");
+		return true;
 	}
 
 	/**

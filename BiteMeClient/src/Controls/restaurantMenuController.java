@@ -1,5 +1,6 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,24 +10,22 @@ import java.util.stream.Collectors;
 import Entities.Component;
 import Entities.Product;
 import Entities.ServerResponse;
-import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -35,7 +34,7 @@ import javafx.stage.Stage;
 
 public class restaurantMenuController implements Initializable {
 
-	public final UserType type= UserType.Customer;
+	public final UserType type = UserType.Customer;
 	private Router router;
 
 	private Stage stage;
@@ -94,7 +93,38 @@ public class restaurantMenuController implements Initializable {
 
 	@FXML
 	void nextOrderStep(MouseEvent event) {
-
+		router = Router.getInstance();
+		if (router.getPickDateAndTimeController() == null) {
+			AnchorPane mainContainer;
+			pickDateAndTimeController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemePickDateAndTimePage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setRestaurant(restaurantName);
+				controller.setItemsCounter();
+				controller.createCombos();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Pick Date And Time");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				return;
+			}
+		} else {
+			router.getPickDateAndTimeController().setRestaurant(restaurantName);
+			router.getPickDateAndTimeController().setAvatar();
+			router.getPickDateAndTimeController().setItemsCounter();
+			router.getPickDateAndTimeController().createCombos();
+			stage.setTitle("BiteMe - Pick Date And Time");
+			stage.setScene(router.getPickDateAndTimeController().getScene());
+			stage.show();
+		}
 	}
 
 	@FXML
@@ -106,6 +136,7 @@ public class restaurantMenuController implements Initializable {
 	@FXML
 	void returnToIdentify(MouseEvent event) {
 		root.getChildren().remove(tabPane);
+		router.getIdentifyController().setItemsCounter();
 		stage.setTitle("BiteMe - Identification Page");
 		stage.setScene(router.getIdentifyController().getScene());
 		stage.show();
@@ -114,6 +145,7 @@ public class restaurantMenuController implements Initializable {
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		root.getChildren().remove(tabPane);
+		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
 		stage.show();
@@ -142,44 +174,11 @@ public class restaurantMenuController implements Initializable {
 		this.restaurantName = resName;
 	}
 
-	private ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.client.getUser();
-		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		User user = (User) userResponse.getServerResponse();
-		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		switch (user.getUserType()) {
-		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
-		case BranchManager:
-		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-		case Customer:
-		case BusinessCustomer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
-		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-	}
-
 	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = getAvatarImage();
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		router.setAvatar(avatar);
 	}
 
 	/**
@@ -267,8 +266,8 @@ public class restaurantMenuController implements Initializable {
 	private void setTabContent(Tab tab, List<Product> productsToAdd) {
 		ScrollPane tabContent = new ScrollPane();
 		AnchorPane tabLabels = new AnchorPane();
-		int i = 0;
-		/** Creating scrollpane for the tabpane. */
+		int i = 0; // Index for the items layout on the scrollpane.
+		/** Creating scrollpane for the tab. */
 		for (Product p : productsToAdd) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
@@ -295,6 +294,7 @@ public class restaurantMenuController implements Initializable {
 			 * should be in the order.
 			 */
 			pane.setOnMouseClicked(e -> {
+				/** Pane for the overlay screen. */
 				Pane overlayPane = new Pane();
 				root.getChildren().add(overlayPane);
 				overlayPane.setPrefHeight(375);
@@ -303,6 +303,7 @@ public class restaurantMenuController implements Initializable {
 						"-fx-background-color:  #006875; -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0)");
 				overlayPane.setLayoutX(71);
 				overlayPane.setLayoutY(105);
+				/** Close button, closing the overlay screen. */
 				Label closeBtn = new Label("X");
 				closeBtn.setStyle("-fx-text-fill: red; -fx-cursor: hand;");
 				closeBtn.setFont(new Font("Berlin Sans FB", 22));
@@ -313,25 +314,32 @@ public class restaurantMenuController implements Initializable {
 				});
 				closeBtn.setLayoutX(650);
 				closeBtn.setLayoutY(15);
-				overlayPane.getChildren().add(closeBtn);
+				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
 				title.setFont(new Font("Berlin Sans FB", 30));
 				title.setStyle("-fx-text-fill: white;");
 				title.setLayoutX(41);
 				title.setLayoutY(15);
-				overlayPane.getChildren().add(title);
-				Line l = new Line();
-				l.setStartX(-100);
-				l.setEndX(530);
-				l.setStartY(0);
-				l.setEndY(0);
-				l.setScaleX(1);
-				l.setScaleY(1);
-				l.setScaleY(1);
-				l.setLayoutX(134);
-				l.setLayoutY(51);
-				l.setStroke(Color.WHITE);
-				overlayPane.getChildren().add(l);
+				/** Under line for the overlay screen's title. */
+				Line line = new Line();
+				/** Setting the line to cross from 1 end of the screen to another(roughly). */
+				line.setStartX(-100);
+				line.setEndX(530);
+				line.setStartY(0);
+				line.setEndY(0);
+				line.setScaleX(1);
+				line.setScaleY(1);
+				line.setScaleY(1);
+				line.setLayoutX(134);
+				line.setLayoutY(51);
+				line.setStroke(Color.WHITE);
+				/** Product's description. */
+				Label description = new Label(p.getDescription());
+				description.setFont(new Font("Berlin Sans FB", 14));
+				description.setLayoutX(41);
+				description.setLayoutY(61);
+				description.setTextFill(Color.WHITE);
+				/** Getting the optional component from the server for this specific product. */
 				Thread t = new Thread(() -> {
 					ClientGUI.client.componentsInProduct(restaurantName, p.getDishName());
 					synchronized (ClientGUI.monitor) {
@@ -350,15 +358,23 @@ public class restaurantMenuController implements Initializable {
 					ex.printStackTrace();
 					return;
 				}
+				/** Checking the server's response. */
 				ServerResponse serverResponse = ClientGUI.client.getOptionalComponentsInProduct();
 				ArrayList<Component> componentInDish; // Components received from query.
 				ArrayList<Component> componentInProduct = new ArrayList<>(); // Components in actual dish for the order.
 				if (serverResponse != null) {
 					componentInDish = (ArrayList<Component>) serverResponse.getServerResponse();
-					if (componentInDish == null) {
-						root.getChildren().remove(overlayPane);
-						System.out.println("Product " + nameLabel.getText() + " doesn't have optional components");
+					if (componentInDish == null || componentInDish.size() == 0) {
+						/** If this dish doens't have any optional components */
+						Label noComp = new Label(
+								"Product " + nameLabel.getText() + " doesn't have optional components");
+						noComp.setFont(new Font("Berlin Sans FB", 16));
+						noComp.setTextFill(Color.WHITE);
+						noComp.setLayoutX(30);
+						noComp.setLayoutY(215);
+						overlayPane.getChildren().add(noComp);
 					} else {
+						/** Creating scroll pane for all the optional components. */
 						ScrollPane componentContent = new ScrollPane();
 						AnchorPane componentLabels = new AnchorPane();
 						int j = 0;
@@ -369,6 +385,11 @@ public class restaurantMenuController implements Initializable {
 							com.setFont(new Font("Berlin Sans FB", 14));
 							componentLabels.getChildren().add(com);
 							com.setId("optionalBtn");
+							/**
+							 * Setting onclick event for each component, if the user wants this components
+							 * and clicks it --> add to components in product array. in the end add the
+							 * desired component to the prodcut in the products array.
+							 */
 							com.setOnMouseClicked(evnt -> {
 								if (com.getId().equals("clickedBG")) {
 									com.setId("optionalBtn");
@@ -387,25 +408,32 @@ public class restaurantMenuController implements Initializable {
 						componentContent.setContent(componentLabels);
 						overlayPane.getChildren().add(componentContent);
 					}
+					/** Counter to show how many product of this product are in the order. */
+					Label counter = new Label("1");
+					/** Setting position for counter. */
+					counter.setLayoutX(346);
+					counter.setLayoutY(338);
+					counter.setTextFill(Color.WHITE);
+					counter.setFont(new Font("Berlin Sans FB", 22));
 
+					/** Button to add more of this product to the order, infinite cap. */
 					Label plus = new Label("+");
+					/** Setting position for plus button. */
 					plus.setId("plusMinus");
 					plus.setLayoutX(298);
 					plus.setLayoutY(348);
-					Label minus = new Label("-");
-					minus.setId("plusMinus");
-					minus.setLayoutX(372);
-					minus.setLayoutY(348);
-					Label counter = new Label("1");
-					counter.setLayoutX(345);
-					counter.setLayoutY(338);
-					counter.setTextFill(Color.WHITE);
 					plus.setFont(new Font("Berlin Sans FB", 24));
-					minus.setFont(new Font("Berlin Sans FB", 24));
-					counter.setFont(new Font("Berlin Sans FB", 22));
 					plus.setOnMouseClicked(mEvent -> {
 						counter.setText(Integer.parseInt(counter.getText()) + 1 + "");
 					});
+
+					/** Button to remove 1 or more of this product from the order, finite at 1. */
+					Label minus = new Label("-");
+					/** Setting position for minus button. */
+					minus.setId("plusMinus");
+					minus.setLayoutX(372);
+					minus.setLayoutY(348);
+					minus.setFont(new Font("Berlin Sans FB", 24));
 					minus.setOnMouseClicked(mEvent -> {
 						int count = Integer.parseInt(counter.getText());
 						if (count == 1) {
@@ -414,31 +442,80 @@ public class restaurantMenuController implements Initializable {
 						counter.setText(count - 1 + "");
 					});
 
+					/** Free text for the user to specify any notes for the order. */
+					TextArea restrictions = new TextArea();
+					restrictions.setPromptText("Anything we need to know?");
+					restrictions.setId("txtarea");
+					restrictions.setLayoutX(384);
+					restrictions.setLayoutY(108);
+					/** Title for the free text. */
+					Label textAreaTitle = new Label("Anything we need to know?");
+					textAreaTitle.setFont(new Font("Berlin Sans FB", 16));
+					textAreaTitle.setLayoutX(384);
+					textAreaTitle.setLayoutY(85);
+					textAreaTitle.setTextFill(Color.WHITE);
+					/**
+					 * Add item button, adding the selected item with all the selected components
+					 * and the free text from the user. Adding the item <counter> times to the
+					 * order.
+					 */
 					Label addItem = new Label("Add Item");
 					addItem.setId("addItem");
 					addItem.setLayoutX(545);
 					addItem.setLayoutY(330);
 					/** Adding the desired product to the products array of the order */
 					addItem.setOnMouseClicked(mEvent -> {
+						String notes = restrictions.getText();
+						/**
+						 * If the restrictions free text is not null or empty, add new component to the
+						 * order.
+						 */
+						if (notes != null && !notes.equals("")) {
+							Component c = new Component(null, null, restrictions.getText());
+							componentInProduct.add(c);
+						}
+						/** Adding the components list to this product. */
 						p.setComponents(componentInProduct);
+						/**
+						 * Increasing the counter of the bag items (the one near the profile picture).
+						 */
 						int count = Integer.parseInt(counter.getText());
-						itemsCounter.setText(Integer.parseInt(itemsCounter.getText()) + count + "");
+						/**
+						 * Adding the product to products array count times(amount specify by the user).
+						 */
 						for (int k = 0; k < count; k++) {
 							productsInOrder.add(p);
 						}
-						root.getChildren().remove(overlayPane);
+						/**
+						 * Setting global state for the router, adding <productsInOrder> to router
+						 * singleton.
+						 */
+						router.setBagItems(productsInOrder);
+						setItemsCounter();
+						root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
+						System.out.println(productsInOrder);
 					});
-					overlayPane.getChildren().addAll(plus, minus, counter, addItem);
+					/**
+					 * Add all the labels to the overlay.
+					 */
+					overlayPane.getChildren().addAll(title, closeBtn, line, description, plus, minus, counter, addItem,
+							restrictions, textAreaTitle);
 				}
 			});
 			i++;
 		}
+		/** Adding the anchorpane to the scrollpane. */
 		tabContent.setContent(tabLabels);
+		/** Adding the scrollpane to the tab. */
 		tab.setContent(tabContent);
 	}
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+	}
+	
+	public void setItemsCounter() {
+		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 }
