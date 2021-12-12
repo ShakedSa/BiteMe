@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import Entities.Customer;
+import Entities.Order;
 import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
@@ -139,6 +140,9 @@ public class identifyController implements Initializable {
 	private void changeToRestaurantMenuPage() {
 		w4cCodeFieldTxt.clear();
 		router = Router.getInstance();
+		Order newOrder = new Order();
+		newOrder.setRestaurantName(restaurantsName);
+		router.setOrder(newOrder);
 		if(router.getRestaurantMenuController() == null) {
 			AnchorPane mainContainer;
 			restaurantMenuController controller;

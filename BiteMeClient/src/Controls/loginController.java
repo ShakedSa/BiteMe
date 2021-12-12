@@ -117,6 +117,9 @@ public class loginController implements Initializable {
 	 * display relevant information.
 	 */
 	private boolean checkServerResponse() {
+		if(ClientGUI.client.getUser() == null) {
+			return false;
+		}
 		switch (ClientGUI.client.getUser().getMsg().toLowerCase()) {
 		case "already logged in":
 			errorMsg.setText("This user is already logged in");

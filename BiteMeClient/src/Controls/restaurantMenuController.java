@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import Entities.Component;
+import Entities.Order;
 import Entities.Product;
 import Entities.ServerResponse;
 import Enums.UserType;
@@ -93,6 +94,10 @@ public class restaurantMenuController implements Initializable {
 
 	@FXML
 	void nextOrderStep(MouseEvent event) {
+		if(itemsCounter.getText().equals("0")) {
+			return;
+		}
+		router.getOrder().setProducts(productsInOrder);
 		router = Router.getInstance();
 		if (router.getPickDateAndTimeController() == null) {
 			AnchorPane mainContainer;
@@ -294,6 +299,7 @@ public class restaurantMenuController implements Initializable {
 			 * should be in the order.
 			 */
 			pane.setOnMouseClicked(e -> {
+				nextBtn.setDisable(true);
 				/** Pane for the overlay screen. */
 				Pane overlayPane = new Pane();
 				root.getChildren().add(overlayPane);
@@ -309,6 +315,7 @@ public class restaurantMenuController implements Initializable {
 				closeBtn.setFont(new Font("Berlin Sans FB", 22));
 				/** Setting a close button for the "choose components" screen. */
 				closeBtn.setOnMouseClicked(clickedEvent -> {
+					nextBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
 					ClientGUI.client.setOptionalComponentsInProduct(null);
 				});
@@ -494,6 +501,7 @@ public class restaurantMenuController implements Initializable {
 						setItemsCounter();
 						root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
 						System.out.println(productsInOrder);
+						nextBtn.setDisable(false);
 					});
 					/**
 					 * Add all the labels to the overlay.
