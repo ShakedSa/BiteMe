@@ -39,7 +39,7 @@
          </cursor>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="360.0" layoutY="57.0" onMouseClicked="#returnToEmployerHRPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel">
+      <Text id="active" fx:id="employerHRPanelBtn" fill="#3180bc" layoutX="360.0" layoutY="57.0" onMouseClicked="#returnToEmployerHRPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer HR Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -73,7 +73,7 @@
       </Text>
       <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="136.0" layoutY="268.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Register">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />

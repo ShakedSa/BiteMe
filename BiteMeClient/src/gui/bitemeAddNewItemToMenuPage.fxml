@@ -56,11 +56,11 @@
       <Text fill="RED" layoutX="196.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fill="RED" layoutX="184.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <TextField fx:id="itemsNameTxtField" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
-      <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
-      <Spinner fx:id="priceSpinner" editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
-      <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="396.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
-      <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
+      <TextField fx:id="itemsNameTxtField" focusTraversable="false" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
+      <TextField fx:id="optionalComponentsTxtField" focusTraversable="false" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
+      <Spinner fx:id="priceSpinner" editable="true" focusTraversable="false" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
+      <TextArea fx:id="descriptionTxtArea" focusTraversable="false" layoutX="377.0" layoutY="396.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
+      <ComboBox fx:id="selectTypeBox" focusTraversable="false" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
       <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
          <font>
             <Font name="Berlin Sans FB" size="39.0" />
@@ -76,7 +76,7 @@
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#supplierPanelClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
+      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -122,10 +122,21 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="uploadImageBtn" alignment="CENTER" layoutX="382.0" layoutY="349.0" onMouseClicked="#uploadImageClicked" prefHeight="25.0" prefWidth="152.0" text="upload">
+      <Text fx:id="uploadImageTxt" layoutX="427.0" layoutY="374.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
-      </Label>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="uploadImage" fitHeight="50.0" fitWidth="39.0" layoutX="384.0" layoutY="348.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/upload.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -113,8 +113,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ComboBox fx:id="hourBox" editable="true" layoutX="382.0" layoutY="389.0" onMouseClicked="#chooseHour" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <ComboBox fx:id="minutesBox" editable="true" layoutX="453.0" layoutY="389.0" onMouseClicked="#chooseMinutes" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="389.0" onMouseClicked="#chooseHour" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="389.0" onMouseClicked="#chooseMinutes" prefHeight="26.0" prefWidth="57.0" promptText="00" />
       <Text fill="#a8a1a1" layoutX="457.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
@@ -123,12 +123,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <RadioButton fx:id="includeDeliveryBtn" layoutX="378.0" layoutY="337.0" mnemonicParsing="false" text="Yes">
+      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="337.0" mnemonicParsing="false" text="Yes">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="notIncludeDeliveryBtn" layoutX="456.0" layoutY="337.0" mnemonicParsing="false" text="No">
+      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="337.0" mnemonicParsing="false" text="No">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
@@ -139,9 +139,9 @@
          </font>
       </Text>
       <CheckBox fx:id="orderReceivedBox" layoutX="378.0" layoutY="238.0" mnemonicParsing="false" text="Yes" />
-      <Label id="btn" fx:id="searchBtn" alignment="CENTER" layoutX="551.0" layoutY="188.0" onMouseClicked="#searchClicked" prefHeight="25.0" prefWidth="93.0" text="Search">
+      <Label id="btn" fx:id="searchBtn" alignment="CENTER" layoutX="545.0" layoutY="179.0" onMouseClicked="#searchClicked" prefHeight="25.0" prefWidth="131.0" text="Search">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
       <CheckBox fx:id="orderIsReadyBox" layoutX="378.0" layoutY="288.0" mnemonicParsing="false" text="Yes" />

@@ -122,10 +122,21 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="uploadImageBtn" alignment="CENTER" layoutX="382.0" layoutY="349.0" onMouseClicked="#uploadImageClicked" prefHeight="25.0" prefWidth="152.0" text="upload">
+      <Text fx:id="uploadImageTxt" layoutX="427.0" layoutY="374.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
-      </Label>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="uploadImage" fitHeight="50.0" fitWidth="39.0" layoutX="384.0" layoutY="348.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/upload.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

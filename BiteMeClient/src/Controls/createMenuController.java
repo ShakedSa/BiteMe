@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Enums.UserType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 public class createMenuController implements Initializable{
 	
+	public final UserType type= UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -108,37 +110,14 @@ public class createMenuController implements Initializable{
 
     @FXML
     void returnToSupplierPanel(MouseEvent event) {
-    	if (router.getSupplierPanelController() == null) {
-			AnchorPane mainContainer;
-			supplierPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Supplier Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return; 
-			}
-		} else {
-			stage.setTitle("BiteMe - Supplier Panel");
-			stage.setScene(router.getSupplierPanelController().getScene());
-			stage.show();
-		}
+    	router.returnToSupplierPanel(event);
     }
     
     /**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		//router.setAvatar(avatar);
+		router.setAvatar(avatar);
 	}
 
     

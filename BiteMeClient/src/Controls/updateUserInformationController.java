@@ -75,30 +75,7 @@ public class updateUserInformationController implements Initializable{
 
     @FXML
     void returnToManagerPanel(MouseEvent event) {
-    	if (router.getManagerPanelController() == null) {
-			AnchorPane mainContainer;
-			managerPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
-			stage.show();
-		}
+    	router.returnToManagerPanel(event);
     }
     
 	@FXML

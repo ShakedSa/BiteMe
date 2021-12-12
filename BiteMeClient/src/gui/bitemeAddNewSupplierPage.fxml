@@ -7,7 +7,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -16,13 +15,6 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplierController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
-         <image>
-            <Image url="@../../../scene%20builder/images/bag-icon.gif" />
-         </image>
-      </ImageView>
-      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
-      <Text layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -59,33 +51,36 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commition">
+      <Text layoutX="88.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commission">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="137.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
+      <Text fx:id="uploadImageTxt" layoutX="137.0" layoutY="418.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Text>
-      <TextField fx:id="restaurantNameTxtField" layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantAddressTxtField" layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantAddressTxtField" focusTraversable="false" layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantTypeTxtField" layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantTypeTxtField" focusTraversable="false" layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantManagerNameTxtField" layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantManagerNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <ComboBox fx:id="monthlyCommitionBox" layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
+      <ComboBox fx:id="monthlyCommissionBox" focusTraversable="false" layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

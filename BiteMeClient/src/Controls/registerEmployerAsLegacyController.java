@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import Enums.UserType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,12 +20,13 @@ import javafx.stage.Stage;
 
 public class registerEmployerAsLegacyController implements Initializable{
 	
+	public final UserType type= UserType.EmployerHR;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
     @FXML
-    private Text CEOPanelBtn;
+    private Text employerHRPanelBtn;
 
     @FXML
     private Rectangle avatar;
@@ -64,30 +66,7 @@ public class registerEmployerAsLegacyController implements Initializable{
 
     @FXML
     void returnToEmployerHRPanel(MouseEvent event) {
-    	if (router.getEmployerHRPanelController() == null) {
-			AnchorPane mainContainer;
-			employerHRPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Employer HR Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return; 
-			}
-		} else {
-			stage.setTitle("BiteMe - Employer HR Panel");
-			stage.setScene(router.getEmployerHRPanelController().getScene());
-			stage.show();
-		}
+    	router.returnToEmployerHRPanel(event);
     }
 
     @FXML
@@ -99,7 +78,7 @@ public class registerEmployerAsLegacyController implements Initializable{
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		//router.setAvatar(avatar);
+		router.setAvatar(avatar);
 	}
 
     

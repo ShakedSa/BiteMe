@@ -219,6 +219,7 @@ public class identifyController implements Initializable {
 		this.restaurantsName = restaurantName;
 	}
 
+
 	/**
 	 * Setting the avatar image of the user.
 	 */
