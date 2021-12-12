@@ -32,7 +32,7 @@ import javafx.stage.Stage;
 
 public class restaurantSelectionController implements Initializable {
 
-	public final UserType type= UserType.Customer;
+	public final UserType type = UserType.Customer;
 	private Router router;
 
 	private Stage stage;
@@ -124,6 +124,9 @@ public class restaurantSelectionController implements Initializable {
 	private TextField searchRestaurantFieldTxt;
 
 	@FXML
+	private Text itemsCounter;
+
+	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
@@ -152,46 +155,12 @@ public class restaurantSelectionController implements Initializable {
 		this.stage = stage;
 	}
 
-	private ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.client.getUser();
-		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		User user = (User) userResponse.getServerResponse();
-		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		switch (user.getUserType()) {
-		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
-		case BranchManager:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
-		case EmployerHR:
-			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
-		case Customer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
-		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-	}
 
 	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = getAvatarImage();
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		router.setAvatar(avatar);
 	}
 
 	/**
@@ -297,9 +266,14 @@ public class restaurantSelectionController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
+
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+	}
+
+	public void setItemsCounter() {
+		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
 }

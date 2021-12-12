@@ -11,18 +11,16 @@ import java.util.Set;
 
 import Entities.ServerResponse;
 import Entities.User;
-import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -100,6 +98,9 @@ public class homePageController implements Initializable {
 
 	@FXML
 	private ImageView res3;
+
+	@FXML
+	private Text itemsCounter;
 
 	/**
 	 * Moving the carousel 1 step backward.
@@ -283,6 +284,7 @@ public class homePageController implements Initializable {
 				return;
 			}
 		} else {
+			router.getRestaurantselectionController().setItemsCounter();
 			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(router.getRestaurantselectionController().getScene());
 			stage.show();
@@ -335,28 +337,23 @@ public class homePageController implements Initializable {
 	 */
 	public void setProfile(boolean val) {
 		ServerResponse resUser = ClientGUI.client.getUser();
-		if (resUser != null) 
-		{
+		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				userFirstName.setText(user.getFirstName());
 				setDefaults(user, val);
-			}
-			else
-			{
+			} else {
 				userFirstName.setText("Guest");
-				setDefaults(null,false);
+				setDefaults(null, false);
 			}
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
 			homePageBtn.setStyle("-fx-cursor: hand;");
-			
-		}
-		else
-		{
+
+		} else {
 			userFirstName.setText("Guest");
-			setDefaults(null,false);
+			setDefaults(null, false);
 		}
 	}
 
@@ -395,8 +392,7 @@ public class homePageController implements Initializable {
 			supplierBtn.setVisible(val);
 			employerHRBtn.setVisible(val);
 			ceoBtn.setVisible(val);
-		} 
-		else {
+		} else {
 			switch (user.getUserType()) {
 			case Customer:
 				restaurantBtn.setVisible(val);
@@ -539,5 +535,9 @@ public class homePageController implements Initializable {
 
 	public void setContainer(AnchorPane mainContainer) {
 		this.mainContainer = mainContainer;
+	}
+	
+	public void setItemsCounter() {
+		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 }
