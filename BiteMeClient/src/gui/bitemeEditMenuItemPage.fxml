@@ -28,34 +28,34 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
+      <Text fx:id="typeTxt" layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="nameTxt" layoutX="130.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Optional Components">
+      <Text fx:id="optionalComponentsTxt" layoutX="130.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Optional Components">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
+      <Text fx:id="priceTxt" layoutX="130.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+      <Text fx:id="descriptionTxt" layoutX="130.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text fill="RED" layoutX="196.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fill="RED" layoutX="184.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="starNameTxt" fill="RED" layoutX="196.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="starTypeTxt" fill="RED" layoutX="184.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="starPriceTxt" fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit item">
          <font>
             <Font name="Berlin Sans FB" size="39.0" />
@@ -66,7 +66,7 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image">
+      <Text fx:id="imageTxt" layoutX="130.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Image">
          <font>
             <Font name="Berlin Sans FB" size="26.0" />
          </font>

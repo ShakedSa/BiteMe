@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -33,19 +32,9 @@
             <Font name="Berlin Sans FB" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Received">
+      <Text fx:id="includeDeliveryTxt" layoutX="130.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include Delivery?">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
-         </font>
-      </Text>
-      <Text layoutX="130.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Is Ready">
-         <font>
-            <Font name="Berlin Sans FB" size="26.0" />
-         </font>
-      </Text>
-      <Text layoutX="130.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include Delivery?">
-         <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
       <TextField fx:id="OrderNumberTxtField" layoutX="382.0" layoutY="185.0" promptText="Order Number" />
@@ -54,9 +43,9 @@
             <Font name="Berlin Sans FB" size="39.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Planned Time">
+      <Text fx:id="enterPlannedTineTxt" layoutX="130.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Planned Time">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
@@ -92,7 +81,7 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="52.0" layoutX="57.0" layoutY="489.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
@@ -105,7 +94,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
-      <Text fill="#a8a1a1" layoutX="385.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
+      <Text fx:id="hourTxt" fill="#a8a1a1" layoutX="385.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -113,9 +102,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="389.0" onMouseClicked="#chooseHour" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="389.0" onMouseClicked="#chooseMinutes" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <Text fill="#a8a1a1" layoutX="457.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
+      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="342.0" onMouseClicked="#chooseHour" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="342.0" onMouseClicked="#chooseMinutes" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <Text fx:id="minutesTxt" fill="#a8a1a1" layoutX="457.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -123,27 +112,41 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="337.0" mnemonicParsing="false" text="Yes">
+      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="289.0" mnemonicParsing="false" text="Yes">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="337.0" mnemonicParsing="false" text="No">
+      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="289.0" mnemonicParsing="false" text="No">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <Text fill="RED" layoutX="128.0" layoutY="467.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <CheckBox fx:id="orderReceivedBox" layoutX="378.0" layoutY="238.0" mnemonicParsing="false" text="Yes" />
       <Label id="btn" fx:id="searchBtn" alignment="CENTER" layoutX="545.0" layoutY="179.0" onMouseClicked="#searchClicked" prefHeight="25.0" prefWidth="131.0" text="Search">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <CheckBox fx:id="orderIsReadyBox" layoutX="378.0" layoutY="288.0" mnemonicParsing="false" text="Yes" />
+      <Text fx:id="successMsg" fill="#62d019" layoutX="166.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order was updated successfully!">
+         <font>
+            <Font name="Berlin Sans FB" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="122.0" layoutY="428.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+         </image>
+      </ImageView>
+      <ComboBox fx:id="updateDataComboBox" layoutX="403.0" layoutY="239.0" prefHeight="26.0" prefWidth="228.0" />
+      <Text fx:id="updateDataTxt" layoutX="130.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to update that:">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

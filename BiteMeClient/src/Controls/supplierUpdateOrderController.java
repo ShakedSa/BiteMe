@@ -1,10 +1,9 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-
 import Enums.UserType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,54 +34,105 @@ public class supplierUpdateOrderController implements Initializable {
 	private Stage stage;
 	private Scene scene;
 
-	@FXML
-	private TextField OrderNumberTxtField;
+    @FXML
+    private TextField OrderNumberTxtField;
 
-	@FXML
-	private Rectangle avatar;
+    @FXML
+    private ImageView VImage;
 
-	@FXML
-	private Text homePageBtn;
+    @FXML
+    private Rectangle avatar;
 
-	@FXML
-	private ComboBox<String> hourBox;
+    @FXML
+    private Text enterPlannedTineTxt;
 
-	@FXML
-	private RadioButton includeDeliveryBtn;
+    @FXML
+    private Text errorMsg;
 
-	@FXML
-	private ImageView leftArrowBtn;
+    @FXML
+    private Text homePageBtn;
 
-	@FXML
-	private Text logoutBtn;
+    @FXML
+    private ComboBox<String> hourBox;
 
-	@FXML
-	private ComboBox<String> minutesBox;
+    @FXML
+    private Text hourTxt;
 
-	@FXML
-	private RadioButton notIncludeDeliveryBtn;
+    @FXML
+    private RadioButton includeDeliveryBtn;
 
-	@FXML
-	private CheckBox orderIsReadyBox;
+    @FXML
+    private Text includeDeliveryTxt;
 
-	@FXML
-	private CheckBox orderReceivedBox;
+    @FXML
+    private ImageView leftArrowBtn;
 
-	@FXML
-	private Text profileBtn;
+    @FXML
+    private Text logoutBtn;
 
-	@FXML
-	private Label searchBtn;
+    @FXML
+    private ComboBox<String> minutesBox;
 
-	@FXML
-	private Text supplierPanelBtn;
+    @FXML
+    private Text minutesTxt;
 
-	@FXML
-	private Label updateOrderBtn;
+    @FXML
+    private RadioButton notIncludeDeliveryBtn;
+
+    @FXML
+    private Text profileBtn;
+
+    @FXML
+    private Label searchBtn;
+
+    @FXML
+    private Text successMsg;
+
+    @FXML
+    private Text supplierPanelBtn;
+
+    @FXML
+    private ComboBox<String> updateDataComboBox;
+
+    @FXML
+    private Text updateDataTxt;
+
+    @FXML
+    private Label updateOrderBtn;
+	
+	
+	ObservableList<String> list;
+
+	// creating list of update status order
+	private void setUpdateComboBox() {
+		ArrayList<String> type = new ArrayList<String>();
+		type.add("Order Received");
+		type.add("Order Is Ready");
+
+		list = FXCollections.observableArrayList(type);
+		updateDataComboBox.setItems(list);
+	}
+
+	private void setStartPage() {
+		updateDataTxt.setVisible(false);
+		updateDataComboBox.setVisible(false);
+		includeDeliveryTxt.setVisible(false);
+		includeDeliveryBtn.setVisible(false);
+		notIncludeDeliveryBtn.setVisible(false);
+		enterPlannedTineTxt.setVisible(false);
+		hourBox.setVisible(false);
+		hourTxt.setVisible(false);
+		minutesBox.setVisible(false);
+		minutesTxt.setVisible(false);
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
+	}
 
 	@FXML
 	void UpdateOrderClicked(MouseEvent event) {
-
+		//need add a check if the data was updated successfully in DB
+		VImage.setVisible(true);
+		successMsg.setVisible(true);
 	}
 
 	@FXML
@@ -108,16 +158,63 @@ public class supplierUpdateOrderController implements Initializable {
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
+		setStartPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
+		setStartPage();
 	}
 
 	@FXML
 	void searchClicked(MouseEvent event) {
+		//need add a check if the order number is exist in DB
+		updateDataTxt.setVisible(true);
+		updateDataComboBox.setVisible(true);
+		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal,newVal) -> {
+			if(newVal == "Order Is Ready")
+				orderIsReady();
+			else {
+				includeDeliveryTxt.setVisible(false);
+				includeDeliveryBtn.setVisible(false);
+				notIncludeDeliveryBtn.setVisible(false);
+			}	
+		});
+		
+		//need to add the case - order includes delivery(selected Yes on radio button)
+		//and then call to includeDelivery() function
 
+		
+		
+		
+		
+//		ButtonGroup group = new ButtonGroup();
+//	    group.add(includeDeliveryBtn);
+//	    group.add(notIncludeDeliveryBtn);
+
+	
+	    
+//		if(includeDeliveryBtn.isSelected() == true) { // the order includes delivery
+//			includeDelivery();
+//		}
+			
+		
+	}
+	
+	private void orderIsReady() {
+		includeDeliveryTxt.setVisible(true);
+		includeDeliveryBtn.setVisible(true);
+		notIncludeDeliveryBtn.setVisible(true);
+	}
+	
+	private void includeDelivery() {
+		
+		enterPlannedTineTxt.setVisible(true);
+		hourBox.setVisible(true);
+		hourTxt.setVisible(true);
+		minutesBox.setVisible(true);
+		minutesTxt.setVisible(true);
 	}
 
 	/**
@@ -132,6 +229,8 @@ public class supplierUpdateOrderController implements Initializable {
 		router = Router.getInstance();
 		router.setSupplierUpdateOrderController(this);
 		setStage(router.getStage());
+		setUpdateComboBox();
+		setStartPage();
 	}
 
 	public void setScene(Scene scene) {
