@@ -8,19 +8,13 @@ public class SharedDelivery extends Delivery {
 	private static final long serialVersionUID = 3803571920726125209L;
 	private String businessCode;
 	private int amountOfPeople;
-	
-	
-	public SharedDelivery(int deliveryNumber, String orderAddress,
-			float orderPrice, float discount, String businessCode, int amountOfPeople) {
-		super(deliveryNumber, orderAddress, orderPrice, discount);
-		this.amountOfPeople = amountOfPeople;
-		this.businessCode = businessCode;
-	}
-	
-	public SharedDelivery(float orderPrice) {
-		super(orderPrice);
-	}
 
+	public SharedDelivery(String orderAddress, String firstName, String lastName, String phoneNumber, float orderPrice,
+			float discount, String businessCode, int amountOfPeople) {
+		super(orderAddress, firstName, lastName, phoneNumber, orderPrice, discount);
+		this.businessCode = businessCode;
+		this.amountOfPeople = amountOfPeople;
+	}
 
 	/**
 	 * @return the businessCode
@@ -29,14 +23,12 @@ public class SharedDelivery extends Delivery {
 		return businessCode;
 	}
 
-
 	/**
 	 * @return the amountOfPeople
 	 */
 	public int getAmountOfPeople() {
 		return amountOfPeople;
 	}
-
 
 	/**
 	 * @param businessCode the businessCode to set
@@ -45,16 +37,15 @@ public class SharedDelivery extends Delivery {
 		this.businessCode = businessCode;
 	}
 
-
 	/**
 	 * @param amountOfPeople the amountOfPeople to set
 	 */
 	public void setAmountOfPeople(int amountOfPeople) {
 		this.amountOfPeople = amountOfPeople;
 	}
-	
+
 	public String toString() {
-		return super.toString() + "\nAmount of people in order: " + amountOfPeople;
+		return super.toString() + "\nAmount of people in order: " + amountOfPeople + "\nBusiness Code: " + businessCode;
 	}
 
 }

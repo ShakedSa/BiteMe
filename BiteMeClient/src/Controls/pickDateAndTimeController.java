@@ -99,7 +99,6 @@ public class pickDateAndTimeController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setRestaurant(restaurantName);
 				controller.setItemsCounter();
 				controller.createCombo();
 				Scene mainScene = new Scene(mainContainer);

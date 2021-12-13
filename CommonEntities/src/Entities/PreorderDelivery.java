@@ -3,21 +3,16 @@ package Entities;
 public class PreorderDelivery extends Delivery {
 
 	private String deliveryTime;
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2785999044405825850L;
 
-	public PreorderDelivery(int deliveryNumber, String orderAddress
-			, float orderPrice, float discount, String deliveryTime) {
-		super(deliveryNumber, orderAddress, orderPrice, discount);
+	public PreorderDelivery(String orderAddress, String firstName, String lastName, String phoneNumber,
+			float orderPrice, float discount, String deliveryTime) {
+		super(orderAddress, firstName, lastName, phoneNumber, orderPrice, discount);
 		this.deliveryTime = deliveryTime;
-		
-	}
-	
-	public PreorderDelivery(float orderPrice) {
-		super(orderPrice);
 	}
 
 	/**
@@ -33,10 +28,10 @@ public class PreorderDelivery extends Delivery {
 	public void setDeliveryTime(String deliveryTime) {
 		this.deliveryTime = deliveryTime;
 	}
-	
+
 	public String toString() {
-		if(deliveryTime != null) {
-			return super.toString() + "\nDelivery Scheduled to: " + deliveryTime; 
+		if (deliveryTime != null) {
+			return super.toString() + "\nDelivery Scheduled to: " + deliveryTime;
 		}
 		return super.toString();
 	}

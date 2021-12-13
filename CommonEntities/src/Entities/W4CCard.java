@@ -81,6 +81,10 @@ public class W4CCard implements Serializable {
 		return w4cID;
 	}
 	
+	public String getEmployerID() {
+		return employerID;
+	}
+	
 	public String getQRCode() {
 		return qrCode;
 	}

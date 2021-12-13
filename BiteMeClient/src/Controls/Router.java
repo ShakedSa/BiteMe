@@ -33,6 +33,7 @@ public class Router {
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
 	private deliveryMethodController DeliveryMethodController;
+	private paymentController PaymentController;
 	private ceoPanelController CEOPanelController;
 	private employerHRPanelController EmployerHRPanelController;
 	private profileController ProfileController;
@@ -439,6 +440,20 @@ public class Router {
 	 */
 	public void setDeliveryMethodController(deliveryMethodController deliveryMethodController) {
 		DeliveryMethodController = deliveryMethodController;
+	}
+
+	/**
+	 * @return the paymentController
+	 */
+	public paymentController getPaymentController() {
+		return PaymentController;
+	}
+
+	/**
+	 * @param paymentController the paymentController to set
+	 */
+	public void setPaymentController(paymentController paymentController) {
+		PaymentController = paymentController;
 	}
 
 	/**
