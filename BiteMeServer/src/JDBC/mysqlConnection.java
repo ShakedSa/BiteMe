@@ -1,7 +1,9 @@
 package JDBC;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Config.ReadPropertyFile;
+import Entities.Branch;
 import Entities.BranchManager;
 import Entities.CEO;
 import Entities.Component;
@@ -425,5 +428,31 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		serverResponse.setServerResponse(favRestaurants);
 		return serverResponse;
+	}
+
+	//java.sql.SQLIntegrityConstraintViolationException: 
+	//Cannot add or update a child row: a foreign key constraint fails
+	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
+	//REFERENCES `suppliers` (`RestaurantName`))
+	
+	public static void updateFile(InputStream is, String date) {
+		System.out.println("test !");
+		String filename= "Report " + date + ".pdf";
+		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, 1);
+			statement.setString(2, filename);
+			statement.setDate(3, new Date(2011, 11, 11));
+			statement.setBlob(4,is);
+			statement.setString(5, BranchName.North.toString());
+			statement.setString(6, filename);
+			statement.setString(7, "Burgerim");
+			statement.executeUpdate();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

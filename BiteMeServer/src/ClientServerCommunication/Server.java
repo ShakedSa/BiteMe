@@ -1,6 +1,13 @@
 package ClientServerCommunication;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import Entities.MyFile;
 import Entities.User;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
@@ -42,6 +49,19 @@ public class Server extends AbstractServer {
 	 */
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		if(msg instanceof MyFile) // handle upload pdf file to sql
+		{
+			  MyFile message = ((MyFile) msg);
+			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
+			try {
+				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
+				mysqlConnection.updateFile(is,message.getDescription());
+			}catch(Exception e) {
+				System.out.println("Error while handling files in Server");
+			}
+			return;
+		}
+		
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
