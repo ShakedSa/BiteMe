@@ -89,10 +89,12 @@ public class uploadQuarterlyReportController implements Initializable{
 
     @FXML
     void ImportImageClicked(MouseEvent event) {
+    	UploadMsgImg.setVisible(false);
+    	UploadMsgTxt.setVisible(false); // set upload success msg after importing new file.
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");
     	pdfToUpload = fc.showOpenDialog(router.getStage());
-    	if(pdfToUpload == null)
+    	if(pdfToUpload == null || !pdfToUpload.toString().contains("pdf"))
     		InvalidMsg.setVisible(true);
     	else
     		InvalidMsg.setVisible(false);
@@ -116,6 +118,12 @@ public class uploadQuarterlyReportController implements Initializable{
 
     @FXML
     void uploadReportClicked(MouseEvent event) {
+    	if(monthBox.getValue() == null || yearBox.getValue() == null )
+    	{
+    		InvalidMsg.setVisible(true);
+    		return;
+    	}
+		InvalidMsg.setVisible(false);
     	ClientGUI.client.sendReport(pdfToUpload, monthBox.getValue(), yearBox.getValue());
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
