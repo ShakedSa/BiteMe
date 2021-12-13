@@ -8,15 +8,17 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import Entities.Component;
-import Entities.Order;
 import Entities.Product;
 import Entities.ServerResponse;
+import Enums.Doneness;
+import Enums.Size;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -94,7 +96,7 @@ public class restaurantMenuController implements Initializable {
 
 	@FXML
 	void nextOrderStep(MouseEvent event) {
-		if(itemsCounter.getText().equals("0")) {
+		if (itemsCounter.getText().equals("0")) {
 			return;
 		}
 		router.getOrder().setProducts(productsInOrder);
@@ -346,6 +348,12 @@ public class restaurantMenuController implements Initializable {
 				description.setLayoutX(41);
 				description.setLayoutY(61);
 				description.setTextFill(Color.WHITE);
+				/** Product's price */
+				Label price = new Label(String.format("Price %.2f", p.getPrice()));
+				price.setFont(new Font("Berlin Sans FB", 14));
+				price.setTextFill(Color.WHITE);
+				price.setLayoutX(580);
+				price.setLayoutY(290);
 				/** Getting the optional component from the server for this specific product. */
 				Thread t = new Thread(() -> {
 					ClientGUI.client.componentsInProduct(restaurantName, p.getDishName());
@@ -386,32 +394,81 @@ public class restaurantMenuController implements Initializable {
 						AnchorPane componentLabels = new AnchorPane();
 						int j = 0;
 						for (Component c : componentInDish) {
-							Label com = new Label(c.toString());
-							com.setLayoutX(10);
-							com.setLayoutY(j * 50 + 10);
-							com.setFont(new Font("Berlin Sans FB", 14));
-							componentLabels.getChildren().add(com);
-							com.setId("optionalBtn");
 							/**
-							 * Setting onclick event for each component, if the user wants this components
-							 * and clicks it --> add to components in product array. in the end add the
-							 * desired component to the prodcut in the products array.
+							 * Checking which type of component is <c>, creating combobox/label accordingly.
 							 */
-							com.setOnMouseClicked(evnt -> {
-								if (com.getId().equals("clickedBG")) {
-									com.setId("optionalBtn");
-									componentInProduct.remove(c);
-								} else {
-									com.setId("clickedBG");
-									componentInProduct.add(c);
-								}
-							});
+							if (checkIfSize(c)) {
+								Label sizeTitle = new Label("Size");
+								sizeTitle.setFont(new Font("Berlin Sans FB", 14));
+								sizeTitle.setTextFill(Color.WHITE);
+								sizeTitle.setLayoutX(10);
+								sizeTitle.setLayoutY(j * 50 + 10);
+								ComboBox<Size> size = new ComboBox<>();
+								size.getItems().addAll(Size.values());
+								size.getSelectionModel().select(Size.Medium);
+								size.setLayoutX(40);
+								size.setLayoutY(j * 50 + 10);
+								size.getSelectionModel().selectedItemProperty().addListener((obj, oldVal, newVal) -> {
+									c.setSize(newVal);
+									float productPrice;
+									switch (newVal) {
+									case Small:
+										productPrice = p.getPrice() * (float) Component.smallSizePrice;
+										price.setText(String.format("Price %.2f", productPrice));
+										return;
+									case Large:
+										productPrice = p.getPrice() * (float) Component.largeSizePrice;
+										price.setText(String.format("Price %.2f", productPrice));
+										return;
+									default:
+										price.setText(String.format("Price %.2f", p.getPrice()));
+										return;
+									}
+								});
+								componentInProduct.add(c);
+								componentLabels.getChildren().addAll(sizeTitle, size);
+							} else if (checkIfDoneness(c)) {
+								ComboBox<Doneness> doneness = new ComboBox<>();
+								doneness.getItems().addAll(Doneness.values());
+								doneness.getSelectionModel().select(Doneness.medium);
+								doneness.setLayoutX(10);
+								doneness.setLayoutY(j * 50 + 10);
+								doneness.getSelectionModel().selectedItemProperty()
+										.addListener((obj, oldVal, newVal) -> {
+											c.setDoneness(newVal);
+										});
+								componentInProduct.add(c);
+								componentLabels.getChildren().add(doneness);
+							} else {
+								Label com = new Label(c.toString());
+								com.setLayoutX(10);
+								com.setLayoutY(j * 50 + 10);
+								com.setFont(new Font("Berlin Sans FB", 14));
+								com.setId("optionalBtn");
+								/**
+								 * Setting onclick event for each component, if the user wants this components
+								 * and clicks it --> add to components in product array. in the end add the
+								 * desired component to the prodcut in the products array.
+								 */
+								com.setOnMouseClicked(evnt -> {
+									if (com.getId().equals("clickedBG")) {
+										com.setId("optionalBtn");
+										componentInProduct.remove(c);
+									} else {
+										com.setId("clickedBG");
+										componentInProduct.add(c);
+									}
+								});
+								componentLabels.getChildren().add(com);
+							}
 							j++;
 						}
 						componentContent.setId("background");
 						componentLabels.setId("background");
 						componentContent.setLayoutX(30);
 						componentContent.setLayoutY(100);
+						componentContent.setMaxHeight(260);
+						componentContent.setPrefWidth(230);
 						componentContent.setContent(componentLabels);
 						overlayPane.getChildren().add(componentContent);
 					}
@@ -466,6 +523,7 @@ public class restaurantMenuController implements Initializable {
 					 * and the free text from the user. Adding the item <counter> times to the
 					 * order.
 					 */
+
 					Label addItem = new Label("Add Item");
 					addItem.setId("addItem");
 					addItem.setLayoutX(545);
@@ -478,11 +536,12 @@ public class restaurantMenuController implements Initializable {
 						 * order.
 						 */
 						if (notes != null && !notes.equals("")) {
-							Component c = new Component(null, null, restrictions.getText());
+							Component c = new Component(restrictions.getText());
 							componentInProduct.add(c);
 						}
 						/** Adding the components list to this product. */
 						p.setComponents(componentInProduct);
+						p.setPrice(Float.parseFloat(price.getText().split(" ")[1]));
 						/**
 						 * Increasing the counter of the bag items (the one near the profile picture).
 						 */
@@ -506,7 +565,7 @@ public class restaurantMenuController implements Initializable {
 					 * Add all the labels to the overlay.
 					 */
 					overlayPane.getChildren().addAll(title, closeBtn, line, description, plus, minus, counter, addItem,
-							restrictions, textAreaTitle);
+							restrictions, textAreaTitle, price);
 				}
 			});
 			i++;
@@ -521,8 +580,28 @@ public class restaurantMenuController implements Initializable {
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
-	
+
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
+	}
+
+	public boolean checkIfSize(Component c) {
+		Size[] size = Size.values();
+		for (int i = 0; i < size.length; i++) {
+			if (size[i].toString().equals(c.toString())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean checkIfDoneness(Component c) {
+		Doneness[] doneness = Doneness.values();
+		for (int i = 0; i < doneness.length; i++) {
+			if (doneness[i].toString().equals(c.toString())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

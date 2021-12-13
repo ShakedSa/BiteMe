@@ -8,10 +8,14 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Entities.Customer;
 import Entities.Delivery;
+import Entities.OrderDeliveryMethod;
 import Entities.PreorderDelivery;
 import Entities.SharedDelivery;
+import Entities.W4CCard;
 import Enums.TypeOfOrder;
+import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -291,8 +295,16 @@ public class deliveryMethodController implements Initializable {
 		return true;
 	}
 
+	/**
+	 * On click event listener. Checking all the inputs of the user, if all the
+	 * inputs are valid calculate the final price of the order, else display an
+	 * appropriate message to the user that the information is not sufficent.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void nextOrderStep(MouseEvent event) {
+		/** Validating method selection. */
 		String selectedMethod = deliveryMethodBox.getSelectionModel().getSelectedItem();
 		if (selectedMethod == null) {
 			errorMsg.setText("Please select delivery method.");
@@ -303,6 +315,17 @@ public class deliveryMethodController implements Initializable {
 			return;
 		}
 		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
+		W4CCard w4cCard = ((Customer) ClientGUI.client.getUser().getServerResponse()).getW4c();
+		/**
+		 * If the user picked shared delivery method, his employer needs to be approved
+		 * business customer and have a valid w4c employer's code.
+		 */
+		if (w4cCard.getEmployerID() == null
+				|| w4cCard.getEmployerID().equals("") && typeOfOrder == TypeOfOrder.sharedDelivery) {
+			errorMsg.setText(
+					"Employer is not an approved business customer of BiteMe.\nPlease choose a different delivery method.");
+		}
+		/** Validating the delivery input. */
 		Delivery newDelivery;
 		String address = addressTxtField.getText();
 		String firstName = firstNameTxtField.getText();
@@ -320,6 +343,7 @@ public class deliveryMethodController implements Initializable {
 			if (!checkPre()) {
 				return;
 			}
+			/** Validating time to be delivered. */
 			String hours = hourBox.getSelectionModel().getSelectedItem();
 			String minutes = minutesBox.getSelectionModel().getSelectedItem();
 			String time = hours + ":" + minutes;
@@ -332,6 +356,7 @@ public class deliveryMethodController implements Initializable {
 			if (!checkShared()) {
 				return;
 			}
+			/** Validating amount of people and businessCode */
 			String amount = amountTextField.getText();
 			String businessCode = businessCodeTextField.getText();
 			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, 25, 0, businessCode,
@@ -341,10 +366,15 @@ public class deliveryMethodController implements Initializable {
 			return;
 		}
 		router.setDelivery(newDelivery);
+		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		OrderDeliveryMethod orderDeliveryMethod = new OrderDeliveryMethod(router.getOrder(), newDelivery, typeOfOrder,
+				user);
+		router.setOrderDeliveryMethod(orderDeliveryMethod);
 		errorMsg.setText("");
+		router.getOrderDeliveryMethod().calculateFinalPrice();
 		changeToPaymentMethod();
 	}
-	
+
 	private void changeToPaymentMethod() {
 		if (router.getPaymentController() == null) {
 			AnchorPane mainContainer;
@@ -474,11 +504,14 @@ public class deliveryMethodController implements Initializable {
 		});
 		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(generator(24)));
 		hourBox.getItems().addAll(hourOptions);
+		hourBox.getSelectionModel().select(0);
 		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(generator(60)));
 		minutesBox.getItems().addAll(minuteOptions);
+		minutesBox.getSelectionModel().select(0);
 		ObservableList<String> phonePrefix = FXCollections
 				.observableArrayList(Arrays.asList("050", "052", "053", "054", "055", "057", "058"));
 		prefixPhoneNumberBox.getItems().addAll(phonePrefix);
+		prefixPhoneNumberBox.getSelectionModel().select("050");
 	}
 
 	/**
@@ -521,16 +554,20 @@ public class deliveryMethodController implements Initializable {
 		requires.setVisible(false);
 
 		amountTextField.setVisible(false);
+		amountTextField.setText("");
 		amntStar.setVisible(false);
 		amoutOfPeopleText.setVisible(false);
 		businessCodeText.setVisible(false);
 		businessCodeTextField.setVisible(false);
+		businessCodeTextField.setText("");
 		businessStar.setVisible(false);
 
 		pickStar.setVisible(false);
 		pickTimeTxt.setVisible(false);
 		hourBox.setVisible(false);
+		hourBox.getSelectionModel().select(0);
 		minutesBox.setVisible(false);
+		minutesBox.getSelectionModel().select(0);
 		hoursText.setVisible(false);
 		minutesText.setVisible(false);
 	}
@@ -556,18 +593,23 @@ public class deliveryMethodController implements Initializable {
 		requires.setVisible(true);
 
 		amountTextField.setVisible(false);
+		amountTextField.setText("");
 		amntStar.setVisible(false);
 		amoutOfPeopleText.setVisible(false);
 		businessCodeText.setVisible(false);
 		businessCodeTextField.setVisible(false);
+		businessCodeTextField.setText("");
 		businessStar.setVisible(false);
 
 		pickStar.setVisible(false);
 		pickTimeTxt.setVisible(false);
 		hourBox.setVisible(false);
+		hourBox.getSelectionModel().select(0);
 		minutesBox.setVisible(false);
+		minutesBox.getSelectionModel().select(0);
 		hoursText.setVisible(false);
 		minutesText.setVisible(false);
+		
 	}
 
 	/**

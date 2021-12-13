@@ -24,7 +24,7 @@
 
 /* Border radius 40 */
 #btn, #addItem, #plusMinus, #clickedBG, #optionalBtn, #menuBtn{
-	-fx-border-radius:40;
+	-fx-border-radius:40.0;
 }
 
 #btn{
@@ -88,7 +88,7 @@
 }
 
 #background{
-	-fx-background-color: #006875;
+	-fx-background: #006875;
 }
 
 #clickedBG{
@@ -161,5 +161,22 @@
     -fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
  /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
     -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overridden as 5 2 0 0 */
+}
+
+.scroll-pane {
+    -fx-background-insets: 0.0;
+    -fx-padding: 0.0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0.0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0.0;
+}
+
+#scrollPane{
+	-fx-background:#eee;
 }
 

@@ -298,7 +298,7 @@ public class restaurantSelectionController implements Initializable {
 			hideRestaurants(1);
 			break;
 		}
-		for (int i = 0; i < resNames.size(); i++) {
+		for (int i = 0; i < resNames.size() && i < 6; i++) {
 			String resName = resNames.get(i);
 			resImages.get(i).setImage(
 					new Image(getClass().getResource("../images/" + resName.toLowerCase() + "-logo.jpg").toString()));

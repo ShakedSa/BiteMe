@@ -3,6 +3,8 @@ package Entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Enums.Size;
+
 /**
  * @author Eden test Product class, stores : int productID, String type, String
  *         dishName, ArrayList<Component> components, float price
@@ -84,10 +86,21 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
+	public void calculateSizePrice(Size size) {
+		switch (size) {
+		case Small:
+			price = price * (float)Component.smallSizePrice;
+		case Large:
+			price =  price * (float)Component.largeSizePrice;
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public String toString() {
 		if (components != null)
-			return dishName + "<" + price + ">" + "components: " + components;
+			return dishName + " <" + price + "¤> " + "components: " + components;
 		return dishName + "<" + price + ">";
 	}
 
