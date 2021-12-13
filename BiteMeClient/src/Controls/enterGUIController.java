@@ -89,6 +89,7 @@ public class enterGUIController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.setProfile(false);
 				controller.setFavRestaurants();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -112,10 +113,6 @@ public class enterGUIController implements Initializable {
 		router = Router.getInstance();
 		router.setEnterguicontroller(this);
 		setStage(router.getStage());
-	}
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
 	}
 
 }
