@@ -11,6 +11,7 @@ import java.util.Set;
 
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -51,6 +53,13 @@ public class homePageController implements Initializable {
 	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
 	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 
+
+    @FXML
+    private ImageView bagImg;
+
+    @FXML
+    private Circle itemsCounterCircle;
+    
 	@FXML
 	private ImageView caruasalLeft;
 
@@ -248,18 +257,21 @@ public class homePageController implements Initializable {
 		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
+				setBagVisibility(user.getUserType() == UserType.Customer);
 				userFirstName.setText(user.getFirstName());
 				setDefaults(user, val);
 			} else {
+				setBagVisibility(false);
 				userFirstName.setText("Guest");
 				setDefaults(null, false);
-			}
+			}		
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
 			homePageBtn.setStyle("-fx-cursor: hand;");
 
 		} else {
+			setBagVisibility(false);
 			userFirstName.setText("Guest");
 			setDefaults(null, false);
 		}
@@ -416,7 +428,15 @@ public class homePageController implements Initializable {
 		this.mainContainer = mainContainer;
 	}
 	
+	
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
+	}
+
+	private void setBagVisibility(boolean val) {
+		bagImg.setVisible(val);
+		itemsCounter.setVisible(val);
+		itemsCounterCircle.setVisible(val);
+		
 	}
 }

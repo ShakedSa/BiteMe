@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import Enums.TypeOfProduct;
+=======
+import Enums.Size;
 
 /**
  * @author Eden test Product class, stores : int productID, String type, String
@@ -123,7 +125,7 @@ public class Product implements Serializable {
 	@Override
 	public String toString() {
 		if (components != null)
-			return dishName + "<" + price + ">" + "components: " + components;
+			return dishName + " <" + price + "¤> " + "components: " + components;
 		return dishName + "<" + price + ">";
 	}
 

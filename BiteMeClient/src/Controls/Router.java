@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import Entities.Delivery;
 import Entities.Order;
+import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
@@ -35,6 +36,7 @@ public class Router {
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
 	private deliveryMethodController DeliveryMethodController;
+	private reviewOrderController ReviewOrderController;
 	private paymentController PaymentController;
 	private ceoPanelController CEOPanelController;
 	private employerHRPanelController EmployerHRPanelController;
@@ -56,13 +58,14 @@ public class Router {
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
 
-
 	/** Items in order, should be available across all application. */
 	private ArrayList<Product> orderItems = new ArrayList<>();
-	
+
 	private Order order = new Order();
-	
+
 	private Delivery delivery;
+
+	private OrderDeliveryMethod orderDeliveryMethod;
 
 	public static Router getInstance() {
 		if (router == null)
@@ -238,14 +241,15 @@ public class Router {
 			registerEmployerAsLegacyController registerEmployerAsLegacyController) {
 		RegisterEmployerAsLegacyController = registerEmployerAsLegacyController;
 	}
-	
+
 	/**
-	 * @param confirmBusinessAccountController the confirmBusinessAccountController to set
+	 * @param confirmBusinessAccountController the confirmBusinessAccountController
+	 *                                         to set
 	 */
 	public void setConfirmBusinessAccountController(confirmBusinessAccountController confirmBusinessAccountController) {
 		ConfirmBusinessAccountController = confirmBusinessAccountController;
 	}
-	
+
 	/**
 	 * @param pickDateAndTimeController the pickDateAndTimeController to set
 	 */
@@ -413,22 +417,20 @@ public class Router {
 	public registerEmployerAsLegacyController getRegisterEmployerAsLegacyController() {
 		return RegisterEmployerAsLegacyController;
 	}
-	
+
 	/**
 	 * @return the confirmBusinessAccountController
 	 */
 	public confirmBusinessAccountController getConfirmBusinessAccountController() {
 		return ConfirmBusinessAccountController;
 	}
-	
+
 	/**
 	 * @return the pickDateAndTimeController
 	 */
 	public pickDateAndTimeController getPickDateAndTimeController() {
 		return PickDateAndTimeController;
 	}
-	
-	
 
 	/**
 	 * @return the deliveryMethodController
@@ -456,6 +458,20 @@ public class Router {
 	 */
 	public void setPaymentController(paymentController paymentController) {
 		PaymentController = paymentController;
+	}
+
+	/**
+	 * @return the reviewOrderController
+	 */
+	public reviewOrderController getReviewOrderController() {
+		return ReviewOrderController;
+	}
+
+	/**
+	 * @param reviewOrderController the reviewOrderController to set
+	 */
+	public void setReviewOrderController(reviewOrderController reviewOrderController) {
+		ReviewOrderController = reviewOrderController;
 	}
 
 	/**
@@ -720,11 +736,11 @@ public class Router {
 	public ArrayList<Product> getBagItems() {
 		return orderItems;
 	}
-	
+
 	public void setOrder(Order order) {
 		this.order = order;
 	}
-	
+
 	public Order getOrder() {
 		return order;
 	}
@@ -780,7 +796,20 @@ public class Router {
 		return m.find();
 	}
 
-	
+	/**
+	 * @return the orderDeliveryMethod
+	 */
+	public OrderDeliveryMethod getOrderDeliveryMethod() {
+		return orderDeliveryMethod;
+	}
+
+	/**
+	 * @param orderDeliveryMethod the orderDeliveryMethod to set
+	 */
+	public void setOrderDeliveryMethod(OrderDeliveryMethod orderDeliveryMethod) {
+		this.orderDeliveryMethod = orderDeliveryMethod;
+	}
+
 	/*
 	 * public static void show(Object c) { //
 	 * router.show(loginController.getClass()); switch(c) case loginController: open

@@ -1,6 +1,8 @@
 package client;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ClientServerComm.Client;
+import Entities.MyFile;
 import Entities.ServerResponse;
 
 /**
@@ -243,5 +246,30 @@ public class ClientUI implements ClientIF {
 	
 	public ServerResponse getOptionalComponentsInProduct() {
 		return ResComponentsInProducts;
+	}
+
+	public void sendReport(File pdfToUpload, String Month, String Year) {
+		  MyFile msg = new MyFile(Month + " " + Year);
+
+			try {
+
+				byte[] mybytearray = new byte[(int) pdfToUpload.length()];
+				FileInputStream fis = new FileInputStream(pdfToUpload);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+
+				msg.initArray(mybytearray.length);
+				msg.setSize(mybytearray.length);
+
+				bis.read(msg.getMybytearray(), 0, mybytearray.length);
+				client.handleMessageFromClientUI(msg);
+				fis.close();
+				bis.close();	      
+			    }
+			catch (Exception e) {
+				System.out.println("Error send (Files)msg) to Server");
+			}
+			
+
+		
 	}
 }

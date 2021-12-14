@@ -1,7 +1,9 @@
 package JDBC;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import Config.ReadPropertyFile;
+import Entities.Branch;
 import Entities.BranchManager;
 import Entities.CEO;
 import Entities.Component;
@@ -326,13 +329,22 @@ public class mysqlConnection {
 		ArrayList<Component> components = new ArrayList<>();
 		PreparedStatement stmt;
 		try {
-			String query = "SELECT ComponentID FROM bitemedb.componentinproduct WHERE RestaurantName = ? AND DishName = ?";
+			String query = "SELECT component FROM bitemedb.components WHERE RestaurantName = ? AND dishName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, productName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				components.add(getComponent(rs.getInt(1)));
+				switch (rs.getString(1)) {
+				case "Doneness":
+					components.add(new Component(Doneness.medium));
+					break;
+				case "Size":
+					components.add(new Component(Size.Medium));
+					break;
+				default:
+					components.add(new Component(rs.getString(1)));
+				}
 			}
 			serverResponse.setMsg("Success");
 			serverResponse.setServerResponse(components);
@@ -342,29 +354,6 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 		}
 		return serverResponse;
-	}
-
-	private static Component getComponent(int componentID) throws SQLException {
-		Component component;
-		PreparedStatement stmt;
-		String query = "SELECT * FROM bitemedb.optionalcomponents WHERE ComponentID = ?";
-		stmt = conn.prepareStatement(query);
-		stmt.setInt(1, componentID);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			Size size = null;
-			if (rs.getString(2) != null && !rs.getString(2).equals("")) {
-				size = Size.valueOf(rs.getString(2));
-			}
-			Doneness doneness = null;
-			if (rs.getString(3) != null && !rs.getString(3).equals("")) {
-				doneness = Doneness.valueOf(rs.getString(3));
-			}
-			component = new Component(componentID, size, doneness, rs.getString(4));
-		} else {
-			throw new SQLException("Component not found");
-		}
-		return component;
 	}
 
 	/**
@@ -459,4 +448,29 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
+	//java.sql.SQLIntegrityConstraintViolationException: 
+	//Cannot add or update a child row: a foreign key constraint fails
+	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
+	//REFERENCES `suppliers` (`RestaurantName`))
+	
+	public static void updateFile(InputStream is, String date) {
+		System.out.println("test !");
+		String filename= "Report " + date + ".pdf";
+		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, 1);
+			statement.setString(2, filename);
+			statement.setDate(3, new Date(2011, 11, 11));
+			statement.setBlob(4,is);
+			statement.setString(5, BranchName.North.toString());
+			statement.setString(6, filename);
+			statement.setString(7, "Burgerim");
+			statement.executeUpdate();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

@@ -82,7 +82,7 @@ public class pickDateAndTimeController implements Initializable {
 		LocalDate orderDate = datePicker.getValue();
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
-		String newTime = orderDate.toString() + hourToOrder + ":" + minuteToOrder;
+		String newTime = orderDate.toString() + " " + hourToOrder + ":" + minuteToOrder;
 		router.getOrder().setDateTime(newTime);
 		errorMsg.setText("");
 		changeToDelivery();
@@ -121,6 +121,7 @@ public class pickDateAndTimeController implements Initializable {
 			stage.show();
 		}
 	}
+
 	/**
 	 * Private method to check if the input date is today's date.
 	 */

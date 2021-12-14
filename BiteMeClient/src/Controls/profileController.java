@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -24,6 +26,12 @@ public class profileController implements Initializable {
 	private Stage stage;
 	private Scene scene;
 
+    @FXML
+    private ImageView bagImg;
+
+    @FXML
+    private Circle itemsCounterCircle;
+    
 	@FXML
 	private Text restaurantBtn;
 
@@ -85,6 +93,7 @@ public class profileController implements Initializable {
 		setAvatar();
 		setProfile();
 		User user = (User) ClientGUI.client.getUser().getServerResponse();
+		setBagVisibility(user.getUserType() == UserType.Customer); // hide bag on profile for non customers
 		firstNameTxt.setText(user.getFirstName());
 		lastNameTxt.setText(user.getLastName());
 		idTxt.setText(user.getId());
@@ -92,6 +101,12 @@ public class profileController implements Initializable {
 		emailTxt.setText(user.getEmail());
 		mainBranchTxt.setText(user.getMainBranch().toString());
 		statusTxt.setText(user.getStatus().toString());
+	}
+
+	private void setBagVisibility(boolean val) {
+		bagImg.setVisible(val);
+		itemsCounter.setVisible(val);
+		itemsCounterCircle.setVisible(val);
 	}
 
 	@FXML
