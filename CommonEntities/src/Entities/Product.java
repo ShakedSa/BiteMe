@@ -86,17 +86,6 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-	public void calculateSizePrice(Size size) {
-		switch (size) {
-		case Small:
-			price = price * (float)Component.smallSizePrice;
-		case Large:
-			price =  price * (float)Component.largeSizePrice;
-		default:
-			break;
-		}
-	}
-
 	@Override
 	public String toString() {
 		if (components != null)

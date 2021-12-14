@@ -173,6 +173,8 @@ public class reviewOrderController implements Initializable {
 		deliveryTitle.setLayoutY(360);
 		if (delivery != null) {
 			deliveryInformation = new Label(delivery.toString());
+		}else {
+			deliveryInformation = new Label("Takeaway");
 		}
 		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
 		deliveryInformation.setLayoutX(100);

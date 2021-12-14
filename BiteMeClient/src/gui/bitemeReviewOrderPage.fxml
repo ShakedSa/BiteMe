@@ -22,7 +22,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="returnToRestaurants" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text id="active" fx:id="returnToRestaurants" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
