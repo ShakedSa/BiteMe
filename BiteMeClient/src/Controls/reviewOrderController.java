@@ -8,6 +8,7 @@ import Entities.Delivery;
 import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
+import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -65,7 +66,10 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void SubmitOrder(MouseEvent event) {
-
+		/**
+		 * Save order in the db :) switch to rate us scene.
+		 */
+		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 	}
 
 	@FXML
@@ -173,7 +177,7 @@ public class reviewOrderController implements Initializable {
 		deliveryTitle.setLayoutY(360);
 		if (delivery != null) {
 			deliveryInformation = new Label(delivery.toString());
-		}else {
+		} else {
 			deliveryInformation = new Label("Takeaway");
 		}
 		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
@@ -187,6 +191,5 @@ public class reviewOrderController implements Initializable {
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		}
-		System.out.println(fullOrder);
 	}
 }

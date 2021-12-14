@@ -14,12 +14,12 @@
 
 /* White text color */
 #order, #optionalBtn, #plusMinus, #addItem, #txtarea{
-	-fx-text-fill: white;	
+	-fx-text-fill: black;	
 }
 
 /* White border */
 #optionalBtn, #plusMinus, #addItem, #clickedBG, #txtarea{
-	-fx-border-color: white;
+	-fx-border-color: black;
 }
 
 /* Border radius 40 */
@@ -88,7 +88,8 @@
 }
 
 #background{
-	-fx-background: #006875;
+	/*-fx-background: #006875;*/
+	-fx-background: #eee;
 }
 
 #clickedBG{
@@ -115,7 +116,8 @@
 }
 
 #txtarea{
-	-fx-background-color:rgba(0.0,104.0,117.0, 0.4);
+	/*-fx-background-color:rgba(0.0,104.0,117.0, 0.4);*/
+	-fx-background-color:#eee;
 	-fx-background-radius: 10.0;
 	-fx-border-radius: 10.0;
 	-fx-pref-width: 250.0;
@@ -178,5 +180,10 @@
 
 #scrollPane{
 	-fx-background:#eee;
+}
+
+#overlay{
+	-fx-background-color:  #006875; 
+	-fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);
 }
 
