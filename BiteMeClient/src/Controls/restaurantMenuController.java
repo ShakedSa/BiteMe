@@ -12,8 +12,10 @@ import Entities.Product;
 import Entities.ServerResponse;
 import Enums.Doneness;
 import Enums.Size;
+import Enums.TypeOfProduct;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +36,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class restaurantMenuController implements Initializable {
 
@@ -232,11 +235,13 @@ public class restaurantMenuController implements Initializable {
 	 * @param menu
 	 */
 	private void createMenu(ArrayList<Product> menu) {
-		List<Product> entriesMenu = menu.stream().filter(p -> p.getType().equals("entry")).collect(Collectors.toList());
-		List<Product> mainsMenu = menu.stream().filter(p -> p.getType().equals("main dish"))
+		List<Product> entriesMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.entry)
 				.collect(Collectors.toList());
-		List<Product> drinksMenu = menu.stream().filter(p -> p.getType().equals("drink")).collect(Collectors.toList());
-		List<Product> dessertsMenu = menu.stream().filter(p -> p.getType().equals("dessert"))
+		List<Product> mainsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.mainDish)
+				.collect(Collectors.toList());
+		List<Product> drinksMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.drink)
+				.collect(Collectors.toList());
+		List<Product> dessertsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.dessert)
 				.collect(Collectors.toList());
 		Tab entrees = new Tab("Entrees");
 		entrees.setClosable(false);
@@ -305,12 +310,11 @@ public class restaurantMenuController implements Initializable {
 				/** Pane for the overlay screen. */
 				Pane overlayPane = new Pane();
 				root.getChildren().add(overlayPane);
-				overlayPane.setPrefHeight(375);
-				overlayPane.setPrefWidth(689);
-				overlayPane.setStyle(
-						"-fx-background-color:  #006875; -fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0)");
 				overlayPane.setLayoutX(71);
 				overlayPane.setLayoutY(105);
+				overlayPane.setStyle(
+						"-fx-background-color:#eee; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);");
+
 				/** Close button, closing the overlay screen. */
 				Label closeBtn = new Label("X");
 				closeBtn.setStyle("-fx-text-fill: red; -fx-cursor: hand;");
@@ -326,7 +330,7 @@ public class restaurantMenuController implements Initializable {
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
 				title.setFont(new Font("Berlin Sans FB", 30));
-				title.setStyle("-fx-text-fill: white;");
+				title.setStyle("-fx-text-fill: black;");
 				title.setLayoutX(41);
 				title.setLayoutY(15);
 				/** Under line for the overlay screen's title. */
@@ -341,17 +345,17 @@ public class restaurantMenuController implements Initializable {
 				line.setScaleY(1);
 				line.setLayoutX(134);
 				line.setLayoutY(51);
-				line.setStroke(Color.WHITE);
+				line.setStroke(Color.BLACK);
 				/** Product's description. */
 				Label description = new Label(p.getDescription());
 				description.setFont(new Font("Berlin Sans FB", 14));
 				description.setLayoutX(41);
 				description.setLayoutY(61);
-				description.setTextFill(Color.WHITE);
+				description.setTextFill(Color.BLACK);
 				/** Product's price */
 				Label price = new Label(String.format("Price %.2f", p.getPrice()));
 				price.setFont(new Font("Berlin Sans FB", 14));
-				price.setTextFill(Color.WHITE);
+				price.setTextFill(Color.BLACK);
 				price.setLayoutX(580);
 				price.setLayoutY(290);
 				/** Getting the optional component from the server for this specific product. */
@@ -384,7 +388,7 @@ public class restaurantMenuController implements Initializable {
 						Label noComp = new Label(
 								"Product " + nameLabel.getText() + " doesn't have optional components");
 						noComp.setFont(new Font("Berlin Sans FB", 16));
-						noComp.setTextFill(Color.WHITE);
+						noComp.setTextFill(Color.BLACK);
 						noComp.setLayoutX(30);
 						noComp.setLayoutY(215);
 						overlayPane.getChildren().add(noComp);
@@ -400,7 +404,7 @@ public class restaurantMenuController implements Initializable {
 							if (checkIfSize(c)) {
 								Label sizeTitle = new Label("Size");
 								sizeTitle.setFont(new Font("Berlin Sans FB", 14));
-								sizeTitle.setTextFill(Color.WHITE);
+								sizeTitle.setTextFill(Color.BLACK);
 								sizeTitle.setLayoutX(10);
 								sizeTitle.setLayoutY(j * 50 + 10);
 								ComboBox<Size> size = new ComboBox<>();
@@ -477,7 +481,7 @@ public class restaurantMenuController implements Initializable {
 					/** Setting position for counter. */
 					counter.setLayoutX(346);
 					counter.setLayoutY(338);
-					counter.setTextFill(Color.WHITE);
+					counter.setTextFill(Color.BLACK);
 					counter.setFont(new Font("Berlin Sans FB", 22));
 
 					/** Button to add more of this product to the order, infinite cap. */
@@ -517,7 +521,7 @@ public class restaurantMenuController implements Initializable {
 					textAreaTitle.setFont(new Font("Berlin Sans FB", 16));
 					textAreaTitle.setLayoutX(384);
 					textAreaTitle.setLayoutY(85);
-					textAreaTitle.setTextFill(Color.WHITE);
+					textAreaTitle.setTextFill(Color.BLACK);
 					/**
 					 * Add item button, adding the selected item with all the selected components
 					 * and the free text from the user. Adding the item <counter> times to the
@@ -566,6 +570,17 @@ public class restaurantMenuController implements Initializable {
 					 */
 					overlayPane.getChildren().addAll(title, closeBtn, line, description, plus, minus, counter, addItem,
 							restrictions, textAreaTitle, price);
+					/** Overlay mount animation */
+					overlayPane.setPrefHeight(375);
+					overlayPane.setPrefWidth(689);
+					ScaleTransition st = new ScaleTransition(Duration.millis(300), overlayPane);
+					st.setFromX(0.5);
+					st.fromXProperty();
+					st.setFromY(0.5);
+					st.setToX(1);
+					st.setToY(1);
+					st.play();
+//					overlayPane.setId("overlay");
 				}
 			});
 			i++;

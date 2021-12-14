@@ -101,6 +101,7 @@ public class OrderDeliveryMethod implements Serializable {
 		for (Product p : products) {
 			price += p.getPrice();
 		}
+		order.setOrderPrice(price);
 		switch (typeOfOrder) {
 		case preorderDelivery:
 			delivery.setDiscount(price * (float) 0.1);
