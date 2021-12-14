@@ -1,5 +1,6 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,12 +8,14 @@ import Entities.Customer;
 import Entities.W4CCard;
 import client.ClientGUI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -65,10 +68,38 @@ public class paymentController implements Initializable {
 
 	@FXML
 	void nextOrderStep(MouseEvent event) {
-		if (businessRadio.isSelected()) {
-			/** continue with business account payment. */
+//		errorMsg.setText("");
+//		if (businessRadio.isSelected()) {
+//			/** continue with business account payment. */
+//		} else {
+//			/** continue with private account payment. */
+//		}
+		if (router.getReviewOrderController() == null) {
+			AnchorPane mainContainer;
+			reviewOrderController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeReviewOrderPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setItemsCounter();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Review Order");
+				stage.setScene(mainScene);
+				stage.show();
+				controller.displayOrder();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				return;
+			}
 		} else {
-			/** continue with private account payment. */
+			router.getReviewOrderController().setItemsCounter();
+			stage.setTitle("BiteMe - Review Order");
+			stage.setScene(router.getReviewOrderController().getScene());
+			stage.show();
+			router.getReviewOrderController().displayOrder();
 		}
 	}
 

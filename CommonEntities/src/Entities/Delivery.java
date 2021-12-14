@@ -15,17 +15,17 @@ public class Delivery implements Serializable {
 	private String orderAddress;
 	private String firstName, lastName;
 	private String phoneNumber;
-	private float orderPrice;
+	private float deliveryPrice;
 	private float discount;
 
-	public Delivery(String orderAddress, String firstName, String lastName, String phoneNumber, float orderPrice,
+	public Delivery(String orderAddress, String firstName, String lastName, String phoneNumber, float deliveryPrice,
 			float discount) {
 		super();
 		this.orderAddress = orderAddress;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
-		this.orderPrice = orderPrice;
+		this.deliveryPrice = deliveryPrice;
 		this.discount = discount;
 	}
 
@@ -37,10 +37,10 @@ public class Delivery implements Serializable {
 	}
 
 	/**
-	 * @return the orderPrice
+	 * @return the deliveryPrice
 	 */
-	public float getOrderPrice() {
-		return orderPrice;
+	public float getDelievryPrice() {
+		return deliveryPrice;
 	}
 
 	/**
@@ -58,10 +58,10 @@ public class Delivery implements Serializable {
 	}
 
 	/**
-	 * @param orderPrice the orderPrice to set
+	 * @param deliveryPrice the orderPrice to set
 	 */
-	public void setOrderPrice(float orderPrice) {
-		this.orderPrice = orderPrice;
+	public void setDeliveryPrice(float deliveryPrice) {
+		this.deliveryPrice = deliveryPrice;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Delivery implements Serializable {
 		if (orderAddress != null) {
 			b.append("Address: " + orderAddress + "\n");
 		}
-		b.append("Price: " + orderPrice + "¤\n");
+		b.append("Delivery Price: " + deliveryPrice + "¤\n");
 		b.append("Discount on your order: " + discount + "¤");
 		return b.toString();
 	}

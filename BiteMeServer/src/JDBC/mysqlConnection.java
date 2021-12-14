@@ -327,13 +327,22 @@ public class mysqlConnection {
 		ArrayList<Component> components = new ArrayList<>();
 		PreparedStatement stmt;
 		try {
-			String query = "SELECT ComponentID FROM bitemedb.componentinproduct WHERE RestaurantName = ? AND DishName = ?";
+			String query = "SELECT component FROM bitemedb.components WHERE RestaurantName = ? AND dishName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, productName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				components.add(getComponent(rs.getInt(1)));
+				switch (rs.getString(1)) {
+				case "Doneness":
+					components.add(new Component(Doneness.medium));
+					break;
+				case "Size":
+					components.add(new Component(Size.Medium));
+					break;
+				default:
+					components.add(new Component(rs.getString(1)));
+				}
 			}
 			serverResponse.setMsg("Success");
 			serverResponse.setServerResponse(components);
@@ -345,28 +354,28 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	private static Component getComponent(int componentID) throws SQLException {
-		Component component;
-		PreparedStatement stmt;
-		String query = "SELECT * FROM bitemedb.optionalcomponents WHERE ComponentID = ?";
-		stmt = conn.prepareStatement(query);
-		stmt.setInt(1, componentID);
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			Size size = null;
-			if(rs.getString(2) != null && !rs.getString(2).equals("")) {
-				size = Size.valueOf(rs.getString(2));
-			}
-			Doneness doneness = null;
-			if(rs.getString(3) != null && !rs.getString(3).equals("")) {
-				doneness = Doneness.valueOf(rs.getString(3));
-			}
-			component = new Component(componentID, size, doneness, rs.getString(4));
-		} else {
-			throw new SQLException("Component not found");
-		}
-		return component;
-	}
+//	private static Component getComponent(int componentID) throws SQLException {
+//		Component component;
+//		PreparedStatement stmt;
+//		String query = "SELECT * FROM bitemedb.optionalcomponents WHERE ComponentID = ?";
+//		stmt = conn.prepareStatement(query);
+//		stmt.setInt(1, componentID);
+//		ResultSet rs = stmt.executeQuery();
+//		if (rs.next()) {
+//			Size size = null;
+//			if(rs.getString(2) != null && !rs.getString(2).equals("")) {
+//				size = Size.valueOf(rs.getString(2));
+//			}
+//			Doneness doneness = null;
+//			if(rs.getString(3) != null && !rs.getString(3).equals("")) {
+//				doneness = Doneness.valueOf(rs.getString(3));
+//			}
+//			component = new Component(componentID, size, doneness, rs.getString(4));
+//		} else {
+//			throw new SQLException("Component not found");
+//		}
+//		return component;
+//	}
 
 	/**
 	 * Logout query, setting user's IsLoggedIn field to 0 in the db indicates that
