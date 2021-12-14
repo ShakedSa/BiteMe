@@ -48,6 +48,15 @@ public class confirmBusinessAccountController implements Initializable{
 
     @FXML
     private Label registerBtn;
+    
+    @FXML
+    private ImageView VImage;
+    
+    @FXML
+    private Text errorMsg;
+    
+    @FXML
+    private Text successMsg;
 
     @FXML
     void logoutClicked(MouseEvent event) {
@@ -61,8 +70,29 @@ public class confirmBusinessAccountController implements Initializable{
 
     @FXML
     void registerBtnClicked(MouseEvent event) {
-
+    	//need to check server response
+    	// if false - display: errorMsg.setText("There is no business account registration for this customer");
+    	if(checkInput()) {
+    		VImage.setVisible(true);
+    		successMsg.setVisible(true);
+    	}
     }
+    
+    private boolean checkInput() {
+		String customerID = customerIDTxtField.getText();
+		String employerCode = employerCodeTxtField.getText();
+		/** If no time selection was made */
+		if (customerID.trim().isEmpty()) {
+			errorMsg.setText("Please enter customer ID");
+			return false;
+		}
+		if (employerCode.trim().isEmpty()) {
+			errorMsg.setText("Please enter employer code");
+			return false;
+		}
+		errorMsg.setText("");
+		return true;
+	}
 
     @FXML
     void returnToEmployerHRPanel(MouseEvent event) {
@@ -87,6 +117,8 @@ public class confirmBusinessAccountController implements Initializable{
 		router = Router.getInstance();
 		router.setConfirmBusinessAccountController(this);
 		setStage(router.getStage());
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
 	}
 
     

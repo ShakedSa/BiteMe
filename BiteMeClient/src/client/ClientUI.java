@@ -27,7 +27,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -148,6 +148,37 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
+	}
+	
+	/**
+	 * Sending the server a search order request.
+	 * 
+	 * @param orderNumber
+	 * 
+	 */
+	public void searchOrder(String orderNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("searchOrder", orderNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * @return the searchOrder
+	 */
+	public ServerResponse getSearchOrder() {
+		return SearchOrder;
+	}
+
+	/**
+	 * @param searchOrder the searchOrder to set
+	 */
+	public void setSearchOrder(ServerResponse searchOrder) {
+		SearchOrder = searchOrder;
 	}
 
 	/**

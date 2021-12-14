@@ -2,6 +2,8 @@ package Controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Entities.Delivery;
 import Entities.Order;
@@ -755,6 +757,43 @@ public class Router {
 	 */
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
+	}
+	
+	/**
+	 * Checks if the string is not empty.
+	 * 
+	 * @param String text
+	 * @return boolean
+	 */
+	public boolean checkValidText(String input) {
+		if (input == null || input.equals("")) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Checks if the string contains special characters.
+	 * 
+	 * @param String input
+	 * @return boolean
+	 */
+	public boolean checkSpecialCharacters(String input) {
+		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(input);
+		return m.find();
+	}
+	
+	/**
+	 * Checks if the string contains characters.
+	 * 
+	 * @param String input
+	 * @return boolean
+	 */
+	public boolean checkContainCharacters(String input) {
+		Pattern p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(input);
+		return m.find();
 	}
 
 	/**
