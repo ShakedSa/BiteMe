@@ -12,4 +12,5 @@ public interface ClientIF {
 	public void setFavRestaurants(ServerResponse favRestaurants);
 	public void setMenu(ServerResponse menu);
 	public void setOptionalComponentsInProduct(ServerResponse optionalComponents);
+	public void setLastResponse(ServerResponse serverResponse);
 }

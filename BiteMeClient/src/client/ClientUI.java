@@ -27,7 +27,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder, lastResponse;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -45,7 +45,7 @@ public class ClientUI implements ClientIF {
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection! Terminating client.");
 			System.exit(1);
-		}
+		} 
 	}
 
 	/**
@@ -272,4 +272,16 @@ public class ClientUI implements ClientIF {
 
 		
 	}
+
+	@Override
+	public void setLastResponse(ServerResponse serverResponse) {
+		lastResponse = serverResponse;
+		
+	}
+	
+	public ServerResponse getLastResponse() {
+		return lastResponse;
+	}
+
+	
 }
