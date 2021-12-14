@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import ClientServerComm.Client;
 import Entities.MyFile;
+import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
 
 /**
@@ -162,6 +162,15 @@ public class ClientUI implements ClientIF {
 			arr.addAll(Arrays.asList("searchOrder", orderNumber));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void insertOrder(OrderDeliveryMethod orderToInsert) {
+		try {
+			client.handleMessageFromClientUI(orderToInsert);
+		}catch(Exception e) {
 			e.printStackTrace();
 			return;
 		}

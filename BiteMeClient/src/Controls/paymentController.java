@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import Entities.Customer;
 import Entities.W4CCard;
+import Enums.PaymentMethod;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,6 +75,7 @@ public class paymentController implements Initializable {
 //		} else {
 //			/** continue with private account payment. */
 //		}
+		router.getOrder().setPaymentMethod(PaymentMethod.CreditCard);
 		if (router.getReviewOrderController() == null) {
 			AnchorPane mainContainer;
 			reviewOrderController controller;

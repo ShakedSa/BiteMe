@@ -1,14 +1,11 @@
 package ClientServerCommunication;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import Entities.MyFile;
-import Entities.User;
+import Entities.OrderDeliveryMethod;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -60,6 +57,11 @@ public class Server extends AbstractServer {
 				System.out.println("Error while handling files in Server");
 			}
 			return;
+		}
+		if(msg instanceof OrderDeliveryMethod) {
+			System.out.println("I'm before the query :)");
+			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
+			System.out.println("Updated successful :)");
 		}
 		
 		controller.setMessage("Msg recieved:" + msg);
