@@ -69,8 +69,8 @@ public class Client extends AbstractClient {
 			clientUI.setOptionalComponentsInProduct(serverResponse);
 			break;
 		default:
-			System.out.println("Null");
-		}
+			clientUI.setLastResponse(serverResponse);
+		} 
 		synchronized (ClientGUI.monitor) {
 			ClientGUI.monitor.notifyAll();
 		} 

@@ -146,7 +146,7 @@ public class createMenuController implements Initializable{
 		VImage.setVisible(false);
     	menuCreatedSuccessfullyTxt.setVisible(false);
 	}
-
+ 
     
 	public void setScene(Scene scene) {
 		this.scene = scene;

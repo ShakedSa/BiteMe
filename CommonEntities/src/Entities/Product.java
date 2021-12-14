@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import Enums.TypeOfProduct;
 
+import Enums.Size;
+
+
 /**
  * @author Eden test Product class, stores : int productID, String type, String
  *         dishName, ArrayList<Component> components, float price

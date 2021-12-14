@@ -430,11 +430,15 @@ public class mysqlConnection {
 	 * @return ServerResponse
 	 */
 	public static ServerResponse searchOrder(String orderNumber) {
-		ServerResponse serverResponse = new ServerResponse("OrderNumber");
+		ServerResponse serverResponse = new ServerResponse("String");
 		try {
+			String idiot = "SELECT * FROM bitemedb.orders WHERE OrderNumber = " + orderNumber;
 			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, Integer.parseInt(orderNumber));
+			ResultSet rs = stmt.executeQuery(idiot);
+			System.out.println(idiot);
+			if (!rs.next()) {
 			ResultSet rs = stmt.executeQuery(query);
 			if (!rs.next()) {// if (rs.getRow() == 0) {
 				serverResponse.setMsg("Order number doesn't exist");
@@ -449,7 +453,7 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		serverResponse.setServerResponse(orderNumber);
+		//serverResponse.setDataType("String");
 		return serverResponse;
 	}
 
