@@ -84,18 +84,18 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="userNameTxtField" layoutX="356.0" layoutY="207.0" prefHeight="26.0" prefWidth="173.0" promptText="Company's Name" />
-      <Text fill="RED" layoutX="88.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This employer company name doesn't exist">
+      <TextField fx:id="employerNameTxtField" layoutX="356.0" layoutY="207.0" prefHeight="26.0" prefWidth="173.0" promptText="Company's Name" />
+      <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fill="#62d019" layoutX="132.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The employer was registered successfully!">
+      <Text fx:id="successMsg" fill="#62d019" layoutX="132.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The employer was registered successfully!">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="381.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>

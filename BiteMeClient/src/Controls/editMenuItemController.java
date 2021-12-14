@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Enums.UserType;
+import Enums.TypeOfProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -33,12 +34,16 @@ public class editMenuItemController implements Initializable{
 
     @FXML
     private Label addItemToMenuBtn;
+    
+	@FXML
+	private Text errorMsg;
 
     @FXML
     private Rectangle avatar;
 
     @FXML
     private TextArea descriptionTxtArea;
+    
 
     @FXML
     private Text homePageBtn;
@@ -65,7 +70,7 @@ public class editMenuItemController implements Initializable{
     private Text profileBtn;
 
     @FXML
-    private ComboBox<String> selectTypeBox;
+    private ComboBox<TypeOfProduct> selectTypeBox;
 
     @FXML
     private Text supplierPanelBtn;
@@ -73,15 +78,15 @@ public class editMenuItemController implements Initializable{
     @FXML
     private Label uploadImageBtn;
     
-    ObservableList<String> list;
+    ObservableList<TypeOfProduct> list;
     
     // creating list of Types
  	private void setTypeComboBox() {
- 		ArrayList<String> type = new ArrayList<String>();
- 		type.add("main dish");
- 		type.add("entry");
- 		type.add("dessert");
- 		type.add("drink");
+ 		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
+ 		type.add(TypeOfProduct.mainDish);
+ 		type.add(TypeOfProduct.entry);
+ 		type.add(TypeOfProduct.dessert);
+ 		type.add(TypeOfProduct.drink);
 
  		list = FXCollections.observableArrayList(type);
  		selectTypeBox.setItems(list);
@@ -89,8 +94,35 @@ public class editMenuItemController implements Initializable{
 
     @FXML
     void addItemToMenuClicked(MouseEvent event) {
-
+    	if(checkInputs()) {
+    		//return to update menu
+    		router.getSupplierPanelController().updateMenuClicked(event);
+    	}
     }
+    
+    private boolean checkInputs() {
+    	TypeOfProduct type = selectTypeBox.getValue();
+    	String itemName = itemsNameTxtField.getText();
+    	//String priceSpinner = priceSpinner.get
+    	if(type == null) {
+    		errorMsg.setText("Please select type of the item");
+			return false;
+    	}
+		if (itemName.trim().isEmpty()) {
+			errorMsg.setText("Please enter the name of the item");
+			return false;
+		}
+		if (router.checkSpecialCharacters(itemName)) {
+			errorMsg.setText("Special characters aren't allowed in item name");
+			return false;
+		}
+		if(priceSpinner == null) {
+			errorMsg.setText("Please enter the price of the item");
+			return false;
+		}
+		errorMsg.setText("");
+		return true;
+    } 
 
     @FXML
     void logoutClicked(MouseEvent event) {

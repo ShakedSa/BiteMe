@@ -64,6 +64,9 @@ public class Server extends AbstractServer {
 		case "componentsInProduct":
 			this.sendToClient(mysqlConnection.getComponentsInProduct(m.get(1), m.get(2)), client);
 			break;
+		case "searchOrder":
+			this.sendToClient(mysqlConnection.searchOrder(m.get(1)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

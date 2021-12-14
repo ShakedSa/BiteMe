@@ -59,6 +59,9 @@ public class createMenuController implements Initializable{
 
     @FXML
     private Text supplierPanelBtn;
+    
+	@FXML
+	private Text errorMsg;
 
     @FXML
     void addNewItemClicked(MouseEvent event) {
@@ -90,7 +93,21 @@ public class createMenuController implements Initializable{
 
     @FXML
     void createMenuClicked(MouseEvent event) {
-
+    	//need to check server response
+		if(checkServerResponse()) {
+			VImage.setVisible(true);
+			menuCreatedSuccessfullyTxt.setVisible(true);
+		}
+    }
+    
+    private boolean checkServerResponse() {
+//    	retVal = servaerResponse;
+//    	if(retVal == null) {
+//			errorMsg.setText("No items checked into menu");
+//			return false;
+//		}
+//		errorMsg.setText(""); 
+		return true;
     }
 
     @FXML
@@ -126,6 +143,8 @@ public class createMenuController implements Initializable{
 		router = Router.getInstance();
 		router.setCreateMenuController(this);
 		setStage(router.getStage());
+		VImage.setVisible(false);
+    	menuCreatedSuccessfullyTxt.setVisible(false);
 	}
 
     

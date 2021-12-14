@@ -3,8 +3,10 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.ResourceBundle;
 
+import Enums.TypeOfProduct;
 import Enums.UserType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,29 +61,35 @@ public class addNewItemController implements Initializable{
     private TextField optionalComponentsTxtField;
 
     @FXML
-    private Spinner<?> priceSpinner;
+    private Spinner<Float> priceSpinner;
 
     @FXML
     private Text profileBtn;
 
     @FXML
-    private ComboBox<String> selectTypeBox;
+    private ComboBox<TypeOfProduct> selectTypeBox;
 
     @FXML
     private Text supplierPanelBtn;
+    
 
     @FXML
     private Label uploadImageBtn;
     
-    ObservableList<String> list;
+	@FXML
+	private Text errorMsg;
     
- // creating list of Types
+    ObservableList<TypeOfProduct> list;
+
+  	/**
+  	 * creating list of Types
+  	 */
   	private void setTypeComboBox() {
-  		ArrayList<String> type = new ArrayList<String>();
-  		type.add("main dish");
-  		type.add("entry");
-  		type.add("dessert");
-  		type.add("drink");
+  		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
+  		type.add(TypeOfProduct.mainDish);
+ 		type.add(TypeOfProduct.entry);
+ 		type.add(TypeOfProduct.dessert);
+ 		type.add(TypeOfProduct.drink);
 
   		list = FXCollections.observableArrayList(type);
   		selectTypeBox.setItems(list);
@@ -89,7 +97,42 @@ public class addNewItemController implements Initializable{
 
     @FXML
     void addItemToMenuClicked(MouseEvent event) {
-
+    	if(checkInputs()) {
+    		//return to create menu page
+        	router.getSupplierPanelController().createMenuClicked(event);
+    	}
+    }
+    
+    private void getDataFromScreen() {
+    	TypeOfProduct type = selectTypeBox.getValue();
+    	String itemName = itemsNameTxtField.getText();
+    	String optionalComponents = optionalComponentsTxtField.getText();
+    	//String priceSpinner = priceSpinner.get
+    	String description = descriptionTxtArea.getText();
+    }
+    
+    private boolean checkInputs() {
+    	TypeOfProduct type = selectTypeBox.getValue();
+    	String itemName = itemsNameTxtField.getText();
+    	//String priceSpinner = priceSpinner.get
+    	if(type == null) {
+    		errorMsg.setText("Please select type of the item");
+			return false;
+    	}
+		if (itemName.trim().isEmpty()) {
+			errorMsg.setText("Please enter the name of the item");
+			return false;
+		}
+		if (router.checkSpecialCharacters(itemName)) {
+			errorMsg.setText("Special characters aren't allowed in item name");
+			return false;
+		}
+		if(priceSpinner == null) {
+			errorMsg.setText("Please enter the price of the item");
+			return false;
+		}
+		errorMsg.setText("");
+		return true;
     }
 
     @FXML

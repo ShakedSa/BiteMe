@@ -2,6 +2,7 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 import Enums.UserType;
@@ -47,7 +48,16 @@ public class registerEmployerAsLegacyController implements Initializable{
     private Label registerBtn;
 
     @FXML
-    private TextField userNameTxtField;
+    private TextField employerNameTxtField;
+    
+    @FXML
+    private ImageView VImage;
+    
+    @FXML
+    private Text errorMsg;
+    
+    @FXML
+    private Text successMsg;
 
     @FXML
     void logoutClicked(MouseEvent event) {
@@ -61,8 +71,24 @@ public class registerEmployerAsLegacyController implements Initializable{
 
     @FXML
     void registerBtnClicked(MouseEvent event) {
-
+    	//need to check server response
+    	// if false - display: errorMsg.setText("This employer company name doesn't exist");
+    	if(checkInput()) {
+    		VImage.setVisible(true);
+    		successMsg.setVisible(true);
+    	}
+    	
     }
+    
+    private boolean checkInput() {
+		String employerName = employerNameTxtField.getText();
+		if (employerName.trim().isEmpty()) {
+			errorMsg.setText("Please enter employer company name");
+			return false;
+		}
+		errorMsg.setText("");
+		return true;
+	}
 
     @FXML
     void returnToEmployerHRPanel(MouseEvent event) {
@@ -87,6 +113,8 @@ public class registerEmployerAsLegacyController implements Initializable{
 		router = Router.getInstance();
 		router.setRegisterEmployerAsLegacyController(this);
 		setStage(router.getStage());
+		VImage.setVisible(false);
+    	successMsg.setVisible(false);
 	}
 
     

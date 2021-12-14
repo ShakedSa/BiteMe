@@ -6,6 +6,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -33,7 +34,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text fx:id="saveTxt" layoutX="590.0" layoutY="461.0" onMouseClicked="#saveClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
+      <Text fx:id="saveTxt" layoutX="642.0" layoutY="461.0" onMouseClicked="#saveClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -41,7 +42,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fitHeight="46.0" fitWidth="34.0" layoutX="551.0" layoutY="434.0" onMouseClicked="#saveClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="46.0" fitWidth="34.0" layoutX="603.0" layoutY="434.0" onMouseClicked="#saveClicked" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/createMenu-icon.gif" />
          </image>
@@ -125,5 +126,28 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
+      <Line endX="-82.0" layoutX="450.0" layoutY="454.0" startX="-100.0" strokeWidth="3.0" />
+      <Line endX="-82.0" layoutX="441.0" layoutY="462.0" startX="-82.0" startY="-16.0" strokeWidth="3.0" />
+      <Circle fx:id="addNewItemPlus" fill="#04b84f7d" layoutX="359.0" layoutY="454.0" onMouseClicked="#addNewItemClicked" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Circle>
+      <Text fx:id="addNewItemTxt" layoutX="383.0" layoutY="460.0" onMouseClicked="#addNewItemClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text fx:id="errorMsg" fill="RED" layoutX="468.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
    </children>
 </AnchorPane>

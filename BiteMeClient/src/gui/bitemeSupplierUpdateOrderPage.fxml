@@ -102,8 +102,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="342.0" onMouseClicked="#chooseHour" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="342.0" onMouseClicked="#chooseMinutes" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="342.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="342.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
       <Text fx:id="minutesTxt" fill="#a8a1a1" layoutX="457.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
@@ -112,17 +112,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="289.0" mnemonicParsing="false" text="Yes">
+      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="289.0" mnemonicParsing="false" onMouseClicked="#includeDeliveryBtnClicked" text="Yes">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="289.0" mnemonicParsing="false" text="No">
+      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="289.0" mnemonicParsing="false" onMouseClicked="#notIncludeDeliveryBtnClicked" text="No">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

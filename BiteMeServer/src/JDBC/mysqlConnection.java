@@ -26,6 +26,7 @@ import Enums.Doneness;
 import Enums.Size;
 import Enums.Status;
 import Enums.UserType;
+import Enums.TypeOfProduct;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -285,7 +286,8 @@ public class mysqlConnection {
 			stmt.setString(1, restaurantName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				menu.add(new Product(restaurantName, rs.getString(3), rs.getString(2), null, rs.getFloat(4),
+				TypeOfProduct type = TypeOfProduct.getEnum(rs.getString(3));
+				menu.add(new Product(restaurantName, type, rs.getString(2), null, rs.getFloat(4),
 						rs.getString(5)));
 			}
 		} catch (SQLException e) {
@@ -351,11 +353,11 @@ public class mysqlConnection {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			Size size = null;
-			if(rs.getString(2) != null && !rs.getString(2).equals("")) {
+			if (rs.getString(2) != null && !rs.getString(2).equals("")) {
 				size = Size.valueOf(rs.getString(2));
 			}
 			Doneness doneness = null;
-			if(rs.getString(3) != null && !rs.getString(3).equals("")) {
+			if (rs.getString(3) != null && !rs.getString(3).equals("")) {
 				doneness = Doneness.valueOf(rs.getString(3));
 			}
 			component = new Component(componentID, size, doneness, rs.getString(4));
@@ -426,4 +428,35 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(favRestaurants);
 		return serverResponse;
 	}
+
+	/**
+	 * Check if the order number is exist or not
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+	public static ServerResponse searchOrder(String orderNumber) {
+		ServerResponse serverResponse = new ServerResponse("OrderNumber");
+		try {
+			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, Integer.parseInt(orderNumber));
+			ResultSet rs = stmt.executeQuery(query);
+			if(!rs.next()) {//if (rs.getRow() == 0) {
+				serverResponse.setMsg("Order number doesn't exist");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(orderNumber);
+		return serverResponse;
+	}
+
 }

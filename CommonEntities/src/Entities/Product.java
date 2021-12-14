@@ -3,6 +3,8 @@ package Entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Enums.TypeOfProduct;
+
 /**
  * @author Eden test Product class, stores : int productID, String type, String
  *         dishName, ArrayList<Component> components, float price
@@ -15,12 +17,13 @@ public class Product implements Serializable {
 	 */
 	private static final long serialVersionUID = -3079554028160660848L;
 	private String restaurantName;
-	private String type;
+	private TypeOfProduct type;
 	private String dishName;
 	private ArrayList<Component> components;
 	private float price;
 	private String description;
 
+	
 	/**
 	 * @param restaurantName
 	 * @param type
@@ -29,7 +32,7 @@ public class Product implements Serializable {
 	 * @param price
 	 * @param description
 	 */
-	public Product(String restaurantName, String type, String dishName, ArrayList<Component> components, float price,
+	public Product(String restaurantName, TypeOfProduct type, String dishName, ArrayList<Component> components, float price,
 			String description) {
 		super();
 		this.restaurantName = restaurantName;
@@ -40,46 +43,79 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
-	public String getType() {
+	/**
+	 * @return type
+	 */
+	public TypeOfProduct getType() {
 		return type;
 	}
 
+	/**
+	 * @return dishName
+	 */
 	public String getDishName() {
 		return dishName;
 	}
 
+	/**
+	 * @return components
+	 */
 	public ArrayList<Component> getComponents() {
 		return components;
 	}
 
+	/**
+	 * @return price
+	 */
 	public float getPrice() {
 		return price;
 	}
 
+	/**
+	 * @return description
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @return restaurantName
+	 */
 	public String getRestaurantName() {
 		return restaurantName;
 	}
 
-	public void setType(String type) {
+	/**
+	 * @param type
+	 */
+	public void setType(TypeOfProduct type) {
 		this.type = type;
 	}
 
+	/**
+	 * @param dishName
+	 */
 	public void setDishName(String dishName) {
 		this.dishName = dishName;
 	}
 
+	/**
+	 * @param components
+	 */
 	public void setComponents(ArrayList<Component> components) {
 		this.components = components;
 	}
 
+	/**
+	 * @param price
+	 */
 	public void setPrice(float price) {
 		this.price = price;
 	}
 
+	/**
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
