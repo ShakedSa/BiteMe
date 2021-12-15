@@ -257,9 +257,9 @@ public class ClientUI implements ClientIF {
 		return ResComponentsInProducts;
 	}
 
-	public void sendReport(File pdfToUpload, String Month, String Year) {
+	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		  MyFile msg = new MyFile(Month + " " + Year);
-
+		  msg.setDescription(ReportType);
 			try {
 
 				byte[] mybytearray = new byte[(int) pdfToUpload.length()];

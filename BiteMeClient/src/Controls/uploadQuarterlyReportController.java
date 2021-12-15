@@ -124,7 +124,7 @@ public class uploadQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload, monthBox.getValue(), yearBox.getValue());
+    	ClientGUI.client.sendReport(pdfToUpload, monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }

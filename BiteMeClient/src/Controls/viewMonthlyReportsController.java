@@ -2,6 +2,8 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
@@ -49,19 +51,23 @@ public class viewMonthlyReportsController implements Initializable{
     private Text managerPanelBtn;
 
     @FXML
-    private ComboBox<?> monthBox;
+    private ComboBox<String> monthBox;
 
     @FXML
     private Text profileBtn;
 
     @FXML
-    private ComboBox<?> reportTypeBox;
+    private ComboBox<String> reportTypeBox;
 
     @FXML
     private Label showReportBtn;
 
     @FXML
-    private ComboBox<?> yearBox;
+    private ComboBox<String> yearBox;
+    
+
+    @FXML
+    private Text reportErrorMsg;
 
     @FXML
     void logoutClicked(MouseEvent event) {
@@ -71,7 +77,13 @@ public class viewMonthlyReportsController implements Initializable{
     
     @FXML
     void showReportClicked(MouseEvent event) {
-
+    	ArrayList<String> arr = new ArrayList<>();
+    	arr.add("getReport");
+    	arr.add(reportTypeBox.getValue());
+    	arr.add(monthBox.getValue());
+    	arr.add(yearBox.getValue());
+    	// fetch report from server's sql (if valid)
+    	//ClientGUI.client.getReport(arr);
     }
     
 	@FXML
@@ -103,8 +115,25 @@ public class viewMonthlyReportsController implements Initializable{
 		router = Router.getInstance();
 		router.setViewMonthlyReportsController(this);
 		setStage(router.getStage());
+		String months_tmp[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+		yearBox.getItems().addAll(generateYears());
+		monthBox.getItems().addAll(months_tmp);
+		
+		//reportTypeBox.getItems().addAll();// tbd
 	}
 
+	/**
+	 * @return generated String[5] contains 5 last years from today
+	 */
+	private String[] generateYears() {
+		int currentYear=Calendar.getInstance().get(Calendar.YEAR);
+		String years_tmp[]= new String[5];
+		for(int i=0;i<5;i++)
+		{
+			years_tmp[i]=Integer.toString(currentYear-4+i);
+		}
+		return years_tmp;
+	}
     
 	public void setScene(Scene scene) {
 		this.scene = scene;

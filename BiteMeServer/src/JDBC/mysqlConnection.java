@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -464,7 +465,7 @@ public class mysqlConnection {
 	// (`RestaurantName`)
 	// REFERENCES `suppliers` (`RestaurantName`))
 
-	public static void updateFile(InputStream is, String date) {
+	public static void updateFile(InputStream is, String date, String ReportType) {
 		System.out.println("test !");
 		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
@@ -472,10 +473,10 @@ public class mysqlConnection {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, 1);
 			statement.setString(2, filename);
-			statement.setDate(3, new Date(2011, 11, 11));
+			statement.setDate(3, Date.valueOf(LocalDate.of(date.indexOf(" "), date.indexOf(" ", 0), 0)));
 			statement.setBlob(4, is);
 			statement.setString(5, BranchName.North.toString());
-			statement.setString(6, filename);
+			statement.setString(6, ReportType);
 			statement.setString(7, "Burgerim");
 			statement.executeUpdate();
 

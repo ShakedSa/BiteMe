@@ -49,7 +49,6 @@ public class homePageController implements Initializable {
 	private Scene scene = null;
 
 	private AnchorPane mainContainer;
-
 	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
 	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 

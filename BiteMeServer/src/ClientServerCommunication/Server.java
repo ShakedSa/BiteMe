@@ -52,7 +52,7 @@ public class Server extends AbstractServer {
 			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
-				mysqlConnection.updateFile(is,message.getDescription());
+				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
 			}catch(Exception e) {
 				System.out.println("Error while handling files in Server");
 			}
