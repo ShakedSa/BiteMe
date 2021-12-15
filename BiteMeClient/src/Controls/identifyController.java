@@ -11,6 +11,7 @@ import Entities.Order;
 import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
+import Util.QRReader;
 import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -82,6 +83,9 @@ public class identifyController implements Initializable {
 	@FXML
 	void QRClicked(MouseEvent event) {
 		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+//		if(!QRReader.checkQRCode(user.getW4c().getQRCode())) {
+//			errorMsg.setText("Can read QR code");
+//		}
 		w4cCodeFieldTxt.setText(user.getW4c().getQRCode());
 		identifyClicked(null);
 	}

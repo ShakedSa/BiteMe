@@ -11,6 +11,7 @@ import Entities.User;
 import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
 import client.ClientUI;
 import javafx.collections.FXCollections;
@@ -122,11 +123,11 @@ public class updateUserInformationController implements Initializable{
 		if(!checkValues()) {
     		return;
     	}
-		ClientGUI.client.checkUser(userNameTxtField.getText());
 		//wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ClientGUI.client.checkUser(userNameTxtField.getText());
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -146,6 +147,9 @@ public class updateUserInformationController implements Initializable{
 		}
 		//handle server response
 		ServerResponse sr = ClientGUI.client.getLastResponse();
+		if(sr == null) {
+			return;
+		}
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
 		if(response== null) {
@@ -165,6 +169,10 @@ public class updateUserInformationController implements Initializable{
 		userStatusBox.setValue(response.get(1));
 		userNameError.setVisible(false);
 		validUserName = userNameTxtField.getText();
+//		userPermitionBox.setValue(response.get(0));
+//		userStatusBox.setValue(response.get(1));
+		userPermitionBox.getSelectionModel().select(response.get(0));
+		userStatusBox.getSelectionModel().select(response.get(1));
     }
 
 	private void enableEdit(boolean val) {
@@ -210,6 +218,9 @@ public class updateUserInformationController implements Initializable{
     	userNameError.setVisible(false);
     	updateSucess.setVisible(true);
     	updateSucess1.setVisible(true);
+    	System.out.println(userPermitionBox.getSelectionModel().getSelectedItem() +"\n" + userStatusBox.getSelectionModel().getSelectedItem());
+    	ClientGUI.client.updateUserInfo(userNameTxtField.getText(),userPermitionBox.getSelectionModel().getSelectedItem()
+    			, userStatusBox.getSelectionModel().getSelectedItem());
     	
     	
     }

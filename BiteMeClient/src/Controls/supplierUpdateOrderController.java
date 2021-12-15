@@ -15,6 +15,7 @@ import com.sun.jdi.connect.spi.Connection;
 
 import Entities.User;
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

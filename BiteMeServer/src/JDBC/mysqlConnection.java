@@ -238,8 +238,8 @@ public class mysqlConnection {
 	 */
 	public static void updateUserInformation(String userName, String userType,
 			String status) {
-		ServerResponse serverResponse = new ServerResponse("updateUser");
-		PreparedStatement stmt = null;
+//		ServerResponse serverResponse = new ServerResponse("updateUser");
+		PreparedStatement stmt;
 		try {
 			String query = "UPDATE bitemedb.users SET UserType = ?, Status = ? WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
@@ -495,7 +495,6 @@ public class mysqlConnection {
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) { // 8 usertype, 13 status
-				
 				response.add(rs.getString(8));
 				response.add(rs.getString(13));
 			}

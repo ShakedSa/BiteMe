@@ -318,7 +318,9 @@ public class ClientUI implements ClientIF {
 	public void checkUser(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("checkUser", userName));
+			arr.add("checkUser");
+			arr.add(userName);
+//			arr.addAll(Arrays.asList("checkUser", userName));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();

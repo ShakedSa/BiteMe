@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Util.InputValidation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
