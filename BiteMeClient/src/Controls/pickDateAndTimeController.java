@@ -146,11 +146,11 @@ public class pickDateAndTimeController implements Initializable {
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
 		/** If no time selection was made */
-		if (!router.checkValidText(hourToOrder) || !router.checkValidText(minuteToOrder)) {
+		if (!InputValidation.checkValidText(hourToOrder) || !InputValidation.checkValidText(minuteToOrder)) {
 			errorMsg.setText("Please pick time for the order.");
 			return false;
 		}
-		if(router.checkContainCharacters(hourToOrder) || router.checkContainCharacters(minuteToOrder)) {
+		if(InputValidation.checkContainCharacters(hourToOrder) || InputValidation.checkContainCharacters(minuteToOrder)) {
 			errorMsg.setText("Time should be integers.");
 			return false;
 		}

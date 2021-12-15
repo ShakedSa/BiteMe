@@ -123,7 +123,7 @@ public class addNewItemController implements Initializable{
 			errorMsg.setText("Please enter the name of the item");
 			return false;
 		}
-		if (router.checkSpecialCharacters(itemName)) {
+		if (InputValidation.checkSpecialCharacters(itemName)) {
 			errorMsg.setText("Special characters aren't allowed in item name");
 			return false;
 		}

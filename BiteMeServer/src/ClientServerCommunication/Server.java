@@ -59,9 +59,12 @@ public class Server extends AbstractServer {
 			return;
 		}
 		if(msg instanceof OrderDeliveryMethod) {
-			System.out.println("I'm before the query :)");
+			try {
 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
-			System.out.println("Updated successful :)");
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("Error while handling message in server");
+			}
 		}
 		
 		controller.setMessage("Msg recieved:" + msg);

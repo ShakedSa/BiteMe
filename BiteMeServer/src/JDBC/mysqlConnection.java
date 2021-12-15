@@ -439,11 +439,12 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery(idiot);
 			System.out.println(idiot);
 			if (!rs.next()) {
-			ResultSet rs = stmt.executeQuery(query);
-			if (!rs.next()) {// if (rs.getRow() == 0) {
-				serverResponse.setMsg("Order number doesn't exist");
-				serverResponse.setServerResponse(null);
-				return serverResponse;
+//				ResultSet rs1 = stmt.executeQuery(query);
+				if (!rs.next()) {// if (rs.getRow() == 0) {
+					serverResponse.setMsg("Order number doesn't exist");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
+				}
 			}
 
 		} catch (SQLException e) {
@@ -453,7 +454,7 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		//serverResponse.setDataType("String");
+		// serverResponse.setDataType("String");
 		return serverResponse;
 	}
 
@@ -576,7 +577,6 @@ public class mysqlConnection {
 		}
 	}
 
-
 	/**
 	 * Private method for delivery inserting query.
 	 * 
@@ -611,6 +611,13 @@ public class mysqlConnection {
 				stmt.setInt(4, shared.getAmountOfPeople());
 				stmt.setString(5, delivery.getPhoneNumber());
 				stmt.setString(6, delivery.getFirstName() + delivery.getLastName());
+			case takeaway:
+				query = "INSERT INTO bitemedb.deliveries (DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?)";
+				stmt = conn.prepareStatement(query, keys);
+				stmt.setString(1, typeOfOrder.toString());
+				stmt.setFloat(2, delivery.getDiscount());
+				stmt.setString(3, delivery.getPhoneNumber());
+				stmt.setString(4, delivery.getFirstName() + delivery.getLastName());
 			default:
 				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?)";
 				stmt = conn.prepareStatement(query, keys);

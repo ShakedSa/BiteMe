@@ -759,43 +759,6 @@ public class Router {
 		this.delivery = delivery;
 	}
 
-	/**
-	 * Global method for validating input. Checks if the string is not empty.
-	 * 
-	 * @param String text
-	 * @return boolean
-	 */
-	public boolean checkValidText(String input) {
-		if (input == null || input.equals("")) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Global method for validating input. Checks if the string contains special
-	 * characters.
-	 * 
-	 * @param String input
-	 * @return boolean
-	 */
-	public boolean checkSpecialCharacters(String input) {
-		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		return m.find();
-	}
-
-	/**
-	 * Global method for validating input. Checks if the string contains characters.
-	 * 
-	 * @param String input
-	 * @return boolean
-	 */
-	public boolean checkContainCharacters(String input) {
-		Pattern p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		return m.find();
-	}
 
 	/**
 	 * @return the orderDeliveryMethod
