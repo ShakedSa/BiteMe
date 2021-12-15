@@ -101,6 +101,7 @@ public class Server extends AbstractServer {
 			break;
 		case "updateUser":
 			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
+			this.sendToClient("hello", client);
 			break;
 		default:
 			sendToClient("default", client);

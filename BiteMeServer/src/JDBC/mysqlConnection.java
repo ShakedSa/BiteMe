@@ -485,7 +485,6 @@ public class mysqlConnection {
 	}
 
 
-	
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<String> response = new ArrayList<>();
