@@ -58,15 +58,12 @@ public class Router {
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
 
-	/** Items in order, should be available across all application. */
-	private ArrayList<Product> orderItems = new ArrayList<>();
-
+	/**State of the order application: */
+	/***************************************/
 	private Order order = new Order();
-
 	private Delivery delivery;
-
 	private OrderDeliveryMethod orderDeliveryMethod;
-
+	/***************************************/
 	public static Router getInstance() {
 		if (router == null)
 			router = new Router();
@@ -725,7 +722,7 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> order) {
-		this.orderItems = order;
+		this.order.setProducts(order);
 	}
 
 	/**
@@ -734,7 +731,10 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		return orderItems;
+		if(order.getProducts() == null) {
+			return new ArrayList<>();
+		}
+		return order.getProducts();
 	}
 
 	public void setOrder(Order order) {

@@ -10,7 +10,7 @@ public class QRReader {
 	 * 
 	 * @return String
 	 * */
-	public static String checkQRCode(Customer customer) {
+	public static String ReadQRCode(Customer customer) {
 		String qrCode = customer.getW4c().getQRCode();
 		if(qrCode == null || qrCode.equals("")) {
 			return null;
