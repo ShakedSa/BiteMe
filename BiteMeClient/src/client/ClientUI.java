@@ -12,6 +12,8 @@ import java.util.List;
 import ClientServerComm.Client;
 import Entities.MyFile;
 import Entities.ServerResponse;
+import Enums.Status;
+import Enums.UserType;
 
 /**
  * Logic of the client GUI.
@@ -105,6 +107,25 @@ public class ClientUI implements ClientIF {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("favRestaurants");
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending a query request from the server. update a user information
+	 * 
+	 * @param restaurantName
+	 */
+	public void updateUserInfo(String userName, String userType, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("updateUser");
+			arr.add(userName);
+			arr.add(userType);
+			arr.add(status);
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -270,6 +291,18 @@ public class ClientUI implements ClientIF {
 			}
 			
 
+		
+	}
+
+	public void checkUser(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("checkUser", userName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 		
 	}
 }
