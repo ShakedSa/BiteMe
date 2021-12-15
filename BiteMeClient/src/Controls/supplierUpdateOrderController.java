@@ -280,15 +280,15 @@ public class supplierUpdateOrderController implements Initializable {
 
 
 	private boolean CheckUserInput(String orderNumber) {
-		if (!router.checkValidText(orderNumber)) {
+		if (!InputValidation.checkValidText(orderNumber)) {
 			errorMsg.setText("Must fill order number");
 			return false;
 		}
-		if (router.checkSpecialCharacters(orderNumber)) {
+		if (InputValidation.checkSpecialCharacters(orderNumber)) {
 			errorMsg.setText("Special characters aren't allowed in order number");
 			return false;
 		}
-		if (router.checkContainCharacters(orderNumber)) {
+		if (InputValidation.checkContainCharacters(orderNumber)) {
 			errorMsg.setText("Characters aren't allowed in order number");
 			return false;
 		}

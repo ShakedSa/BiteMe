@@ -1,133 +1,10 @@
-/* Global border width */
-#btn, #order, #menuBtn, #optionalBtn, #clickedBG, #plusMinus, #addItem, #txtarea{
-	-fx-border-width:1.0;
+*{
+	-fx-primary-bg-color: #eee;
+	-fx-primary-text-color:black;
+	-fx-secondary-text-color:#3180bc;
 }
 
-/* Global cursor for buttons */
-#link, #btn, #order, #menuBtn, #optionalBtn, #clickedBG, #plusMinus, #addItem{
-	-fx-cursor: hand;
-}
-/* Black border color */
-#btn, #order, #menuBtn{
-	-fx-border-color:black;
-}
-
-/* White text color */
-#order, #optionalBtn, #plusMinus, #addItem, #txtarea{
-	-fx-text-fill: black;	
-}
-
-/* White border */
-#optionalBtn, #plusMinus, #addItem, #clickedBG, #txtarea{
-	-fx-border-color: black;
-}
-
-/* Border radius 40 */
-#btn, #addItem, #plusMinus, #clickedBG, #optionalBtn, #menuBtn{
-	-fx-border-radius:40.0;
-}
-
-#btn{
-	-fx-padding: 10.0 35.0;
-}
-
-#btn:hover{
-	-fx-background-color: #2197ff;
-	-fx-background-radius: 40.0;
-}
-
-#active{
-	-fx-fill: #3180bc;
-	-fx-underline: true;
-	-fx-border-width: 0.0 0.0 2.0 0.0;
-	-fx-border-color: #3180bc;
-	-fx-padding: 0.0 0.0 3.0 0.0;
-}
-
-#link:hover{
-	-fx-fill: #3180bc;
-	-fx-underline: true;
-	-fx-border-width: 0.0 0.0 2.0 0.0;
-	-fx-border-color: #3180bc;
-	-fx-padding: 0.0 0.0 3.0 0.0;
-}
-
-#order{
-	-fx-border-radius: 3.0;
-	-fx-padding: 3.0 27.3;
-	-fx-background-color: #3180bc;
-	-fx-background-radius: 5.0;
-	-fx-translate-x: -27.3;
-	-fx-translate-y: -5.6;
-}
-
-#order:hover{
-	-fx-background-color: #eee;
-	-fx-text-fill:black;
-}
-
-
-#menuBtn{
-	-fx-pref-width: 300.0;
-}
-
-#menuBtn:hover{
-	-fx-background-color: #2197ff;
-	-fx-background-radius: 40.0;
-}
-
-#optionalBtn{
-	-fx-padding: 10.0 0.0;
-	-fx-alignment: center;
-	-fx-pref-width: 200.0;
-}
-
-#optionalBtn:hover{
-	-fx-background-color: #04cca1;
-	-fx-background-radius: 40.0;
-}
-
-#background{
-	/*-fx-background: #006875;*/
-	-fx-background: #eee;
-}
-
-#clickedBG{
-	-fx-padding: 10.0 0.0;
-	-fx-alignment: center;
-	-fx-pref-width: 200.0;
-	-fx-background-color:#04cca1;
-	-fx-background-radius: 40.0;
-}
-
-#plusMinus, #addItem{
-	-fx-padding: 0.0 10.0;
-	-fx-alignment: center;
-	-fx-translate-y: -10.0;
-}
-
-#plusMinus:hover, #addItem:hover{
-	-fx-background-color:#04cca1;
-	-fx-background-radius: 40.0;
-}
-
-#addItem{
-	-fx-padding: 10.0 35.0;
-}
-
-#txtarea{
-	/*-fx-background-color:rgba(0.0,104.0,117.0, 0.4);*/
-	-fx-background-color:#eee;
-	-fx-background-radius: 10.0;
-	-fx-border-radius: 10.0;
-	-fx-pref-width: 250.0;
-	-fx-pref-height: 100.0;
-}
-
-.text-area .viewport, .text-area .content {
-    -fx-background-color: transparent ;
-}
-
+/*Global Styling: */
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0.0;
 }
@@ -178,12 +55,168 @@
     -fx-background-insets: 0.0;
 }
 
-#scrollPane{
-	-fx-background:#eee;
+/**********************************************/
+
+#btn{
+	-fx-border-width: 1.0;
+	-fx-border-color:-fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-cursor: hand;
+	-fx-padding: 10.0 35.0;
 }
 
-#overlay{
-	-fx-background-color:  #006875; 
-	-fx-effect:  dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);
+#btn:hover{
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-background-radius: 40.0;
 }
+
+#order{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 3.0;
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-curosr: hand;
+	-fx-padding: 3.0 27.32;
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-background-radius: 5.0;
+	-fx-translate-x: -27.6;
+	-fx-translate-y: -5.5;	
+}
+
+#order:hover{
+	-fx-background-color: -fx-primary-bg-color;
+	-fx-text-fill:-fx-primary-text-color;
+}
+
+#menuBtn{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-cursor: hand;
+	-fx-pref-width: 300.0;
+}
+
+#menuBtn:hover{
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-background-radius: 40.0;
+}
+
+#optionalBtn{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-cursor: hand;
+	-fx-padding: 10.0 0.0;
+	-fx-alignment: center;
+	-fx-pref-width: 200.0;
+}
+
+#optionalBtn:hover{
+	/*-fx-background-color: #04cca1;*/
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-background-radius: 40.0;
+}
+
+#clickedBG{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-cursor: hand;
+	-fx-padding: 10.0 0.0;
+	-fx-alignment: center;
+	-fx-pref-width: 200.0;
+	-fx-background-color:-fx-secondary-text-color;
+	-fx-background-radius: 40.0;
+}
+
+#plusMinus{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-cursor: -fx-default-hand-cursor;
+	-fx-padding: 0.0 10.0;
+	-fx-alignment: center;
+	-fx-translate-y: -10.0;
+}
+
+#addItem{
+	-fx-border-width:1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-cursor: hand;
+	-fx-padding: 10.0 35.0;
+	-fx-alignment: center;
+	-fx-translate-y: -10.0;
+}
+
+#plusMinus:hover, #addItem:hover{
+	-fx-background-color:-fx-secondary-text-color;
+	-fx-background-radius: 40.0;
+}
+ #txtarea{
+	-fx-border-width:1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 10.0;
+	-fx-text-fill:-fx-primary-text-color;
+	/*-fx-background-color:rgba(0.0,104.0,117.0, 0.4);*/
+	-fx-background-color: -fx-primary-bg-color;
+	-fx-background-radius: 10.0;
+	-fx-pref-width: 250.0;
+	-fx-pref-height: 100.0;
+}
+
+.text-area .viewport, .text-area .content {
+    -fx-background-color: transparent ;
+}
+
+
+#active{
+	-fx-border-width: 0.0 0.0 2.0 0.0;
+	-fx-border-color: -fx-secondary-text-color;
+	-fx-fill: -fx-secondary-text-color;
+	-fx-underline: true;
+	-fx-padding: 0.0 0.0 3.0 0.0;
+}
+
+#link{
+	-fx-cursor: hand;
+}
+
+#link:hover{
+	-fx-border-width: 0.0 0.0 2.0 0.0;
+	-fx-border-color: -fx-secondary-text-color;
+	-fx-fill: -fx-secondary-text-color;
+	-fx-underline: true;
+	-fx-padding: 0.0 0.0 3.0 0.0;
+}
+
+
+#background{
+	/*-fx-background: #006875;*/
+	-fx-background: -fx-primary-bg-color;
+}
+
+#scrollPane{
+	-fx-background:-fx-primary-bg-color;
+}
+
+.padding{
+	-fx-padding: 10.0 10.0;
+}
+
+.overylayPriceLayout{
+	-fx-translate-x: 250.0;
+}
+
+.overlayLayout{
+	-fx-translate-x:71.0;
+	-fx-translate-y:105.0;
+	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.5),10.0,0.0,0.0,0.0);
+	-fx-background-color:-fx-primary-bg-color;
+}
+
 

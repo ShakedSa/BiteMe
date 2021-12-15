@@ -235,6 +235,10 @@ public class restaurantMenuController implements Initializable {
 	 * @param menu
 	 */
 	private void createMenu(ArrayList<Product> menu) {
+		/**
+		 * Filtering the meun of the restaurant by categories. Entrees, Main Dishes,
+		 * Drinks, Desserts.
+		 */
 		List<Product> entriesMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.entry)
 				.collect(Collectors.toList());
 		List<Product> mainsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.mainDish)
@@ -243,6 +247,7 @@ public class restaurantMenuController implements Initializable {
 				.collect(Collectors.toList());
 		List<Product> dessertsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.dessert)
 				.collect(Collectors.toList());
+		/**Creating new tabs for the tabpane.*/
 		Tab entrees = new Tab("Entrees");
 		entrees.setClosable(false);
 		Tab mainDishes = new Tab("Main Dishes");
@@ -283,11 +288,9 @@ public class restaurantMenuController implements Initializable {
 		for (Product p : productsToAdd) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "¤");
-			nameLabel.setStyle("-fx-padding: 10 0");
-			priceLabel.setStyle("-fx-padding: 10 0");
-			nameLabel.setLayoutX(15);
-			priceLabel.setLayoutX(260);
+			Label priceLabel = new Label(p.getPrice() + "â‚ª");
+			nameLabel.getStyleClass().addAll("overlayNameLayout", "padding");
+			priceLabel.getStyleClass().addAll("overylayPriceLayout", "padding");
 			pane.setId("menuBtn");
 			pane.getChildren().add(nameLabel);
 			pane.getChildren().add(priceLabel);
@@ -310,11 +313,7 @@ public class restaurantMenuController implements Initializable {
 				/** Pane for the overlay screen. */
 				Pane overlayPane = new Pane();
 				root.getChildren().add(overlayPane);
-				overlayPane.setLayoutX(71);
-				overlayPane.setLayoutY(105);
-				overlayPane.setStyle(
-						"-fx-background-color:#eee; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),10,0,0,0);");
-
+				overlayPane.getStyleClass().add("overlayLayout");
 				/** Close button, closing the overlay screen. */
 				Label closeBtn = new Label("X");
 				closeBtn.setStyle("-fx-text-fill: red; -fx-cursor: hand;");

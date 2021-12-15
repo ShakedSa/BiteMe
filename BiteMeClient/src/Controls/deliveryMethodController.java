@@ -171,40 +171,37 @@ public class deliveryMethodController implements Initializable {
 		String lastName = lastNameTxtField.getText();
 		String phoneNumberPrefix = prefixPhoneNumberBox.getSelectionModel().getSelectedItem();
 		String phoneNumber = phoneNumberTxtField.getText();
-		if (!router.checkValidText(address)) {
+		if (!InputValidation.checkValidText(address)) {
 			errorMsg.setText("Please fill address for the delivery.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(address)) {
+		if (InputValidation.checkSpecialCharacters(address)) {
 			errorMsg.setText("Address can't contain special characters.");
 			return false;
 		}
-		if (!router.checkValidText(firstName)) {
+		if (!InputValidation.checkValidText(firstName)) {
 			errorMsg.setText("Please fill first name.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(firstName)) {
+		if (InputValidation.checkSpecialCharacters(firstName)) {
 			errorMsg.setText("First name can't contain special characters.");
 			return false;
 		}
-		if (!router.checkValidText(lastName)) {
+		if (!InputValidation.checkValidText(lastName)) {
 			errorMsg.setText("Please fill last name.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(lastName)) {
+		if (InputValidation.checkSpecialCharacters(lastName)) {
 			errorMsg.setText("Last name can't contain special characters.");
 			return false;
 		}
-		if (!router.checkValidText(phoneNumberPrefix) || !router.checkValidText(phoneNumber)) {
+		if (!InputValidation.checkValidText(phoneNumberPrefix) || !InputValidation.checkValidText(phoneNumber)) {
 			errorMsg.setText("Please fill phone number.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(phoneNumberPrefix) || router.checkSpecialCharacters(phoneNumber)) {
-			errorMsg.setText("Phone number can't contain special characters.");
-			return false;
-		}
-		if (router.checkContainCharacters(phoneNumberPrefix) || router.checkContainCharacters(phoneNumber)) {
-			errorMsg.setText("Phone number can't contain letters.");
+		String fullPhoneNumber = phoneNumberPrefix + phoneNumber;
+		if(InputValidation.checkPhoneNumber(fullPhoneNumber)) {
+			errorMsg.setText("Invalid phone number.");
 			return false;
 		}
 		return true;
@@ -234,19 +231,19 @@ public class deliveryMethodController implements Initializable {
 		}
 		String amount = amountTextField.getText();
 		String businessCode = businessCodeTextField.getText();
-		if (!router.checkValidText(amount)) {
+		if (!InputValidation.checkValidText(amount)) {
 			errorMsg.setText("Please fill amount of people in the order.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(amount)) {
+		if (InputValidation.checkSpecialCharacters(amount)) {
 			errorMsg.setText("Amount of people can't contain special characters.");
 			return false;
 		}
-		if (!router.checkValidText(businessCode)) {
+		if (!InputValidation.checkValidText(businessCode)) {
 			errorMsg.setText("Please fill business code.");
 			return false;
 		}
-		if (router.checkSpecialCharacters(businessCode)) {
+		if (InputValidation.checkSpecialCharacters(businessCode)) {
 			errorMsg.setText("Business code can't contain special characters");
 			return false;
 		}
@@ -265,11 +262,11 @@ public class deliveryMethodController implements Initializable {
 		}
 		String hours = hourBox.getSelectionModel().getSelectedItem();
 		String minutes = minutesBox.getSelectionModel().getSelectedItem();
-		if (!router.checkValidText(hours) || !router.checkValidText(minutes)) {
+		if (!InputValidation.checkValidText(hours) || !InputValidation.checkValidText(minutes)) {
 			errorMsg.setText("Please fill time of the delivery");
 			return false;
 		}
-		if (router.checkSpecialCharacters(hours) || router.checkSpecialCharacters(minutes)) {
+		if (InputValidation.checkSpecialCharacters(hours) || InputValidation.checkSpecialCharacters(minutes)) {
 			errorMsg.setText("Delivery time can't contain special characters");
 			return false;
 		}
@@ -328,7 +325,7 @@ public class deliveryMethodController implements Initializable {
 			break;
 		case takeaway:
 			/** Takeaway doesn't have delivery --> delivery method should be null */
-			newDelivery = null;
+			newDelivery = new Delivery(null, firstName, lastName, phoneNumber,0, 0);
 			break;
 		case sharedDelivery:
 			/** Validating amount of people and businessCode */
@@ -536,10 +533,14 @@ public class deliveryMethodController implements Initializable {
 			displayShared(false);
 			displayPre(true);
 			break;
+		case takeaway:
+			displayBasic(true);
+			displayShared(false);
+			displayPre(false);
+			break;
 		case RobotDelivery:
 			errorMsg.setText("Robot delivery is not available yet.\nPlease select a different delivery method.");
 			nextOrderStep.setDisable(true);
-		case takeaway:
 		default:
 			displayBasic(false);
 			displayShared(false);
