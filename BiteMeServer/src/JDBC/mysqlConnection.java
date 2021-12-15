@@ -485,7 +485,6 @@ public class mysqlConnection {
 	}
 
 
-	
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<String> response = new ArrayList<>();
@@ -494,7 +493,7 @@ public class mysqlConnection {
 			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) { // 8 usertype, 13 status
 				
 				response.add(rs.getString(8));

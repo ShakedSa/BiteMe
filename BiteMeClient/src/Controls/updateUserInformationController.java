@@ -90,6 +90,8 @@ public class updateUserInformationController implements Initializable{
     @FXML
     private Text userStatusTxt;
     
+    private String validUserName;
+    
     /**
 	 * Creating the combo boxes in this scene. for userPermitionBox
 	 * 
@@ -146,8 +148,14 @@ public class updateUserInformationController implements Initializable{
 		ServerResponse sr = ClientGUI.client.getLastResponse();
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
+		if(response== null) {
+			System.out.println("test");
+			return;
+		}
+		//check if user name is valid
 		if(response.get(0).equals("Error"))
 		{
+			userNameError.setText("This user name doesn't exist");
 			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
@@ -155,6 +163,8 @@ public class updateUserInformationController implements Initializable{
 		enableEdit(true);
 		userPermitionBox.setValue(response.get(0));
 		userStatusBox.setValue(response.get(1));
+		userNameError.setVisible(false);
+		validUserName = userNameTxtField.getText();
     }
 
 	private void enableEdit(boolean val) {
@@ -163,6 +173,10 @@ public class updateUserInformationController implements Initializable{
 		userPremTxt.setVisible(val);
 		userStatusTxt.setVisible(val);
 		saveUpdateBtn.setDisable(!val);
+		if(val == false) {
+			updateSucess.setVisible(val);
+	    	updateSucess1.setVisible(val);
+		}
 	}
 
     @FXML
@@ -187,21 +201,29 @@ public class updateUserInformationController implements Initializable{
 	
     @FXML
     void saveUpdateClicked(MouseEvent event) {
-    	if(!checkValues()) {
+    	if(!userNameTxtField.getText().equals(validUserName)) {
+    		userNameError.setVisible(true);
     		return;
     	}
     	ClientGUI.client.updateUserInfo(userNameTxtField.getText(),userPermitionBox.getValue()
     			, userStatusBox.getValue());
+    	userNameError.setVisible(false);
+    	updateSucess.setVisible(true);
+    	updateSucess1.setVisible(true);
     	
     	
     }
     
     private boolean checkValues() {
     	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
+    		userNameError.setVisible(true);
+    		enableEdit(false);
     		userNameError.setText("User name can't contain special characters!");
     		return false;
     	}
-    	if(userNameTxtField.getText().equals("")) {
+    	if(userNameTxtField.getText().length() == 0) {
+    		userNameError.setVisible(true);
+    		enableEdit(false);
     		userNameError.setText("User name must be filled!");
     		return false;
     	}

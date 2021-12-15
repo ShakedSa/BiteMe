@@ -98,11 +98,10 @@ public class Server extends AbstractServer {
 			break;
 		case "checkUser":
 			this.sendToClient(mysqlConnection.checkUsername(m.get(1)), client);
+			break;
 		case "updateUser":
-			System.out.println(m.get(1));
-			System.out.println(m.get(2));
-			System.out.println(m.get(3));
 			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
+			this.sendToClient("hello", client);
 			break;
 		default:
 			sendToClient("default", client);
