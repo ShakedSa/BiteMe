@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Enums.UserType;
+import Util.InputValidation;
 import Enums.TypeOfProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
