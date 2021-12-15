@@ -132,9 +132,8 @@ public class pickDateAndTimeController implements Initializable {
 			errorMsg.setText("Please pick date");
 			return false;
 		}
-		LocalDate now = java.time.LocalDate.now();
-		if (!orderDate.equals(now)) {
-			errorMsg.setText("Date must be today :" + now.toString());
+		if (!InputValidation.checkDateNow(orderDate)) {
+			errorMsg.setText("Date must be today :" + LocalDate.now().toString());
 			return false;
 		}
 		return true;
@@ -151,17 +150,19 @@ public class pickDateAndTimeController implements Initializable {
 			errorMsg.setText("Please pick time for the order.");
 			return false;
 		}
-		if(InputValidation.checkContainCharacters(hourToOrder) || InputValidation.checkContainCharacters(minuteToOrder)) {
+		if (InputValidation.checkContainCharacters(hourToOrder)
+				|| InputValidation.checkContainCharacters(minuteToOrder)) {
 			errorMsg.setText("Time should be integers.");
 			return false;
 		}
-		LocalTime now = LocalTime.now();
-		LocalTime orderTime = LocalTime.of(Integer.parseInt(hourToOrder), Integer.parseInt(minuteToOrder));
-		/** If time selection is before now */
-		if (now.compareTo(orderTime) == 1) {
-			errorMsg.setText("Time of order must be greater or equals to now: " + now.toString());
+		/** Checking if the inputed time is valid. */
+		switch (InputValidation.checkTime(Integer.parseInt(hourToOrder), Integer.parseInt(minuteToOrder))) {
+		case -1:
+		case 1:
+			errorMsg.setText("Time of order must be greater or equals to now: " + LocalTime.now().toString());
 			return false;
 		}
+		/** If time selection is before now */
 		return true;
 	}
 
