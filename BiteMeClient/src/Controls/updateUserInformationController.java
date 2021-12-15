@@ -149,7 +149,7 @@ public class updateUserInformationController implements Initializable{
     }
     
     private boolean checkValues() {
-    	if(router.checkSpecialCharacters(userNameTxtField.getText())) {
+    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
     		userNameError.setText("User name can't contain special characters!");
     		return false;
     	}

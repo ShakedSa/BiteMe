@@ -523,7 +523,7 @@ public class mysqlConnection {
 		System.out.println("test !");
 		String filename= "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
-
+	}
 
 	/**
 	 * @param is File inputstream to upload as a blob

@@ -168,47 +168,47 @@ public class openNewAccountController implements Initializable{
     }
     
     private boolean CheckUserInput() {
-		if (!router.checkValidText(userNameTxtField.getText())) {
+		if (!InputValidation.checkValidText(userNameTxtField.getText())) {
 			errorMsg.setText("Must fill username");
 			return false;
 		}
-		if (router.checkSpecialCharacters(userNameTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in username");
 			return false;
 		}
-		if (!router.checkValidText(firstNameTxtField.getText())) {
+		if (!InputValidation.checkValidText(firstNameTxtField.getText())) {
 			errorMsg.setText("Must fill first name");
 			return false;
 		}
-		if (router.checkSpecialCharacters(firstNameTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(firstNameTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in name");
 			return false;
 		}
-		if (!router.checkValidText(lastNameTxtField.getText())) {
+		if (!InputValidation.checkValidText(lastNameTxtField.getText())) {
 			errorMsg.setText("Must fill in last name");
 			return false;
 		}
-		if (router.checkSpecialCharacters(lastNameTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(lastNameTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in last name");
 			return false;
 		}
-		if (!router.checkValidText(idTxtField.getText())) {
+		if (!InputValidation.checkValidText(idTxtField.getText())) {
 			errorMsg.setText("Must fill an id");
 			return false;
 		}
-		if (router.checkSpecialCharacters(idTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(idTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in id");
 			return false;
 		}
-		if (!router.checkValidText(PhoneNumberTxtField.getText())) {
+		if (!InputValidation.checkValidText(PhoneNumberTxtField.getText())) {
 			errorMsg.setText("Must fill a phone number");
 			return false;
 		}
-		if (router.checkSpecialCharacters(PhoneNumberTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(PhoneNumberTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in phone number");
 			return false;
 		}
-		if (!router.checkValidText(emailTxtField.getText())) {
+		if (!InputValidation.checkValidText(emailTxtField.getText())) {
 			errorMsg.setText("Must fill in an email");
 			return false;
 		}
@@ -216,11 +216,11 @@ public class openNewAccountController implements Initializable{
 			errorMsg.setText("Email must contain '@'");
 			return false;
 		}
-		if (!router.checkValidText(creditCardNumberTxtField.getText())) {
+		if (!InputValidation.checkValidText(creditCardNumberTxtField.getText())) {
 			errorMsg.setText("Must fill credit card number");
 			return false;
 		}
-		if (router.checkSpecialCharacters(creditCardNumberTxtField.getText())) {
+		if (InputValidation.checkSpecialCharacters(creditCardNumberTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in credit card number");
 			return false;
 		}
