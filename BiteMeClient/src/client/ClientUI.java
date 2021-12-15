@@ -13,7 +13,12 @@ import Controls.Router;
 import Entities.MyFile;
 import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
+
+import Enums.Status;
+import Enums.UserType;
+
 import Entities.User;
+
 
 /**
  * Logic of the client GUI.
@@ -107,6 +112,25 @@ public class ClientUI implements ClientIF {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("favRestaurants");
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending a query request from the server. update a user information
+	 * 
+	 * @param restaurantName
+	 */
+	public void updateUserInfo(String userName, String userType, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("updateUser");
+			arr.add(userName);
+			arr.add(userType);
+			arr.add(status);
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -290,6 +314,19 @@ public class ClientUI implements ClientIF {
 		
 	}
 
+
+	public void checkUser(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("checkUser", userName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+
 	@Override
 	public void setLastResponse(ServerResponse serverResponse) {
 		lastResponse = serverResponse;
@@ -301,4 +338,5 @@ public class ClientUI implements ClientIF {
 	}
 
 	
+
 }

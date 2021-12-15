@@ -2,16 +2,24 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.Status;
+import Enums.TypeOfOrder;
 import Enums.UserType;
 import client.ClientGUI;
+import client.ClientUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,6 +41,10 @@ public class updateUserInformationController implements Initializable{
 	private Stage stage;
 	private Scene scene;
 
+
+    @FXML
+    private Button searchBtn;
+    
     @FXML
     private Text managerPanelBtn;
 
@@ -56,12 +68,54 @@ public class updateUserInformationController implements Initializable{
 
     @FXML
     private TextField userNameTxtField;
+    
+    @FXML
+    private Text userNameError;
 
     @FXML
-    private ComboBox<?> userPermitionBox;
+    private Text updateSucess;
 
     @FXML
-    private ComboBox<?> userStatusBox;
+    private ImageView updateSucess1;
+
+    @FXML
+    private ComboBox<String> userPermitionBox;
+
+    @FXML
+    private ComboBox<String> userStatusBox;
+    
+    /**
+	 * Creating the combo boxes in this scene. for userPermitionBox
+	 * 
+	 */
+	public void createUserTypeCombo() {
+		ObservableList<String> typeOfUsers = FXCollections
+				.observableArrayList(Arrays.asList(UserType.BranchManager.toString(),
+						UserType.BusinessCustomer.toString(), UserType.Customer.toString(),
+						UserType.EmployerHR.toString(), UserType.Supplier.toString()));
+		userPermitionBox.getItems().addAll(typeOfUsers);
+	}
+	
+	/**
+	 * Creating the combo boxes in this scene. for deliveryMethodBox set on change
+	 * event listener to change the state of the scene accordingly to the selected
+	 * value.
+	 */
+	public void createUserStatusCombo() {
+		ObservableList<String> typeOfStatus = FXCollections
+				.observableArrayList(Arrays.asList(Status.Active.toString(),
+						Status.Frozen.toString(), Status.Unverified.toString()));
+		userStatusBox.getItems().addAll(typeOfStatus);
+	}
+	
+	@FXML
+    void searchClicked(MouseEvent event) {
+		if(!checkValues()) {
+    		return;
+    	}
+		ClientGUI.client.checkUser(userNameTxtField.getText());
+		
+    }
 
     @FXML
     void logoutClicked(MouseEvent event) {
@@ -85,7 +139,25 @@ public class updateUserInformationController implements Initializable{
 	
     @FXML
     void saveUpdateClicked(MouseEvent event) {
-
+    	if(!checkValues()) {
+    		return;
+    	}
+    	ClientGUI.client.updateUserInfo(userNameTxtField.getText(),userPermitionBox.getValue()
+    			, userStatusBox.getValue());
+    	
+    	
+    }
+    
+    private boolean checkValues() {
+    	if(router.checkSpecialCharacters(userNameTxtField.getText())) {
+    		userNameError.setText("User name can't contain special characters!");
+    		return false;
+    	}
+    	if(userNameTxtField.getText().equals("")) {
+    		userNameError.setText("User name must be filled!");
+    		return false;
+    	}
+    	return true;
     }
     
     /**
@@ -101,6 +173,8 @@ public class updateUserInformationController implements Initializable{
 		router = Router.getInstance();
 		router.setUpdateUserInformationController(this);
 		setStage(router.getStage());
+		createUserTypeCombo();
+		createUserStatusCombo();
 	}
 
     

@@ -3,8 +3,9 @@ package ClientServerCommunication;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import Entities.MyFile;
+import Entities.User;
+import Enums.UserType;
 import Entities.OrderDeliveryMethod;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
@@ -94,6 +95,14 @@ public class Server extends AbstractServer {
 			break;
 		case "searchOrder":
 			this.sendToClient(mysqlConnection.searchOrder(m.get(1)), client);
+			break;
+		case "checkUser":
+			this.sendToClient(mysqlConnection.checkUsername(m.get(1)), client);
+		case "updateUser":
+			System.out.println(m.get(1));
+			System.out.println(m.get(2));
+			System.out.println(m.get(3));
+			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
 			break;
 		default:
 			sendToClient("default", client);

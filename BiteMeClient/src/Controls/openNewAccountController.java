@@ -168,20 +168,12 @@ public class openNewAccountController implements Initializable{
     }
     
     private boolean CheckUserInput() {
-		/*if (!router.checkValidText(userNameTxtField.getText())) {
+		if (!router.checkValidText(userNameTxtField.getText())) {
 			errorMsg.setText("Must fill username");
 			return false;
 		}
 		if (router.checkSpecialCharacters(userNameTxtField.getText())) {
 			errorMsg.setText("Special characters aren't allowed in username");
-			return false;
-		}
-		if (!router.checkValidText(passwordTxtField.getText()) {
-			errorMsg.setText("Must fill password");
-			return false;
-		}
-		if (router.checkSpecialCharacters(passwordTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in password");
 			return false;
 		}
 		if (!router.checkValidText(firstNameTxtField.getText())) {
@@ -235,7 +227,7 @@ public class openNewAccountController implements Initializable{
 		
 		
 		
-		errorMsg.setText("");*/
+		errorMsg.setText("");
 		return true;
 	}
     

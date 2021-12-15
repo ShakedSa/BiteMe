@@ -229,6 +229,31 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(names);
 		return serverResponse;
 	}
+	
+	
+	/**
+	 * Query to update a user information in the db.
+	 * 
+	 * @return ServerResponse serverResponse
+	 */
+	public static void updateUserInformation(String userName, String userType,
+			String status) {
+		ServerResponse serverResponse = new ServerResponse("updateUser");
+		PreparedStatement stmt = null;
+		try {
+			String query = "UPDATE bitemedb.users SET UserType = ?, Status = ? WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, userType);
+			stmt.setString(2, status);
+			stmt.setString(3, userName);
+//			ResultSet rs = stmt.executeQuery();
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("no man");
+		}
+		return;
+	}
 
 	/**
 	 * Query to get the w4ccard of a certain customer.
@@ -460,6 +485,46 @@ public class mysqlConnection {
 	}
 
 
+	
+	public static ServerResponse checkUsername(String username) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery(query);
+			if(rs.next()) { // 8 usertype, 13 status
+				
+				response.add(rs.getString(8));
+				response.add(rs.getString(13));
+			}
+			else {
+				response.add("Username Not Found !");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
+	//java.sql.SQLIntegrityConstraintViolationException: 
+	//Cannot add or update a child row: a foreign key constraint fails
+	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
+	//REFERENCES `suppliers` (`RestaurantName`))
+	
+	public static void updateFile(InputStream is, String date) {
+		System.out.println("test !");
+		String filename= "Report " + date + ".pdf";
+		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+
+
 	/**
 	 * @param is File inputstream to upload as a blob
 	 * @param date - report date
@@ -469,6 +534,7 @@ public class mysqlConnection {
 		String filename = "Report " + date + ".pdf";
 		//System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "- 00").toString());
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
+
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
