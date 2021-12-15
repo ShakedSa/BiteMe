@@ -32,12 +32,12 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Permition" visible="false">
+      <Text fx:id="userPremTxt" layoutX="88.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Permition" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Status" visible="false">
+      <Text fx:id="userStatusTxt" layoutX="88.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Status" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -84,7 +84,7 @@
          </font>
       </Text>
       <ComboBox fx:id="userStatusBox" layoutX="244.0" layoutY="329.0" prefHeight="27.0" prefWidth="122.0" visible="false" />
-      <Label id="btn" fx:id="saveUpdateBtn" alignment="CENTER" layoutX="576.0" layoutY="501.0" onMouseClicked="#saveUpdateClicked" prefHeight="25.0" prefWidth="212.0" text="Save Update">
+      <Label id="btn" fx:id="saveUpdateBtn" alignment="CENTER" disable="true" layoutX="576.0" layoutY="501.0" onMouseClicked="#saveUpdateClicked" prefHeight="25.0" prefWidth="212.0" text="Save Update">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>

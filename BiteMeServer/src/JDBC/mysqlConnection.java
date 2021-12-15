@@ -501,7 +501,7 @@ public class mysqlConnection {
 				response.add(rs.getString(13));
 			}
 			else {
-				response.add("Username Not Found !");
+				response.add("Error");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

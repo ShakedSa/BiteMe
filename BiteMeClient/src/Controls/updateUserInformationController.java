@@ -83,6 +83,12 @@ public class updateUserInformationController implements Initializable{
 
     @FXML
     private ComboBox<String> userStatusBox;
+
+    @FXML
+    private Text userPremTxt;
+
+    @FXML
+    private Text userStatusTxt;
     
     /**
 	 * Creating the combo boxes in this scene. for userPermitionBox
@@ -106,6 +112,7 @@ public class updateUserInformationController implements Initializable{
 				.observableArrayList(Arrays.asList(Status.Active.toString(),
 						Status.Frozen.toString(), Status.Unverified.toString()));
 		userStatusBox.getItems().addAll(typeOfStatus);
+
 	}
 	
 	@FXML
@@ -114,8 +121,49 @@ public class updateUserInformationController implements Initializable{
     		return;
     	}
 		ClientGUI.client.checkUser(userNameTxtField.getText());
-		
+		//wait for response
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		//handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		@SuppressWarnings("unchecked")
+		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
+		if(response.get(0).equals("Error"))
+		{
+			userNameError.setVisible(true);
+			enableEdit(false);
+			return;
+		}
+		enableEdit(true);
+		userPermitionBox.setValue(response.get(0));
+		userStatusBox.setValue(response.get(1));
     }
+
+	private void enableEdit(boolean val) {
+		userPermitionBox.setVisible(val);
+		userStatusBox.setVisible(val);
+		userPremTxt.setVisible(val);
+		userStatusTxt.setVisible(val);
+		saveUpdateBtn.setDisable(!val);
+	}
 
     @FXML
     void logoutClicked(MouseEvent event) {
