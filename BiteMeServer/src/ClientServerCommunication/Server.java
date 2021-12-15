@@ -1,15 +1,12 @@
 package ClientServerCommunication;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import Entities.MyFile;
 import Entities.User;
 import Enums.UserType;
+import Entities.OrderDeliveryMethod;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -56,9 +53,20 @@ public class Server extends AbstractServer {
 			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
-				mysqlConnection.updateFile(is,message.getDescription());
+				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
 			}catch(Exception e) {
+				e.printStackTrace();
 				System.out.println("Error while handling files in Server");
+			}
+			return;
+		}
+		
+		if(msg instanceof OrderDeliveryMethod) {
+			try {
+			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("Error while handling message in server");
 			}
 			return;
 		}

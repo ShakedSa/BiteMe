@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 
 public class restaurantSelectionController implements Initializable {
 
+	private ServerResponse resRestaurants = null;
 	public final UserType type = UserType.Customer;
 	private Router router;
 
@@ -206,13 +207,14 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-		ServerResponse restaurants = ClientGUI.client.getRestaurants();
-		if (restaurants == null) {
+		//ServerResponse restaurants = ClientGUI.client.getRestaurants();
+		if (resRestaurants == null) {
 			ClientGUI.client.restaurantsRequest();
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					while (ClientGUI.client.getRestaurants() == null) {
+					ServerResponse last=ClientGUI.client.getLastResponse();
+					while (ClientGUI.client.getLastResponse() == last) {
 						synchronized (ClientGUI.monitor) {
 							try {
 								ClientGUI.monitor.wait();
@@ -231,10 +233,9 @@ public class restaurantSelectionController implements Initializable {
 				e.printStackTrace();
 				return;
 			}
-			restaurants = ClientGUI.client.getRestaurants();
 		}
-		restaurantsNames = ((HashMap<String, File>) restaurants.getServerResponse()).keySet();
-		createRestaurants((HashMap<String, File>) restaurants.getServerResponse());
+		restaurantsNames = ((HashMap<String, File>) resRestaurants.getServerResponse()).keySet();
+		createRestaurants((HashMap<String, File>) resRestaurants.getServerResponse());
 	}
 
 	private void hideRestaurants(int amountToHide) {
@@ -363,5 +364,20 @@ public class restaurantSelectionController implements Initializable {
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
+	
+	/**
+	 * @return the resRestaurants
+	 */
+	public ServerResponse getResRestaurants() {
+		return resRestaurants;
+	}
+
+	/**
+	 * @param resRestaurants the resRestaurants to set
+	 */
+	public void setResRestaurants(ServerResponse resRestaurants) {
+		this.resRestaurants = resRestaurants;
+	}
+
 
 }

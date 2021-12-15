@@ -9,27 +9,34 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import Config.ReadPropertyFile;
-import Entities.Branch;
 import Entities.BranchManager;
 import Entities.CEO;
 import Entities.Component;
 import Entities.Customer;
+import Entities.Delivery;
 import Entities.EmployerHR;
+import Entities.Order;
+import Entities.OrderDeliveryMethod;
+import Entities.PreorderDelivery;
 import Entities.Product;
 import Entities.ServerResponse;
+import Entities.SharedDelivery;
 import Entities.Supplier;
 import Entities.User;
 import Entities.W4CCard;
 import Enums.BranchName;
 import Enums.Doneness;
+import Enums.PaymentMethod;
 import Enums.Size;
 import Enums.Status;
-import Enums.UserType;
+import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
+import Enums.UserType;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -315,8 +322,7 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				TypeOfProduct type = TypeOfProduct.getEnum(rs.getString(3));
-				menu.add(new Product(restaurantName, type, rs.getString(2), null, rs.getFloat(4),
-						rs.getString(5)));
+				menu.add(new Product(restaurantName, type, rs.getString(2), null, rs.getFloat(4), rs.getString(5)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -450,16 +456,21 @@ public class mysqlConnection {
 	 * @return ServerResponse
 	 */
 	public static ServerResponse searchOrder(String orderNumber) {
-		ServerResponse serverResponse = new ServerResponse("OrderNumber");
+		ServerResponse serverResponse = new ServerResponse("String");
 		try {
+			String idiot = "SELECT * FROM bitemedb.orders WHERE OrderNumber = " + orderNumber;
 			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, Integer.parseInt(orderNumber));
-			ResultSet rs = stmt.executeQuery(query);
-			if(!rs.next()) {//if (rs.getRow() == 0) {
-				serverResponse.setMsg("Order number doesn't exist");
-				serverResponse.setServerResponse(null);
-				return serverResponse;
+			ResultSet rs = stmt.executeQuery(idiot);
+			System.out.println(idiot);
+			if (!rs.next()) {
+//				ResultSet rs1 = stmt.executeQuery(query);
+				if (!rs.next()) {// if (rs.getRow() == 0) {
+					serverResponse.setMsg("Order number doesn't exist");
+					serverResponse.setServerResponse(null);
+					return serverResponse;
+				}
 			}
 
 		} catch (SQLException e) {
@@ -469,9 +480,10 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		serverResponse.setServerResponse(orderNumber);
+		// serverResponse.setDataType("String");
 		return serverResponse;
 	}
+
 
 	
 	public static ServerResponse checkUsername(String username) {
@@ -511,20 +523,187 @@ public class mysqlConnection {
 		System.out.println("test !");
 		String filename= "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+
+
+	/**
+	 * @param is File inputstream to upload as a blob
+	 * @param date - report date
+	 * @param desc - contains info about the report as string arrayList
+	 */
+	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
+		String filename = "Report " + date + ".pdf";
+		//System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "- 00").toString());
+		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
+
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, 1);
-			statement.setString(2, filename);
-			statement.setDate(3, new Date(2011, 11, 11));
-			statement.setBlob(4,is);
-			statement.setString(5, BranchName.North.toString());
-			statement.setString(6, filename);
-			statement.setString(7, "Burgerim");
+			statement.setString(1, filename);
+			statement.setDate(2, Date.valueOf("2020-05-12"));
+			statement.setBlob(3, is);
+			statement.setString(4, desc.get(3));
+			statement.setString(5, desc.get(0));
+			statement.setString(6, "Burgerim");
 			statement.executeUpdate();
-			
-		}catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	/**
+	 * Inserting a new order to the db, should alert the supplier(restaurant) that a
+	 * new order was placed for his restaurant.
+	 * 
+	 * @param orderToInsert
+	 */
+	public static void insertOrderDelivery(OrderDeliveryMethod orderToInsert) {
+		int orderNewKey = 0, deliveryNewKey = 0;
+		PreparedStatement stmt;
+		try {
+			orderNewKey = insertOrder(orderToInsert.getOrder());
+			if (orderNewKey == -1) {
+				return;
+			}
+			System.out.println("After order insert:) & ordernewkey not -1\nBefore delivery insert");
+			deliveryNewKey = insertDelivery(orderToInsert.getDelivery(), orderToInsert.getTypeOfOrder());
+			if (deliveryNewKey == -1) {
+				return;
+			}
+			String query = "INSERT INTO bitemedb.ordereddelivery (DeliveryNumber, OrderNumber, UserName, FinalPrice) VALUES(?,?,?,?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, deliveryNewKey);
+			stmt.setInt(2, orderNewKey);
+			stmt.setString(3, orderToInsert.getCustomerInfo().getUserName());
+			stmt.setFloat(4, orderToInsert.getFinalPrice());
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Private method for order inserting query.
+	 * 
+	 * @param order
+	 * @return integer
+	 */
+	private static int insertOrder(Order order) {
+		int orderNewKey = 0;
+		PreparedStatement stmt;
+		try {
+			System.out.println("Creating the query string");
+			String query = "INSERT INTO bitemedb.orders (RestaurantName, OrderTime, OrderPrice, PaymentMethod) VALUES(?, ?, ?, ?)";
+			String[] keys = { "OrderNumber" };
+			stmt = conn.prepareStatement(query, keys);
+			stmt.setString(1, order.getRestaurantName());
+			stmt.setString(2, order.getDateTime());
+			stmt.setFloat(3, order.getOrderPrice());
+			stmt.setString(4, PaymentMethod.getEnum(order.getPaymentMethod()));
+			stmt.executeUpdate();
+			System.out.println("Executed order insert");
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				orderNewKey = rs.getInt(1);
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		if (orderNewKey != 0) {
+			insertProducts(order.getProducts(), orderNewKey);
+			return orderNewKey;
+		}
+		return -1;
+	}
+
+	/**
+	 * Private method to insert products in order.
+	 * 
+	 * @param products
+	 * @param orderNumber
+	 */
+	private static void insertProducts(ArrayList<Product> products, int orderNumber) {
+		PreparedStatement stmt;
+		try {
+			for (Product p : products) {
+				String query = "INSERT INTO bitemedb.productinorder (OrderNumber, RestaurantName, DishName, Component) VALUES(?,?,?,?)";
+				stmt = conn.prepareStatement(query);
+				stmt.setInt(1, orderNumber);
+				stmt.setString(2, p.getRestaurantName());
+				stmt.setString(3, p.getDishName());
+				stmt.setString(4, p.getComponents().toString());
+				stmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * Private method for delivery inserting query.
+	 * 
+	 * @param delivery
+	 * @param typeOfOrder
+	 * @return integer
+	 */
+	private static int insertDelivery(Delivery delivery, TypeOfOrder typeOfOrder) {
+		PreparedStatement stmt;
+		int deliveryNewKey = 0;
+		try {
+			String query;
+			String[] keys = { "DeliveryNumber" };
+			switch (typeOfOrder) {
+			case preorderDelivery:
+				PreorderDelivery preorder = (PreorderDelivery) delivery;
+				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, PreOrderTime, DeliveryPhoneNumber, DeliveryReceiver) VALUES(?,?,?,?,?,?)";
+				stmt = conn.prepareStatement(query, keys);
+				stmt.setString(1, delivery.getOrderAddress());
+				stmt.setString(2, typeOfOrder.toString());
+				stmt.setFloat(3, delivery.getDiscount());
+				stmt.setString(4, preorder.getDeliveryTime());
+				stmt.setString(5, delivery.getPhoneNumber());
+				stmt.setString(6, delivery.getFirstName() + delivery.getLastName());
+			case sharedDelivery:
+				SharedDelivery shared = (SharedDelivery) delivery;
+				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, AmountOfPeople, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?,?)";
+				stmt = conn.prepareStatement(query, keys);
+				stmt.setString(1, delivery.getOrderAddress());
+				stmt.setString(2, typeOfOrder.toString());
+				stmt.setFloat(3, delivery.getDiscount());
+				stmt.setInt(4, shared.getAmountOfPeople());
+				stmt.setString(5, delivery.getPhoneNumber());
+				stmt.setString(6, delivery.getFirstName() + delivery.getLastName());
+			case takeaway:
+				query = "INSERT INTO bitemedb.deliveries (DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?)";
+				stmt = conn.prepareStatement(query, keys);
+				stmt.setString(1, typeOfOrder.toString());
+				stmt.setFloat(2, delivery.getDiscount());
+				stmt.setString(3, delivery.getPhoneNumber());
+				stmt.setString(4, delivery.getFirstName() + delivery.getLastName());
+			default:
+				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?)";
+				stmt = conn.prepareStatement(query, keys);
+				stmt.setString(1, delivery.getOrderAddress());
+				stmt.setString(2, typeOfOrder.toString());
+				stmt.setFloat(3, delivery.getDiscount());
+				stmt.setString(4, delivery.getPhoneNumber());
+				stmt.setString(5, delivery.getFirstName() + delivery.getLastName());
+			}
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				deliveryNewKey = rs.getInt(1);
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+		return deliveryNewKey == 0 ? -1 : deliveryNewKey;
 	}
 }

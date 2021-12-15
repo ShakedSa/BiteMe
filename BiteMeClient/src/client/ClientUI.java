@@ -7,13 +7,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import ClientServerComm.Client;
+import Controls.Router;
 import Entities.MyFile;
+import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
+
 import Enums.Status;
 import Enums.UserType;
+
+import Entities.User;
+
 
 /**
  * Logic of the client GUI.
@@ -29,7 +34,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder, lastResponse;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -47,7 +52,7 @@ public class ClientUI implements ClientIF {
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection! Terminating client.");
 			System.exit(1);
-		}
+		} 
 	}
 
 	/**
@@ -187,6 +192,15 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+	
+	public void insertOrder(OrderDeliveryMethod orderToInsert) {
+		try {
+			client.handleMessageFromClientUI(orderToInsert);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	/**
 	 * @return the searchOrder
@@ -269,9 +283,15 @@ public class ClientUI implements ClientIF {
 		return ResComponentsInProducts;
 	}
 
-	public void sendReport(File pdfToUpload, String Month, String Year) {
+	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		  MyFile msg = new MyFile(Month + " " + Year);
-
+		  //extract user:
+		  User user = (User) this.user.getServerResponse();
+		  msg.getDescription().add(ReportType);
+		  msg.getDescription().add(Month);
+		  msg.getDescription().add(Year);
+		  msg.getDescription().add(user.getMainBranch().toString());
+		  //tbd - adding restaurant name
 			try {
 
 				byte[] mybytearray = new byte[(int) pdfToUpload.length()];
@@ -287,12 +307,13 @@ public class ClientUI implements ClientIF {
 				bis.close();	      
 			    }
 			catch (Exception e) {
-				System.out.println("Error send (Files)msg) to Server");
+				System.out.println("Error sending (Files msg) to Server");
 			}
 			
 
 		
 	}
+
 
 	public void checkUser(String userName) {
 		try {
@@ -305,4 +326,17 @@ public class ClientUI implements ClientIF {
 		}
 		
 	}
+
+	@Override
+	public void setLastResponse(ServerResponse serverResponse) {
+		lastResponse = serverResponse;
+		
+	}
+	
+	public ServerResponse getLastResponse() {
+		return lastResponse;
+	}
+
+	
+
 }

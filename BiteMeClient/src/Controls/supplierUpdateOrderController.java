@@ -239,10 +239,12 @@ public class supplierUpdateOrderController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
+
 		if(!checkServerResponse()) {
 			return;
 		}
-
+		
+		//ClientGUI.client.getLastResponse();
 		updateDataTxt.setVisible(true);
 		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -261,31 +263,32 @@ public class supplierUpdateOrderController implements Initializable {
 	 * display relevant information.
 	 */
 	private boolean checkServerResponse() {
-		if(ClientGUI.client.getSearchOrder() == null) {
+		if(ClientGUI.client.getLastResponse() == null) {
 			return false;
 		}
 		
-		switch (ClientGUI.client.getSearchOrder().getMsg().toLowerCase()) {
-		case "Order number doesn't exist":
+		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		case "order number doesn't exist":
 			errorMsg.setText("This order doesn't exist");
 			return false;
-		default:
-			OrderNumberTxtField.clear();
+		case "success":
 			return true;
+		default:
+			return false;
 		}
 	}
 
 
 	private boolean CheckUserInput(String orderNumber) {
-		if (!router.checkValidText(orderNumber)) {
+		if (!InputValidation.checkValidText(orderNumber)) {
 			errorMsg.setText("Must fill order number");
 			return false;
 		}
-		if (router.checkSpecialCharacters(orderNumber)) {
+		if (InputValidation.checkSpecialCharacters(orderNumber)) {
 			errorMsg.setText("Special characters aren't allowed in order number");
 			return false;
 		}
-		if (router.checkContainCharacters(orderNumber)) {
+		if (InputValidation.checkContainCharacters(orderNumber)) {
 			errorMsg.setText("Characters aren't allowed in order number");
 			return false;
 		}
@@ -381,7 +384,7 @@ public class supplierUpdateOrderController implements Initializable {
 	}
 
 	public void setScene(Scene scene) {
-		this.scene = scene;
+		this.scene = scene; 
 	}
 
 	public Scene getScene() {

@@ -146,8 +146,12 @@ public class pickDateAndTimeController implements Initializable {
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
 		/** If no time selection was made */
-		if (hourToOrder == null || minuteToOrder == null) {
-			errorMsg.setText("Please pick time for the order");
+		if (!InputValidation.checkValidText(hourToOrder) || !InputValidation.checkValidText(minuteToOrder)) {
+			errorMsg.setText("Please pick time for the order.");
+			return false;
+		}
+		if(InputValidation.checkContainCharacters(hourToOrder) || InputValidation.checkContainCharacters(minuteToOrder)) {
+			errorMsg.setText("Time should be integers.");
 			return false;
 		}
 		LocalTime now = LocalTime.now();
@@ -233,28 +237,9 @@ public class pickDateAndTimeController implements Initializable {
 	 * values from 0-59.
 	 */
 	public void createCombos() {
-		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(generator(24)));
+		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(24)));
 		hourBox.getItems().addAll(hourOptions);
-		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(generator(60)));
+		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(60)));
 		minutesBox.getItems().addAll(minuteOptions);
-	}
-
-	/**
-	 * Private method generating <size> strings to add to the combo box.
-	 * 
-	 * @param size
-	 * 
-	 * @return String[]
-	 */
-	private String[] generator(int size) {
-		String[] res = new String[size];
-		for (int i = 0; i < res.length; i++) {
-			if (i < 10) {
-				res[i] = "0" + i;
-			} else {
-				res[i] = i + "";
-			}
-		}
-		return res;
 	}
 }

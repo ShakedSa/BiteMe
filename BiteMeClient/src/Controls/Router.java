@@ -758,43 +758,7 @@ public class Router {
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
 	}
-	
-	/**
-	 * Checks if the string is not empty.
-	 * 
-	 * @param String text
-	 * @return boolean
-	 */
-	public boolean checkValidText(String input) {
-		if (input == null || input.equals("")) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Checks if the string contains special characters.
-	 * 
-	 * @param String input
-	 * @return boolean
-	 */
-	public boolean checkSpecialCharacters(String input) {
-		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		return m.find();
-	}
-	
-	/**
-	 * Checks if the string contains characters.
-	 * 
-	 * @param String input
-	 * @return boolean
-	 */
-	public boolean checkContainCharacters(String input) {
-		Pattern p = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		return m.find();
-	}
+
 
 	/**
 	 * @return the orderDeliveryMethod
@@ -808,6 +772,26 @@ public class Router {
 	 */
 	public void setOrderDeliveryMethod(OrderDeliveryMethod orderDeliveryMethod) {
 		this.orderDeliveryMethod = orderDeliveryMethod;
+	}
+
+	/**
+	 * Global method generating array of strings. Usage : combo box in
+	 * deliveryMethodController & pickDateAndTimeController
+	 * 
+	 * @param size
+	 * 
+	 * @return String[]
+	 */
+	public String[] generator(int size) {
+		String[] res = new String[size];
+		for (int i = 0; i < res.length; i++) {
+			if (i < 10) {
+				res[i] = "0" + i;
+			} else {
+				res[i] = i + "";
+			}
+		}
+		return res;
 	}
 
 	/*

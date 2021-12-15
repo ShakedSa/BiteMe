@@ -8,6 +8,7 @@ import Entities.Delivery;
 import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
+import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -65,7 +66,10 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void SubmitOrder(MouseEvent event) {
-
+		/**
+		 * Save order in the db :) switch to rate us scene.
+		 */
+		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 	}
 
 	@FXML
@@ -140,7 +144,7 @@ public class reviewOrderController implements Initializable {
 		for (Product p : products) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "¤");
+			Label priceLabel = new Label(p.getPrice() + "â‚ª");
 			nameLabel.setStyle("-fx-padding: 10 0");
 			priceLabel.setStyle("-fx-padding: 10 0");
 			nameLabel.setLayoutX(15);
@@ -171,15 +175,11 @@ public class reviewOrderController implements Initializable {
 		deliveryTitle.setFont(new Font("Berlin Sans FB", 14));
 		deliveryTitle.setLayoutX(120);
 		deliveryTitle.setLayoutY(360);
-		if (delivery != null) {
-			deliveryInformation = new Label(delivery.toString());
-		}else {
-			deliveryInformation = new Label("Takeaway");
-		}
+		deliveryInformation = new Label(delivery.toString());
 		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
 		deliveryInformation.setLayoutX(100);
 		deliveryInformation.setLayoutY(380);
-		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "¤");
+		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "â‚ª");
 		totalPrice.setFont(new Font("Berlin Sans FB", 22));
 		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
 		totalPrice.setLayoutX(600);
@@ -187,6 +187,5 @@ public class reviewOrderController implements Initializable {
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		}
-		System.out.println(fullOrder);
 	}
 }

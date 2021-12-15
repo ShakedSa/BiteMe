@@ -171,62 +171,37 @@ public class deliveryMethodController implements Initializable {
 		String lastName = lastNameTxtField.getText();
 		String phoneNumberPrefix = prefixPhoneNumberBox.getSelectionModel().getSelectedItem();
 		String phoneNumber = phoneNumberTxtField.getText();
-		if (!checkInput(address)) {
+		if (!InputValidation.checkValidText(address)) {
 			errorMsg.setText("Please fill address for the delivery.");
 			return false;
 		}
-		if (checkSpecialCharacters(address)) {
+		if (InputValidation.checkSpecialCharacters(address)) {
 			errorMsg.setText("Address can't contain special characters.");
 			return false;
 		}
-		if (!checkInput(firstName)) {
+		if (!InputValidation.checkValidText(firstName)) {
 			errorMsg.setText("Please fill first name.");
 			return false;
 		}
-		if (checkSpecialCharacters(firstName)) {
+		if (InputValidation.checkSpecialCharacters(firstName)) {
 			errorMsg.setText("First name can't contain special characters.");
 			return false;
 		}
-		if (!checkInput(lastName)) {
+		if (!InputValidation.checkValidText(lastName)) {
 			errorMsg.setText("Please fill last name.");
 			return false;
 		}
-		if (checkSpecialCharacters(lastName)) {
+		if (InputValidation.checkSpecialCharacters(lastName)) {
 			errorMsg.setText("Last name can't contain special characters.");
 			return false;
 		}
-		if (!checkInput(phoneNumberPrefix) || !checkInput(phoneNumber)) {
+		if (!InputValidation.checkValidText(phoneNumberPrefix) || !InputValidation.checkValidText(phoneNumber)) {
 			errorMsg.setText("Please fill phone number.");
 			return false;
 		}
-		if (checkSpecialCharacters(phoneNumberPrefix) || checkSpecialCharacters(phoneNumber)) {
-			errorMsg.setText("Phone number can't contain special characters.");
-		}
-		return true;
-	}
-
-	/**
-	 * Checks if the string contains special characters.
-	 * 
-	 * @param input
-	 * 
-	 * @return boolean
-	 */
-	public boolean checkSpecialCharacters(String input) {
-		Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		return m.find();
-	}
-
-	/**
-	 * Checking if input is null or empty string.
-	 * 
-	 * @param input
-	 * 
-	 * @return boolean
-	 */
-	private boolean checkInput(String input) {
-		if (input == null || input.equals("")) {
+		String fullPhoneNumber = phoneNumberPrefix + phoneNumber;
+		if(InputValidation.checkPhoneNumber(fullPhoneNumber)) {
+			errorMsg.setText("Invalid phone number.");
 			return false;
 		}
 		return true;
@@ -235,27 +210,40 @@ public class deliveryMethodController implements Initializable {
 	/**
 	 * Checking if the shared's delivery fields are all field and are legal values.
 	 * 
+	 * @param typeOfOrder
+	 * 
 	 * @return boolean
 	 */
-	public boolean checkShared() {
+	public boolean checkShared(TypeOfOrder typeOfOrder) {
+		W4CCard w4cCard = ((Customer) ClientGUI.client.getUser().getServerResponse()).getW4c();
+		/**
+		 * If the user picked shared delivery method, his employer needs to be approved
+		 * business customer and have a valid w4c employer's code.
+		 */
+		if ((w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals(""))
+				&& typeOfOrder == TypeOfOrder.sharedDelivery) {
+			errorMsg.setText(
+					"Employer is not an approved business customer of BiteMe.\nPlease choose a different delivery method.");
+			return false;
+		}
 		if (!checkBasic()) {
 			return false;
 		}
 		String amount = amountTextField.getText();
 		String businessCode = businessCodeTextField.getText();
-		if (!checkInput(amount)) {
+		if (!InputValidation.checkValidText(amount)) {
 			errorMsg.setText("Please fill amount of people in the order.");
 			return false;
 		}
-		if (checkSpecialCharacters(amount)) {
+		if (InputValidation.checkSpecialCharacters(amount)) {
 			errorMsg.setText("Amount of people can't contain special characters.");
 			return false;
 		}
-		if (!checkInput(businessCode)) {
+		if (!InputValidation.checkValidText(businessCode)) {
 			errorMsg.setText("Please fill business code.");
 			return false;
 		}
-		if (checkSpecialCharacters(businessCode)) {
+		if (InputValidation.checkSpecialCharacters(businessCode)) {
 			errorMsg.setText("Business code can't contain special characters");
 			return false;
 		}
@@ -274,11 +262,11 @@ public class deliveryMethodController implements Initializable {
 		}
 		String hours = hourBox.getSelectionModel().getSelectedItem();
 		String minutes = minutesBox.getSelectionModel().getSelectedItem();
-		if (!checkInput(hours) || !checkInput(minutes)) {
+		if (!InputValidation.checkValidText(hours) || !InputValidation.checkValidText(minutes)) {
 			errorMsg.setText("Please fill time of the delivery");
 			return false;
 		}
-		if (checkSpecialCharacters(hours) || checkSpecialCharacters(minutes)) {
+		if (InputValidation.checkSpecialCharacters(hours) || InputValidation.checkSpecialCharacters(minutes)) {
 			errorMsg.setText("Delivery time can't contain special characters");
 			return false;
 		}
@@ -310,28 +298,14 @@ public class deliveryMethodController implements Initializable {
 			errorMsg.setText("Please select delivery method.");
 			return;
 		}
-		if (selectedMethod.equals("Robot Delivery")) {
-			errorMsg.setText("Robot delivery is not available yet.\nPlease select a different delivery method.");
-			return;
-		}
 		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
-		W4CCard w4cCard = ((Customer) ClientGUI.client.getUser().getServerResponse()).getW4c();
-		/**
-		 * If the user picked shared delivery method, his employer needs to be approved
-		 * business customer and have a valid w4c employer's code.
-		 */
-		if (w4cCard.getEmployerID() == null
-				|| w4cCard.getEmployerID().equals("") && typeOfOrder == TypeOfOrder.sharedDelivery) {
-			errorMsg.setText(
-					"Employer is not an approved business customer of BiteMe.\nPlease choose a different delivery method.");
-		}
 		/** Validating the delivery input. */
 		Delivery newDelivery;
 		String address = addressTxtField.getText();
 		String firstName = firstNameTxtField.getText();
 		String lastName = lastNameTxtField.getText();
 		String phoneNumberPrefix = prefixPhoneNumberBox.getSelectionModel().getSelectedItem();
-		String phoneNumber = phoneNumberPrefix + "-" + phoneNumberTxtField.getText();
+		String phoneNumber = phoneNumberPrefix + phoneNumberTxtField.getText();
 		switch (typeOfOrder) {
 		case BasicDelivery:
 			if (!checkBasic()) {
@@ -340,23 +314,24 @@ public class deliveryMethodController implements Initializable {
 			newDelivery = new Delivery(address, firstName, lastName, phoneNumber, 25, 0);
 			break;
 		case preorderDelivery:
+			/** Validating time to be delivered. */
 			if (!checkPre()) {
 				return;
 			}
-			/** Validating time to be delivered. */
 			String hours = hourBox.getSelectionModel().getSelectedItem();
 			String minutes = minutesBox.getSelectionModel().getSelectedItem();
 			String time = hours + ":" + minutes;
 			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, 25, 0, time);
 			break;
 		case takeaway:
-			newDelivery = null;
+			/** Takeaway doesn't have delivery --> delivery method should be null */
+			newDelivery = new Delivery(null, firstName, lastName, phoneNumber,0, 0);
 			break;
 		case sharedDelivery:
-			if (!checkShared()) {
+			/** Validating amount of people and businessCode */
+			if (!checkShared(typeOfOrder)) {
 				return;
 			}
-			/** Validating amount of people and businessCode */
 			String amount = amountTextField.getText();
 			String businessCode = businessCodeTextField.getText();
 			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, 25, 0, businessCode,
@@ -365,16 +340,28 @@ public class deliveryMethodController implements Initializable {
 		default:
 			return;
 		}
+		/**
+		 * Setting the delivery in the delivery state of the application.
+		 */
 		router.setDelivery(newDelivery);
 		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		/**
+		 * Setting the connector class of delivery order and user.
+		 */
 		OrderDeliveryMethod orderDeliveryMethod = new OrderDeliveryMethod(router.getOrder(), newDelivery, typeOfOrder,
 				user);
 		router.setOrderDeliveryMethod(orderDeliveryMethod);
 		errorMsg.setText("");
+		/**
+		 * Calculating the final price of the order.
+		 */
 		router.getOrderDeliveryMethod().calculateFinalPrice();
 		changeToPaymentMethod();
 	}
 
+	/**
+	 * Method to switch scene to the payment method selection page.
+	 */
 	private void changeToPaymentMethod() {
 		if (router.getPaymentController() == null) {
 			AnchorPane mainContainer;
@@ -405,20 +392,31 @@ public class deliveryMethodController implements Initializable {
 		}
 	}
 
+	/**
+	 * Switch to profile scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void openProfile(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Switch to home page scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		router.getHomePageController().setItemsCounter();
-		router.getHomePageController().setAvatar();
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(router.getHomePageController().getScene());
-		stage.show();
+		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Returning to the previous step in the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToPickDateAndTime(MouseEvent event) {
 		router.getPickDateAndTimeController().setItemsCounter();
@@ -428,6 +426,11 @@ public class deliveryMethodController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Switch to restaurants page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		router.getRestaurantselectionController().setItemsCounter();
@@ -437,6 +440,12 @@ public class deliveryMethodController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Initializing the router.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -456,6 +465,9 @@ public class deliveryMethodController implements Initializable {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setting the item counter of the order.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
@@ -476,38 +488,22 @@ public class deliveryMethodController implements Initializable {
 						TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
 		deliveryMethodBox.getItems().addAll(typeOfOrders);
 		/**
-		 * Setting on change event listener.
+		 * Setting on change event listener. display the appropriate fields base on the
+		 * choosen delivery method.
 		 */
 		deliveryMethodBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(newVal);
 			errorMsg.setText("");
-			switch (typeOfOrder) {
-			case BasicDelivery:
-				displayBasic();
-				break;
-			case sharedDelivery:
-				displayShared();
-				break;
-			case preorderDelivery:
-				displayPre();
-				break;
-			case takeaway:
-				hideAll();
-				break;
-			case RobotDelivery:
-				hideAll();
-				errorMsg.setText("Robot delivery is not available yet.\nPlease select a different delivery method.");
-			default:
-				hideAll();
-				return;
-			}
+			hideBaseOnSelection(typeOfOrder);
 		});
-		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(generator(24)));
+		/** Creating the hours and minutes combo boxes for the preorder delivery */
+		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(24)));
 		hourBox.getItems().addAll(hourOptions);
 		hourBox.getSelectionModel().select(0);
-		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(generator(60)));
+		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(60)));
 		minutesBox.getItems().addAll(minuteOptions);
 		minutesBox.getSelectionModel().select(0);
+		/** Creating the phone's prefix combo box */
 		ObservableList<String> phonePrefix = FXCollections
 				.observableArrayList(Arrays.asList("050", "052", "053", "054", "055", "057", "058"));
 		prefixPhoneNumberBox.getItems().addAll(phonePrefix);
@@ -515,128 +511,94 @@ public class deliveryMethodController implements Initializable {
 	}
 
 	/**
-	 * Private method generating <size> strings to add to the combo box.
+	 * Displaying the fields of the delivery informatin based on TypeOfOrder
 	 * 
-	 * @param size
-	 * 
-	 * @return String[]
+	 * @param typeOfOrder
 	 */
-	private String[] generator(int size) {
-		String[] res = new String[size];
-		for (int i = 0; i < res.length; i++) {
-			if (i < 10) {
-				res[i] = "0" + i;
-			} else {
-				res[i] = i + "";
-			}
+	private void hideBaseOnSelection(TypeOfOrder typeOfOrder) {
+
+		switch (typeOfOrder) {
+		case BasicDelivery:
+			displayBasic(true);
+			displayShared(false);
+			displayPre(false);
+			break;
+		case sharedDelivery:
+			displayBasic(true);
+			displayShared(true);
+			displayPre(false);
+			break;
+		case preorderDelivery:
+			displayBasic(true);
+			displayShared(false);
+			displayPre(true);
+			break;
+		case takeaway:
+			displayBasic(true);
+			displayShared(false);
+			displayPre(false);
+			break;
+		case RobotDelivery:
+			errorMsg.setText("Robot delivery is not available yet.\nPlease select a different delivery method.");
+			nextOrderStep.setDisable(true);
+		default:
+			displayBasic(false);
+			displayShared(false);
+			displayPre(false);
+			break;
 		}
-		return res;
-	}
-
-	/**
-	 * Hiding by default all the texts fields for the delivery information.
-	 */
-	private void hideAll() {
-		addressText.setVisible(false);
-		addressTxtField.setVisible(false);
-		addStar.setVisible(false);
-		firstNameText.setVisible(false);
-		firstNameTxtField.setVisible(false);
-		fnameStar.setVisible(false);
-		lastNameText.setVisible(false);
-		lastNameTxtField.setVisible(false);
-		lnameStar.setVisible(false);
-		phoneNumberText.setVisible(false);
-		phoneNumberTxtField.setVisible(false);
-		prefixPhoneNumberBox.setVisible(false);
-		pnumberStar.setVisible(false);
-		includeFee.setVisible(false);
-		requires.setVisible(false);
-
-		amountTextField.setVisible(false);
-		amountTextField.setText("");
-		amntStar.setVisible(false);
-		amoutOfPeopleText.setVisible(false);
-		businessCodeText.setVisible(false);
-		businessCodeTextField.setVisible(false);
-		businessCodeTextField.setText("");
-		businessStar.setVisible(false);
-
-		pickStar.setVisible(false);
-		pickTimeTxt.setVisible(false);
-		hourBox.setVisible(false);
-		hourBox.getSelectionModel().select(0);
-		minutesBox.setVisible(false);
-		minutesBox.getSelectionModel().select(0);
-		hoursText.setVisible(false);
-		minutesText.setVisible(false);
 	}
 
 	/**
 	 * Displaying the basic delivery fields that are required to fill by the user.
+	 * 
+	 * @param val
 	 */
-	private void displayBasic() {
-		addressText.setVisible(true);
-		addressTxtField.setVisible(true);
-		addStar.setVisible(true);
-		firstNameText.setVisible(true);
-		firstNameTxtField.setVisible(true);
-		fnameStar.setVisible(true);
-		lastNameText.setVisible(true);
-		lastNameTxtField.setVisible(true);
-		lnameStar.setVisible(true);
-		phoneNumberText.setVisible(true);
-		phoneNumberTxtField.setVisible(true);
-		prefixPhoneNumberBox.setVisible(true);
-		pnumberStar.setVisible(true);
-		includeFee.setVisible(true);
-		requires.setVisible(true);
-
-		amountTextField.setVisible(false);
-		amountTextField.setText("");
-		amntStar.setVisible(false);
-		amoutOfPeopleText.setVisible(false);
-		businessCodeText.setVisible(false);
-		businessCodeTextField.setVisible(false);
-		businessCodeTextField.setText("");
-		businessStar.setVisible(false);
-
-		pickStar.setVisible(false);
-		pickTimeTxt.setVisible(false);
-		hourBox.setVisible(false);
-		hourBox.getSelectionModel().select(0);
-		minutesBox.setVisible(false);
-		minutesBox.getSelectionModel().select(0);
-		hoursText.setVisible(false);
-		minutesText.setVisible(false);
-		
+	private void displayBasic(boolean val) {
+		addressText.setVisible(val);
+		addressTxtField.setVisible(val);
+		addStar.setVisible(val);
+		firstNameText.setVisible(val);
+		firstNameTxtField.setVisible(val);
+		fnameStar.setVisible(val);
+		lastNameText.setVisible(val);
+		lastNameTxtField.setVisible(val);
+		lnameStar.setVisible(val);
+		phoneNumberText.setVisible(val);
+		phoneNumberTxtField.setVisible(val);
+		prefixPhoneNumberBox.setVisible(val);
+		pnumberStar.setVisible(val);
+		includeFee.setVisible(val);
+		requires.setVisible(val);
 	}
 
 	/**
 	 * Displaying the shared delivery fields that are required to fill by the user.
+	 * 
+	 * @param val
 	 */
-	private void displayShared() {
-		displayBasic();
-		amountTextField.setVisible(true);
-		amntStar.setVisible(true);
-		amoutOfPeopleText.setVisible(true);
-		businessCodeText.setVisible(true);
-		businessCodeTextField.setVisible(true);
-		businessStar.setVisible(true);
+	private void displayShared(boolean val) {
+		amountTextField.setVisible(val);
+		amntStar.setVisible(val);
+		amoutOfPeopleText.setVisible(val);
+		businessCodeText.setVisible(val);
+		businessCodeTextField.setVisible(val);
+		businessStar.setVisible(val);
 	}
 
 	/**
 	 * Displaying the preorder delivery fields that are required to fill by the
 	 * user.
+	 * 
+	 * @param val
 	 */
-	private void displayPre() {
-		displayBasic();
-		pickStar.setVisible(true);
-		pickTimeTxt.setVisible(true);
-		hourBox.setVisible(true);
-		minutesBox.setVisible(true);
-		hoursText.setVisible(true);
-		minutesText.setVisible(true);
+	private void displayPre(boolean val) {
+		pickStar.setVisible(val);
+		pickTimeTxt.setVisible(val);
+		hourBox.setVisible(val);
+		minutesBox.setVisible(val);
+		hoursText.setVisible(val);
+		minutesText.setVisible(val);
 	}
 
 }
