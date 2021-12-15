@@ -459,25 +459,24 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	// java.sql.SQLIntegrityConstraintViolationException:
-	// Cannot add or update a child row: a foreign key constraint fails
-	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
-	// (`RestaurantName`)
-	// REFERENCES `suppliers` (`RestaurantName`))
 
-	public static void updateFile(InputStream is, String date, String ReportType) {
-		System.out.println("test !");
+	/**
+	 * @param is File inputstream to upload as a blob
+	 * @param date - report date
+	 * @param desc - contains info about the report as string arrayList
+	 */
+	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
 		String filename = "Report " + date + ".pdf";
-		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+		//System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "- 00").toString());
+		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setInt(1, 1);
-			statement.setString(2, filename);
-			statement.setDate(3, Date.valueOf(LocalDate.of(date.indexOf(" "), date.indexOf(" ", 0), 0)));
-			statement.setBlob(4, is);
-			statement.setString(5, BranchName.North.toString());
-			statement.setString(6, ReportType);
-			statement.setString(7, "Burgerim");
+			statement.setString(1, filename);
+			statement.setDate(2, Date.valueOf("2020-05-12"));
+			statement.setBlob(3, is);
+			statement.setString(4, desc.get(3));
+			statement.setString(5, desc.get(0));
+			statement.setString(6, "Burgerim");
 			statement.executeUpdate();
 
 		} catch (SQLException e) {

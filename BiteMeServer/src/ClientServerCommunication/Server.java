@@ -54,10 +54,12 @@ public class Server extends AbstractServer {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
 				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
 			}catch(Exception e) {
+				e.printStackTrace();
 				System.out.println("Error while handling files in Server");
 			}
 			return;
 		}
+		
 		if(msg instanceof OrderDeliveryMethod) {
 			try {
 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
@@ -65,6 +67,7 @@ public class Server extends AbstractServer {
 				e.printStackTrace();
 				System.out.println("Error while handling message in server");
 			}
+			return;
 		}
 		
 		controller.setMessage("Msg recieved:" + msg);

@@ -9,9 +9,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
+import Controls.Router;
 import Entities.MyFile;
 import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
+import Entities.User;
 
 /**
  * Logic of the client GUI.
@@ -259,7 +261,13 @@ public class ClientUI implements ClientIF {
 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		  MyFile msg = new MyFile(Month + " " + Year);
-		  msg.setDescription(ReportType);
+		  //extract user:
+		  User user = (User) this.user.getServerResponse();
+		  msg.getDescription().add(ReportType);
+		  msg.getDescription().add(Month);
+		  msg.getDescription().add(Year);
+		  msg.getDescription().add(user.getMainBranch().toString());
+		  //tbd - adding restaurant name
 			try {
 
 				byte[] mybytearray = new byte[(int) pdfToUpload.length()];
@@ -275,7 +283,7 @@ public class ClientUI implements ClientIF {
 				bis.close();	      
 			    }
 			catch (Exception e) {
-				System.out.println("Error send (Files)msg) to Server");
+				System.out.println("Error sending (Files msg) to Server");
 			}
 			
 
