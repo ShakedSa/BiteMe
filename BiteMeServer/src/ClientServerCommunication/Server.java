@@ -49,7 +49,7 @@ public class Server extends AbstractServer {
 		if(msg instanceof MyFile) // handle upload pdf file to sql
 		{
 			  MyFile message = ((MyFile) msg);
-			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
+			  controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
 				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
