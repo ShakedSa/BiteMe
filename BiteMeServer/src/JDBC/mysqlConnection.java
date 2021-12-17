@@ -532,13 +532,12 @@ public class mysqlConnection {
 	 */
 	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
 		String filename = "Report " + date + ".pdf";
-		//System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "- 00").toString());
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf("2020-05-12"));
+			statement.setDate(2, Date.valueOf(""+desc.get(2) + "-" + desc.get(1) + "-01"));//"2020-05-12"
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
