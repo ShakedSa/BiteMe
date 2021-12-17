@@ -33,7 +33,7 @@ public class ServerResponse implements Serializable {
 	 * @param msg
 	 * @param dataType
 	 */
-	public ServerResponse(Object serverReponse, String msg, String dataType) {
+	public ServerResponse(Object serverResponse, String msg, String dataType) {
 		this.serverResponse = serverResponse;
 		this.msg = msg;
 		this.dataType = dataType;

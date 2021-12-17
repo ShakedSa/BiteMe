@@ -2,11 +2,10 @@ package Enums;
 
 public enum TypeOfOrder {
 
-	BasicDelivery,takeaway,preorderDelivery,
-	sharedDelivery,RobotDelivery;
-	
+	BasicDelivery, takeaway, preorderDelivery, sharedDelivery, RobotDelivery;
+
 	public static TypeOfOrder getEnum(String name) {
-		switch(name) {
+		switch (name) {
 		case "Basic Delivery":
 			return BasicDelivery;
 		case "Takeaway":
@@ -21,8 +20,9 @@ public enum TypeOfOrder {
 			return null;
 		}
 	}
+
 	public String toString() {
-		switch(this) {
+		switch (this) {
 		case BasicDelivery:
 			return "Basic Delivery";
 		case takeaway:
@@ -34,7 +34,7 @@ public enum TypeOfOrder {
 		case RobotDelivery:
 			return "Robot Delivery";
 		default:
-			return "";
+			return null;
 		}
 	}
 }

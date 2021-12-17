@@ -207,24 +207,24 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-		//ServerResponse restaurants = ClientGUI.client.getRestaurants();
+//		ServerResponse restaurants = ClientGUI.client.getRestaurants();
 		if (resRestaurants == null) {
 			ClientGUI.client.restaurantsRequest();
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ServerResponse last=ClientGUI.client.getLastResponse();
-					while (ClientGUI.client.getLastResponse() == last) {
-						synchronized (ClientGUI.monitor) {
-							try {
-								ClientGUI.monitor.wait();
-							} catch (Exception e) {
-								e.printStackTrace();
-								return;
-							}
+//					ServerResponse last = ClientGUI.client.getLastResponse();
+//					while (ClientGUI.client.getLastResponse() == last) {
+					synchronized (ClientGUI.monitor) {
+						try {
+							ClientGUI.monitor.wait();
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
 						}
 					}
 				}
+//				}
 			});
 			t.start();
 			try {
@@ -233,6 +233,7 @@ public class restaurantSelectionController implements Initializable {
 				e.printStackTrace();
 				return;
 			}
+			resRestaurants = ClientGUI.client.getRestaurants();
 		}
 		restaurantsNames = ((HashMap<String, File>) resRestaurants.getServerResponse()).keySet();
 		createRestaurants((HashMap<String, File>) resRestaurants.getServerResponse());
@@ -364,7 +365,7 @@ public class restaurantSelectionController implements Initializable {
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
-	
+
 	/**
 	 * @return the resRestaurants
 	 */
@@ -378,6 +379,5 @@ public class restaurantSelectionController implements Initializable {
 	public void setResRestaurants(ServerResponse resRestaurants) {
 		this.resRestaurants = resRestaurants;
 	}
-
 
 }

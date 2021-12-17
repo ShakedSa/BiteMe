@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import Util.InputValidation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

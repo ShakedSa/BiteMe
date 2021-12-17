@@ -1,9 +1,11 @@
+			  
 package client;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+							   
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,7 +15,12 @@ import Controls.Router;
 import Entities.MyFile;
 import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
+
+import Enums.Status;
+import Enums.UserType;
+
 import Entities.User;
+
 
 /**
  * Logic of the client GUI.
@@ -113,6 +120,25 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+	
+	/**
+	 * Sending a query request from the server. update a user information
+	 * 
+	 * @param restaurantName
+	 */
+	public void updateUserInfo(String userName, String userType, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("updateUser");
+			arr.add(userName);
+			arr.add(userType);
+			arr.add(status);
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
@@ -176,6 +202,29 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
+  
+ 	
+	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, LocalDateTime time, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time.toString(), status));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+																											   
+	   
+											 
+																										 
+										 
+						 
+					   
+		  
+   
+  
 	}
 
 	/**
@@ -290,6 +339,21 @@ public class ClientUI implements ClientIF {
 		
 	}
 
+
+	public void checkUser(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("checkUser");
+			arr.add(userName);
+//			arr.addAll(Arrays.asList("checkUser", userName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+
 	@Override
 	public void setLastResponse(ServerResponse serverResponse) {
 		lastResponse = serverResponse;
@@ -300,5 +364,8 @@ public class ClientUI implements ClientIF {
 		return lastResponse;
 	}
 
+
 	
+ 
+
 }

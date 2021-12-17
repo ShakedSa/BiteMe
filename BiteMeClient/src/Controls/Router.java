@@ -54,19 +54,20 @@ public class Router {
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
+	private sendMsgToCustomerController SendMsgToCustomerController;
 	// Employer HR Panel pages:
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
+	// CEO Panel pages:
+	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
 
-	/** Items in order, should be available across all application. */
-	private ArrayList<Product> orderItems = new ArrayList<>();
 
+	/**State of the order application: */
+	/***************************************/
 	private Order order = new Order();
-
 	private Delivery delivery;
-
 	private OrderDeliveryMethod orderDeliveryMethod;
-
+	/***************************************/
 	public static Router getInstance() {
 		if (router == null)
 			router = new Router();
@@ -255,6 +256,20 @@ public class Router {
 	 */
 	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
 		PickDateAndTimeController = pickDateAndTimeController;
+	}
+	
+	/**
+	 * @param sendMsgToCustomerController the sendMsgToCustomerController to set
+	 */
+	public void setSendMsgToCustomerController(sendMsgToCustomerController sendMsgToCustomerController) {
+		SendMsgToCustomerController = sendMsgToCustomerController;
+	}
+	
+	/**
+	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController to set
+	 */
+	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
+		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
 	}
 
 	/**
@@ -466,6 +481,21 @@ public class Router {
 	public reviewOrderController getReviewOrderController() {
 		return ReviewOrderController;
 	}
+	
+	/**
+	 * @return the sendMsgToCustomerController
+	 */
+	public sendMsgToCustomerController getSendMsgToCustomerController() {
+		return SendMsgToCustomerController;
+	}
+	
+	/**
+	 * @return the viewPDFQuarterlyReportController
+	 */
+	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
+		return ViewPDFQuarterlyReportController;
+	}
+
 
 	/**
 	 * @param reviewOrderController the reviewOrderController to set
@@ -725,7 +755,7 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> order) {
-		this.orderItems = order;
+		this.order.setProducts(order);
 	}
 
 	/**
@@ -734,7 +764,10 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		return orderItems;
+		if(order.getProducts() == null) {
+			return new ArrayList<>();
+		}
+		return order.getProducts();
 	}
 
 	public void setOrder(Order order) {
