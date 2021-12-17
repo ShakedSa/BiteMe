@@ -232,15 +232,13 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(names);
 		return serverResponse;
 	}
-	
-	
+
 	/**
 	 * Query to update a user information in the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void updateUserInformation(String userName, String userType,
-			String status) {
+	public static void updateUserInformation(String userName, String userType, String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
 		try {
@@ -486,7 +484,6 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<String> response = new ArrayList<>();
@@ -496,11 +493,10 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) { // 8 usertype, 13 status
+			if (rs.next()) { // 8 usertype, 13 status
 				response.add(rs.getString(8));
 				response.add(rs.getString(13));
-			}
-			else {
+			} else {
 				response.add("Error");
 			}
 		} catch (SQLException e) {
@@ -513,20 +509,21 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	//java.sql.SQLIntegrityConstraintViolationException: 
-	//Cannot add or update a child row: a foreign key constraint fails
-	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
-	//REFERENCES `suppliers` (`RestaurantName`))
-	
+
+	// java.sql.SQLIntegrityConstraintViolationException:
+	// Cannot add or update a child row: a foreign key constraint fails
+	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
+	// (`RestaurantName`)
+	// REFERENCES `suppliers` (`RestaurantName`))
+
 	public static void updateFile(InputStream is, String date) {
 		System.out.println("test !");
-		String filename= "Report " + date + ".pdf";
+		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	/**
-	 * @param is File inputstream to upload as a blob
+	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
 	 */
@@ -537,7 +534,7 @@ public class mysqlConnection {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf(""+desc.get(2) + "-" + desc.get(1) + "-01"));//"2020-05-12"
+			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-01"));// "2020-05-12"
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
@@ -563,7 +560,6 @@ public class mysqlConnection {
 			if (orderNewKey == -1) {
 				return;
 			}
-			System.out.println("After order insert:) & ordernewkey not -1\nBefore delivery insert");
 			deliveryNewKey = insertDelivery(orderToInsert.getDelivery(), orderToInsert.getTypeOfOrder());
 			if (deliveryNewKey == -1) {
 				return;
@@ -576,8 +572,49 @@ public class mysqlConnection {
 			stmt.setFloat(4, orderToInsert.getFinalPrice());
 			stmt.executeUpdate();
 			stmt.close();
+			/**
+			 * If all insertions were good update w4c card of the customer if payment method
+			 * is business
+			 */
+			if (orderToInsert.getOrder().getPaymentMethod() == PaymentMethod.Both
+					|| orderToInsert.getOrder().getPaymentMethod() == PaymentMethod.BusinessCode) {
+				updateW4C(orderToInsert);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Query to update customer's w4c balance.
+	 * 
+	 * @param orderToInsert
+	 */
+	private static void updateW4C(OrderDeliveryMethod orderToInsert) {
+		PreparedStatement stmt;
+		try {
+			/** Get customer id: */
+			int customerID = 0;
+			String query = "SELECT CustomerID FROM bitemedb.customers WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, orderToInsert.getCustomerInfo().getUserName());
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				customerID = rs.getInt(1);
+			}
+			if (customerID == 0) {
+				throw new SQLException("failed to get customer info");
+			}
+			stmt.close();
+			rs.close();
+			query = "UPDATE bitemedb.w4ccards SET Balance = ? WHERE CustomerID = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setFloat(1, orderToInsert.getCustomerInfo().getW4c().getBalance());
+			stmt.setInt(2, customerID);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
 		}
 	}
 
@@ -628,7 +665,7 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		try {
 			for (Product p : products) {
-				String query = "INSERT INTO bitemedb.productinorder (OrderNumber, RestaurantName, DishName, Component) VALUES(?,?,?,?)";
+				String query = "INSERT INTO bitemedb.productinorder (OrderNumber, RestaurantName, DishName, Components) VALUES(?,?,?,?)";
 				stmt = conn.prepareStatement(query);
 				stmt.setInt(1, orderNumber);
 				stmt.setString(2, p.getRestaurantName());
@@ -665,7 +702,7 @@ public class mysqlConnection {
 				stmt.setFloat(3, delivery.getDiscount());
 				stmt.setString(4, preorder.getDeliveryTime());
 				stmt.setString(5, delivery.getPhoneNumber());
-				stmt.setString(6, delivery.getFirstName() + delivery.getLastName());
+				stmt.setString(6, delivery.getFirstName() + " " + delivery.getLastName());
 			case sharedDelivery:
 				SharedDelivery shared = (SharedDelivery) delivery;
 				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, AmountOfPeople, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?,?)";
@@ -718,7 +755,8 @@ public class mysqlConnection {
 		try {
 			if (receivedOrReady.equals("Order Received")) {
 				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ?";
-				//String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber = ?";
+				// String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber
+				// = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
 				stmt.setDate(2, Date.valueOf(LocalDate.now()));

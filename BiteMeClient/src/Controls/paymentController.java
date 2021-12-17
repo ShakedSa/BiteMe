@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -63,19 +64,41 @@ public class paymentController implements Initializable {
 	private Label errorMsg;
 
 	@FXML
+	private RadioButton bothRadio;
+
+	@FXML
+	private TextField employerCodeTextField;
+
+	@FXML
+	private Text employerCodeTxt;
+
+	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
 	@FXML
 	void nextOrderStep(MouseEvent event) {
-//		errorMsg.setText("");
-//		if (businessRadio.isSelected()) {
-//			/** continue with business account payment. */
-//		} else {
-//			/** continue with private account payment. */
-//		}
-		router.getOrder().setPaymentMethod(PaymentMethod.CreditCard);
+		errorMsg.setText("");
+		if (businessRadio.isSelected() || bothRadio.isSelected()) {
+			Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+			W4CCard w4c = user.getW4c();
+			if (w4c.getBalance() == 0) {
+				errorMsg.setText("Employer's balance is 0.\nPlease select different type of payment method.");
+				return;
+			}
+			if (!employerCodeTextField.getText().equals(w4c.getEmployerID())) {
+				errorMsg.setText("Incorrect employer's code.");
+				return;
+			}
+			if (bothRadio.isSelected()) {
+				router.getOrder().setPaymentMethod(PaymentMethod.Both);
+			} else {
+				router.getOrder().setPaymentMethod(PaymentMethod.BusinessCode);
+			}
+		} else {
+			router.getOrder().setPaymentMethod(PaymentMethod.CreditCard);
+		}
 		if (router.getReviewOrderController() == null) {
 			AnchorPane mainContainer;
 			reviewOrderController controller;
@@ -138,15 +161,38 @@ public class paymentController implements Initializable {
 		if (privateRadio.isSelected()) {
 			privateRadio.setSelected(false);
 		}
+		businessRadio.requestFocus();
+		businessRadio.setFocusTraversable(true);
 		businessRadio.setSelected(true);
+		showTextField(true);
+		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
+		W4CCard w4cCard = customer.getW4c();
+		if (router.getOrder().getOrderPrice() > w4cCard.getDailyBudget()) {
+			bothRadio.setVisible(true);
+			bothRadio.setSelected(true);
+			bothRadio.requestFocus();
+			businessRadio.setSelected(false);
+			errorMsg.setText(
+					"W4C Card budget is lower than order price.\nWould you like to pay with the card & private credit card?\nFor convenient 'both' option is automatically selected.");
+		}
 	}
 
 	@FXML
 	void selectPrivate(MouseEvent event) {
-		if (businessRadio.isSelected()) {
+		if (businessRadio.isSelected() || bothRadio.isSelected()) {
 			businessRadio.setSelected(false);
+			bothRadio.setSelected(false);
+			bothRadio.setVisible(false);
+			errorMsg.setText("");
 		}
 		privateRadio.setSelected(true);
+		privateRadio.requestFocus();
+		showTextField(false);
+	}
+
+	private void showTextField(boolean val) {
+		employerCodeTextField.setVisible(val);
+		employerCodeTxt.setVisible(val);
 	}
 
 	@Override
@@ -162,6 +208,8 @@ public class paymentController implements Initializable {
 			businessRadio.setDisable(true);
 			privateRadio.setSelected(true);
 		}
+		businessRadio.setFocusTraversable(false);
+		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
 		setStage(router.getStage());
