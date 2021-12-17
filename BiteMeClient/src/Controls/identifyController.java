@@ -11,8 +11,6 @@ import Util.InputValidation;
 import Util.QRReader;
 import client.ClientGUI;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
