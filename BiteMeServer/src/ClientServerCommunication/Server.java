@@ -70,6 +70,7 @@ public class Server extends AbstractServer {
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
+		System.out.println(m);
 		switch (m.get(0)) {
 		case "login":
 			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
@@ -91,6 +92,9 @@ public class Server extends AbstractServer {
 			break;
 		case "searchOrder":
 			this.sendToClient(mysqlConnection.searchOrder(m.get(1)), client);
+			break;
+		case "updateOrderStatus":
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
 		default:
 			sendToClient("default", client);

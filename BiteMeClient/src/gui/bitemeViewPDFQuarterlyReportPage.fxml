@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.viewMonthlyReportsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.viewPDFQuarterlyReportController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -25,7 +25,7 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Monthly Reports">
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View PDF Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -35,12 +35,12 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select report type">
+      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Branch">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToCEOPanel" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
@@ -65,7 +65,7 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+      <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="367.0" layoutY="59.0" onMouseClicked="#returnToCEOPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -81,7 +81,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Label id="btn" fx:id="showReportBtn" alignment="CENTER" layoutX="557.0" layoutY="511.0" onMouseClicked="#showReportClicked" prefHeight="25.0" prefWidth="216.0" text="Show Report">
+      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="498.0" layoutY="512.0" onMouseClicked="#viewPDFReportClicked" prefHeight="25.0" prefWidth="310.0" text="View PDF Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -89,15 +89,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ComboBox fx:id="monthBox" layoutX="283.0" layoutY="318.0" prefHeight="20.0" prefWidth="119.0" promptText="November" />
+      <ComboBox fx:id="monthBox" focusTraversable="false" layoutX="283.0" layoutY="318.0" prefHeight="20.0" prefWidth="119.0" promptText="Month" />
       <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="yearBox" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="80.0" promptText="2021" />
-      <ComboBox fx:id="reportTypeBox" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="132.0" promptText="Revenue" />
-      <Text fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This report doesn't exist">
+      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
+      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="132.0" promptText="Branch" />
+      <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

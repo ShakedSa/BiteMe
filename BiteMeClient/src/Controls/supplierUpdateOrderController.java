@@ -1,24 +1,21 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import com.sun.jdi.connect.spi.Connection;
-
-import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -27,6 +24,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -40,6 +38,9 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private TextField OrderNumberTxtField;
+	
+    @FXML
+    private ImageView newMsgImage;
 
 	@FXML
 	private ImageView VImage;
@@ -132,23 +133,75 @@ public class supplierUpdateOrderController implements Initializable {
 		minutesTxt.setVisible(false);
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
+		newMsgImage.setVisible(false);
 	}
 
 	/**
-	 * This method checks if order status update successfully in DB and display a
-	 * message to screen
+	 * This method updates order status 
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void UpdateOrderClicked(MouseEvent event) {
-		// need add a check if the data was updated successfully in DB
-		if (checkTime()) {
-			VImage.setVisible(true);
-			successMsg.setVisible(true);
+		if (includeDeliveryBtn.isSelected() && !checkTime()) {
+			return;
 		}
-	}
+		String receivedOrReady = updateDataComboBox.getValue();
+		String orderNumber = OrderNumberTxtField.getText();
+		LocalDateTime now = LocalDateTime.of(LocalDate.now(), LocalTime.now());
+		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		//String nowString = myFormatObj.format(now);
+		//LocalTime plannedTime = LocalTime.of(Integer.parseInt(hourBox.getValue()), Integer.parseInt(minutesBox.getValue()));
+		//LocalDateTime plannedTimeAndDate =  LocalDateTime.of(LocalDate.now(), plannedTime);
+		//String plannedTimeString = myFormatObj.format(now);
+		//System.out.println(plannedTime.toString());
+		String statusReceived = "Received";
+		String statusReady = "Ready";
+		
+//		if(receivedOrReady.equals("Order Received")) {
+//			System.out.println(receivedOrReady);
+//			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, now, statusReceived);
+//		}
+//		else { // Order Is Ready
+//			//ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTimeAndDate, statusReady);
+//		}
+		
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		
+		if(receivedOrReady.equals("Order Received")) {
+			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, now, statusReceived);
+		}
+		else { // Order Is Ready
+			//ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTimeAndDate, statusReady);
+		}
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 
+		if(!checkServerResponse()) {
+			return;
+		}
+		
+		VImage.setVisible(true);
+		successMsg.setVisible(true);
+		newMsgImage.setVisible(true); //new msg send to customer
+	}
 
 	/**
 	 * Private method to check if the input time is valid time.
@@ -244,7 +297,6 @@ public class supplierUpdateOrderController implements Initializable {
 			return;
 		}
 		
-		//ClientGUI.client.getLastResponse();
 		updateDataTxt.setVisible(true);
 		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -257,6 +309,7 @@ public class supplierUpdateOrderController implements Initializable {
 			}
 		});
 	}
+	
 	
 	/**
 	 * checks the user information received from Server.
@@ -335,6 +388,34 @@ public class supplierUpdateOrderController implements Initializable {
 		minutesBox.setVisible(false);
 		minutesTxt.setVisible(false);
 	}
+	
+    @FXML
+    void newMsgClicked(MouseEvent event) {
+    	if (router.getSendMsgToCustomerController() == null) {
+			AnchorPane mainContainer;
+			sendMsgToCustomerController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeSendMsgToCustomerPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Message Simulation");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Message Simulation");
+			stage.setScene(router.getSendMsgToCustomerController().getScene());
+			stage.show();
+		}
+    }
 
 	/**
 	 * Setting values for the combo boxes. hourBox values from 0-23, minutesBox
