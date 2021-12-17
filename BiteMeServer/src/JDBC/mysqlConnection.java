@@ -229,15 +229,13 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(names);
 		return serverResponse;
 	}
-	
-	
+
 	/**
 	 * Query to update a user information in the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void updateUserInformation(String userName, String userType,
-			String status) {
+	public static void updateUserInformation(String userName, String userType, String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
 		try {
@@ -464,13 +462,12 @@ public class mysqlConnection {
 			stmt.setInt(1, Integer.parseInt(orderNumber));
 			ResultSet rs = stmt.executeQuery(idiot);
 			System.out.println(idiot);
-			if (!rs.next()) {
+
 //				ResultSet rs1 = stmt.executeQuery(query);
-				if (!rs.next()) {// if (rs.getRow() == 0) {
-					serverResponse.setMsg("Order number doesn't exist");
-					serverResponse.setServerResponse(null);
-					return serverResponse;
-				}
+			if (!rs.next()) {// if (rs.getRow() == 0) {
+				serverResponse.setMsg("Order number doesn't exist");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
 			}
 
 		} catch (SQLException e) {
@@ -484,6 +481,58 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
+	private static boolean checkIfBusinessCustomerExist(String hrUserName,String employerCompanyName) {
+
+		try {
+			String query = "SELECT * FROM bitemedb.businesscustomer WHERE HRname = ? AND EmployeCompanyName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, hrUserName);
+			stmt.setString(2, employerCompanyName);
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.next())
+				return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+
+		}
+		return true;
+	}
+
+	/**
+	 * creating new business customer
+	 * 
+	 * @param hrUserName,employerCode,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse createNewBusinessCustomer(String hrUserName, String employerCode,
+			String employerCompanyName) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		if(checkIfBusinessCustomerExist(hrUserName,employerCompanyName)) {
+			serverResponse.setMsg("Already Registered");
+			return serverResponse;
+		}
+		
+		try {
+			String query = "INSERT INTO bitemedb.businesscustomer (EmployerCode, EmployeCompanyName, HRname) values (?, ?, ?)";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, employerCode);
+			stmt.setString(2, employerCompanyName);
+			stmt.setString(3, hrUserName);
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+		}
+		
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
 
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -494,11 +543,10 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) { // 8 usertype, 13 status
+			if (rs.next()) { // 8 usertype, 13 status
 				response.add(rs.getString(8));
 				response.add(rs.getString(13));
-			}
-			else {
+			} else {
 				response.add("Error");
 			}
 		} catch (SQLException e) {
@@ -511,26 +559,28 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	//java.sql.SQLIntegrityConstraintViolationException: 
-	//Cannot add or update a child row: a foreign key constraint fails
-	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
-	//REFERENCES `suppliers` (`RestaurantName`))
-	
+
+	// java.sql.SQLIntegrityConstraintViolationException:
+	// Cannot add or update a child row: a foreign key constraint fails
+	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
+	// (`RestaurantName`)
+	// REFERENCES `suppliers` (`RestaurantName`))
+
 	public static void updateFile(InputStream is, String date) {
 		System.out.println("test !");
-		String filename= "Report " + date + ".pdf";
+		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	/**
-	 * @param is File inputstream to upload as a blob
+	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
 	 */
 	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
 		String filename = "Report " + date + ".pdf";
-		//System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "- 00").toString());
+		// System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "-
+		// 00").toString());
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
 
 		try {

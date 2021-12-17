@@ -2,6 +2,8 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -71,7 +73,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="136.0" layoutY="300.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
+      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="412.0" layoutY="316.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -79,12 +81,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text layoutX="88.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Code">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <TextField fx:id="employerCodeTxtField" focusTraversable="false" layoutX="356.0" layoutY="239.0" prefHeight="26.0" prefWidth="173.0" promptText="Employer Code" />
       <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -100,11 +96,21 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer ID">
+      <Text layoutX="88.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer ID">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="customerIDTxtField" layoutX="356.0" layoutY="196.0" prefHeight="26.0" prefWidth="173.0" promptText="Customer ID" />
+      <TextField fx:id="customerIDTxtField" layoutX="233.0" layoutY="325.0" prefHeight="26.0" prefWidth="173.0" promptText="Customer ID" />
+      <TableView fx:id="customerTable" layoutX="86.0" layoutY="165.0" prefHeight="141.0" prefWidth="550.0">
+        <columns>
+          <TableColumn fx:id="table_ID" prefWidth="91.0" text="ID" />
+          <TableColumn fx:id="table_FirstName" prefWidth="85.0" text="First Name" />
+            <TableColumn fx:id="table_LastName" prefWidth="77.0" text="Last Name" />
+            <TableColumn fx:id="table_Role" prefWidth="98.0" text="Role" />
+            <TableColumn fx:id="table_Mbudget" prefWidth="105.0" text="Monthly Budget" />
+            <TableColumn fx:id="table_Dbudget" prefWidth="92.0" text="Daily Budget" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
