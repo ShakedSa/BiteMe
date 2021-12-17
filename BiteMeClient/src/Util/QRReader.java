@@ -10,8 +10,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Duration;
 
 public class QRReader {
-	private static Object readerMonitor = new Object();
-
 	/**
 	 * Module simulating QR Code reader.
 	 * 
