@@ -54,9 +54,13 @@ public class Router {
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
+	private sendMsgToCustomerController SendMsgToCustomerController;
 	// Employer HR Panel pages:
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
+	// CEO Panel pages:
+	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
+
 
 	/**State of the order application: */
 	/***************************************/
@@ -252,6 +256,20 @@ public class Router {
 	 */
 	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
 		PickDateAndTimeController = pickDateAndTimeController;
+	}
+	
+	/**
+	 * @param sendMsgToCustomerController the sendMsgToCustomerController to set
+	 */
+	public void setSendMsgToCustomerController(sendMsgToCustomerController sendMsgToCustomerController) {
+		SendMsgToCustomerController = sendMsgToCustomerController;
+	}
+	
+	/**
+	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController to set
+	 */
+	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
+		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
 	}
 
 	/**
@@ -463,6 +481,21 @@ public class Router {
 	public reviewOrderController getReviewOrderController() {
 		return ReviewOrderController;
 	}
+	
+	/**
+	 * @return the sendMsgToCustomerController
+	 */
+	public sendMsgToCustomerController getSendMsgToCustomerController() {
+		return SendMsgToCustomerController;
+	}
+	
+	/**
+	 * @return the viewPDFQuarterlyReportController
+	 */
+	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
+		return ViewPDFQuarterlyReportController;
+	}
+
 
 	/**
 	 * @param reviewOrderController the reviewOrderController to set

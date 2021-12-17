@@ -1,9 +1,11 @@
+			  
 package client;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+							   
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -200,6 +202,29 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
+  
+ 	
+	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, LocalDateTime time, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time.toString(), status));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+																											   
+	   
+											 
+																										 
+										 
+						 
+					   
+		  
+   
+  
 	}
 
 	/**
@@ -339,6 +364,8 @@ public class ClientUI implements ClientIF {
 		return lastResponse;
 	}
 
+
 	
+ 
 
 }

@@ -1,8 +1,10 @@
+			  
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import Entities.MyFile;
 import Entities.User;
 import Enums.UserType;
@@ -74,6 +76,7 @@ public class Server extends AbstractServer {
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
+						
 		switch (m.get(0)) {
 		case "login":
 			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
@@ -102,6 +105,9 @@ public class Server extends AbstractServer {
 		case "updateUser":
 			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
 			this.sendToClient("hello", client);
+			break;
+		case "updateOrderStatus":
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
 		default:
 			sendToClient("default", client);
@@ -167,3 +173,4 @@ public class Server extends AbstractServer {
 	}
 
 }
+	   
