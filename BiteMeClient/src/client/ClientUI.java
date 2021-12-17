@@ -1,18 +1,26 @@
+			  
 package client;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
+							   
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
+import Controls.Router;
 import Entities.MyFile;
 import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
+
+import Enums.Status;
+import Enums.UserType;
+
+import Entities.User;
+
 
 /**
  * Logic of the client GUI.
@@ -112,6 +120,25 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+	
+	/**
+	 * Sending a query request from the server. update a user information
+	 * 
+	 * @param restaurantName
+	 */
+	public void updateUserInfo(String userName, String userType, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("updateUser");
+			arr.add(userName);
+			arr.add(userType);
+			arr.add(status);
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
@@ -175,8 +202,8 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-	}
-	
+  
+ 	
 	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, LocalDateTime time, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -187,6 +214,17 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 		
+	}
+																											   
+	   
+											 
+																										 
+										 
+						 
+					   
+		  
+   
+  
 	}
 
 	/**
@@ -270,9 +308,15 @@ public class ClientUI implements ClientIF {
 		return ResComponentsInProducts;
 	}
 
-	public void sendReport(File pdfToUpload, String Month, String Year) {
+	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		  MyFile msg = new MyFile(Month + " " + Year);
-
+		  //extract user:
+		  User user = (User) this.user.getServerResponse();
+		  msg.getDescription().add(ReportType);
+		  msg.getDescription().add(Month);
+		  msg.getDescription().add(Year);
+		  msg.getDescription().add(user.getMainBranch().toString());
+		  //tbd - adding restaurant name
 			try {
 
 				byte[] mybytearray = new byte[(int) pdfToUpload.length()];
@@ -288,10 +332,25 @@ public class ClientUI implements ClientIF {
 				bis.close();	      
 			    }
 			catch (Exception e) {
-				System.out.println("Error send (Files)msg) to Server");
+				System.out.println("Error sending (Files msg) to Server");
 			}
 			
 
+		
+	}
+
+
+	public void checkUser(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("checkUser");
+			arr.add(userName);
+//			arr.addAll(Arrays.asList("checkUser", userName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 		
 	}
 
@@ -307,4 +366,6 @@ public class ClientUI implements ClientIF {
 
 
 	
+ 
+
 }

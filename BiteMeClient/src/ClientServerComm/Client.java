@@ -43,7 +43,6 @@ public class Client extends AbstractClient {
 	 * 
 	 * @param msg
 	 */
-	@SuppressWarnings("unchecked")
 	public void handleMessageFromServer(Object msg) {
 		if (msg instanceof String) {
 			synchronized (ClientGUI.monitor) {

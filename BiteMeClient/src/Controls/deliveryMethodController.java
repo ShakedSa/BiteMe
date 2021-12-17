@@ -15,6 +15,7 @@ import Entities.PreorderDelivery;
 import Entities.SharedDelivery;
 import Entities.W4CCard;
 import Enums.TypeOfOrder;
+import Util.InputValidation;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -70,10 +71,11 @@ public class deliveryMethodController implements Initializable {
 	@FXML
 	private Text restaurantsBtn;
 
-	/**
-	 * All vars below are hidden by default. showing base on the the selected
+	/*
+	 * All variables below are hidden by default. showing base on the the selected
 	 * delivery method
 	 */
+
 	@FXML
 	private Text addStar;
 
@@ -200,7 +202,7 @@ public class deliveryMethodController implements Initializable {
 			return false;
 		}
 		String fullPhoneNumber = phoneNumberPrefix + phoneNumber;
-		if(InputValidation.checkPhoneNumber(fullPhoneNumber)) {
+		if (!InputValidation.checkPhoneNumber(fullPhoneNumber)) {
 			errorMsg.setText("Invalid phone number.");
 			return false;
 		}
@@ -215,17 +217,6 @@ public class deliveryMethodController implements Initializable {
 	 * @return boolean
 	 */
 	public boolean checkShared(TypeOfOrder typeOfOrder) {
-		W4CCard w4cCard = ((Customer) ClientGUI.client.getUser().getServerResponse()).getW4c();
-		/**
-		 * If the user picked shared delivery method, his employer needs to be approved
-		 * business customer and have a valid w4c employer's code.
-		 */
-		if ((w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals(""))
-				&& typeOfOrder == TypeOfOrder.sharedDelivery) {
-			errorMsg.setText(
-					"Employer is not an approved business customer of BiteMe.\nPlease choose a different delivery method.");
-			return false;
-		}
 		if (!checkBasic()) {
 			return false;
 		}
@@ -270,23 +261,34 @@ public class deliveryMethodController implements Initializable {
 			errorMsg.setText("Delivery time can't contain special characters");
 			return false;
 		}
+		int hour = Integer.parseInt(hours);
+		int minute = Integer.parseInt(minutes);
 		LocalTime now = LocalTime.now();
-		LocalTime orderTime = LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes));
+		LocalTime orderTime = LocalTime.of(hour, minute);
 		/** If time selection is before now */
 		if (now.compareTo(orderTime) == 1) {
 			errorMsg.setText("Time of order must be greater or equals to now: " + now.toString());
 			return false;
 		}
-		if (Integer.parseInt(hours) - now.getHour() > 2) {
+		/** Preorder is up to 2 hours from the order time. */
+		if (hour - now.getHour() > 2) {
 			errorMsg.setText("Preorder deliverys are up to 2 hours");
+			return false;
+		}
+		if (hour - now.getHour() == 2) {
+			if (minute > now.getMinute()) {
+				errorMsg.setText("Preorder deliverys are up to 2 hours");
+				return false;
+			}
 		}
 		return true;
 	}
 
 	/**
-	 * On click event listener. Checking all the inputs of the user, if all the
-	 * inputs are valid calculate the final price of the order, else display an
-	 * appropriate message to the user that the information is not sufficent.
+	 * On click event listener. <br>
+	 * Checking all the inputs of the user, if all the inputs are valid calculate
+	 * the final price of the order, else display an appropriate message to the user
+	 * that the information is not sufficient.
 	 * 
 	 * @param event
 	 */
@@ -299,7 +301,6 @@ public class deliveryMethodController implements Initializable {
 			return;
 		}
 		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
-		/** Validating the delivery input. */
 		Delivery newDelivery;
 		String address = addressTxtField.getText();
 		String firstName = firstNameTxtField.getText();
@@ -308,13 +309,14 @@ public class deliveryMethodController implements Initializable {
 		String phoneNumber = phoneNumberPrefix + phoneNumberTxtField.getText();
 		switch (typeOfOrder) {
 		case BasicDelivery:
+			/** Validating the delivery input. */
 			if (!checkBasic()) {
 				return;
 			}
 			newDelivery = new Delivery(address, firstName, lastName, phoneNumber, 25, 0);
 			break;
 		case preorderDelivery:
-			/** Validating time to be delivered. */
+			/** Validating the delivery input. */
 			if (!checkPre()) {
 				return;
 			}
@@ -324,11 +326,11 @@ public class deliveryMethodController implements Initializable {
 			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, 25, 0, time);
 			break;
 		case takeaway:
-			/** Takeaway doesn't have delivery --> delivery method should be null */
-			newDelivery = new Delivery(null, firstName, lastName, phoneNumber,0, 0);
+			/** Take away doesn't have delivery --> delivery method should be null */
+			newDelivery = new Delivery(null, firstName, lastName, phoneNumber, 0, 0);
 			break;
 		case sharedDelivery:
-			/** Validating amount of people and businessCode */
+			/** Validating the delivery input. */
 			if (!checkShared(typeOfOrder)) {
 				return;
 			}
@@ -482,10 +484,18 @@ public class deliveryMethodController implements Initializable {
 	 * value.
 	 */
 	public void createCombo() {
-		ObservableList<String> typeOfOrders = FXCollections
-				.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
-						TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
-						TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
+		W4CCard w4cCard = customer.getW4c();
+		ObservableList<String> typeOfOrders;
+		if (w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals("")) {
+			typeOfOrders = FXCollections.observableArrayList(
+					Arrays.asList(TypeOfOrder.BasicDelivery.toString(), TypeOfOrder.preorderDelivery.toString(),
+							TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+		} else {
+			typeOfOrders = FXCollections.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
+					TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
+					TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+		}
 		deliveryMethodBox.getItems().addAll(typeOfOrders);
 		/**
 		 * Setting on change event listener. display the appropriate fields base on the
@@ -493,6 +503,7 @@ public class deliveryMethodController implements Initializable {
 		 */
 		deliveryMethodBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(newVal);
+			nextOrderStep.setDisable(false);
 			errorMsg.setText("");
 			hideBaseOnSelection(typeOfOrder);
 		});
@@ -516,7 +527,6 @@ public class deliveryMethodController implements Initializable {
 	 * @param typeOfOrder
 	 */
 	private void hideBaseOnSelection(TypeOfOrder typeOfOrder) {
-
 		switch (typeOfOrder) {
 		case BasicDelivery:
 			displayBasic(true);

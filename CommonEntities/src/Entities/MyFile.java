@@ -1,6 +1,7 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MyFile implements Serializable {
 	
@@ -8,7 +9,7 @@ public class MyFile implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3037364578344496376L;
-	private String Description=null;
+	private ArrayList<String> Description=null;
 	private String fileName=null;	
 	private int size=0;
 	public  byte[] mybytearray;
@@ -20,6 +21,7 @@ public class MyFile implements Serializable {
 	}
 	
 	public MyFile( String fileName) {
+		Description=new ArrayList<String>();
 		this.fileName = fileName;
 	}
 	
@@ -54,11 +56,11 @@ public class MyFile implements Serializable {
 		this.mybytearray[i] = mybytearray[i];
 	}
 
-	public String getDescription() {
+	public ArrayList<String> getDescription() {
 		return Description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(ArrayList<String> description) {
 		Description = description;
 	}	
 }

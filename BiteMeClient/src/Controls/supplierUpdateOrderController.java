@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
