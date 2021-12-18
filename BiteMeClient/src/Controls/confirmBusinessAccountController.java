@@ -1,127 +1,201 @@
 package Controls;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.Customer;
+import Entities.User;
+import Entities.W4CCard;
 import Enums.UserType;
+import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class confirmBusinessAccountController implements Initializable{
-	
-	public final UserType type= UserType.EmployerHR;
+public class confirmBusinessAccountController implements Initializable {
+
+	public final UserType type = UserType.EmployerHR;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
-    @FXML
-    private Rectangle avatar;
+	@FXML
+	private TableView<CustomerPlusBudget> customerTable;
 
-    @FXML
-    private TextField customerIDTxtField;
+	@FXML
+	private TableColumn<CustomerPlusBudget, Float> table_Dbudget;
 
-    @FXML
-    private TextField employerCodeTxtField;
+	@FXML
+	private TableColumn<CustomerPlusBudget, String> table_FirstName;
 
-    @FXML
-    private Text employerHRPanelBtn;
+	@FXML
+	private TableColumn<CustomerPlusBudget, String> table_ID;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private TableColumn<CustomerPlusBudget, String> table_LastName;
 
-    @FXML
-    private ImageView leftArrowBtn;
+	@FXML
+	private TableColumn<CustomerPlusBudget, Float> table_Mbudget;
 
-    @FXML
-    private Text logoutBtn;
+	@FXML
+	private TableColumn<CustomerPlusBudget, String> table_Role;
 
-    @FXML
-    private Text profileBtn;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private Label registerBtn;
-    
-    @FXML
-    private ImageView VImage;
-    
-    @FXML
-    private Text errorMsg;
-    
-    @FXML
-    private Text successMsg;
+	@FXML
+	private Text employerHRPanelBtn;
 
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    void profileBtnClicked(MouseEvent event) {
-    	router.showProfile();
-    }
+	@FXML
+	private ImageView leftArrowBtn;
 
-    @FXML
-    void registerBtnClicked(MouseEvent event) {
-    	//need to check server response
-    	// if false - display: errorMsg.setText("There is no business account registration for this customer");
-    	if(checkInput()) {
-    		VImage.setVisible(true);
-    		successMsg.setVisible(true);
-    	}
-    }
-    
-    private boolean checkInput() {
-		String customerID = customerIDTxtField.getText();
-		String employerCode = employerCodeTxtField.getText();
-		/** If no time selection was made */
-		if (customerID.trim().isEmpty()) {
-			errorMsg.setText("Please enter customer ID");
-			return false;
-		}
-		if (employerCode.trim().isEmpty()) {
-			errorMsg.setText("Please enter employer code");
-			return false;
-		}
-		errorMsg.setText("");
-		return true;
+	@FXML
+	private Text logoutBtn;
+
+	@FXML
+	private Text profileBtn;
+
+	@FXML
+	private Label confirmBtn;
+
+	@FXML
+	private ImageView VImage;
+
+	@FXML
+	private Text errorMsg;
+
+	@FXML
+	private Text successMsg;
+
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
 	}
 
-    @FXML
-    void returnToEmployerHRPanel(MouseEvent event) {
-    	router.returnToEmployerHRPanel(event);
-    }
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		clearPage();
+		router.showProfile();
+	}
 
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
-    
-    /**
+	@FXML
+	void confirmBtnClicked(MouseEvent event) {
+		clearPage();
+		// return the ID of the selected customer on gui
+		try {
+			String customerID = customerTable.getSelectionModel().getSelectedItem().getId();
+
+			String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					ClientGUI.client.approveCustomerAsBusiness(employerName, customerID);
+					synchronized (ClientGUI.monitor) {
+						try {
+							ClientGUI.monitor.wait();
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
+						}
+					}
+				}
+			});
+			t.start();
+			try {
+				t.join();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+
+			if (ClientGUI.client.getLastResponse() == null)
+				errorMsg.setText("No Response");
+
+			if (ClientGUI.client.getLastResponse().getMsg().equals("Update Failed"))
+				errorMsg.setText(ClientGUI.client.getLastResponse().getMsg());
+
+			if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+				setTable((ArrayList<Customer>) ClientGUI.client.getLastResponse().getServerResponse());
+				VImage.setVisible(true);
+				successMsg.setVisible(true);
+			}
+		} catch (NullPointerException e) {
+			errorMsg.setText("No Customer is selected");
+		}
+	}
+	
+
+	public void setTable() {
+
+		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
+		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		table_Role.setCellValueFactory(new PropertyValueFactory<>("role"));
+		table_Mbudget.setCellValueFactory(new PropertyValueFactory<>("monthlyBudget"));
+		table_Dbudget.setCellValueFactory(new PropertyValueFactory<>("dailyBudget"));
+		customerTable.setItems(getCustomer());
+		customerTable.setEditable(true);
+	}
+
+	private void setTable(ArrayList<Customer> list) {
+
+		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
+		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		table_Role.setCellValueFactory(new PropertyValueFactory<>("role"));
+		table_Mbudget.setCellValueFactory(new PropertyValueFactory<>("monthlyBudget"));
+		table_Dbudget.setCellValueFactory(new PropertyValueFactory<>("dailyBudget"));
+		customerTable.setItems(getCustomer(list));
+		customerTable.setEditable(true);
+	}
+
+	
+	@FXML
+	void returnToEmployerHRPanel(MouseEvent event) {
+		clearPage();
+		router.returnToEmployerHRPanel(event);
+	}
+
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		clearPage();
+		router.changeSceneToHomePage();
+
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
 
-    
-    @Override
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setConfirmBusinessAccountController(this);
 		setStage(router.getStage());
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
+
 	}
 
-    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -131,8 +205,110 @@ public class confirmBusinessAccountController implements Initializable{
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
+	}
+
+	private void clearPage() {
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
+		errorMsg.setText("");
+	}
+
+	private ArrayList<Customer> CustomerAndbudget() {
+
+		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ClientGUI.client.selectCustomerAndbudget(employerName);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (ClientGUI.client.getLastResponse() != null) {
+			if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+				return (ArrayList<Customer>) ClientGUI.client.getLastResponse().getServerResponse();
+			}
+
+		}
+		return null;
+	}
+
+	private ObservableList<CustomerPlusBudget> getCustomer() {
+		ObservableList<CustomerPlusBudget> customers = FXCollections.observableArrayList();
+		ArrayList<Customer> list = CustomerAndbudget();
+		for (Customer customer : list) {
+			CustomerPlusBudget customerPlusBudget = new CustomerPlusBudget(customer);
+			customers.add(customerPlusBudget);
+		}
+		return customers;
+	}
+
+	private ObservableList<CustomerPlusBudget> getCustomer(ArrayList<Customer> list) {
+		ObservableList<CustomerPlusBudget> customers = FXCollections.observableArrayList();
+		for (Customer customer : list) {
+			CustomerPlusBudget customerPlusBudget = new CustomerPlusBudget(customer);
+			customers.add(customerPlusBudget);
+		}
+		return customers;
+	}
+
+	protected class CustomerPlusBudget {
+
+		private String id;
+		private String firstName;
+		private String lastName;
+		private String role;
+		private Float monthlyBudget;
+		private Float dailyBudget;
+
+		public CustomerPlusBudget(Customer customer) {
+			id = customer.getId();
+			firstName = customer.getFirstName();
+			lastName = customer.getLastName();
+			role = customer.getRole();
+			monthlyBudget = customer.getW4c().getMonthlyBudget();
+			dailyBudget = customer.getW4c().getDailyBudget();
+		}
+
+		public String getFirstName() {
+			return firstName;
+		}
+
+		public String getLastName() {
+			return lastName;
+		}
+
+		public String getRole() {
+			return role;
+		}
+
+		public Float getMonthlyBudget() {
+			return monthlyBudget;
+		}
+
+		public Float getDailyBudget() {
+			return dailyBudget;
+		}
+
+		public String getId() {
+			return id;
+		}
+
 	}
 
 }
-

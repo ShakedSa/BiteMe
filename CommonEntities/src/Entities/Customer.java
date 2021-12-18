@@ -41,6 +41,8 @@ public class Customer extends User {
 		this.w4c = w4c;
 		this.refundedBalance = refundedBalance;
 	}
+	
+	public Customer() {}
 
 	public W4CCard getW4c() {
 		return w4c;

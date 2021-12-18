@@ -152,12 +152,12 @@ public class mysqlConnection {
 					rs = stmt.executeQuery();
 					String restaurantName = "";
 					String restaurantAddress = "";
-					int monthlyComission = 12;
+					Float monthlyComission = 12f;
 					ArrayList<Product> menu = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
-						restaurantAddress = rs.getString(6); // added RestaurantAddress to supplier in DB - aviel
-						monthlyComission = rs.getInt(3);
+						restaurantAddress = rs.getString(2); // added RestaurantAddress to supplier in DB - aviel
+						monthlyComission = rs.getFloat(4);
 						menu = getMenu(restaurantName);
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
@@ -232,15 +232,13 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(names);
 		return serverResponse;
 	}
-	
-	
+
 	/**
 	 * Query to update a user information in the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void updateUserInformation(String userName, String userType,
-			String status) {
+	public static void updateUserInformation(String userName, String userType, String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
 		try {
@@ -472,7 +470,6 @@ public class mysqlConnection {
 				serverResponse.setMsg("Order number doesn't exist");
 				serverResponse.setServerResponse(null);
 				return serverResponse;
-
 			}
 
 		} catch (SQLException e) {
@@ -486,6 +483,135 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
+	private static boolean checkIfBusinessCustomerExist(String hrUserName, String employerCompanyName) {
+
+		try {
+			String query = "SELECT * FROM bitemedb.businesscustomer WHERE HRname = ? AND EmployeCompanyName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, hrUserName);
+			stmt.setString(2, employerCompanyName);
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.next())
+				return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+
+		}
+		return true;
+	}
+
+	/**
+	 * creating new business customer
+	 * 
+	 * @param hrUserName,employerCode,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse createNewBusinessCustomer(String hrUserName, String employerCode,
+			String employerCompanyName) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		if (checkIfBusinessCustomerExist(hrUserName, employerCompanyName)) {
+			serverResponse.setMsg("Already Registered");
+			return serverResponse;
+		}
+
+		try {
+			String query = "INSERT INTO bitemedb.businesscustomer (EmployerCode, EmployeCompanyName, HRname) values (?, ?, ?)";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, employerCode);
+			stmt.setString(2, employerCompanyName);
+			stmt.setString(3, hrUserName);
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+		}
+
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * updating customer to approved in DB and returning updated list of not approved customers 
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse approveCustomerAsBusiness(String employerCompanyName, String customerId) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		
+		try {
+			String query =  "UPDATE bitemedb.customers SET IsApprovedByHR = 1 WHERE "
+					+ "customers.UserName = (select Username from bitemedb.users where users.id = ? and users.UserType = 'Customer')";
+			
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, customerId);
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Update Failed");
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		return selectCustomerAndbudget(employerCompanyName);
+	}
+	
+	
+	
+	
+	
+
+	/**
+	 * selecting info of all Customers related to the HR that are not approved yet
+	 * 
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse selectCustomerAndbudget(String employerCompanyName) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<Customer> response = new ArrayList<>();
+		
+		try {
+			String query = "SELECT ID,FirstName,LastName,Role,MonthlyBudget,DailyBudget FROM bitemedb.customers,bitemedb.users,bitemedb.w4ccards "
+					+ "Where Organization = ? And customers.IsApprovedByHR = 0 and users.UserName = customers.UserName and customers.customerID = w4ccards.CustomerID ";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, employerCompanyName);
+			ResultSet rs = stmt.executeQuery();
+			// building list of customers that belong to the organization 
+			// and are not approved yet by HR
+			while (rs.next()) {
+				Customer customer = new Customer();
+				W4CCard w4c = new W4CCard();
+				customer.setId(rs.getString(1));
+				customer.setFirstName(rs.getString(2));
+				customer.setLastName(rs.getString(3));
+				customer.setRole(rs.getString(4));
+				w4c.setMonthlyBudget(rs.getFloat(5));
+				w4c.setDailyBudget(rs.getFloat(6));
+				customer.setW4c(w4c);
+				response.add(customer);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setServerResponse(response);
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
 
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -496,11 +622,10 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) { // 8 usertype, 13 status
+			if (rs.next()) { // 8 usertype, 13 status
 				response.add(rs.getString(8));
 				response.add(rs.getString(13));
-			}
-			else {
+			} else {
 				response.add("Error");
 			}
 		} catch (SQLException e) {
@@ -513,20 +638,21 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	//java.sql.SQLIntegrityConstraintViolationException: 
-	//Cannot add or update a child row: a foreign key constraint fails
-	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
-	//REFERENCES `suppliers` (`RestaurantName`))
-	
+
+	// java.sql.SQLIntegrityConstraintViolationException:
+	// Cannot add or update a child row: a foreign key constraint fails
+	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
+	// (`RestaurantName`)
+	// REFERENCES `suppliers` (`RestaurantName`))
+
 	public static void updateFile(InputStream is, String date) {
 		System.out.println("test !");
-		String filename= "Report " + date + ".pdf";
+		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	/**
-	 * @param is File inputstream to upload as a blob
+	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
 	 */
