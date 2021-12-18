@@ -99,7 +99,7 @@
          </font>
       </Text>
       <TextField fx:id="userNameTxtField" layoutX="244.0" layoutY="206.0" promptText="User Name" />
-      <Text fx:id="userNameError" fill="RED" layoutX="88.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This user name doesn't exist" visible="false">
+      <Text fx:id="userNameError" fill="RED" layoutX="88.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This user name doesn't exist">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

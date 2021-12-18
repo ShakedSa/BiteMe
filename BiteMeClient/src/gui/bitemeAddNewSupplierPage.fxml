@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplierController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewSupplierController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -31,68 +32,43 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name">
+      <Text fx:id="restaurantName" layoutX="88.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Address">
+      <Text fx:id="restaurantAddress" layoutX="88.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Address" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Type">
+      <Text fx:id="restaurantType" layoutX="88.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Type" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Manager Name">
+      <Text fx:id="monthlyCommission" layoutX="88.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commission" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commission">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="uploadImageTxt" layoutX="137.0" layoutY="418.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Image">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <TextField fx:id="restaurantNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="176.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="221.0" prefHeight="26.0" prefWidth="178.0" visible="false">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantAddressTxtField" focusTraversable="false" layoutX="310.0" layoutY="219.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantAddressTxtField" focusTraversable="false" layoutX="310.0" layoutY="264.0" prefHeight="26.0" prefWidth="178.0" visible="false">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantTypeTxtField" focusTraversable="false" layoutX="310.0" layoutY="266.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="restaurantTypeTxtField" focusTraversable="false" layoutX="310.0" layoutY="310.0" prefHeight="26.0" prefWidth="178.0" visible="false">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantManagerNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="311.0" prefHeight="26.0" prefWidth="178.0">
-         <cursor>
-            <Cursor fx:constant="TEXT" />
-         </cursor></TextField>
-      <ComboBox fx:id="monthlyCommissionBox" focusTraversable="false" layoutX="310.0" layoutY="356.0" prefHeight="27.0" prefWidth="88.0" promptText="7%">
+      <ComboBox fx:id="monthlyCommissionBox" focusTraversable="false" layoutX="310.0" layoutY="360.0" prefHeight="27.0" prefWidth="88.0" visible="false">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
-      <ImageView fx:id="uploadImage" fitHeight="50.0" fitWidth="39.0" layoutX="88.0" layoutY="392.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../scene%20builder/images/upload.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <ImageView fx:id="leftArrowBtn" fitHeight="74.0" fitWidth="52.0" layoutX="82.0" layoutY="487.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
@@ -142,15 +118,36 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fill="#62d019" layoutX="137.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!">
+      <Text fx:id="updateSucess" fill="#62d019" layoutX="137.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
+      <Text fx:id="id" layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier ID">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="idTxtField" focusTraversable="false" layoutX="311.0" layoutY="177.0" prefHeight="26.0" prefWidth="178.0">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </TextField>
+      <Button fx:id="searchBtn" layoutX="515.0" layoutY="178.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
+      <Text fx:id="idError" fill="RED" layoutX="584.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate ID" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="Error" fill="RED" layoutX="259.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill all the fields">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

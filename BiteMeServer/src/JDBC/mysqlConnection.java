@@ -1,5 +1,6 @@
 package JDBC;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -15,11 +16,15 @@ import java.util.HashMap;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
+import Entities.BusinessCustomer;
 import Entities.CEO;
 import Entities.Component;
 import Entities.Customer;
 import Entities.Delivery;
 import Entities.EmployerHR;
+import Entities.ImportedUser;
+import Entities.NewSupplier;
+import Entities.NewUser;
 import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.PreorderDelivery;
@@ -283,6 +288,71 @@ public class mysqlConnection {
 		}
 		return null;
 	}
+	
+	/**
+	 * Query to add a new supplier the db.
+	 * 
+	 * @return ServerResponse serverResponse
+	 */
+	public static void addNewSupplier(NewSupplier supplier) {
+		PreparedStatement stmt = null;
+		int monthlyCommision = Character.getNumericValue(supplier.getMonthlyCommision().charAt(0));
+		try {
+			String query = "INSERT INTO bitemedb.suppliers"
+					  + "(RestaurantName, RestaurantAddress, UserName, MonthlyComission,"
+					  + " Image, RestaurantType, branch)"  + "VALUES(?, ?, ?, ?, ?, ?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, supplier.getResturantName());
+			stmt.setString(2, supplier.getResturantAddress());
+			stmt.setString(3, supplier.getUserName());
+			stmt.setInt(4, monthlyCommision);
+			stmt.setBlob(5, supplier.getImagUpload());
+			stmt.setString(6, supplier.getResturantType());
+			stmt.setString(7, supplier.getBranchName().name());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("no man");
+		}
+		return;
+	}
+	
+	/**
+	 * Query to add a new supplier the db.
+	 * 
+	 * @return ServerResponse serverResponse
+	 */
+	public static void addNewUser(NewUser user) {
+		PreparedStatement stmt = null;
+		try {
+			String query = "INSERT INTO bitemedb.users"
+					  + "(UserName, Password, FirstName, LastName, ID, Email, PhoneNumber,"
+					  + " UserType, Role, Organization, MainBranch, IsLoggedIn, Status, Avatar)"
+					  + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, user.getUserName());
+			stmt.setString(2, user.getPassword());
+			stmt.setString(3, user.getFirstName());
+			stmt.setString(4, user.getLastName());
+			stmt.setString(5, user.getId());
+			stmt.setString(6, user.getEmail());
+			stmt.setString(7, user.getPhoneNumber());
+			stmt.setString(8, user.getUserType().name());
+			stmt.setString(9, user.getRole());
+			stmt.setString(10, user.getOrganization());
+			stmt.setString(11, user.getMainBranch().name());
+			stmt.setInt(12, user.getIsLoggedIn());
+			stmt.setString(13, user.getStatus().name());
+			stmt.setBlob(14, user.getAvatar());
+			//ResultSet rs = stmt.executeQuery();
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("no man");
+		}
+		return;
+	}
+
 
 	/**
 	 * Query to update the user logged in status.
@@ -484,6 +554,12 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
+	/**
+	 * Check if a user name number is exist in the db or not
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
 
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -705,4 +781,75 @@ public class mysqlConnection {
 		}
 		return deliveryNewKey == 0 ? -1 : deliveryNewKey;
 	}
+	
+	/**
+	 * Check if a user name number is exist in the db or not
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+
+	public static ServerResponse checkID(String id) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ImportedUser response; 
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.importsimulationuser WHERE ID = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, id);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				System.out.println(rs.getString(10));
+				response = new ImportedUser(id, rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),
+						rs.getString(9), BranchName.valueOf(rs.getString(10)), rs.getBlob(11));
+				System.out.println(response.getEmail());
+			}
+			else {
+				response = null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
+	
+	/**
+	 * Check if a user name number is exist in the db or not
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+
+	public static ServerResponse getEmployersForApproval() {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<BusinessCustomer> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.businesscustomer WHERE IsApproved = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, 0);
+			ResultSet rs = stmt.executeQuery();
+			//save in response all employers that needs approval
+			while(rs.next()) {
+				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2),
+						rs.getInt(3), rs.getString(4)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
 }
