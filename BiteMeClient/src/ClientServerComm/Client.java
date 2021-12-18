@@ -95,7 +95,8 @@ public class Client extends AbstractClient {
 	public void quit() {
 		try {
 			closeConnection();
-		} catch (IOException localIOException) {
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		System.out.println("BYE");
 		System.exit(0);

@@ -966,9 +966,20 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery();
 			//save in response all employers that needs approval
 			while(rs.next()) {
-				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2),
-						rs.getInt(3), rs.getString(4)));
-			}
+					response.add(new BusinessCustomer(rs.getString(1), rs.getString(2),
+					rs.getInt(3), rs.getString(4)));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				serverResponse.setMsg(e.getMessage());
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+				}
+			serverResponse.setMsg("Success");
+			serverResponse.setServerResponse(response);
+			return serverResponse;
+		}
+
 
 	/**
 	 * @param orderNumber
