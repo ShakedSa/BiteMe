@@ -97,11 +97,7 @@ public class OrderDeliveryMethod implements Serializable {
 
 	public void calculateFinalPrice() {
 		float price = 0;
-		ArrayList<Product> products = order.getProducts();
-		for (Product p : products) {
-			price += p.getPrice();
-		}
-		order.setOrderPrice(price);
+		price += order.getOrderPrice();
 		switch (typeOfOrder) {
 		case preorderDelivery:
 			delivery.setDiscount(price * (float) 0.1);

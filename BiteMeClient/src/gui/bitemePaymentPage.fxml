@@ -3,6 +3,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -110,5 +111,16 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
+      <RadioButton fx:id="bothRadio" layoutX="105.0" layoutY="275.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="119.0" text="Both" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="12.0" />
+         </font>
+      </RadioButton>
+      <Text fx:id="employerCodeTxt" layoutX="238.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Code" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <TextField fx:id="employerCodeTextField" layoutX="358.0" layoutY="271.0" promptText="Employer's Code" visible="false" />
    </children>
 </AnchorPane>
