@@ -1,9 +1,11 @@
+			  
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
@@ -53,7 +55,7 @@ public class Server extends AbstractServer {
 		if(msg instanceof MyFile) // handle upload pdf file to sql
 		{
 			  MyFile message = ((MyFile) msg);
-			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
+			  controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
 				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
@@ -92,6 +94,7 @@ public class Server extends AbstractServer {
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
+						
 		switch (m.get(0)) {
 		case "login":
 			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
@@ -125,6 +128,18 @@ public class Server extends AbstractServer {
 			break;
 		case "employersApproval":
 			mysqlConnection.getEmployersForApproval();
+			break;
+		case "createNewBusinessCustomer":
+			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(1),m.get(2),m.get(3)),client);
+			break;
+		case "selectCustomerAndbudget":
+			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(1)),client);
+			break;
+		case "approveCustomerAsBusiness":
+			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(1),m.get(2)), client);
+
+		case "updateOrderStatus":
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
 		default:
 			sendToClient("default", client);

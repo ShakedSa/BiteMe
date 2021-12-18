@@ -131,7 +131,7 @@
 	-fx-background-radius: 40.0;
 }
 
-#plusMinus{
+.plusMinus{
 	-fx-border-width: 1.0;
 	-fx-border-color: -fx-primary-text-color;
 	-fx-border-radius: 40.0;
@@ -139,7 +139,7 @@
 	-fx-cursor: -fx-default-hand-cursor;
 	-fx-padding: 0.0 10.0;
 	-fx-alignment: center;
-	-fx-translate-y: -10.0;
+	-fx-translate-y: 338;
 }
 
 #addItem{
@@ -153,9 +153,19 @@
 	-fx-translate-y: -10.0;
 }
 
-#plusMinus:hover, #addItem:hover{
+.plusMinus:hover, #addItem:hover{
 	-fx-background-color:-fx-secondary-text-color;
 	-fx-background-radius: 40.0;
+}
+
+.plus{
+	-fx-translate-x:298;
+	-fx-text-fill: -fx-primary-text-color;
+}
+
+.minus{
+	-fx-translate-x:372;
+	-fx-text-fill: -fx-primary-text-color;
 }
  #txtarea{
 	-fx-border-width:1.0;
@@ -217,6 +227,34 @@
 	-fx-translate-y:105.0;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.5),10.0,0.0,0.0,0.0);
 	-fx-background-color:-fx-primary-bg-color;
+}
+
+.counter{
+	-fx-translate-x:346;
+	-fx-translate-y:338;
+	-fx-text-fill:-fx-primary-text-color;
+}
+
+.close{
+	-fx-text-fill: red;
+	-fx-cursor: hand;
+	-fx-translate-x:650;
+	-fx-translate-y: 15;
+}
+
+.line{
+	-fx-stroke: -fx-primary-text-color;
+	-fx-scale-x:1;
+	-fx-scale-y:1;
+	-fx-translate-x:134;
+	-fx-translate-y: 51;
+}
+
+.componentContent{
+	-fx-max-height: 260;
+	-fx-pref-width: 230;
+	-fx-translate-x:30;
+	-fx-translate-y: 100;
 }
 
 
