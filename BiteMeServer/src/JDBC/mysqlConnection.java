@@ -149,12 +149,12 @@ public class mysqlConnection {
 					rs = stmt.executeQuery();
 					String restaurantName = "";
 					String restaurantAddress = "";
-					int monthlyComission = 12;
+					Float monthlyComission = 12f;
 					ArrayList<Product> menu = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
-						restaurantAddress = rs.getString(6); // added RestaurantAddress to supplier in DB - aviel
-						monthlyComission = rs.getInt(3);
+						restaurantAddress = rs.getString(2); // added RestaurantAddress to supplier in DB - aviel
+						monthlyComission = rs.getFloat(4);
 						menu = getMenu(restaurantName);
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,

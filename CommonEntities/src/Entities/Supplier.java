@@ -18,7 +18,7 @@ public class Supplier extends User{
 	
 	String restaurantName;
 	ArrayList<Product> Menu;
-	int monthlyComissionPercent;
+	Float monthlyComissionPercent;
 	//BranchName relatedBranch;
 	String restaurantAddress; // change line 22 - aviel
 
@@ -26,7 +26,7 @@ public class Supplier extends User{
 					String phoneNumber, UserType userType, String organization,
 					BranchName mainBranch, String role, Status status,File avatar,
 					//String restaurantName, ArrayList<Product> Menu, int monthlyComissionPercent,BranchName relatedBranch) change: relatedBranch to String type - aviel
-					String restaurantName, ArrayList<Product> Menu, int monthlyComissionPercent,String relatedBranch) 
+					String restaurantName, ArrayList<Product> Menu, Float monthlyComissionPercent,String relatedBranch) 
 	{
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role, status,
 				avatar);
@@ -54,7 +54,7 @@ public class Supplier extends User{
 	/**
 	 * @return the monthlyComissionPercent
 	 */
-	public int getMonthlyComissionPercent() {
+	public Float getMonthlyComissionPercent() {
 		return monthlyComissionPercent;
 	}
 	/*
@@ -91,7 +91,7 @@ public class Supplier extends User{
 	/**
 	 * @param monthlyComissionPercent the monthlyComissionPercent to set
 	 */
-	public void setMonthlyComissionPercent(int monthlyComissionPercent) {
+	public void setMonthlyComissionPercent(Float monthlyComissionPercent) {
 		this.monthlyComissionPercent = monthlyComissionPercent;
 	}
 	/*
