@@ -222,7 +222,7 @@ public abstract class User implements Serializable {
 	}
 
 	public String toString() {
-		return userName;
+		return id;
 	}
 	
 	

@@ -94,13 +94,13 @@ public class confirmBusinessAccountController implements Initializable {
 		router.showProfile();
 	}
 
+	@SuppressWarnings("unchecked")
 	@FXML
 	void confirmBtnClicked(MouseEvent event) {
 		clearPage();
 		// return the ID of the selected customer on gui
 		try {
 			String customerID = customerTable.getSelectionModel().getSelectedItem().getId();
-
 			String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
 			Thread t = new Thread(new Runnable() {
 				@Override
@@ -139,10 +139,8 @@ public class confirmBusinessAccountController implements Initializable {
 			errorMsg.setText("No Customer is selected");
 		}
 	}
-	
 
 	public void setTable() {
-
 		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
 		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -154,7 +152,6 @@ public class confirmBusinessAccountController implements Initializable {
 	}
 
 	private void setTable(ArrayList<Customer> list) {
-
 		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
 		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -165,7 +162,6 @@ public class confirmBusinessAccountController implements Initializable {
 		customerTable.setEditable(true);
 	}
 
-	
 	@FXML
 	void returnToEmployerHRPanel(MouseEvent event) {
 		clearPage();
@@ -214,8 +210,8 @@ public class confirmBusinessAccountController implements Initializable {
 		errorMsg.setText("");
 	}
 
+	@SuppressWarnings("unchecked")
 	private ArrayList<Customer> CustomerAndbudget() {
-
 		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
 		Thread t = new Thread(new Runnable() {
 			@Override

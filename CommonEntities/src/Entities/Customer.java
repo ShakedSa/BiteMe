@@ -1,6 +1,7 @@
 package Entities;
 
 import java.io.File;
+import java.io.Serializable;
 
 import Enums.BranchName;
 import Enums.Status;

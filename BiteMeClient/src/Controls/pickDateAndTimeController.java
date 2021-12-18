@@ -212,6 +212,10 @@ public class pickDateAndTimeController implements Initializable {
 		router = Router.getInstance();
 		router.setPickDateAndTimeController(this);
 		setStage(router.getStage());
+		/** Setting the time and date to now. */
+		datePicker.setValue(LocalDate.now());
+		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
+		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
 	}
 
 	public void setScene(Scene scene) {
