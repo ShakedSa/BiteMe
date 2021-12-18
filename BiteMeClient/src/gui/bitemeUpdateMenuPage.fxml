@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -49,14 +48,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TableView layoutX="133.0" layoutY="202.0" prefHeight="200.0" prefWidth="565.0">
-         <columns>
-            <TableColumn prefWidth="75.0" text="Type" />
-            <TableColumn prefWidth="75.0" text="Dish Name" />
-            <TableColumn prefWidth="75.0" text="Components" />
-            <TableColumn prefWidth="75.0" text="Price" />
-            <TableColumn prefWidth="75.0" text="Description" />
-         </columns>
+      <TableView fx:id="menuTable" layoutX="133.0" layoutY="202.0" prefHeight="200.0" prefWidth="565.0">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
@@ -90,7 +82,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text id="link" fx:id="logoutBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+      <Text id="link" fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -98,7 +90,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="profileBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text id="link" fx:id="profileBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

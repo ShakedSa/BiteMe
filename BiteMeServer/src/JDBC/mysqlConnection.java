@@ -9,7 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -456,15 +459,14 @@ public class mysqlConnection {
 	public static ServerResponse searchOrder(String orderNumber) {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
-			String idiot = "SELECT * FROM bitemedb.orders WHERE OrderNumber = " + orderNumber;
+			String query1 = "SELECT * FROM bitemedb.orders WHERE OrderNumber = " + orderNumber;
 			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, Integer.parseInt(orderNumber));
-			ResultSet rs = stmt.executeQuery(idiot);
-			System.out.println(idiot);
+			ResultSet rs = stmt.executeQuery(query1);
 
+			if (!rs.next()) {
 //				ResultSet rs1 = stmt.executeQuery(query);
-			if (!rs.next()) {// if (rs.getRow() == 0) {
 				serverResponse.setMsg("Order number doesn't exist");
 				serverResponse.setServerResponse(null);
 				return serverResponse;
@@ -656,14 +658,12 @@ public class mysqlConnection {
 	 */
 	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
 		String filename = "Report " + date + ".pdf";
-		// System.out.println(Date.valueOf(desc.get(2) + "-" + desc.get(1) + "-
-		// 00").toString());
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf("2020-05-12"));
+			statement.setDate(2, Date.valueOf(""+desc.get(2) + "-" + desc.get(1) + "-01"));//"2020-05-12"
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
@@ -830,5 +830,44 @@ public class mysqlConnection {
 			return -1;
 		}
 		return deliveryNewKey == 0 ? -1 : deliveryNewKey;
+	}
+
+	/**
+	 * @param orderNumber
+	 * @param status
+	 * @return
+	 */
+	public static ServerResponse updateOrderStatus(String receivedOrReady, String orderNumber, String time,
+			String status) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		System.out.println(receivedOrReady);
+		try {
+			if (receivedOrReady.equals("Order Received")) {
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ?";
+				//String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber = ?";
+				PreparedStatement stmt = conn.prepareStatement(query);
+				stmt.setString(1, status);
+				stmt.setDate(2, Date.valueOf(LocalDate.now()));
+				stmt.setTime(2, Time.valueOf(LocalTime.now()));
+				stmt.setString(3, orderNumber);
+				stmt.executeUpdate();
+			} else { // Order Is Ready
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ? PlannedTime = ? AND WHERE OrderNumber = ?";
+				PreparedStatement stmt = conn.prepareStatement(query);
+				stmt.setString(1, status);
+				stmt.setTime(2, Time.valueOf(time));
+				stmt.setString(3, orderNumber);
+				stmt.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		return serverResponse;
+
 	}
 }

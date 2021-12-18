@@ -3,8 +3,6 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Entities.Customer;
 import Entities.Order;
@@ -12,11 +10,7 @@ import Enums.UserType;
 import Util.InputValidation;
 import Util.QRReader;
 import client.ClientGUI;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * @author Eden Controller for customer identification by QR code/W4C id
@@ -81,28 +74,17 @@ public class identifyController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
+	private Label readingMsg;
+
+	@FXML
 	void QRClicked(MouseEvent event) {
 		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
-		String qrCode = QRReader.ReadQRCode(user); // Reading qr simulation.
-
-		/**
-		 * Simulating the qrcode reading.
-		 */
-		final IntegerProperty i = new SimpleIntegerProperty(0);
-		Timeline timeline = new Timeline();
-		KeyFrame keyFrame = new KeyFrame(Duration.millis(150), e -> {
-			if (i.get() > qrCode.length()) {
-				/** when the keyframe reach the end of the string stop and identify. */
-				timeline.stop();
-				identifyClicked(null);
-			} else {
-				w4cCodeFieldTxt.setText(qrCode.substring(0, i.get()));
-				i.set(i.get() + 1);
-			}
-		});
-		timeline.getKeyFrames().add(keyFrame);
-		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
+		if (!QRReader.ReadQRCode(user)) {
+			errorMsg.setText("Failed to read QR code");
+			return;
+		} else {
+			readingMsg.setText("Reading...");
+		}
 	}
 
 	/**
@@ -130,8 +112,11 @@ public class identifyController implements Initializable {
 		changeToRestaurantMenuPage();
 	}
 
-	private void changeToRestaurantMenuPage() {
-		w4cCodeFieldTxt.clear();
+	public void changeToRestaurantMenuPage() {
+		Platform.runLater(() -> {
+			w4cCodeFieldTxt.clear();
+			readingMsg.setText("");
+		});
 		router = Router.getInstance();
 		Order newOrder = new Order();
 		newOrder.setRestaurantName(restaurantsName);
@@ -234,5 +219,9 @@ public class identifyController implements Initializable {
 
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
+	}
+
+	public void updateTextField(String input) {
+		w4cCodeFieldTxt.setText(input);
 	}
 }

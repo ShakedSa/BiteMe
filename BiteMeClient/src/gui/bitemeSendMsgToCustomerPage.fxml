@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.supplierPanelController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.sendMsgToCustomerController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -24,12 +24,17 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fitHeight="287.0" fitWidth="494.0" layoutX="51.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../scene%20builder/images/ruben-supplier-panel.png" />
-         </image>
-      </ImageView>
-      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
+      <Text layoutX="130.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Message Sent To Customer">
+         <font>
+            <Font name="Berlin Sans FB" size="39.0" />
+         </font>
+      </Text>
+      <Text layoutX="130.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for waiting,">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -62,28 +67,50 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="createMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="230.0" onMouseClicked="#createMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Create Menu">
+      <Label id="btn" fx:id="closeMsgBtn" alignment="CENTER" layoutX="614.0" layoutY="503.0" onMouseClicked="#closeMsgBtnClicked" prefHeight="25.0" prefWidth="200.0" text="Close Message">
+         <font>
+            <Font name="Berlin Sans FB" size="20.0" />
+         </font>
+      </Label>
+      <Text fx:id="customerNameTxt" layoutX="130.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
-      </Label>
-      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
+      </Text>
+      <Text fx:id="phoneNumberTxt" layoutX="130.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
-      </Label>
-      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="565.0" layoutY="373.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
+      </Text>
+      <Text fx:id="priceTxt" layoutX="130.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
-      </Label>
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnToHomePage" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
+      </Text>
+      <Text fx:id="statusTxt" layoutX="130.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text fx:id="plannedTimeTxt" layoutX="130.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Text fill="#3180bc" layoutX="130.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Content:">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#3180bc" layoutX="208.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Text>
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

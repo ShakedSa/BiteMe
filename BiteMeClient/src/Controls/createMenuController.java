@@ -2,13 +2,20 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.Component;
+import Entities.Product;
+import Enums.TypeOfProduct;
 import Enums.UserType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -17,55 +24,58 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class createMenuController implements Initializable{
-	
-	public final UserType type= UserType.Supplier;
+public class createMenuController implements Initializable {
+
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-	
+
 	@FXML
-    private ImageView VImage;
-	
+	private ImageView VImage;
+
 	@FXML
-    private Text menuCreatedSuccessfullyTxt;
+	private Text menuCreatedSuccessfullyTxt;
 
-    @FXML
-    private Circle addNewItemPlus;
+	@FXML
+	private Circle addNewItemPlus;
 
-    @FXML
-    private Text addNewItemTxt;
+	@FXML
+	private Text addNewItemTxt;
 
-    @FXML
-    private Rectangle avatar;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private ImageView createMenuImage;
+	@FXML
+	private ImageView createMenuImage;
 
-    @FXML
-    private Text createMenuTxt;
+	@FXML
+	private Text createMenuTxt;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    private ImageView leftArrowBtn;
+	@FXML
+	private ImageView leftArrowBtn;
 
-    @FXML
-    private Text logoutBtn;
+	@FXML
+	private Text logoutBtn;
 
-    @FXML
-    private Text profileBtn;
+	@FXML
+	private Text profileBtn;
 
-    @FXML
-    private Text supplierPanelBtn;
-    
+	@FXML
+	private Text supplierPanelBtn;
+
 	@FXML
 	private Text errorMsg;
 
-    @FXML
-    void addNewItemClicked(MouseEvent event) {
-    	if (router.getAddNewItemController() == null) {
+	@FXML
+	private TableView<Product> menuTable;
+
+	@FXML
+	void addNewItemClicked(MouseEvent event) {
+		if (router.getAddNewItemController() == null) {
 			AnchorPane mainContainer;
 			addNewItemController controller;
 			try {
@@ -82,25 +92,25 @@ public class createMenuController implements Initializable{
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return; 
+				return;
 			}
 		} else {
 			stage.setTitle("BiteMe - Add New Item To Menu");
 			stage.setScene(router.getAddNewItemController().getScene());
 			stage.show();
 		}
-    }
+	}
 
-    @FXML
-    void createMenuClicked(MouseEvent event) {
-    	//need to check server response
-		if(checkServerResponse()) {
+	@FXML
+	void createMenuClicked(MouseEvent event) {
+		// need to check server response
+		if (checkServerResponse()) {
 			VImage.setVisible(true);
 			menuCreatedSuccessfullyTxt.setVisible(true);
 		}
-    }
-    
-    private boolean checkServerResponse() {
+	}
+
+	private boolean checkServerResponse() {
 //    	retVal = servaerResponse;
 //    	if(retVal == null) {
 //			errorMsg.setText("No items checked into menu");
@@ -108,46 +118,45 @@ public class createMenuController implements Initializable{
 //		}
 //		errorMsg.setText(""); 
 		return true;
-    }
+	}
 
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
 
-    @FXML
-    void profileBtnClicked(MouseEvent event) {
-    	router.showProfile();
-    }
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
 
-    @FXML
-    void returnToSupplierPanel(MouseEvent event) {
-    	router.returnToSupplierPanel(event);
-    }
-    
-    /**
+	@FXML
+	void returnToSupplierPanel(MouseEvent event) {
+		router.returnToSupplierPanel(event);
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
 
-    
-    @Override
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setCreateMenuController(this);
 		setStage(router.getStage());
 		VImage.setVisible(false);
-    	menuCreatedSuccessfullyTxt.setVisible(false);
+		menuCreatedSuccessfullyTxt.setVisible(false);
+		createTable();
 	}
- 
-    
+
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -157,8 +166,30 @@ public class createMenuController implements Initializable{
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
+	}
+
+	/**
+	 * Creating the view table columns.
+	 */
+	public void createTable() {
+		TableColumn<Product, TypeOfProduct> typeCol = new TableColumn<Product, TypeOfProduct>("Type");
+		typeCol.setCellValueFactory(new PropertyValueFactory<Product, TypeOfProduct>("type"));
+		menuTable.getColumns().add(typeCol);
+		TableColumn<Product, String> nameCol = new TableColumn<Product, String>("Dish Name");
+		nameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("restaurantName"));
+		menuTable.getColumns().add(nameCol);
+		TableColumn<Product, ArrayList<Component>> componentCol = new TableColumn<Product, ArrayList<Component>>(
+				"Components");
+		componentCol.setCellValueFactory(new PropertyValueFactory<Product, ArrayList<Component>>("components"));
+		menuTable.getColumns().add(componentCol);
+		TableColumn<Product, Float> priceCol = new TableColumn<Product, Float>("Price");
+		priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
+		menuTable.getColumns().add(priceCol);
+		TableColumn<Product, String> descriptionCol = new TableColumn<Product, String>("Description");
+		descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+		menuTable.getColumns().add(descriptionCol);
+		menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 
 }
-
