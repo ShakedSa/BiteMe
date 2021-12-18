@@ -481,7 +481,7 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	private static boolean checkIfBusinessCustomerExist(String hrUserName,String employerCompanyName) {
+	private static boolean checkIfBusinessCustomerExist(String hrUserName, String employerCompanyName) {
 
 		try {
 			String query = "SELECT * FROM bitemedb.businesscustomer WHERE HRname = ? AND EmployeCompanyName = ?";
@@ -511,11 +511,11 @@ public class mysqlConnection {
 	public static ServerResponse createNewBusinessCustomer(String hrUserName, String employerCode,
 			String employerCompanyName) {
 		ServerResponse serverResponse = new ServerResponse("String");
-		if(checkIfBusinessCustomerExist(hrUserName,employerCompanyName)) {
+		if (checkIfBusinessCustomerExist(hrUserName, employerCompanyName)) {
 			serverResponse.setMsg("Already Registered");
 			return serverResponse;
 		}
-		
+
 		try {
 			String query = "INSERT INTO bitemedb.businesscustomer (EmployerCode, EmployeCompanyName, HRname) values (?, ?, ?)";
 
@@ -529,7 +529,84 @@ public class mysqlConnection {
 			serverResponse.setMsg(e.getMessage());
 			serverResponse.setServerResponse(null);
 		}
+
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * updating customer to approved in DB and returning updated list of not approved customers 
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse approveCustomerAsBusiness(String employerCompanyName, String customerId) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		
+		try {
+			String query =  "UPDATE bitemedb.customers SET IsApprovedByHR = 1 WHERE "
+					+ "customers.UserName = (select Username from bitemedb.users where users.id = ? and users.UserType = 'Customer')";
+			
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, customerId);
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Update Failed");
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		return selectCustomerAndbudget(employerCompanyName);
+	}
+	
+	
+	
+	
+	
+
+	/**
+	 * selecting info of all Customers related to the HR that are not approved yet
+	 * 
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse selectCustomerAndbudget(String employerCompanyName) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<Customer> response = new ArrayList<>();
+		
+		try {
+			String query = "SELECT ID,FirstName,LastName,Role,MonthlyBudget,DailyBudget FROM bitemedb.customers,bitemedb.users,bitemedb.w4ccards "
+					+ "Where Organization = ? And customers.IsApprovedByHR = 0 and users.UserName = customers.UserName and customers.customerID = w4ccards.CustomerID ";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, employerCompanyName);
+			ResultSet rs = stmt.executeQuery();
+			// building list of customers that belong to the organization 
+			// and are not approved yet by HR
+			while (rs.next()) {
+				Customer customer = new Customer();
+				W4CCard w4c = new W4CCard();
+				customer.setId(rs.getString(1));
+				customer.setFirstName(rs.getString(2));
+				customer.setLastName(rs.getString(3));
+				customer.setRole(rs.getString(4));
+				w4c.setMonthlyBudget(rs.getFloat(5));
+				w4c.setDailyBudget(rs.getFloat(6));
+				customer.setW4c(w4c);
+				response.add(customer);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setServerResponse(response);
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}

@@ -210,6 +210,48 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	
+	
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void selectCustomerAndbudget( String employerCompanyName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("selectCustomerAndbudget", employerCompanyName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName,customerId));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Sending the server a request to check if the business customer is already created.
 	 * 

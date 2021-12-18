@@ -106,6 +106,12 @@ public class Server extends AbstractServer {
 		case "createNewBusinessCustomer":
 			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(1),m.get(2),m.get(3)),client);
 			break;
+		case "selectCustomerAndbudget":
+			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(1)),client);
+			break;
+		case "approveCustomerAsBusiness":
+			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(1),m.get(2)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

@@ -74,11 +74,12 @@ public class registerEmployerAsLegacyController implements Initializable {
 		clearPage();
 		router.showProfile();
 	}
-
+	
 	@FXML
 	void registerBtnClicked(MouseEvent event) {
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
+		errorMsg.setText("");
 		// checking if input exists
 		if (!checkInput()) {
 			return;

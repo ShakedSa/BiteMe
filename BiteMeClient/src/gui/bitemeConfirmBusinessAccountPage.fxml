@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -73,7 +72,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="412.0" layoutY="316.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
+      <Label id="btn" fx:id="confirmBtn" alignment="CENTER" layoutX="284.0" layoutY="316.0" onMouseClicked="#confirmBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -86,22 +85,16 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="successMsg" fill="#62d019" layoutX="132.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business account was confirmed successfully!">
+      <Text fx:id="successMsg" fill="#62d019" layoutX="131.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business account was confirmed successfully!">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="413.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="87.0" layoutY="364.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Customer ID">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <TextField fx:id="customerIDTxtField" layoutX="233.0" layoutY="325.0" prefHeight="26.0" prefWidth="173.0" promptText="Customer ID" />
       <TableView fx:id="customerTable" layoutX="86.0" layoutY="165.0" prefHeight="141.0" prefWidth="550.0">
         <columns>
           <TableColumn fx:id="table_ID" prefWidth="91.0" text="ID" />
