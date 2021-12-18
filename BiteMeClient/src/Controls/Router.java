@@ -39,7 +39,6 @@ public class Router {
 	private reviewOrderController ReviewOrderController;
 	private paymentController PaymentController;
 	private ceoPanelController CEOPanelController;
-	private employerHRPanelController EmployerHRPanelController;
 	private profileController ProfileController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
@@ -56,6 +55,7 @@ public class Router {
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
 	// Employer HR Panel pages:
+	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
 	// CEO Panel pages:
@@ -556,6 +556,16 @@ public class Router {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				ClientGUI.client.logout(user.getUserName());
+				switch(user.getUserType()) {
+				case EmployerHR:
+					EmployerHRPanelController=null;
+					RegisterEmployerAsLegacyController=null;
+					ConfirmBusinessAccountController=null;
+					break;
+				default:
+					break;
+				}
+				
 				ClientGUI.client.setUser(null);
 			}
 		}

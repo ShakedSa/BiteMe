@@ -25,7 +25,7 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register Employer As Lgacy">
+      <Text layoutX="87.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register Employer As Lgacy">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -71,7 +71,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="136.0" layoutY="268.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Register">
+      <Label id="btn" fx:id="registerBtn" alignment="CENTER" layoutX="136.0" layoutY="279.0" onMouseClicked="#registerBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Register">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -79,12 +79,11 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text layoutX="88.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Company Name">
+      <Text layoutX="88.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer Company Name:">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employerNameTxtField" layoutX="356.0" layoutY="207.0" prefHeight="26.0" prefWidth="173.0" promptText="Company's Name" />
       <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -100,5 +99,16 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
+      <Text layoutX="88.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Code">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="employerCodeTxtField" layoutX="300.0" layoutY="244.0" prefHeight="26.0" prefWidth="173.0" promptText="Company's Code" />
+      <Text fx:id="hrCompanyName" fill="#3180bc" layoutX="307.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

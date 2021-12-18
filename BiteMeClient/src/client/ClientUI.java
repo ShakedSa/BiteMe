@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 import ClientServerComm.Client;
 import Entities.MyFile;
+import Entities.NewSupplier;
+import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
 import Entities.ServerResponse;
 import Entities.User;
@@ -134,7 +136,21 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
+	
+	/**
+	 * Sending a query request from the server. add new supplier to the db
+	 * 
+	 * @param restaurantName
+	 */
+	public void addNewSupplier(NewUser supplier) {				
+		try {
+			client.handleMessageFromClientUI(supplier);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
@@ -146,6 +162,24 @@ public class ClientUI implements ClientIF {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.add("menu");
 			arr.add(restaurantName);
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	/**
+	 * Sending a query request from the server. check for employers approvals
+	 * restaurant.
+	 * 
+	 * @param restaurantName
+	 */
+	public void checkForApprovals() {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("employersApproval");
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -183,6 +217,83 @@ public class ClientUI implements ClientIF {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList("searchOrder", orderNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	
+	/**
+	 * Sending the server a creatNewBusinessCustomer request.
+	 *
+	 * @param orderNumber
+	 * 
+	 */
+	public void createNewBusinessCustomer(String hrUserName,String employerCode, String employerCompanyName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName,employerCode,employerCompanyName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void selectCustomerAndbudget( String employerCompanyName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("selectCustomerAndbudget", employerCompanyName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName,customerId));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Sending the server a request to check if the business customer is already created.
+	 * 
+	 * @param orderNumber
+	 * 
+	 */
+	public void checkIfBusinessCustomerExist(String hrUserName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -320,12 +431,10 @@ public class ClientUI implements ClientIF {
 
 	}
 
-	public void checkUser(String userName) {
+	public void checkID(String id) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("checkUser");
-			arr.add(userName);
-//			arr.addAll(Arrays.asList("checkUser", userName));
+			arr.addAll(Arrays.asList("checkID", id));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
