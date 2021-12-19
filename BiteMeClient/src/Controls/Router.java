@@ -843,12 +843,4 @@ public class Router {
 		return res;
 	}
 
-	/*
-	 * public static void show(Object c) { //
-	 * router.show(loginController.getClass()); switch(c) case loginController: open
-	 * logincontroller; case EnterGUIController: open Enterguicontroller
-	 * 
-	 * }
-	 */
-
 }

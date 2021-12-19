@@ -67,6 +67,7 @@ public abstract class User implements Serializable {
 		this.avatar = avatar;
 	}
 	
+	
 
 	public void setIsLoggedIn(int isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
