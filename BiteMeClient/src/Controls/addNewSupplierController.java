@@ -81,7 +81,7 @@ public class addNewSupplierController implements Initializable {
 	private Text uploadImageTxt;
 
     @FXML
-    private Text idError;
+    private Text userNameError;
     
     @FXML
     private Text Error;
@@ -111,7 +111,7 @@ public class addNewSupplierController implements Initializable {
 	private Text UploadMsgImg;
 	
 	@FXML
-	private TextField idTxtField;
+	private TextField userNameTxtField;
 
 	@FXML
 	private TextField restaurantAddressTxtField;
@@ -128,7 +128,7 @@ public class addNewSupplierController implements Initializable {
 	@FXML
 	private ImageView uploadImage;
 	
-	private String validId;
+	private String validUserName;
 	
 	private String validResttuarantName;
 	
@@ -136,7 +136,7 @@ public class addNewSupplierController implements Initializable {
 	
 	private File imgToUpload;
 	
-	private ImportedUser info;
+	private ArrayList<String> info;
 	
 	ObservableList<String> list;
 
@@ -154,12 +154,14 @@ public class addNewSupplierController implements Initializable {
 		monthlyCommissionBox.setItems(list);
 	}
 	
+	//search for the given username in the database
+	//checks that this user is'nt alreay defind
 	@FXML
     void searchClicked(MouseEvent event) {
 		if(!checkValues()) {
     		return;
     	}
-		ClientGUI.client.checkID(idTxtField.getText());
+		ClientGUI.client.checkUserName(userNameTxtField.getText());
 		//wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -185,21 +187,27 @@ public class addNewSupplierController implements Initializable {
 		ServerResponse sr = ClientGUI.client.getLastResponse();
 		@SuppressWarnings("unchecked")
 		//get the server response- user information from outside the system
-		ImportedUser response = (ImportedUser) sr.getServerResponse();
+		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
 
-		//check if ID is valid
-		if(response == null)
+		//check if UserName is in the database
+		if(response.get(0).equalsIgnoreCase("Error"))
 		{
-			idError.setText("Unable to locate ID");
-			idError.setVisible(true);
+			userNameError.setText("Unable to locate UserName");
+			userNameError.setVisible(true);
+			enableEdit(false);
+			return;
+		}
+		//check if UserName already has a permission 
+		else if(response.get(0).equals("already has type")){
+			userNameError.setText("This user already has a type");
+			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
 		}
 		enableEdit(true);
 		//idError.setVisible(false);
-		idError.setText(response.getFirstName() +" " + response.getLastName());
-		validId = idTxtField.getText();
-		info = response; //save information from the import simulation table
+		userNameError.setText(response.get(0) +" " + response.get(1));
+		validUserName = userNameTxtField.getText();
     }
 
 	//hides or shows certain components
@@ -221,16 +229,16 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	private boolean checkValues() {
-    	if( InputValidation.checkSpecialCharacters(idTxtField.getText())) {
-    		idError.setVisible(true);
+    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
+    		userNameError.setVisible(true);
     		enableEdit(false);
-    		idError.setText("ID can't contain special characters!");
+    		userNameError.setText("No special characters!");
     		return false;
     	}
-    	if(idTxtField.getText().length() == 0) {
-    		idError.setVisible(true);
+    	if(userNameTxtField.getText().length() == 0) {
+    		userNameError.setVisible(true);
     		enableEdit(false);
-    		idError.setText("ID must be filled!");
+    		userNameError.setText("UserName must be filled!");
     		return false;
     	}
     	return true;
@@ -238,13 +246,13 @@ public class addNewSupplierController implements Initializable {
 
 	
 	private boolean checkInfoFields() {
-    	if( InputValidation.checkSpecialCharacters(idTxtField.getText())) {
+    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
     		Error.setVisible(true);
     		enableEdit(false);
     		Error.setText("ID can't contain special characters!");
     		return false;
     	}
-    	if(idTxtField.getText().length() == 0) {
+    	if(userNameTxtField.getText().length() == 0) {
     		Error.setVisible(true);
     		enableEdit(false);
     		Error.setText("ID must be filled!");
@@ -291,9 +299,10 @@ public class addNewSupplierController implements Initializable {
 	
 	@FXML
 	void addSupplierClicked(MouseEvent event) {
-		if(!idTxtField.getText().equals(validId) ) {//check that id text field has'nt changed
-			idError.setVisible(true);
-			idError.setText("Unable to locate ID");
+		//check that userName text field has'nt changed
+		if(!userNameTxtField.getText().equals(validUserName) ) {
+			userNameError.setVisible(true);
+			userNameError.setText("Unable to locate ID");
 			Error.setVisible(false);
     		return;
     	}
@@ -303,11 +312,6 @@ public class addNewSupplierController implements Initializable {
 		}
 		
 		try {
-			//create a new user
-			NewUser newUser = new NewUser(info.getUserName(), info.getPassword(), info.getFirstName(),
-					info.getLastName(), info.getID(), info.getEmail(),info.getPhoneNumber(),
-					UserType.Supplier, info.getOrganization(), info.getMainBranch(),
-					info.getRole(),0, Status.Active, info.getAvatar());
 			//prepare fields for table bitemedb.suppliers	
 			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
 					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
@@ -316,7 +320,7 @@ public class addNewSupplierController implements Initializable {
 			newUser.setSupplier(newSupplier);
 				
 			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
-			idError.setVisible(false);
+			userNameError.setVisible(false);
 			Error.setVisible(false);
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);

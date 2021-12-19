@@ -11,14 +11,18 @@ import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -74,7 +78,19 @@ public class authorizedEmployerApprovalController implements Initializable{
 	    private TextField employerCompanyNameTxtField;
 
 	    @FXML
-	    private TableView<?> approvalTable;
+	    private TableView<BusinessCustomer> approvalTable;
+	    
+	    @FXML
+		private TableColumn<BusinessCustomer, String> EmployerCode;
+
+		@FXML
+		private TableColumn<BusinessCustomer,String> EmployeCompanyName;
+
+		@FXML
+		private TableColumn<BusinessCustomer, Integer> IsApproved;
+
+		@FXML
+		private TableColumn<BusinessCustomer, String> HRname;
 
 	    @FXML
 	    private Button checkForApprovals;
@@ -85,7 +101,8 @@ public class authorizedEmployerApprovalController implements Initializable{
 	}
 
 	@FXML
-	void checkForApprovalsClicked(MouseEvent event) {
+	void checkForApprovalsClicked(MouseEvent event){}
+	public void initTable(){// checkForApprovalsClicked(MouseEvent event) {
 		ClientGUI.client.checkForApprovals();
 		//wait for response
 		Thread t = new Thread(new Runnable() {
@@ -111,19 +128,42 @@ public class authorizedEmployerApprovalController implements Initializable{
 		//handle server response
 		ServerResponse sr = ClientGUI.client.getLastResponse();
 		@SuppressWarnings("unchecked")
-		//get the server response- Business employers that needs approval 
+		//get the server response- Business employers that needs approval
 		ArrayList<BusinessCustomer> response = (ArrayList<BusinessCustomer>) sr.getServerResponse();
-
-		//check if ID is valid
-		if(response.get(0) == null)
+		//check if business customers are waiting for approval
+		if(response.size() == 0)
 		{
 			noApprovals.setVisible(true);
 			enableEdit(false);
 			return;
 		}
 		enableEdit(true);
-		
+		setTable( response);
+		//System.out.println(observableBusiness.get(0).getEmployerCode());
+		//approvalTable.setItems(observableBusiness);	
 	}
+	
+	
+	private void setTable(ArrayList<BusinessCustomer> list) {
+		System.out.println("test: " + list.get(0).getEmployerCode() + " " + list.get(0));
+		EmployerCode.setCellValueFactory(new PropertyValueFactory<>("EmployerCode"));
+		EmployeCompanyName.setCellValueFactory(new PropertyValueFactory<>("EmployeCompanyName"));
+		IsApproved.setCellValueFactory(new PropertyValueFactory<>("IsApproved"));
+		HRname.setCellValueFactory(new PropertyValueFactory<>("HRname"));
+		approvalTable.setItems(getCustomer(list));
+		approvalTable.setEditable(true);
+	}
+	
+	private ObservableList<BusinessCustomer> getCustomer(ArrayList<BusinessCustomer> list) {
+		ObservableList<BusinessCustomer> customers = FXCollections.observableArrayList();
+		for (BusinessCustomer customer : list) {
+			BusinessCustomer customerPlusBudget = new BusinessCustomer(customer.getEmployerCode(),
+					customer.getEmployeCompanyName(), customer.getIsApproved(), customer.getHRname());
+			customers.add(customerPlusBudget);
+		}
+		return customers;
+	}
+	
 	
 	private void enableEdit(boolean val) {
 		employerCode.setVisible(val);

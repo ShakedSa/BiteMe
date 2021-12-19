@@ -16,6 +16,7 @@ import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -708,6 +709,56 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
+	
+	/**
+	 * Check if a user name number is exist and has no type
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+
+	public static ServerResponse checkUserNameWithNoType(String username) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) { 
+				if(rs.getString(8).equals("")) {
+					response.add(rs.getString(3));
+					response.add(rs.getString(4));
+				}
+				else
+					response.add("already has type");
+			}
+			else {
+				response.add("Error");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
+	//java.sql.SQLIntegrityConstraintViolationException: 
+	//Cannot add or update a child row: a foreign key constraint fails
+	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
+	//REFERENCES `suppliers` (`RestaurantName`))
+	
+	public static void updateFile(InputStream is, String date) {
+		System.out.println("test !");
+		String filename= "Report " + date + ".pdf";
+		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
+	}
+
 
 	/**
 	 * @param is   File inputstream to upload as a blob
@@ -990,9 +1041,13 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, 0);
 			ResultSet rs = stmt.executeQuery();
-			// save in response all employers that needs approval
-			while (rs.next()) {
-				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4)));
+
+			System.out.println("11111");
+			//save in response all employers that needs approval
+			while(rs.next()) {
+				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2),
+						rs.getInt(3), rs.getString(4)));
+				System.out.println(response.get(0).getEmployeCompanyName());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1122,6 +1177,7 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
+
 
 	public static ServerResponse addItemToMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("String");
