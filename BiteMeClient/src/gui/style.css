@@ -410,4 +410,8 @@
 	-fx-translate-y: 100.0;
 }
 
+.selected{
+	-fx-effect: dropshadow(three-pass-box, rgba(49, 128, 188,0.8),10,0.3,0,0);
+}
+
 

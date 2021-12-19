@@ -66,7 +66,7 @@ public class Server extends AbstractServer {
 		
 		if(msg instanceof OrderDeliveryMethod) {
 			try {
-			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
+			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg), client);;
 			}catch(Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling message in server");
@@ -152,6 +152,9 @@ public class Server extends AbstractServer {
 			break;
 		case "getCustomerInfo":
 			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(1)), client);
+			break;
+		case "rate":
+			this.sendToClient(mysqlConnection.setRate(m.get(1), m.get(2)), client);
 			break;
 		default:
 			sendToClient("default", client);

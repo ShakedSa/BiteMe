@@ -78,12 +78,17 @@ public class paymentController implements Initializable {
 	}
 
 	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
+
+	@FXML
 	void nextOrderStep(MouseEvent event) {
 		errorMsg.setText("");
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
 			Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
 			W4CCard w4c = user.getW4c();
-			if (w4c.getBalance() == 0) {
+			if (w4c.getBalance() == 0 || w4c.getDailyBalance() == 0) {
 				errorMsg.setText("Employer's balance is 0.\nPlease select different type of payment method.");
 				return;
 			}
@@ -164,10 +169,17 @@ public class paymentController implements Initializable {
 		businessRadio.requestFocus();
 		businessRadio.setFocusTraversable(true);
 		businessRadio.setSelected(true);
-		showTextField(true);
 		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
-		if (router.getOrder().getOrderPrice() > w4cCard.getDailyBudget()) {
+		if (w4cCard.getDailyBalance() == 0) {
+			businessRadio.setSelected(false);
+			businessRadio.setDisable(true);
+			privateRadio.setSelected(true);
+			errorMsg.setText("Daily balance of business account is 0.\nPlease use your personal credit card.");
+			return;
+		}
+		showTextField(true);
+		if (router.getOrderDeliveryMethod().getFinalPrice() > w4cCard.getDailyBudget()) {
 			bothRadio.setVisible(true);
 			bothRadio.setSelected(true);
 			bothRadio.requestFocus();

@@ -137,13 +137,13 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. add new supplier to the db
 	 * 
 	 * @param restaurantName
 	 */
-	public void addNewSupplier(NewUser supplier) {				
+	public void addNewSupplier(NewUser supplier) {
 		try {
 			client.handleMessageFromClientUI(supplier);
 		} catch (Exception e) {
@@ -151,7 +151,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
@@ -169,8 +169,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
-	
+
 	/**
 	 * Sending a query request from the server. check for employers approvals
 	 * restaurant.
@@ -225,33 +224,30 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	
 	/**
 	 * Sending the server a creatNewBusinessCustomer request.
 	 *
 	 * @param orderNumber
 	 * 
 	 */
-	public void createNewBusinessCustomer(String hrUserName,String employerCode, String employerCompanyName) {
+	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName,employerCode,employerCompanyName));
+			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName, employerCode, employerCompanyName));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
 	 *
 	 * @param hrUserName,employerCompanyName
 	 * 
 	 */
-	public void selectCustomerAndbudget( String employerCompanyName) {
+	public void selectCustomerAndbudget(String employerCompanyName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList("selectCustomerAndbudget", employerCompanyName));
@@ -261,7 +257,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
 	 *
@@ -271,22 +267,28 @@ public class ClientUI implements ClientIF {
 	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName,customerId));
+			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName, customerId));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	public void setRate(int orderNumber, int rate) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("rate", orderNumber + "", rate + ""));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
 	/**
-	 * Sending the server a request to check if the business customer is already created.
+	 * Sending the server a request to check if the business customer is already
+	 * created.
 	 * 
 	 * @param orderNumber
 	 * 
@@ -310,8 +312,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-  
- 	
+
 	/**
 	 * supplier update order status
 	 * 
@@ -330,9 +331,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * get order details
+	 * 
 	 * @param orderNumber
 	 */
 	public void getOrderInfo(String orderNumber) {
@@ -344,11 +346,12 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-		
+
 	}
-	
+
 	/**
 	 * get customer details
+	 * 
 	 * @param deliveryNumber
 	 */
 	public void getCustomerInfo(String deliveryNumber) {
@@ -361,9 +364,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * supplier add new item to menu
+	 * 
 	 * @param product
 	 */
 	public void addItemToMenu(Product product) {
@@ -374,10 +378,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 
-
 	}
-
-																											   				
 
 	/**
 	 * @return the searchOrder

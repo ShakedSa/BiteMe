@@ -83,8 +83,13 @@ public class identifyController implements Initializable {
 			errorMsg.setText("Failed to read QR code");
 			return;
 		} else {
-			readingMsg.setText("Reading...");
+			readingMsg.setText("QR Reading...");
 		}
+	}
+
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
 	}
 
 	/**
@@ -117,10 +122,6 @@ public class identifyController implements Initializable {
 			w4cCodeFieldTxt.clear();
 			readingMsg.setText("");
 		});
-		router = Router.getInstance();
-		Order newOrder = new Order();
-		newOrder.setRestaurantName(restaurantsName);
-		router.setOrder(newOrder);
 		if (router.getRestaurantMenuController() == null) {
 			AnchorPane mainContainer;
 			restaurantMenuController controller;
@@ -131,6 +132,7 @@ public class identifyController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurantName(restaurantsName);
+				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -147,6 +149,7 @@ public class identifyController implements Initializable {
 			stage.setScene(router.getRestaurantMenuController().getScene());
 			router.getRestaurantMenuController().setRestaurantName(restaurantsName);
 			router.getRestaurantMenuController().setMenu();
+			router.getRestaurantMenuController().setItemsCounter();
 			stage.show();
 		}
 	}
@@ -199,6 +202,7 @@ public class identifyController implements Initializable {
 	 */
 	public void setRestaurantToOrder(String restaurantName) {
 		this.restaurantsName = restaurantName;
+		router.getOrder().setRestaurantName(restaurantName);
 	}
 
 	/**
