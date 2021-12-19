@@ -141,6 +141,12 @@ public class Server extends AbstractServer {
 		case "updateOrderStatus":
 			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
+		case "getOrderInfo":
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(1)), client);
+			break;
+		case "getCustomerInfo":
+			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(1)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

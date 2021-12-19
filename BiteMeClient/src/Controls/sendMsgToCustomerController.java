@@ -1,8 +1,10 @@
 package Controls;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
@@ -17,84 +19,179 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class sendMsgToCustomerController implements Initializable {
-	
+
 	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
-    @FXML
-    private Rectangle avatar;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private Label closeMsgBtn;
+	@FXML
+	private Label closeMsgBtn;
 
-    @FXML
-    private Text customerNameTxt;
+	@FXML
+	private Text customerNameTxt;
 
-    @FXML
-    private Text priceTxt;
+	@FXML
+	private Text priceTxt;
 
-    @FXML
-    private Text errorMsg;
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private Text logoutBtn;
 
-    @FXML
-    private Text logoutBtn;
+	@FXML
+	private Text phoneNumberTxt;
 
-    @FXML
-    private Text phoneNumberTxt;
+	@FXML
+	private Text plannedTimeTxt;
 
-    @FXML
-    private Text plannedTimeTxt;
+	@FXML
+	private Text profileBtn;
 
-    @FXML
-    private Text profileBtn;
+	@FXML
+	private Text statusTxt;
 
-    @FXML
-    private Text statusTxt;
+	@FXML
+	private Text supplierPanelBtn;
 
-    @FXML
-    private Text supplierPanelBtn;
-    
-    public void displayMsg() {
-		User user = (User) ClientGUI.client.getUser().getServerResponse();
-		customerNameTxt.setText("Dear " );
-		phoneNumberTxt.setText("Phone Number: " );
-		priceTxt.setText("Your Order From " + user.getOrganization() + "Cost: ");
-		statusTxt.setText("Order Status: ");
-		//if the status is ready with delivery:
-		plannedTimeTxt.setText("Planned Time: ");
-		//need to display order status and planned time
+	private String orderNumber;
+	private String status;
+	private Integer deliveryNumber;
+	
+	public void setOrderInfo(String orderNumber, String status, int deliveryNumber) {
+		this.orderNumber = orderNumber;
+		this.status = status;
+		this.deliveryNumber = deliveryNumber;
 	}
 
-    @FXML
-    void closeMsgBtnClicked(MouseEvent event) {
-    	router.getSupplierPanelController().updateOrederClicked(event);
-    }
+	private ArrayList<String> getOrderInfo() {
 
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				//ClientGUI.client.getOrderInfo(orderNumber);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		ClientGUI.client.getOrderInfo(orderNumber);
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		// handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		if (sr == null) {
+			return null;
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<String> response1 = (ArrayList<String>) sr.getServerResponse();
+		if (response1 == null) {
+			System.out.println("test");
+			return null;
+		}
+		System.out.println(response1.toString());
+		statusTxt.setText("Your order status from " + response1.get(0) + " :" + response1.get(3));
+		if (status.equals("Order Received")) {
+			plannedTimeTxt.setText("Order received time: " + response1.get(1));
+		} else
+			plannedTimeTxt.setText("Order planned time: " + response1.get(2));
+		
+		return response1;
 
-    @FXML
-    void profileBtnClicked(MouseEvent event) {
-    	router.showProfile();
-    }
+	}
 
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
+	private ArrayList<String> getCustomerInfo() {
 
-    @FXML
-    void returnToSupplierPanel(MouseEvent event) {
-    	router.returnToSupplierPanel(event);
-    }
-    
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ClientGUI.client.getCustomerInfo(deliveryNumber.toString());
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		// handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		if (sr == null) {
+			return null;
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<String> response2 = (ArrayList<String>) sr.getServerResponse();
+		if (response2 == null) {
+			System.out.println("test");
+			return null;
+		}
+		System.out.println(response2.toString());
+		customerNameTxt.setText("Dear " + response2.get(1) + ",");
+		phoneNumberTxt.setText("Phone number: " + response2.get(0));
+		
+		return response2;
+	}
+//	ArrayList<String> res1 = new ArrayList<String> (getOrderInfo());
+//	ArrayList<String> res2 = new ArrayList<String> (getCustomerInfo());
+	
+//	private void displayMsg(ArrayList<String> res1, ArrayList<String> res2) {
+//		statusTxt.setText("Your order status from " + res1.get(0) + " :" + res1.get(3));
+//		if (router.getSupplierUpdateOrderController().getStatus().equals("Order Received")) {
+//			plannedTimeTxt.setText("Order received time: " + res1.get(1));
+//		} else
+//			plannedTimeTxt.setText("Order planned time: " + res1.get(2));
+//		customerNameTxt.setText("Dear " + res2.get(1) + ",");
+//		phoneNumberTxt.setText("Phone number: " + res2.get(0));
+//	}
+
+	@FXML
+	void closeMsgBtnClicked(MouseEvent event) {
+		router.getSupplierPanelController().updateOrederClicked(event);
+	}
+
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
+
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
+
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
+
+	@FXML
+	void returnToSupplierPanel(MouseEvent event) {
+		router.returnToSupplierPanel(event);
+	}
+
 	/**
 	 * Setting the avatar image of the user.
 	 */
@@ -107,10 +204,13 @@ public class sendMsgToCustomerController implements Initializable {
 		router = Router.getInstance();
 		router.setSendMsgToCustomerController(this);
 		setStage(router.getStage());
+		//displayMsg(res1, res2);
+		getOrderInfo();
+		getCustomerInfo();
 	}
 
 	public void setScene(Scene scene) {
-		this.scene = scene; 
+		this.scene = scene;
 	}
 
 	public Scene getScene() {
@@ -122,4 +222,3 @@ public class sendMsgToCustomerController implements Initializable {
 	}
 
 }
-

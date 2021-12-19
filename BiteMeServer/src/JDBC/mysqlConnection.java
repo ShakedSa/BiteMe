@@ -548,9 +548,9 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		// serverResponse.setDataType("String");
 		return serverResponse;
 	}
+
 
 	/**
 	 * Check if a user name number is exist in the db or not
@@ -942,7 +942,8 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Check if a user name number is exist in the db or not
+
+	 /* Check if a user name number is exist in the db or not
 	 * 
 	 * @param orderNumber
 	 * @return ServerResponse
@@ -1008,14 +1009,17 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	/**
+  /* Update order status and planned time/received time in order table
+	 * 
+	 * @param receivedOrReady
 	 * @param orderNumber
+	 * @param time
 	 * @param status
-	 * @return
+	 * @return deliveryNumber
 	 */
 	public static ServerResponse updateOrderStatus(String receivedOrReady, String orderNumber, String time,
 			String status) {
-		ServerResponse serverResponse = new ServerResponse("String");
+		ServerResponse serverResponse = new ServerResponse("Integer");
 		System.out.println(receivedOrReady);
 		try {
 			if (receivedOrReady.equals("Order Received")) {
@@ -1024,15 +1028,14 @@ public class mysqlConnection {
 				// = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
-				stmt.setDate(2, Date.valueOf(LocalDate.now()));
-				stmt.setTime(2, Time.valueOf(LocalTime.now()));
+				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
 				stmt.executeUpdate();
 			} else { // Order Is Ready
-				String query = "UPDATE bitemedb.orders SET OrderStatus = ? PlannedTime = ? AND WHERE OrderNumber = ?";
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, PlannedTime = ? WHERE OrderNumber = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
-				stmt.setTime(2, Time.valueOf(time));
+				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
 				stmt.executeUpdate();
 			}
@@ -1042,9 +1045,106 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
+
+		// get deliveryNumber from orderedDelivery table
+		int deliveryNumber = 0;
+		try {
+			String query = "SELECT DeliveryNumber FROM bitemedb.ordereddelivery WHERE OrderNumber = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				deliveryNumber = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
 		serverResponse.setMsg("Success");
-//		serverResponse.setServerResponse(response);
+		serverResponse.setServerResponse(deliveryNumber);
 		return serverResponse;
 	}
 
+	public static ServerResponse getOrderInfo(String orderNumber) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, Integer.parseInt(orderNumber));
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				response.add(rs.getString(2)); // restaurant name
+				response.add(rs.getString(4)); // received time
+				response.add(rs.getString(5)); // planned time
+				response.add(rs.getString(8)); // status
+			} else {
+				response.add("Error");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+
+	public static ServerResponse getCustomerInfo(String deliveryNumber) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.deliveries WHERE DeliveryNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, deliveryNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				response.add(rs.getString(7)); // phone number
+				response.add(rs.getString(8)); // customer name
+			} else {
+				response.add("Error");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+
+	public static ServerResponse addItemToMenu(Product product) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		try {
+			PreparedStatement stmt;
+			String query = "INSERT INTO bitemedb.product (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, product.getRestaurantName());
+			stmt.setString(2, product.getDishName());
+			stmt.setString(3, product.getType().toString());
+			stmt.setFloat(4, product.getPrice());
+			stmt.setString(5, product.getDescription());
+			stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
+//		serverResponse.setServerResponse(response);
+	//	return serverResponse;
+	//}
 }

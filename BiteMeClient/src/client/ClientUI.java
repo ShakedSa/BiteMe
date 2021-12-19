@@ -15,6 +15,7 @@ import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
+import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
 
@@ -309,18 +310,74 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
-	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, LocalDateTime time, String status) {
+  
+ 	
+	/**
+	 * supplier update order status
+	 * 
+	 * @param receivedOrReady
+	 * @param orderNumber
+	 * @param time
+	 * @param status
+	 */
+	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, String time, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time.toString(), status));
+			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time, status));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
+	}
+	
+	/**
+	 * get order details
+	 * @param orderNumber
+	 */
+	public void getOrderInfo(String orderNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getOrderInfo", orderNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+	
+	/**
+	 * get customer details
+	 * @param deliveryNumber
+	 */
+	public void getCustomerInfo(String deliveryNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getCustomerInfo", deliveryNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * supplier add new item to menu
+	 * @param product
+	 */
+	public void addItemToMenu(Product product) {
+		try {
+			client.handleMessageFromClientUI(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
 
 	}
+
+																											   				
 
 	/**
 	 * @return the searchOrder
@@ -452,5 +509,4 @@ public class ClientUI implements ClientIF {
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
-
 }
