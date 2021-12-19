@@ -44,6 +44,9 @@ public class W4CCard implements Serializable {
 		this.balance = balance;
 		this.dailyBudget = dailyBudget;
 	}
+	public W4CCard() {
+		
+	}
 
 	public String getCreditCardNumber() {
 		return creditCardNumber;

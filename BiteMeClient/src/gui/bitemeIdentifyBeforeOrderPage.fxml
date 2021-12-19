@@ -110,5 +110,10 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Label>
+      <Label fx:id="readingMsg" layoutX="92.0" layoutY="368.0" textFill="#009e00">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

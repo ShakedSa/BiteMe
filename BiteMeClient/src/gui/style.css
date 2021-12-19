@@ -46,13 +46,152 @@
     -fx-background-insets: 0.0;
     -fx-padding: 0.0;
 }
-
+/*Scroll pane global styling */
 .scroll-pane:focused {
     -fx-background-insets: 0.0;
 }
 
 .scroll-pane .corner {
     -fx-background-insets: 0.0;
+}
+
+/*Text field global styling */
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 1.0;
+    -fx-border-radius: 5;
+    -fx-border-color: -fx-primary-text-color;
+}
+
+.text-field:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 2.0;
+    -fx-border-color: -fx-secondary-text-color;
+}
+
+/*Button global styling */
+.button{
+	-fx-background-color: transparent;
+	-fx-border-width: 1.0;
+    -fx-border-radius: 5.0;
+    -fx-border-color: -fx-primary-text-color;
+    -fx-padding: 5.0 10.0;
+}
+
+.button:hover{
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-background-radius: 5.0;
+}
+
+.button:pressed{
+	-fx-scale-x: 0.9;
+	-fx-scale-y: 0.9;
+}
+/*Datepicker global styling */
+
+.date-picker:focused{
+	-fx-background-color:white;
+	-fx-border-width:0;
+}
+.date-picker .combo-box {
+-fx-background-insets:0px ;
+-fx-border-width: 0px;
+  }
+
+.date-picker .text-field{
+-fx-background-radius:0px ;
+-fx-border-color: transparent;
+}
+
+.date-picker .arrow-button{
+-fx-background-radius:0px ;
+-fx-background-color: #eee;
+}
+
+.date-picker .arrow-button .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: black;
+}
+
+.date-picker .arrow-button:hover .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: -fx-secondary-text-color;
+ }
+
+ .date-picker .button {
+-fx-background-color: transparent;
+-fx-border-color:transparent;
+-fx-pref-height: 35px;
+-fx-pref-width: 35px;
+ }
+
+ .date-picker .button:hover {
+-fx-border-color:transparent;
+-fx-pref-height: 35px;
+-fx-pref-width: 35px;
+ }
+
+.date-picker .button .arrow:pressed {
+-fx-border-color:transparent;
+-fx-pref-height: 35px;
+-fx-pref-width: 35px;
+ }
+
+ .date-picker .cell {
+-fx-background-color: white;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+ }
+
+.date-picker .cell:hover {
+-fx-background-color: -fx-secondary-text-color;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+}
+
+.date-picker .cell:focused {
+-fx-background-color:#11659e;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+ }
+
+.date-picker-popup  {
+-fx-border-color: #1783CC;
+-fx-background-color: black;
+ }
+ 
+ /*Combo box global styling */
+.combo-box{
+    -fx-border-color:#E6E6E6;
+    -fx-border-style:solid;
+    -fx-border-width:1;
+}
+.combo-box .text-field:focused{
+	-fx-background-color:white;
+	-fx-border-width:1;
+	-fx-border-color: -fx-secondary-text-color;
+	-fx-border-radius: 0;
+}
+.combo-box .text-field{
+	-fx-background-color:white;
+	-fx-border-width:0;
+}
+.combo-box .arrow{
+    -fx-background-color:#2478E9;
+}
+.combo-box .arrow-button{
+    -fx-background-color:white;
+    -fx-border-style:none;
+}
+.combo-box .arrow-button{
+    -fx-background-color:white;
+}
+.combo-box .list-cell{
+    -fx-background-color:white;
+}
+.combo-box .list-cell:hover{
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-fill-text: white;
 }
 
 /**********************************************/
@@ -139,7 +278,7 @@
 	-fx-cursor: -fx-default-hand-cursor;
 	-fx-padding: 0.0 10.0;
 	-fx-alignment: center;
-	-fx-translate-y: 338;
+	-fx-translate-y: 338.0;
 }
 
 #addItem{
@@ -159,12 +298,12 @@
 }
 
 .plus{
-	-fx-translate-x:298;
+	-fx-translate-x:298.0;
 	-fx-text-fill: -fx-primary-text-color;
 }
 
 .minus{
-	-fx-translate-x:372;
+	-fx-translate-x:372.0;
 	-fx-text-fill: -fx-primary-text-color;
 }
  #txtarea{
@@ -230,31 +369,31 @@
 }
 
 .counter{
-	-fx-translate-x:346;
-	-fx-translate-y:338;
+	-fx-translate-x:346.0;
+	-fx-translate-y:338.0;
 	-fx-text-fill:-fx-primary-text-color;
 }
 
 .close{
 	-fx-text-fill: red;
 	-fx-cursor: hand;
-	-fx-translate-x:650;
-	-fx-translate-y: 15;
+	-fx-translate-x:650.0;
+	-fx-translate-y: 15.0;
 }
 
 .line{
 	-fx-stroke: -fx-primary-text-color;
-	-fx-scale-x:1;
-	-fx-scale-y:1;
-	-fx-translate-x:134;
-	-fx-translate-y: 51;
+	-fx-scale-x:1.0;
+	-fx-scale-y:1.0;
+	-fx-translate-x:134.0;
+	-fx-translate-y: 51.0;
 }
 
 .componentContent{
-	-fx-max-height: 260;
-	-fx-pref-width: 230;
-	-fx-translate-x:30;
-	-fx-translate-y: 100;
+	-fx-max-height: 260.0;
+	-fx-pref-width: 230.0;
+	-fx-translate-x:30.0;
+	-fx-translate-y: 100.0;
 }
 
 

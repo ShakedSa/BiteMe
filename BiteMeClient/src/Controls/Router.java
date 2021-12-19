@@ -39,7 +39,6 @@ public class Router {
 	private reviewOrderController ReviewOrderController;
 	private paymentController PaymentController;
 	private ceoPanelController CEOPanelController;
-	private employerHRPanelController EmployerHRPanelController;
 	private profileController ProfileController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
@@ -56,17 +55,18 @@ public class Router {
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
 	// Employer HR Panel pages:
+	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
 	// CEO Panel pages:
 	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
 
-
-	/**State of the order application: */
+	/** State of the order application: */
 	/***************************************/
 	private Order order = new Order();
 	private Delivery delivery;
 	private OrderDeliveryMethod orderDeliveryMethod;
+
 	/***************************************/
 	public static Router getInstance() {
 		if (router == null)
@@ -257,16 +257,17 @@ public class Router {
 	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
 		PickDateAndTimeController = pickDateAndTimeController;
 	}
-	
+
 	/**
 	 * @param sendMsgToCustomerController the sendMsgToCustomerController to set
 	 */
 	public void setSendMsgToCustomerController(sendMsgToCustomerController sendMsgToCustomerController) {
 		SendMsgToCustomerController = sendMsgToCustomerController;
 	}
-	
+
 	/**
-	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController to set
+	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController
+	 *                                         to set
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
@@ -481,21 +482,20 @@ public class Router {
 	public reviewOrderController getReviewOrderController() {
 		return ReviewOrderController;
 	}
-	
+
 	/**
 	 * @return the sendMsgToCustomerController
 	 */
 	public sendMsgToCustomerController getSendMsgToCustomerController() {
 		return SendMsgToCustomerController;
 	}
-	
+
 	/**
 	 * @return the viewPDFQuarterlyReportController
 	 */
 	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
 		return ViewPDFQuarterlyReportController;
 	}
-
 
 	/**
 	 * @param reviewOrderController the reviewOrderController to set
@@ -556,6 +556,23 @@ public class Router {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				ClientGUI.client.logout(user.getUserName());
+				EmployerHRPanelController = null;
+				RegisterEmployerAsLegacyController = null;
+				ConfirmBusinessAccountController = null;
+				AddNewItemController = null;
+				AddNewSupplierController = null;
+				AuthorizedEmployerApprovalController = null;
+				CreateMenuController = null;
+				EditMenuItemController = null;
+				OpenNewAccountController = null;
+				RegisterEmployerAsLegacyController = null;
+				SendMsgToCustomerController = null;
+				SupplierUpdateOrderController = null;
+				UpdateMenuController = null;
+				UpdateUserInformationController = null;
+				UploadQuarterlyReportController = null;
+				ViewMonthlyReportsController = null;
+				ViewPDFQuarterlyReportController = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -764,7 +781,7 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		if(order.getProducts() == null) {
+		if (order.getProducts() == null) {
 			return new ArrayList<>();
 		}
 		return order.getProducts();
@@ -791,7 +808,6 @@ public class Router {
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
 	}
-
 
 	/**
 	 * @return the orderDeliveryMethod

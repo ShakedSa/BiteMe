@@ -103,6 +103,7 @@ public class restaurantMenuController implements Initializable {
 			return;
 		}
 		router.getOrder().setProducts(productsInOrder);
+		router.getOrder().calculateOrderPrice();
 		router = Router.getInstance();
 		if (router.getPickDateAndTimeController() == null) {
 			AnchorPane mainContainer;
@@ -288,7 +289,7 @@ public class restaurantMenuController implements Initializable {
 		for (Product p : productsToAdd) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "¤");
+			Label priceLabel = new Label(p.getPrice() + "\u20AA");
 			nameLabel.getStyleClass().addAll("overlayNameLayout", "padding");
 			priceLabel.getStyleClass().addAll("overylayPriceLayout", "padding");
 			pane.setId("menuBtn");
@@ -347,7 +348,7 @@ public class restaurantMenuController implements Initializable {
 				description.setLayoutY(61);
 				description.setTextFill(Color.BLACK);
 				/** Product's price */
-				Label price = new Label(String.format("Price %.2f ¤", p.getPrice()));
+				Label price = new Label(String.format("Price %.2f \u20AA", p.getPrice()));
 				price.setFont(new Font("Berlin Sans FB", 14));
 				price.setTextFill(Color.BLACK);
 				price.setLayoutX(580);
@@ -412,14 +413,14 @@ public class restaurantMenuController implements Initializable {
 									switch (newVal) {
 									case Small:
 										productPrice = p.getPrice() * (float) Component.smallSizePrice;
-										price.setText(String.format("Price %.2f ¤", productPrice));
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
 										return;
 									case Large:
 										productPrice = p.getPrice() * (float) Component.largeSizePrice;
-										price.setText(String.format("Price %.2f ¤", productPrice));
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
 										return;
 									default:
-										price.setText(String.format("Price %.2f ¤", p.getPrice()));
+										price.setText(String.format("Price %.2f \u20AA", p.getPrice()));
 										return;
 									}
 								});

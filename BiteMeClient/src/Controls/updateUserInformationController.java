@@ -101,7 +101,7 @@ public class updateUserInformationController implements Initializable{
 		ObservableList<String> typeOfUsers = FXCollections
 				.observableArrayList(Arrays.asList(UserType.BranchManager.toString(),
 						UserType.BusinessCustomer.toString(), UserType.Customer.toString(),
-						UserType.EmployerHR.toString(), UserType.Supplier.toString()));
+						UserType.EmployerHR.toString()));
 		userPermitionBox.getItems().addAll(typeOfUsers);
 	}
 	
@@ -123,11 +123,14 @@ public class updateUserInformationController implements Initializable{
 		if(!checkValues()) {
     		return;
     	}
+
+		//ClientGUI.client.checkUser(userNameTxtField.getText());
+
 		//wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.checkUser(userNameTxtField.getText());
+				ClientGUI.client.checkID(userNameTxtField.getText());
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -218,11 +221,6 @@ public class updateUserInformationController implements Initializable{
     	userNameError.setVisible(false);
     	updateSucess.setVisible(true);
     	updateSucess1.setVisible(true);
-    	System.out.println(userPermitionBox.getSelectionModel().getSelectedItem() +"\n" + userStatusBox.getSelectionModel().getSelectedItem());
-    	ClientGUI.client.updateUserInfo(userNameTxtField.getText(),userPermitionBox.getSelectionModel().getSelectedItem()
-    			, userStatusBox.getSelectionModel().getSelectedItem());
-    	
-    	
     }
     
     private boolean checkValues() {

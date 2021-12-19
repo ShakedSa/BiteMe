@@ -2,13 +2,20 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.Component;
+import Entities.Product;
+import Enums.TypeOfProduct;
 import Enums.UserType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -62,9 +69,12 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private Text supplierPanelBtn;
-	
+
 	@FXML
 	private Text errorMsg;
+
+	@FXML
+	private TableView<Product> menuTable;
 
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
@@ -176,6 +186,7 @@ public class updateMenuController implements Initializable {
 		setStage(router.getStage());
 		VImage.setVisible(false);
 		menuUpdatedSuccessfullyTxt.setVisible(false);
+		createTable();
 	}
 
 	public void setScene(Scene scene) {
@@ -188,6 +199,29 @@ public class updateMenuController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	/**
+	 * Creating the view table columns.
+	 */
+	public void createTable() {
+		TableColumn<Product, TypeOfProduct> typeCol = new TableColumn<Product, TypeOfProduct>("Type");
+		typeCol.setCellValueFactory(new PropertyValueFactory<Product, TypeOfProduct>("type"));
+		menuTable.getColumns().add(typeCol);
+		TableColumn<Product, String> nameCol = new TableColumn<Product, String>("Dish Name");
+		nameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("restaurantName"));
+		menuTable.getColumns().add(nameCol);
+		TableColumn<Product, ArrayList<Component>> componentCol = new TableColumn<Product, ArrayList<Component>>(
+				"Components");
+		componentCol.setCellValueFactory(new PropertyValueFactory<Product, ArrayList<Component>>("components"));
+		menuTable.getColumns().add(componentCol);
+		TableColumn<Product, Float> priceCol = new TableColumn<Product, Float>("Price");
+		priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
+		menuTable.getColumns().add(priceCol);
+		TableColumn<Product, String> descriptionCol = new TableColumn<Product, String>("Description");
+		descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+		menuTable.getColumns().add(descriptionCol);
+		menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 
 }

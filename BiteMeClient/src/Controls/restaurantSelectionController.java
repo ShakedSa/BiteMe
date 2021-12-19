@@ -209,12 +209,12 @@ public class restaurantSelectionController implements Initializable {
 	public void setRestaurants() {
 //		ServerResponse restaurants = ClientGUI.client.getRestaurants();
 		if (resRestaurants == null) {
-			ClientGUI.client.restaurantsRequest();
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
 //					ServerResponse last = ClientGUI.client.getLastResponse();
 //					while (ClientGUI.client.getLastResponse() == last) {
+					ClientGUI.client.restaurantsRequest();
 					synchronized (ClientGUI.monitor) {
 						try {
 							ClientGUI.monitor.wait();

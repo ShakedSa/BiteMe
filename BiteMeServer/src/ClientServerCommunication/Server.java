@@ -2,10 +2,13 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import Entities.MyFile;
+import Entities.NewSupplier;
+import Entities.NewUser;
 import Entities.User;
 import Enums.UserType;
 import Entities.OrderDeliveryMethod;
@@ -73,6 +76,21 @@ public class Server extends AbstractServer {
 			return;
 		}
 		
+		if(msg instanceof NewUser) {
+			try {
+			NewSupplier supplier = ((NewUser)msg).getSupplier();
+			//add supplier to users table
+			mysqlConnection.addNewUser((NewUser)msg);
+			//add supplier to supplliers table
+			mysqlConnection.addNewSupplier(supplier);
+			}catch(Exception e) {
+				e.printStackTrace();
+				System.out.println("Error while handling message in server");
+			}
+			return;
+		}
+
+		
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
@@ -102,9 +120,23 @@ public class Server extends AbstractServer {
 		case "checkUser":
 			this.sendToClient(mysqlConnection.checkUsername(m.get(1)), client);
 			break;
+		case "checkID":
+			this.sendToClient(mysqlConnection.checkID(m.get(1)), client);
+			break;
 		case "updateUser":
 			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
-			this.sendToClient("hello", client);
+			break;
+		case "employersApproval":
+			mysqlConnection.getEmployersForApproval();
+			break;
+		case "createNewBusinessCustomer":
+			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(1),m.get(2),m.get(3)),client);
+			break;
+		case "selectCustomerAndbudget":
+			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(1)),client);
+			break;
+		case "approveCustomerAsBusiness":
+			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(1),m.get(2)), client);
 			break;
 		case "updateOrderStatus":
 			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);

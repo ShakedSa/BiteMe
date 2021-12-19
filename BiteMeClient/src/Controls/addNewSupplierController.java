@@ -1,13 +1,24 @@
 package Controls;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.ImportedUser;
+import Entities.MyFile;
+import Entities.NewSupplier;
+import Entities.NewUser;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.BranchName;
+import Enums.Status;
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,6 +39,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class addNewSupplierController implements Initializable {
@@ -37,10 +50,29 @@ public class addNewSupplierController implements Initializable {
 	private Scene scene;
 
 	@FXML
+    private Button searchBtn;
+	
+	@FXML
 	private Label addSupplierBtn;
 
 	@FXML
 	private Rectangle avatar;
+	
+	@FXML
+    private Text InvalidMsg;
+	
+	@FXML
+	private Text restaurantName;
+
+    @FXML
+	private Text restaurantAddress;
+
+	@FXML
+	private Text restaurantType;
+
+	@FXML
+	private Text monthlyCommission;
+
 
 	@FXML
 	private Text homePageBtn;
@@ -48,6 +80,12 @@ public class addNewSupplierController implements Initializable {
 	@FXML
 	private Text uploadImageTxt;
 
+    @FXML
+    private Text idError;
+    
+    @FXML
+    private Text Error;
+    
 	@FXML
 	private ImageView leftArrowBtn;
 
@@ -58,10 +96,22 @@ public class addNewSupplierController implements Initializable {
 	private Text managerPanelBtn;
 
 	@FXML
+	private Text updateSucess;
+
+	@FXML
+	private ImageView updateSucess1;
+	    
+	@FXML
 	private ComboBox<String> monthlyCommissionBox;
 
 	@FXML
 	private Text profileBtn;
+	
+	@FXML
+	private Text UploadMsgImg;
+	
+	@FXML
+	private TextField idTxtField;
 
 	@FXML
 	private TextField restaurantAddressTxtField;
@@ -78,6 +128,16 @@ public class addNewSupplierController implements Initializable {
 	@FXML
 	private ImageView uploadImage;
 	
+	private String validId;
+	
+	private String validResttuarantName;
+	
+	private ImportedUser personInfo; // will hold the the person information from the db
+	
+	private File imgToUpload;
+	
+	private ImportedUser info;
+	
 	ObservableList<String> list;
 
 	// creating list of Commission
@@ -93,11 +153,192 @@ public class addNewSupplierController implements Initializable {
 		list = FXCollections.observableArrayList(type);
 		monthlyCommissionBox.setItems(list);
 	}
+	
+	@FXML
+    void searchClicked(MouseEvent event) {
+		if(!checkValues()) {
+    		return;
+    	}
+		ClientGUI.client.checkID(idTxtField.getText());
+		//wait for response
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		//handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		@SuppressWarnings("unchecked")
+		//get the server response- user information from outside the system
+		ImportedUser response = (ImportedUser) sr.getServerResponse();
 
+		//check if ID is valid
+		if(response == null)
+		{
+			idError.setText("Unable to locate ID");
+			idError.setVisible(true);
+			enableEdit(false);
+			return;
+		}
+		enableEdit(true);
+		//idError.setVisible(false);
+		idError.setText(response.getFirstName() +" " + response.getLastName());
+		validId = idTxtField.getText();
+		info = response; //save information from the import simulation table
+    }
+
+	//hides or shows certain components
+	private void enableEdit(boolean val) {
+		restaurantName.setVisible(val);
+		restaurantNameTxtField.setVisible(val);
+		restaurantAddress.setVisible(val);
+		restaurantAddressTxtField.setVisible(val);
+		restaurantType.setVisible(val);
+		restaurantTypeTxtField.setVisible(val);
+		monthlyCommission.setVisible(val);
+		monthlyCommissionBox.setVisible(val);
+		monthlyCommissionBox.setVisible(val);
+		monthlyCommissionBox.setVisible(val);
+		if(val == false) {
+			updateSucess.setVisible(val);
+	    	updateSucess1.setVisible(val);
+		}
+	}
+	
+	private boolean checkValues() {
+    	if( InputValidation.checkSpecialCharacters(idTxtField.getText())) {
+    		idError.setVisible(true);
+    		enableEdit(false);
+    		idError.setText("ID can't contain special characters!");
+    		return false;
+    	}
+    	if(idTxtField.getText().length() == 0) {
+    		idError.setVisible(true);
+    		enableEdit(false);
+    		idError.setText("ID must be filled!");
+    		return false;
+    	}
+    	return true;
+    }
+
+	
+	private boolean checkInfoFields() {
+    	if( InputValidation.checkSpecialCharacters(idTxtField.getText())) {
+    		Error.setVisible(true);
+    		enableEdit(false);
+    		Error.setText("ID can't contain special characters!");
+    		return false;
+    	}
+    	if(idTxtField.getText().length() == 0) {
+    		Error.setVisible(true);
+    		enableEdit(false);
+    		Error.setText("ID must be filled!");
+    		return false;
+    	}
+    	if( InputValidation.checkSpecialCharacters(restaurantNameTxtField.getText())) {
+    		Error.setVisible(true);
+    		Error.setText("Name can't contain special characters!");
+    		return false;
+    	}
+    	if(restaurantNameTxtField.getText().length() == 0) {
+    		Error.setVisible(true);
+    		Error.setText("Name must be filled!");
+    		return false;
+    	}
+    	if( InputValidation.checkSpecialCharacters(restaurantTypeTxtField.getText())) {
+    		Error.setVisible(true);
+    		Error.setText("Type can't contain special characters!");
+    		return false;
+    	}
+    	if(restaurantTypeTxtField.getText().length() == 0) {
+    		Error.setVisible(true);
+    		Error.setText("Type must be filled!");
+    		return false;
+    	}
+    	if(restaurantAddressTxtField.getText().length() == 0) {
+    		Error.setVisible(true);
+    		Error.setText("Address must be filled!");
+    		return false;
+    	}
+    	if(!restaurantAddressTxtField.getText().contains(",")) {
+    		Error.setVisible(true);
+    		Error.setText("Address is not valid");
+    		return false;
+    	}
+    	if(monthlyCommissionBox.getSelectionModel().isEmpty()) {
+    		Error.setVisible(true);
+    		Error.setText("Please choose monthly commission");
+    		return false;
+    	}
+    	return true;
+    }
+
+	
 	@FXML
 	void addSupplierClicked(MouseEvent event) {
-
+		if(!idTxtField.getText().equals(validId) ) {//check that id text field has'nt changed
+			idError.setVisible(true);
+			idError.setText("Unable to locate ID");
+			Error.setVisible(false);
+    		return;
+    	}
+		if(!checkInfoFields()) { //check that all the fields are filled and correct
+			Error.setVisible(true);
+    		return;
+		}
+		
+		try {
+			//create a new user
+			NewUser newUser = new NewUser(info.getUserName(), info.getPassword(), info.getFirstName(),
+					info.getLastName(), info.getID(), info.getEmail(),info.getPhoneNumber(),
+					UserType.Supplier, info.getOrganization(), info.getMainBranch(),
+					info.getRole(),0, Status.Active, info.getAvatar());
+			//prepare fields for table bitemedb.suppliers	
+			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
+					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
+					restaurantAddressTxtField.getText(),info.getAvatar(),
+					monthlyCommissionBox.getValue(), info.getMainBranch());
+			newUser.setSupplier(newSupplier);
+				
+			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
+			idError.setVisible(false);
+			Error.setVisible(false);
+			updateSucess.setVisible(true);
+			updateSucess1.setVisible(true);
+		}
+		catch (Exception e) {
+			System.out.println("Error sending (Files msg) to Server");
+		}
+		
 	}
+	
+	
+	/*@FXML
+    void uploadImageClicked(MouseEvent event) {
+    	UploadMsgImg.setVisible(false);
+    	FileChooser fc = new FileChooser();
+    	fc.setTitle("Open Folder");
+    	imgToUpload = fc.showOpenDialog(router.getStage());
+    	if(imgToUpload == null || !imgToUpload.toString().contains("jpg"))
+    		InvalidMsg.setVisible(true);
+    	else
+    		InvalidMsg.setVisible(false);
+    }*/
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
@@ -119,10 +360,6 @@ public class addNewSupplierController implements Initializable {
 		router.returnToManagerPanel(event);
 	}
 
-	@FXML
-	void uploadImageClicked(MouseEvent event) {
-
-	}
 
 	/**
 	 * Setting the avatar image of the user.
