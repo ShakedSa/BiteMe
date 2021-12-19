@@ -1208,7 +1208,7 @@ public class mysqlConnection {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM bitemedb.importsimulationuser");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM bitemedb.importsimulationuser WHERE UserName NOT IN (SELECT UserName FROM bitemedb.users)");
 			while (rs.next()) {
 				//insert user to users table:
 				PreparedStatement pstmt;
@@ -1222,7 +1222,7 @@ public class mysqlConnection {
 				pstmt.setString(5, rs.getString(1)); // id
 				pstmt.setString(6, rs.getString(6)); // email
 				pstmt.setString(7, rs.getString(7)); // phonenumber
-				pstmt.setString(8, "User" );		 //userType
+				pstmt.setString(8, "User");		 	 //userType
 				pstmt.setString(9, rs.getString(8)); // Role
 				pstmt.setString(10, rs.getString(9)); // organization
 				pstmt.executeUpdate();
