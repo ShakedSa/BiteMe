@@ -1,10 +1,8 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Entities.Component;
@@ -17,17 +15,14 @@ import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -102,21 +97,30 @@ public class addNewItemController implements Initializable {
 
 	User user = (User) ClientGUI.client.getUser().getServerResponse();
 	String restaurant = user.getOrganization();
-	TypeOfProduct typeOfProduct = selectTypeBox.getValue();
-	String itemName = itemsNameTxtField.getText();
-	String temp = optionalComponentsTxtField.getText();
-	//ArrayList<Component> optionalComponents = new ArrayList<Component>(Arrays.asList(temp.split(",")));
-	//Float price = priceTxtField.getText();
-	String description = descriptionTxtArea.getText();
+	TypeOfProduct typeOfProduct;
+	String itemName;
+	String temp;
+	ArrayList<Component> optionalComponents = new ArrayList<>();
+	float price;
+	String description;
+	Product product;
 
-	//Product product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 
 	@FXML
 	void addItemToMenuClicked(MouseEvent event) {
+		typeOfProduct = selectTypeBox.getValue();
+		itemName = itemsNameTxtField.getText();
+		temp = optionalComponentsTxtField.getText();
+		description = descriptionTxtArea.getText();
+		price = Float.parseFloat(priceTxtField.getText());
+		String[] components = temp.split(",");
+		for(int i = 0 ; i<components.length; i++) {		
+			optionalComponents.add(new Component(components[i]));
+		}
+		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 		if (!checkInputs()) {
 			return;
 		}
-
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -131,14 +135,14 @@ public class addNewItemController implements Initializable {
 			}
 		});
 		t.start();
-		//ClientGUI.client.addItemToMenu(product);
+		ClientGUI.client.addItemToMenu(product);
 		try {
 			t.join();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-
+//
 //		if(!checkServerResponse()) {
 //			return;
 //		}

@@ -1126,7 +1126,7 @@ public class mysqlConnection {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
 			PreparedStatement stmt;
-			String query = "INSERT INTO bitemedb.product (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
+			String query = "INSERT INTO bitemedb.products (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, product.getRestaurantName());
 			stmt.setString(2, product.getDishName());
@@ -1134,7 +1134,6 @@ public class mysqlConnection {
 			stmt.setFloat(4, product.getPrice());
 			stmt.setString(5, product.getDescription());
 			stmt.executeUpdate();
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg(e.getMessage());
@@ -1144,7 +1143,4 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
-//		serverResponse.setServerResponse(response);
-	//	return serverResponse;
-	//}
 }

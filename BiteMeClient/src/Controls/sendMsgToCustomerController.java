@@ -66,6 +66,8 @@ public class sendMsgToCustomerController implements Initializable {
 		this.orderNumber = orderNumber;
 		this.status = status;
 		this.deliveryNumber = deliveryNumber;
+		getOrderInfo();
+		getCustomerInfo();
 	}
 
 	private ArrayList<String> getOrderInfo() {
@@ -205,8 +207,8 @@ public class sendMsgToCustomerController implements Initializable {
 		router.setSendMsgToCustomerController(this);
 		setStage(router.getStage());
 		//displayMsg(res1, res2);
-		getOrderInfo();
-		getCustomerInfo();
+		
+		
 	}
 
 	public void setScene(Scene scene) {

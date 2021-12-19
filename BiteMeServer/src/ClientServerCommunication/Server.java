@@ -2,16 +2,14 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
-import Entities.User;
-import Enums.UserType;
 import Entities.OrderDeliveryMethod;
+import Entities.Product;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -86,6 +84,14 @@ public class Server extends AbstractServer {
 			}catch(Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling message in server");
+			}
+			return;
+		}
+		if(msg instanceof Product) {
+			try {
+				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
 			return;
 		}
