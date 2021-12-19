@@ -1175,6 +1175,7 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return;
 		}
+	}
     
    /* Inserting new rate for order.
 	 * 
