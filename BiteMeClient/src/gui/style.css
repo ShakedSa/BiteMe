@@ -2,6 +2,7 @@
 	-fx-primary-bg-color: #eee;
 	-fx-primary-text-color:black;
 	-fx-secondary-text-color:#3180bc;
+	-fx-input-bg-color: #879bab;
 }
 
 /*Global Styling: */
@@ -57,16 +58,29 @@
 
 /*Text field global styling */
 .text-field {
-    -fx-background-color: transparent;
+   /*  -fx-background-color: -fx-input-bg-color;
+    -fx-background-radius:5;
     -fx-border-width: 1.0;
     -fx-border-radius: 5;
     -fx-border-color: -fx-primary-text-color;
+    * 
+    */
+    -fx-background-color: #fff;
+    -fx-border-width:0;
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+    -fx-font-family: "Berlin Sans FB";
 }
 
 .text-field:focused {
-    -fx-background-color: transparent;
+	/* 
+    -fx-background-color: -fx-input-bg-color;
     -fx-border-width: 2.0;
     -fx-border-color: -fx-secondary-text-color;
+    * 
+    */
+    -fx-background-color: -fx-secondary-text-color;
+    -fx-text-fill:#fff;
 }
 
 /*Button global styling */
@@ -167,9 +181,9 @@
     -fx-border-width:1;
 }
 .combo-box .text-field:focused{
-	-fx-background-color:white;
-	-fx-border-width:1;
-	-fx-border-color: -fx-secondary-text-color;
+    -fx-background-color: -fx-secondary-text-color;
+    -fx-text-fill:#fff;
+	-fx-border-width:0;
 	-fx-border-radius: 0;
 }
 .combo-box .text-field{

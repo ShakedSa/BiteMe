@@ -112,7 +112,7 @@ public class InputValidation {
 	 * @param hour
 	 * @param minute
 	 * 
-	 * @return int;
+	 * @return integer;
 	 */
 	public static int checkTime(int hour, int minute) {
 		LocalTime now = LocalTime.now();

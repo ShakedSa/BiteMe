@@ -244,8 +244,10 @@ public class pickDateAndTimeController implements Initializable {
 	 */
 	public void createCombos() {
 		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(24)));
+		hourBox.getItems().clear();
 		hourBox.getItems().addAll(hourOptions);
 		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(60)));
+		minutesBox.getItems().clear();
 		minutesBox.getItems().addAll(minuteOptions);
 	}
 }

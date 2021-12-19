@@ -135,7 +135,7 @@
       <TextField fx:id="firstNameTxtField" layoutX="242.0" layoutY="311.0" promptText="First Name" visible="false" />
       <TextField fx:id="lastNameTxtField" layoutX="243.0" layoutY="349.0" promptText="Last Name" visible="false" />
       <TextField fx:id="phoneNumberTxtField" layoutX="321.0" layoutY="388.0" prefHeight="26.0" prefWidth="72.0" promptText="1234567" visible="false" />
-      <ComboBox fx:id="prefixPhoneNumberBox" layoutX="248.0" layoutY="388.0" prefHeight="27.0" prefWidth="72.0" promptText="050" visible="false" />
+      <ComboBox fx:id="prefixPhoneNumberBox" layoutX="243.0" layoutY="388.0" prefHeight="27.0" prefWidth="72.0" promptText="050" visible="false" />
       <Text fx:id="includeFee" fill="#3180bc" layoutX="104.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This delivery method includes extra pay" visible="false" />
       <Text fx:id="requires" fill="RED" layoutX="105.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" visible="false" />
       <Text fx:id="addStar" fill="RED" layoutX="224.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />

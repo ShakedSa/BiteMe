@@ -169,6 +169,7 @@ public class mysqlConnection {
 							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission,
 							restaurantAddress); // change last input from branch to restaurantAddress - aviel
 					stmt.close();
+					rs.close();
 					break;
 				case BranchManager:
 					user = new BranchManager(userName, password, firstName, lastName, id, email, phoneNumber, userType,
