@@ -17,6 +17,7 @@ public class Delivery implements Serializable {
 	private String phoneNumber;
 	private float deliveryPrice;
 	private float discount;
+	public static final float DeliveryPrice = 25;
 
 	public Delivery(String orderAddress, String firstName, String lastName, String phoneNumber, float deliveryPrice,
 			float discount) {

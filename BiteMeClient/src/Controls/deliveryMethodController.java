@@ -173,9 +173,11 @@ public class deliveryMethodController implements Initializable {
 		String lastName = lastNameTxtField.getText();
 		String phoneNumberPrefix = prefixPhoneNumberBox.getSelectionModel().getSelectedItem();
 		String phoneNumber = phoneNumberTxtField.getText();
-		if (!InputValidation.checkValidText(address)) {
-			errorMsg.setText("Please fill address for the delivery.");
-			return false;
+		if (!deliveryMethodBox.getSelectionModel().getSelectedItem().equals("Takeaway")) {
+			if (!InputValidation.checkValidText(address)) {
+				errorMsg.setText("Please fill address for the delivery.");
+				return false;
+			}
 		}
 		if (InputValidation.checkSpecialCharacters(address)) {
 			errorMsg.setText("Address can't contain special characters.");
@@ -313,7 +315,7 @@ public class deliveryMethodController implements Initializable {
 			if (!checkBasic()) {
 				return;
 			}
-			newDelivery = new Delivery(address, firstName, lastName, phoneNumber, 25, 0);
+			newDelivery = new Delivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0);
 			break;
 		case preorderDelivery:
 			/** Validating the delivery input. */
@@ -323,10 +325,12 @@ public class deliveryMethodController implements Initializable {
 			String hours = hourBox.getSelectionModel().getSelectedItem();
 			String minutes = minutesBox.getSelectionModel().getSelectedItem();
 			String time = hours + ":" + minutes;
-			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, 25, 0, time);
+			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0, time);
 			break;
 		case takeaway:
-			/** Take away doesn't have delivery --> delivery method should be null */
+			if (!checkBasic()) {
+				return;
+			}
 			newDelivery = new Delivery(null, firstName, lastName, phoneNumber, 0, 0);
 			break;
 		case sharedDelivery:
@@ -336,7 +340,7 @@ public class deliveryMethodController implements Initializable {
 			}
 			String amount = amountTextField.getText();
 			String businessCode = businessCodeTextField.getText();
-			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, 25, 0, businessCode,
+			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0, businessCode,
 					Integer.parseInt(amount));
 			break;
 		default:
