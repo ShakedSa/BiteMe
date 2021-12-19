@@ -152,12 +152,12 @@ public class mysqlConnection {
 					rs = stmt.executeQuery();
 					String restaurantName = "";
 					String restaurantAddress = "";
-					int monthlyComission = 12;
+					float monthlyComission = 12f;
 					ArrayList<Product> menu = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
-						restaurantAddress = rs.getString(6); // added RestaurantAddress to supplier in DB - aviel
-						monthlyComission = rs.getInt(3);
+						restaurantAddress = rs.getString(2); // added RestaurantAddress to supplier in DB - aviel
+						monthlyComission = rs.getFloat(4);
 						menu = getMenu(restaurantName);
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
@@ -232,15 +232,13 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(names);
 		return serverResponse;
 	}
-	
-	
+
 	/**
 	 * Query to update a user information in the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void updateUserInformation(String userName, String userType,
-			String status) {
+	public static void updateUserInformation(String userName, String userType, String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
 		try {
@@ -482,10 +480,8 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		// serverResponse.setDataType("String");
 		return serverResponse;
 	}
-
 
 	public static ServerResponse checkUsername(String username) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -496,11 +492,10 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) { // 8 usertype, 13 status
+			if (rs.next()) { // 8 usertype, 13 status
 				response.add(rs.getString(8));
 				response.add(rs.getString(13));
-			}
-			else {
+			} else {
 				response.add("Error");
 			}
 		} catch (SQLException e) {
@@ -513,20 +508,21 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	//java.sql.SQLIntegrityConstraintViolationException: 
-	//Cannot add or update a child row: a foreign key constraint fails
-	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
-	//REFERENCES `suppliers` (`RestaurantName`))
-	
+
+	// java.sql.SQLIntegrityConstraintViolationException:
+	// Cannot add or update a child row: a foreign key constraint fails
+	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
+	// (`RestaurantName`)
+	// REFERENCES `suppliers` (`RestaurantName`))
+
 	public static void updateFile(InputStream is, String date) {
 		System.out.println("test !");
-		String filename= "Report " + date + ".pdf";
+		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	/**
-	 * @param is File inputstream to upload as a blob
+	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
 	 */
@@ -537,7 +533,7 @@ public class mysqlConnection {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf(""+desc.get(2) + "-" + desc.get(1) + "-01"));//"2020-05-12"
+			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-01"));// "2020-05-12"
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
@@ -707,29 +703,31 @@ public class mysqlConnection {
 	}
 
 	/**
+	 * Update order status and planned time/received time in order table
+	 * 
+	 * @param receivedOrReady
 	 * @param orderNumber
+	 * @param time
 	 * @param status
-	 * @return
+	 * @return deliveryNumber
 	 */
 	public static ServerResponse updateOrderStatus(String receivedOrReady, String orderNumber, String time,
 			String status) {
-		ServerResponse serverResponse = new ServerResponse("String");
+		ServerResponse serverResponse = new ServerResponse("Integer");
 		System.out.println(receivedOrReady);
 		try {
 			if (receivedOrReady.equals("Order Received")) {
 				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ?";
-				//String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
-				stmt.setDate(2, Date.valueOf(LocalDate.now()));
-				stmt.setTime(2, Time.valueOf(LocalTime.now()));
+				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
 				stmt.executeUpdate();
 			} else { // Order Is Ready
-				String query = "UPDATE bitemedb.orders SET OrderStatus = ? PlannedTime = ? AND WHERE OrderNumber = ?";
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, PlannedTime = ? WHERE OrderNumber = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
-				stmt.setTime(2, Time.valueOf(time));
+				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
 				stmt.executeUpdate();
 			}
@@ -740,8 +738,104 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
+
+		// get deliveryNumber from orderedDelivery table
+		int deliveryNumber = 0;
+		try {
+			String query = "SELECT DeliveryNumber FROM bitemedb.ordereddelivery WHERE OrderNumber = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				deliveryNumber = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(deliveryNumber);
+		return serverResponse;
+	}
+
+	public static ServerResponse getOrderInfo(String orderNumber) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, Integer.parseInt(orderNumber));
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				response.add(rs.getString(2)); // restaurant name
+				response.add(rs.getString(4)); // received time
+				response.add(rs.getString(5)); // planned time
+				response.add(rs.getString(8)); // status
+			} else {
+				response.add("Error");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+
+	public static ServerResponse getCustomerInfo(String deliveryNumber) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.deliveries WHERE DeliveryNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, deliveryNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				response.add(rs.getString(7)); // phone number
+				response.add(rs.getString(8)); // customer name
+			} else {
+				response.add("Error");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+
+	public static ServerResponse addItemToMenu(Product product) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		try {
+			PreparedStatement stmt;
+			String query = "INSERT INTO bitemedb.product (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, product.getRestaurantName());
+			stmt.setString(2, product.getDishName());
+			stmt.setString(3, product.getType().toString());
+			stmt.setFloat(4, product.getPrice());
+			stmt.setString(5, product.getDescription());
+			stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
 		serverResponse.setMsg("Success");
 		return serverResponse;
-
 	}
+
 }

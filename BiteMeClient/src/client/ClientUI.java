@@ -5,20 +5,16 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-							   
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Controls.Router;
 import Entities.MyFile;
 import Entities.OrderDeliveryMethod;
+import Entities.Product;
 import Entities.ServerResponse;
-
-import Enums.Status;
-import Enums.UserType;
-
 import Entities.User;
 
 
@@ -202,12 +198,21 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
+	}
   
  	
-	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, LocalDateTime time, String status) {
+	/**
+	 * supplier update order status
+	 * 
+	 * @param receivedOrReady
+	 * @param orderNumber
+	 * @param time
+	 * @param status
+	 */
+	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, String time, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time.toString(), status));
+			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time, status));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -215,17 +220,53 @@ public class ClientUI implements ClientIF {
 		}
 		
 	}
-																											   
-	   
-											 
-																										 
-										 
-						 
-					   
-		  
-   
-  
+	
+	/**
+	 * get order details
+	 * @param orderNumber
+	 */
+	public void getOrderInfo(String orderNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getOrderInfo", orderNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
 	}
+	
+	/**
+	 * get customer details
+	 * @param deliveryNumber
+	 */
+	public void getCustomerInfo(String deliveryNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getCustomerInfo", deliveryNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	/**
+	 * supplier add new item to menu
+	 * @param product
+	 */
+	public void addItemToMenu(Product product) {
+		try {
+			client.handleMessageFromClientUI(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+	}
+
+																											   				
 
 	/**
 	 * @return the searchOrder
@@ -364,8 +405,5 @@ public class ClientUI implements ClientIF {
 		return lastResponse;
 	}
 
-
-	
- 
 
 }

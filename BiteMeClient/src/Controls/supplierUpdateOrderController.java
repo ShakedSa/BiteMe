@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Entities.ServerResponse;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
@@ -107,6 +108,9 @@ public class supplierUpdateOrderController implements Initializable {
 	private Label updateOrderBtn;
 
 	ObservableList<String> list;
+	String orderNumber;
+	String receivedOrReady;
+	int deliveryNumber = 0;
 
 	// creating list of update status order
 	private void setUpdateComboBox() {
@@ -147,25 +151,23 @@ public class supplierUpdateOrderController implements Initializable {
 		if (includeDeliveryBtn.isSelected() && !checkTime()) {
 			return;
 		}
-		String receivedOrReady = updateDataComboBox.getValue();
-		String orderNumber = OrderNumberTxtField.getText();
-		LocalDateTime now = LocalDateTime.of(LocalDate.now(), LocalTime.now());
-		DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		receivedOrReady = updateDataComboBox.getValue();
+		orderNumber = OrderNumberTxtField.getText();
+		//DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		//String nowString = myFormatObj.format(now);
-		//LocalTime plannedTime = LocalTime.of(Integer.parseInt(hourBox.getValue()), Integer.parseInt(minutesBox.getValue()));
-		//LocalDateTime plannedTimeAndDate =  LocalDateTime.of(LocalDate.now(), plannedTime);
 		//String plannedTimeString = myFormatObj.format(now);
 		//System.out.println(plannedTime.toString());
-		String statusReceived = "Received";
-		String statusReady = "Ready";
+
+		LocalDate now = LocalDate.now();
 		
-//		if(receivedOrReady.equals("Order Received")) {
-//			System.out.println(receivedOrReady);
-//			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, now, statusReceived);
-//		}
-//		else { // Order Is Ready
-//			//ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTimeAndDate, statusReady);
-//		}
+		String statusReceived = "Received";
+		LocalTime timeNow = LocalTime.now();
+		String nowTime = now.toString() + " " + timeNow.getHour() + ":" + timeNow.getMinute();
+		
+		String statusReady = "Ready";
+		String hourPlannedTime = hourBox.getSelectionModel().getSelectedItem();
+		String minutePlannedTime = minutesBox.getSelectionModel().getSelectedItem();
+		String plannedTime = now.toString() + " " + hourPlannedTime + ":" + minutePlannedTime;
 		
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -183,10 +185,10 @@ public class supplierUpdateOrderController implements Initializable {
 		t.start();
 		
 		if(receivedOrReady.equals("Order Received")) {
-			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, now, statusReceived);
+			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, nowTime, statusReceived);
 		}
 		else { // Order Is Ready
-			//ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTimeAndDate, statusReady);
+			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTime, statusReady);
 		}
 		try {
 			t.join();
@@ -195,9 +197,12 @@ public class supplierUpdateOrderController implements Initializable {
 			return;
 		}
 
-		if(!checkServerResponse()) {
-			return;
-		}
+//		if(!checkServerResponse()) {
+//			return;
+//		}
+		
+		deliveryNumber = (int)ClientGUI.client.getLastResponse().getServerResponse();
+		System.out.println(deliveryNumber);
 		
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
@@ -211,7 +216,7 @@ public class supplierUpdateOrderController implements Initializable {
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
 		/** If no time selection was made */
-		if (hourToOrder == null&&minuteToOrder == null) {
+		if (hourToOrder == null && minuteToOrder == null) {
 			errorMsg.setText("Please pick time for the order");
 			return false;
 		}
@@ -267,8 +272,7 @@ public class supplierUpdateOrderController implements Initializable {
 	 */
 	@FXML
 	void searchClicked(MouseEvent event) {
-		// need add a check if the order number is exist in DB
-		String orderNumber = OrderNumberTxtField.getText();
+		orderNumber = OrderNumberTxtField.getText();
 		if (!CheckUserInput(orderNumber)) {
 			return;
 		}
@@ -401,21 +405,22 @@ public class supplierUpdateOrderController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.setOrderInfo(getOrderNumber(), getStatus(), getDeliveryNumber());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Message Simulation");
 				stage.setScene(mainScene);
-				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
 		} else {
 			stage.setTitle("BiteMe - Message Simulation");
+			router.getSendMsgToCustomerController().setOrderInfo(getOrderNumber(), getStatus(), getDeliveryNumber());
 			stage.setScene(router.getSendMsgToCustomerController().getScene());
-			stage.show();
 		}
+    	stage.show();
     }
 
 	/**
@@ -475,6 +480,21 @@ public class supplierUpdateOrderController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+	
+	public String getOrderNumber() {
+		orderNumber = OrderNumberTxtField.getText();
+		return orderNumber;
+	}
+	
+	public String getStatus() {
+		receivedOrReady = updateDataComboBox.getValue();
+		return receivedOrReady;
+	}
+	
+	public int getDeliveryNumber() {
+		deliveryNumber = (int)ClientGUI.client.getLastResponse().getServerResponse();
+		return deliveryNumber;
 	}
 
 }
