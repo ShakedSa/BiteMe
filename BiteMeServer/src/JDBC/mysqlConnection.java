@@ -709,18 +709,6 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	// java.sql.SQLIntegrityConstraintViolationException:
-	// Cannot add or update a child row: a foreign key constraint fails
-	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
-	// (`RestaurantName`)
-	// REFERENCES `suppliers` (`RestaurantName`))
-
-	public static void updateFile(InputStream is, String date) {
-		System.out.println("test !");
-		String filename = "Report " + date + ".pdf";
-		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
-	}
-
 	/**
 	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
@@ -728,16 +716,15 @@ public class mysqlConnection {
 	 */
 	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
 		String filename = "Report " + date + ".pdf";
-		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType,RestaurantName) values( ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-01"));// "2020-05-12"
+			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-01"));
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
-			statement.setString(6, "Burgerim");
 			statement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -1159,7 +1146,37 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Inserting new rate for order.
+	 * imports users from import simulation table to users table.
+	 */
+	public static void importUsers() {
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM bitemedb.importsimulationuser");
+			while (rs.next()) {
+				//insert user to users table:
+				PreparedStatement pstmt;
+				String query = "INSERT INTO bitemedb.users (UserName, Password, FirstName, LastName, ID, Email, PhoneNumber, UserType, Role, Organization)"
+						+ " VALUES(?,?,?,?,?,?,?,?,?,?)";
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, rs.getString(2)); // username
+				pstmt.setString(2, rs.getString(3)); // pw
+				pstmt.setString(3, rs.getString(4)); // fname
+				pstmt.setString(4, rs.getString(5)); // lname
+				pstmt.setString(5, rs.getString(1)); // id
+				pstmt.setString(6, rs.getString(6)); // email
+				pstmt.setString(7, rs.getString(7)); // phonenumber
+				pstmt.setString(8, "User" );		 //userType
+				pstmt.setString(9, rs.getString(8)); // Role
+				pstmt.setString(10, rs.getString(9)); // organization
+				pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+    
+   /* Inserting new rate for order.
 	 * 
 	 * @param orderNumber
 	 * @param rate
