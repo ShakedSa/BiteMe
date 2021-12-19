@@ -1,15 +1,15 @@
+			  
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
-import Entities.User;
-import Enums.UserType;
 import Entities.OrderDeliveryMethod;
+import Entities.Product;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -53,7 +53,7 @@ public class Server extends AbstractServer {
 		if(msg instanceof MyFile) // handle upload pdf file to sql
 		{
 			  MyFile message = ((MyFile) msg);
-			System.out.println("File message received: PDF Report " + message.getFileName() + " from " + client);
+			  controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
 				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
@@ -66,7 +66,7 @@ public class Server extends AbstractServer {
 		
 		if(msg instanceof OrderDeliveryMethod) {
 			try {
-			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
+			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg), client);;
 			}catch(Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling message in server");
@@ -87,11 +87,20 @@ public class Server extends AbstractServer {
 			}
 			return;
 		}
+		if(msg instanceof Product) {
+			try {
+				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			return;
+		}
 
 		
 		controller.setMessage("Msg recieved:" + msg);
 		@SuppressWarnings("unchecked")
 		ArrayList<String> m = (ArrayList<String>) msg;
+						
 		switch (m.get(0)) {
 		case "login":
 			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
@@ -125,6 +134,27 @@ public class Server extends AbstractServer {
 			break;
 		case "employersApproval":
 			this.sendToClient(mysqlConnection.getEmployersForApproval(), client);
+			break;
+		case "createNewBusinessCustomer":
+			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(1),m.get(2),m.get(3)),client);
+			break;
+		case "selectCustomerAndbudget":
+			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(1)),client);
+			break;
+		case "approveCustomerAsBusiness":
+			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(1),m.get(2)), client);
+			break;
+		case "updateOrderStatus":
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
+			break;
+		case "getOrderInfo":
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(1)), client);
+			break;
+		case "getCustomerInfo":
+			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(1)), client);
+			break;
+		case "rate":
+			this.sendToClient(mysqlConnection.setRate(m.get(1), m.get(2)), client);
 			break;
 		default:
 			sendToClient("default", client);

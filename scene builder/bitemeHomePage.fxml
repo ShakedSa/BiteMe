@@ -47,9 +47,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #338691;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="838.0" />
       <Text layoutX="690.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -131,7 +131,7 @@
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="553.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
       <Text layoutX="550.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
-      <Line endX="729.0" layoutX="98.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <Line endX="731.0" layoutX="98.0" layoutY="85.0" startX="-100.0" strokeWidth="2.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/biteme-logo.gif" />
@@ -142,22 +142,27 @@
             <Image url="@images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="214.0" layoutY="295.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="30.0" layoutX="500.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="499.0" layoutY="300.0" rotate="-10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="59.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="20.0" layoutX="262.0" layoutY="301.0" rotate="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="62.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3d2d6" height="30.0" layoutX="214.0" layoutY="295.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3d2d6" height="30.0" layoutX="500.0" layoutY="294.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="105.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3d2d6" height="20.0" layoutX="499.0" layoutY="300.0" rotate="-10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="59.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3d2d6" height="20.0" layoutX="262.0" layoutY="301.0" rotate="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="62.0" />
       <Circle layoutX="411.0" layoutY="235.0" radius="130.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5),5,0,0,0);">
          <fill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
                   <Stop>
                      <color>
-                        <Color red="0.20723684132099152" green="0.4840460419654846" blue="0.7105262875556946" />
+                        <Color red="0.4000000059604645" green="0.6431372761726379" blue="0.6745098233222961" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.007662835249042145">
+                     <color>
+                        <Color red="0.4000000059604645" green="0.6431372761726379" blue="0.6745098233222961" />
                      </color>
                   </Stop>
                   <Stop offset="1.0">
                      <color>
-                        <Color red="0.05098039284348488" green="0.20000000298023224" blue="0.3294117748737335" />
+                        <Color green="0.16470588743686676" blue="0.18431372940540314" />
                      </color>
                   </Stop>
                </stops>
@@ -165,7 +170,7 @@
          </fill>
       </Circle>
       <Circle fill="#2197ff00" layoutX="411.0" layoutY="235.0" radius="130.0" stroke="#85e7ff" strokeType="INSIDE" style="-fx-scale-x: .9; -fx-scale-y: .9; -fx-stroke-dash-array: 7;" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b6dfff" height="45.0" layoutX="260.0" layoutY="271.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="301.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b3d2d6" height="45.0" layoutX="260.0" layoutY="271.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3),3,0,0,0);" width="301.0" />
       <Text fill="WHITE" layoutX="326.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There you are...">
          <font>
             <Font name="Berlin Sans FB" size="28.0" />
@@ -181,7 +186,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <Polygon fill="#eeeeee" layoutX="235.0" layoutY="317.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="-23.2" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Polygon fill="#eeeeee" layoutX="604.0" layoutY="326.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="156.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Polygon fill="#338691" layoutX="235.0" layoutY="317.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="-23.2" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Polygon fill="#338691" layoutX="604.0" layoutY="326.0" points="-28.77615737915039, 1.7775039672851562, 8.296651840209961, 1.2980672121047974, -17.119178771972656, -25.826175689697266" rotate="156.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

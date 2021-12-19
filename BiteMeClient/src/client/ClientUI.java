@@ -1,26 +1,23 @@
+
 package client;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Controls.Router;
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
+import Entities.Product;
 import Entities.ServerResponse;
-
-import Enums.Status;
-import Enums.UserType;
-
 import Entities.User;
-
 
 /**
  * Logic of the client GUI.
@@ -36,7 +33,8 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder, lastResponse;
+	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder,
+			lastResponse;
 	HashMap<String, File> restaurants, favRestaurants;
 	/** Storing response from the server. */
 	Object res;
@@ -54,7 +52,7 @@ public class ClientUI implements ClientIF {
 		} catch (IOException exception) {
 			System.out.println("Error: Can't setup connection! Terminating client.");
 			System.exit(1);
-		} 
+		}
 	}
 
 	/**
@@ -120,7 +118,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. update a user information
 	 * 
@@ -139,13 +137,13 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. add new supplier to the db
 	 * 
 	 * @param restaurantName
 	 */
-	public void addNewSupplier(NewUser supplier) {				
+	public void addNewSupplier(NewUser supplier) {
 		try {
 			client.handleMessageFromClientUI(supplier);
 		} catch (Exception e) {
@@ -153,7 +151,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
@@ -171,8 +169,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
-	
+
 	/**
 	 * Sending a query request from the server. check for employers approvals
 	 * restaurant.
@@ -204,12 +201,12 @@ public class ClientUI implements ClientIF {
 			arr.add(restaurantName);
 			arr.add(productName);
 			client.handleMessageFromClientUI(arr);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending the server a search order request.
 	 * 
@@ -226,14 +223,161 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
-	public void insertOrder(OrderDeliveryMethod orderToInsert) {
+
+	/**
+	 * Sending the server a creatNewBusinessCustomer request.
+	 *
+	 * @param orderNumber
+	 * 
+	 */
+	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
 		try {
-			client.handleMessageFromClientUI(orderToInsert);
-		}catch(Exception e) {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName, employerCode, employerCompanyName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void selectCustomerAndbudget(String employerCompanyName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("selectCustomerAndbudget", employerCompanyName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 *
+	 * @param hrUserName,employerCompanyName
+	 * 
+	 */
+	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName, customerId));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	public void setRate(int orderNumber, int rate) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("rate", orderNumber + "", rate + ""));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * Sending the server a request to check if the business customer is already
+	 * created.
+	 * 
+	 * @param orderNumber
+	 * 
+	 */
+	public void checkIfBusinessCustomerExist(String hrUserName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	public void insertOrder(OrderDeliveryMethod orderToInsert) {
+		try {
+			client.handleMessageFromClientUI(orderToInsert);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * supplier update order status
+	 * 
+	 * @param receivedOrReady
+	 * @param orderNumber
+	 * @param time
+	 * @param status
+	 */
+	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, String time, String status) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time, status));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * get order details
+	 * 
+	 * @param orderNumber
+	 */
+	public void getOrderInfo(String orderNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getOrderInfo", orderNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+	}
+
+	/**
+	 * get customer details
+	 * 
+	 * @param deliveryNumber
+	 */
+	public void getCustomerInfo(String deliveryNumber) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList("getCustomerInfo", deliveryNumber));
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * supplier add new item to menu
+	 * 
+	 * @param product
+	 */
+	public void addItemToMenu(Product product) {
+		try {
+			client.handleMessageFromClientUI(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
 	}
 
 	/**
@@ -312,40 +456,37 @@ public class ClientUI implements ClientIF {
 	public void setOptionalComponentsInProduct(ServerResponse optionalComponents) {
 		ResComponentsInProducts = optionalComponents;
 	}
-	
+
 	public ServerResponse getOptionalComponentsInProduct() {
 		return ResComponentsInProducts;
 	}
 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
-		  MyFile msg = new MyFile(Month + " " + Year);
-		  //extract user:
-		  User user = (User) this.user.getServerResponse();
-		  msg.getDescription().add(ReportType);
-		  msg.getDescription().add(Month);
-		  msg.getDescription().add(Year);
-		  msg.getDescription().add(user.getMainBranch().toString());
-		  //tbd - adding restaurant name
-			try {
+		MyFile msg = new MyFile(Month + " " + Year);
+		// extract user:
+		User user = (User) this.user.getServerResponse();
+		msg.getDescription().add(ReportType);
+		msg.getDescription().add(Month);
+		msg.getDescription().add(Year);
+		msg.getDescription().add(user.getMainBranch().toString());
+		// tbd - adding restaurant name
+		try {
 
-				byte[] mybytearray = new byte[(int) pdfToUpload.length()];
-				FileInputStream fis = new FileInputStream(pdfToUpload);
-				BufferedInputStream bis = new BufferedInputStream(fis);
+			byte[] mybytearray = new byte[(int) pdfToUpload.length()];
+			FileInputStream fis = new FileInputStream(pdfToUpload);
+			BufferedInputStream bis = new BufferedInputStream(fis);
 
-				msg.initArray(mybytearray.length);
-				msg.setSize(mybytearray.length);
+			msg.initArray(mybytearray.length);
+			msg.setSize(mybytearray.length);
 
-				bis.read(msg.getMybytearray(), 0, mybytearray.length);
-				client.handleMessageFromClientUI(msg);
-				fis.close();
-				bis.close();	      
-			    }
-			catch (Exception e) {
-				System.out.println("Error sending (Files msg) to Server");
-			}
-			
+			bis.read(msg.getMybytearray(), 0, mybytearray.length);
+			client.handleMessageFromClientUI(msg);
+			fis.close();
+			bis.close();
+		} catch (Exception e) {
+			System.out.println("Error sending (Files msg) to Server");
+		}
 
-		
 	}
 
 
@@ -358,19 +499,16 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-		
+
 	}
 
 	@Override
 	public void setLastResponse(ServerResponse serverResponse) {
 		lastResponse = serverResponse;
-		
+
 	}
-	
+
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
-
-	
-
 }

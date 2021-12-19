@@ -18,18 +18,4 @@ public enum TypeOfProduct {
 			return null;
 		}
 	}
-	public String toString() {
-		switch(this) {
-		case mainDish:
-			return "main dish";
-		case entry:
-			return "entry";
-		case dessert:
-			return "dessert";
-		case drink:
-			return "drink";
-		default:
-			return "";
-		}
-	}
 }

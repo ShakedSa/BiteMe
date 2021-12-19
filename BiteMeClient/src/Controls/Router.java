@@ -28,19 +28,21 @@ public class Router {
 	private Stage stage;
 	private loginController Logincontroller;
 	private enterGUIController Enterguicontroller;
-	private restaurantSelectionController RestaurantselectionController;
+	private myCartController MyCartController;
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
 	private supplierPanelController SupplierPanelController;
+	private ceoPanelController CEOPanelController;
+	private profileController ProfileController;
+	// Order Process pages:
+	private restaurantSelectionController RestaurantselectionController;
 	private identifyController IdentifyController;
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
 	private deliveryMethodController DeliveryMethodController;
 	private reviewOrderController ReviewOrderController;
 	private paymentController PaymentController;
-	private ceoPanelController CEOPanelController;
-	private employerHRPanelController EmployerHRPanelController;
-	private profileController ProfileController;
+	private orderReceivedController OrderReceivedController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
 	private viewMonthlyReportsController ViewMonthlyReportsController;
@@ -54,19 +56,21 @@ public class Router {
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
+	private sendMsgToCustomerController SendMsgToCustomerController;
 	// Employer HR Panel pages:
+	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
+	// CEO Panel pages:
+	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
 
-	/** Items in order, should be available across all application. */
-	private ArrayList<Product> orderItems = new ArrayList<>();
-
+	/** State of the order application: */
+	/***************************************/
 	private Order order = new Order();
-
 	private Delivery delivery;
-
 	private OrderDeliveryMethod orderDeliveryMethod;
 
+	/***************************************/
 	public static Router getInstance() {
 		if (router == null)
 			router = new Router();
@@ -255,6 +259,21 @@ public class Router {
 	 */
 	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
 		PickDateAndTimeController = pickDateAndTimeController;
+	}
+
+	/**
+	 * @param sendMsgToCustomerController the sendMsgToCustomerController to set
+	 */
+	public void setSendMsgToCustomerController(sendMsgToCustomerController sendMsgToCustomerController) {
+		SendMsgToCustomerController = sendMsgToCustomerController;
+	}
+
+	/**
+	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController
+	 *                                         to set
+	 */
+	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
+		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
 	}
 
 	/**
@@ -468,10 +487,52 @@ public class Router {
 	}
 
 	/**
+	 * @return the sendMsgToCustomerController
+	 */
+	public sendMsgToCustomerController getSendMsgToCustomerController() {
+		return SendMsgToCustomerController;
+	}
+
+	/**
+	 * @return the viewPDFQuarterlyReportController
+	 */
+	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
+		return ViewPDFQuarterlyReportController;
+	}
+
+	/**
 	 * @param reviewOrderController the reviewOrderController to set
 	 */
 	public void setReviewOrderController(reviewOrderController reviewOrderController) {
 		ReviewOrderController = reviewOrderController;
+	}
+
+	/**
+	 * @return the myCartController
+	 */
+	public myCartController getMyCartController() {
+		return MyCartController;
+	}
+
+	/**
+	 * @param myCartController the myCartController to set
+	 */
+	public void setMyCartController(myCartController myCartController) {
+		MyCartController = myCartController;
+	}
+
+	/**
+	 * @return the orderReceivedController
+	 */
+	public orderReceivedController getOrderReceivedController() {
+		return OrderReceivedController;
+	}
+
+	/**
+	 * @param orderReceivedController the orderReceivedController to set
+	 */
+	public void setOrderReceivedController(orderReceivedController orderReceivedController) {
+		OrderReceivedController = orderReceivedController;
 	}
 
 	/**
@@ -526,6 +587,23 @@ public class Router {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
 				ClientGUI.client.logout(user.getUserName());
+				EmployerHRPanelController = null;
+				RegisterEmployerAsLegacyController = null;
+				ConfirmBusinessAccountController = null;
+				AddNewItemController = null;
+				AddNewSupplierController = null;
+				AuthorizedEmployerApprovalController = null;
+				CreateMenuController = null;
+				EditMenuItemController = null;
+				OpenNewAccountController = null;
+				RegisterEmployerAsLegacyController = null;
+				SendMsgToCustomerController = null;
+				SupplierUpdateOrderController = null;
+				UpdateMenuController = null;
+				UpdateUserInformationController = null;
+				UploadQuarterlyReportController = null;
+				ViewMonthlyReportsController = null;
+				ViewPDFQuarterlyReportController = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -719,13 +797,47 @@ public class Router {
 		}
 	}
 
+	public void changeToMyCart() {
+		if (router.getMyCartController() == null) {
+			AnchorPane mainContainer;
+			myCartController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyCartPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setItemsCounter();
+				controller.displayOrder();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Cart");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyCartController().setItemsCounter();
+			router.getMyCartController().setAvatar();
+			router.getMyCartController().displayOrder();
+			stage.setTitle("BiteMe - My Cart");
+			stage.setScene(router.getMyCartController().getScene());
+			stage.show();
+		}
+	}
+
 	/**
 	 * Setting the order items
 	 * 
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> order) {
-		this.orderItems = order;
+		this.order.setProducts(order);
+		if (order != null)
+			this.order.calculateOrderPrice();
 	}
 
 	/**
@@ -734,7 +846,10 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		return orderItems;
+		if (order.getProducts() == null) {
+			return new ArrayList<>();
+		}
+		return order.getProducts();
 	}
 
 	public void setOrder(Order order) {
@@ -758,7 +873,6 @@ public class Router {
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
 	}
-
 
 	/**
 	 * @return the orderDeliveryMethod
@@ -793,13 +907,5 @@ public class Router {
 		}
 		return res;
 	}
-
-	/*
-	 * public static void show(Object c) { //
-	 * router.show(loginController.getClass()); switch(c) case loginController: open
-	 * logincontroller; case EnterGUIController: open Enterguicontroller
-	 * 
-	 * }
-	 */
 
 }

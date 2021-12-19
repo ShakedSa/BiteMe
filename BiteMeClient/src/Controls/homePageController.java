@@ -354,6 +354,11 @@ public class homePageController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
+	
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
 
 	/**
 	 * Getting the favourite restaurants in the DB.

@@ -1,124 +1,164 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import Entities.Component;
+import Entities.Product;
+import Entities.User;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import Util.InputValidation;
+import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class addNewItemController implements Initializable{
-	
-	public final UserType type= UserType.Supplier;
+public class addNewItemController implements Initializable {
+
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
-    @FXML
-    private Label addItemToMenuBtn;
+	@FXML
+	private Label addItemToMenuBtn;
 
-    @FXML
-    private Rectangle avatar;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private TextArea descriptionTxtArea;
+	@FXML
+	private TextArea descriptionTxtArea;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    private TextField itemsNameTxtField;
+	@FXML
+	private TextField itemsNameTxtField;
 
-    @FXML
-    private ImageView leftArrowBtn;
+	@FXML
+	private ImageView leftArrowBtn;
 
-    @FXML
-    private Text logoutBtn;
-    
-    @FXML
-    private Text uploadImageTxt;
+	@FXML
+	private Text logoutBtn;
 
-    @FXML
-    private TextField optionalComponentsTxtField;
+	@FXML
+	private Text uploadImageTxt;
 
-    @FXML
-    private Spinner<Float> priceSpinner;
+	@FXML
+	private TextField optionalComponentsTxtField;
 
-    @FXML
-    private Text profileBtn;
+	@FXML
+	private TextField priceTxtField;
 
-    @FXML
-    private ComboBox<TypeOfProduct> selectTypeBox;
+	@FXML
+	private Text profileBtn;
 
-    @FXML
-    private Text supplierPanelBtn;
-    
+	@FXML
+	private ComboBox<TypeOfProduct> selectTypeBox;
 
-    @FXML
-    private Label uploadImageBtn;
-    
+	@FXML
+	private Text supplierPanelBtn;
+
+	@FXML
+	private Label uploadImageBtn;
+
 	@FXML
 	private Text errorMsg;
-    
-    ObservableList<TypeOfProduct> list;
 
-  	/**
-  	 * creating list of Types
-  	 */
-  	private void setTypeComboBox() {
-  		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
-  		type.add(TypeOfProduct.mainDish);
- 		type.add(TypeOfProduct.entry);
- 		type.add(TypeOfProduct.dessert);
- 		type.add(TypeOfProduct.drink);
+	ObservableList<TypeOfProduct> list;
 
-  		list = FXCollections.observableArrayList(type);
-  		selectTypeBox.setItems(list);
-  	}
+	/**
+	 * creating list of Types
+	 */
+	private void setTypeComboBox() {
+		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
+		type.add(TypeOfProduct.mainDish);
+		type.add(TypeOfProduct.entry);
+		type.add(TypeOfProduct.dessert);
+		type.add(TypeOfProduct.drink);
 
-    @FXML
-    void addItemToMenuClicked(MouseEvent event) {
-    	if(checkInputs()) {
-    		//return to create menu page
-        	router.getSupplierPanelController().createMenuClicked(event);
-    	}
-    }
-    
-    private void getDataFromScreen() {
-    	TypeOfProduct type = selectTypeBox.getValue();
-    	String itemName = itemsNameTxtField.getText();
-    	String optionalComponents = optionalComponentsTxtField.getText();
-    	//String priceSpinner = priceSpinner.get
-    	String description = descriptionTxtArea.getText();
-    }
-    
-    private boolean checkInputs() {
-    	TypeOfProduct type = selectTypeBox.getValue();
-    	String itemName = itemsNameTxtField.getText();
-    	//String priceSpinner = priceSpinner.get
-    	if(type == null) {
-    		errorMsg.setText("Please select type of the item");
+		list = FXCollections.observableArrayList(type);
+		selectTypeBox.setItems(list);
+	}
+
+	User user = (User) ClientGUI.client.getUser().getServerResponse();
+	String restaurant = user.getOrganization();
+	TypeOfProduct typeOfProduct;
+	String itemName;
+	String temp;
+	ArrayList<Component> optionalComponents = new ArrayList<>();
+	float price;
+	String description;
+	Product product;
+
+
+	@FXML
+	void addItemToMenuClicked(MouseEvent event) {
+		typeOfProduct = selectTypeBox.getValue();
+		itemName = itemsNameTxtField.getText();
+		temp = optionalComponentsTxtField.getText();
+		description = descriptionTxtArea.getText();
+		price = Float.parseFloat(priceTxtField.getText());
+		String[] components = temp.split(",");
+		for(int i = 0 ; i<components.length; i++) {		
+			optionalComponents.add(new Component(components[i]));
+		}
+		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		if (!checkInputs()) {
+			return;
+		}
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		ClientGUI.client.addItemToMenu(product);
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+//
+//		if(!checkServerResponse()) {
+//			return;
+//		}
+
+		ClientGUI.client.getLastResponse().getServerResponse();
+
+		// return to create menu page
+		router.getSupplierPanelController().createMenuClicked(event);
+	}
+
+	private boolean checkInputs() {
+
+		if (typeOfProduct == null) {
+			errorMsg.setText("Please select type of the item");
 			return false;
-    	}
+		}
 		if (itemName.trim().isEmpty()) {
 			errorMsg.setText("Please enter the name of the item");
 			return false;
@@ -127,48 +167,57 @@ public class addNewItemController implements Initializable{
 			errorMsg.setText("Special characters aren't allowed in item name");
 			return false;
 		}
-		if(priceSpinner == null) {
-			errorMsg.setText("Please enter the price of the item");
-			return false;
-		}
+//		if (price.trim().isEmpty()) {
+//			errorMsg.setText("Please enter the price of the item");
+//			return false;
+//		}
+//		if (InputValidation.checkContainCharacters(price)) {
+//			errorMsg.setText("Characters aren't allowed in price");
+//			return false;
+//		}
+//		if (price.contains(".")) {
+//			if (InputValidation.checkSpecialCharacters(price)) {
+//				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+//				return false;
+//			}
+//		}
 		errorMsg.setText("");
 		return true;
-    }
+	}
 
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
 
-    @FXML
-    void profileBtnClicked(MouseEvent event) {
-    	router.showProfile();
-    }
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
 
-    @FXML
-    void returnToSupplierPanel(MouseEvent event) {
-    	router.returnToSupplierPanel(event);
-    }
+	@FXML
+	void returnToSupplierPanel(MouseEvent event) {
+		router.returnToSupplierPanel(event);
+	}
 
-    @FXML
-    void uploadImageClicked(MouseEvent event) {
+	@FXML
+	void uploadImageClicked(MouseEvent event) {
 
-    }
-    
-    /**
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
 
-    
-    @Override
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setAddNewItemController(this);
@@ -176,7 +225,6 @@ public class addNewItemController implements Initializable{
 		setTypeComboBox();
 	}
 
-    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -186,8 +234,7 @@ public class addNewItemController implements Initializable{
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
 	}
 
 }
-

@@ -152,7 +152,15 @@ public class Order implements Serializable {
 	 */
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
-	}	
+	}
+	
+	public void calculateOrderPrice() {
+		float price = 0;
+		for (Product p : products) {
+			price += p.getPrice();
+		}
+		setOrderPrice(price);
+	}
 	
 	public String toString() {
 		StringBuilder b = new StringBuilder();

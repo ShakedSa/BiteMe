@@ -5,6 +5,7 @@ import java.io.IOException;
 import Entities.ServerResponse;
 import client.ClientGUI;
 import client.ClientIF;
+import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
 /**
@@ -59,7 +60,7 @@ public class Client extends AbstractClient {
 			clientUI.setRestaurants(serverResponse);
 			break;
 		case "FavRestaurants":
-			clientUI.setFavRestaurants(serverResponse); 
+			clientUI.setFavRestaurants(serverResponse);
 			break;
 		case "menu":
 			clientUI.setMenu(serverResponse);
@@ -69,10 +70,10 @@ public class Client extends AbstractClient {
 			break;
 		default:
 			clientUI.setLastResponse(serverResponse);
-		} 
+		}
 		synchronized (ClientGUI.monitor) {
 			ClientGUI.monitor.notifyAll();
-		} 
+		}
 	}
 
 	/**
@@ -95,7 +96,8 @@ public class Client extends AbstractClient {
 	public void quit() {
 		try {
 			closeConnection();
-		} catch (IOException localIOException) {
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		System.out.println("BYE");
 		System.exit(0);

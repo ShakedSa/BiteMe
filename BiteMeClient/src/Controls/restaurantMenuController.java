@@ -51,7 +51,7 @@ public class restaurantMenuController implements Initializable {
 
 	TabPane tabPane;
 
-	private ArrayList<Product> productsInOrder = new ArrayList<>();
+	private ArrayList<Product> productsInOrder;
 
 	@FXML
 	private Rectangle avatar;
@@ -102,7 +102,12 @@ public class restaurantMenuController implements Initializable {
 		if (itemsCounter.getText().equals("0")) {
 			return;
 		}
-		router.getOrder().setProducts(productsInOrder);
+		if (router.getOrder().getProducts() == null) {
+			router.getOrder().setProducts(productsInOrder);
+		}else {
+			router.getOrder().getProducts().addAll(productsInOrder.stream().filter(p -> !router.getOrder().getProducts().contains(p)).collect(Collectors.toList()));
+		}
+		router.getOrder().calculateOrderPrice();
 		router = Router.getInstance();
 		if (router.getPickDateAndTimeController() == null) {
 			AnchorPane mainContainer;
@@ -168,6 +173,12 @@ public class restaurantMenuController implements Initializable {
 		setStage(router.getStage());
 	}
 
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		root.getChildren().remove(tabPane);
+		router.changeToMyCart();
+	}
+
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -196,11 +207,11 @@ public class restaurantMenuController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setMenu() {
-		ClientGUI.client.getRestaurantMenu(restaurantName);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				synchronized (ClientGUI.monitor) {
+					ClientGUI.client.getRestaurantMenu(restaurantName);
 					try {
 						ClientGUI.monitor.wait();
 					} catch (Exception e) {
@@ -247,7 +258,7 @@ public class restaurantMenuController implements Initializable {
 				.collect(Collectors.toList());
 		List<Product> dessertsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.dessert)
 				.collect(Collectors.toList());
-		/**Creating new tabs for the tabpane.*/
+		/** Creating new tabs for the tabpane. */
 		Tab entrees = new Tab("Entrees");
 		entrees.setClosable(false);
 		Tab mainDishes = new Tab("Main Dishes");
@@ -283,12 +294,13 @@ public class restaurantMenuController implements Initializable {
 	private void setTabContent(Tab tab, List<Product> productsToAdd) {
 		ScrollPane tabContent = new ScrollPane();
 		AnchorPane tabLabels = new AnchorPane();
+		productsInOrder = new ArrayList<>();
 		int i = 0; // Index for the items layout on the scrollpane.
 		/** Creating scrollpane for the tab. */
 		for (Product p : productsToAdd) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "₪");
+			Label priceLabel = new Label(p.getPrice() + "\u20AA");
 			nameLabel.getStyleClass().addAll("overlayNameLayout", "padding");
 			priceLabel.getStyleClass().addAll("overylayPriceLayout", "padding");
 			pane.setId("menuBtn");
@@ -316,7 +328,7 @@ public class restaurantMenuController implements Initializable {
 				overlayPane.getStyleClass().add("overlayLayout");
 				/** Close button, closing the overlay screen. */
 				Label closeBtn = new Label("X");
-				closeBtn.setStyle("-fx-text-fill: red; -fx-cursor: hand;");
+				closeBtn.getStyleClass().add("close");
 				closeBtn.setFont(new Font("Berlin Sans FB", 22));
 				/** Setting a close button for the "choose components" screen. */
 				closeBtn.setOnMouseClicked(clickedEvent -> {
@@ -324,10 +336,9 @@ public class restaurantMenuController implements Initializable {
 					root.getChildren().remove(overlayPane);
 					ClientGUI.client.setOptionalComponentsInProduct(null);
 				});
-				closeBtn.setLayoutX(650);
-				closeBtn.setLayoutY(15);
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
+
 				title.setFont(new Font("Berlin Sans FB", 30));
 				title.setStyle("-fx-text-fill: black;");
 				title.setLayoutX(41);
@@ -335,16 +346,12 @@ public class restaurantMenuController implements Initializable {
 				/** Under line for the overlay screen's title. */
 				Line line = new Line();
 				/** Setting the line to cross from 1 end of the screen to another(roughly). */
+				line.getStyleClass().add("line");
 				line.setStartX(-100);
 				line.setEndX(530);
 				line.setStartY(0);
 				line.setEndY(0);
-				line.setScaleX(1);
-				line.setScaleY(1);
-				line.setScaleY(1);
-				line.setLayoutX(134);
-				line.setLayoutY(51);
-				line.setStroke(Color.BLACK);
+
 				/** Product's description. */
 				Label description = new Label(p.getDescription());
 				description.setFont(new Font("Berlin Sans FB", 14));
@@ -352,7 +359,7 @@ public class restaurantMenuController implements Initializable {
 				description.setLayoutY(61);
 				description.setTextFill(Color.BLACK);
 				/** Product's price */
-				Label price = new Label(String.format("Price %.2f", p.getPrice()));
+				Label price = new Label(String.format("Price %.2f \u20AA", p.getPrice()));
 				price.setFont(new Font("Berlin Sans FB", 14));
 				price.setTextFill(Color.BLACK);
 				price.setLayoutX(580);
@@ -417,24 +424,29 @@ public class restaurantMenuController implements Initializable {
 									switch (newVal) {
 									case Small:
 										productPrice = p.getPrice() * (float) Component.smallSizePrice;
-										price.setText(String.format("Price %.2f", productPrice));
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
 										return;
 									case Large:
 										productPrice = p.getPrice() * (float) Component.largeSizePrice;
-										price.setText(String.format("Price %.2f", productPrice));
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
 										return;
 									default:
-										price.setText(String.format("Price %.2f", p.getPrice()));
+										price.setText(String.format("Price %.2f \u20AA", p.getPrice()));
 										return;
 									}
 								});
 								componentInProduct.add(c);
 								componentLabels.getChildren().addAll(sizeTitle, size);
 							} else if (checkIfDoneness(c)) {
+								Label sizeTitle = new Label("Doneness");
+								sizeTitle.setFont(new Font("Berlin Sans FB", 14));
+								sizeTitle.setTextFill(Color.BLACK);
+								sizeTitle.setLayoutX(10);
+								sizeTitle.setLayoutY(j * 50 + 10);
 								ComboBox<Doneness> doneness = new ComboBox<>();
 								doneness.getItems().addAll(Doneness.values());
 								doneness.getSelectionModel().select(Doneness.medium);
-								doneness.setLayoutX(10);
+								doneness.setLayoutX(40);
 								doneness.setLayoutY(j * 50 + 10);
 								doneness.getSelectionModel().selectedItemProperty()
 										.addListener((obj, oldVal, newVal) -> {
@@ -468,27 +480,20 @@ public class restaurantMenuController implements Initializable {
 						}
 						componentContent.setId("background");
 						componentLabels.setId("background");
-						componentContent.setLayoutX(30);
-						componentContent.setLayoutY(100);
-						componentContent.setMaxHeight(260);
-						componentContent.setPrefWidth(230);
+						componentContent.getStyleClass().add("componentContent");
+
 						componentContent.setContent(componentLabels);
 						overlayPane.getChildren().add(componentContent);
 					}
 					/** Counter to show how many product of this product are in the order. */
 					Label counter = new Label("1");
-					/** Setting position for counter. */
-					counter.setLayoutX(346);
-					counter.setLayoutY(338);
-					counter.setTextFill(Color.BLACK);
+					counter.getStyleClass().add("counter");
 					counter.setFont(new Font("Berlin Sans FB", 22));
 
 					/** Button to add more of this product to the order, infinite cap. */
 					Label plus = new Label("+");
 					/** Setting position for plus button. */
-					plus.setId("plusMinus");
-					plus.setLayoutX(298);
-					plus.setLayoutY(348);
+					plus.getStyleClass().addAll("plusMinus", "plus");
 					plus.setFont(new Font("Berlin Sans FB", 24));
 					plus.setOnMouseClicked(mEvent -> {
 						counter.setText(Integer.parseInt(counter.getText()) + 1 + "");
@@ -497,9 +502,7 @@ public class restaurantMenuController implements Initializable {
 					/** Button to remove 1 or more of this product from the order, finite at 1. */
 					Label minus = new Label("-");
 					/** Setting position for minus button. */
-					minus.setId("plusMinus");
-					minus.setLayoutX(372);
-					minus.setLayoutY(348);
+					minus.getStyleClass().addAll("plusMinus", "minus");
 					minus.setFont(new Font("Berlin Sans FB", 24));
 					minus.setOnMouseClicked(mEvent -> {
 						int count = Integer.parseInt(counter.getText());

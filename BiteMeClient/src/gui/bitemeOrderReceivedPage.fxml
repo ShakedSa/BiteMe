@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.orderReceivedController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Text id="link" layoutX="745.0" layoutY="48.0" onMouseClicked="#logOut" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text id="active" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text id="link" layoutX="692.0" layoutY="48.0" onMouseClicked="#showProfile" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text id="link" layoutX="287.0" layoutY="54.0" onMouseClicked="#returnToHome" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0" onMouseClicked="#changeToCart">
+         <image>
+            <Image url="@../images/bag-icon.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+      <Text fx:id="itemsCounter" layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="336.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="387.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="410.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="461.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="484.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
+      <Circle fill="#2197ff" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
+      <Text layoutX="251.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your order was recieved,">
+         <font>
+            <Font name="Berlin Sans FB" size="32.0" />
+         </font>
+      </Text>
+      <Text layoutX="237.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="And it's on the way to you!">
+         <font>
+            <Font name="Berlin Sans FB" size="32.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="126.0" fitWidth="107.0" layoutX="358.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/greenVLogo.gif" />
+         </image>
+      </ImageView>
+      <Text fx:id="rateTxt" layoutX="582.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rate our process">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="excellentRate" fitHeight="57.0" fitWidth="57.0" layoutX="750.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Excellent.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="goodRate" fitHeight="57.0" fitWidth="57.0" layoutX="693.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Very%20Good.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="okRate" fitHeight="57.0" fitWidth="57.0" layoutX="635.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/OK.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="badRate" fitHeight="57.0" fitWidth="57.0" layoutX="577.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Not%20Good.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="veryBadRate" fitHeight="57.0" fitWidth="57.0" layoutX="519.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Very%20Bad.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="637.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Button fx:id="rateBtn" layoutX="634.0" layoutY="496.0" mnemonicParsing="false" onAction="#sendRate" text="Rate Us" />
+      <Text fx:id="errorMsg" fill="RED" layoutX="637.0" layoutY="557.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

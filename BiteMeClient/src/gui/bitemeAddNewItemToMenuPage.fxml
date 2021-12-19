@@ -3,7 +3,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -58,7 +57,6 @@
       <Text fill="RED" layoutX="183.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <TextField fx:id="itemsNameTxtField" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
       <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
-      <Spinner fx:id="priceSpinner" editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
       <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="396.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
       <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
       <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
@@ -92,7 +90,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text id="link" fx:id="logoutBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+      <Text id="link" fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -100,7 +98,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="profileBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text id="link" fx:id="profileBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -145,6 +143,12 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+      </Text>
+      <TextField fx:id="priceTxtField" layoutX="385.0" layoutY="314.0" prefHeight="26.0" prefWidth="82.0" promptText="100.00" />
+      <Text layoutX="477.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
       </Text>
    </children>
 </AnchorPane>

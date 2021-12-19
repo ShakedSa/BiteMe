@@ -1,6 +1,7 @@
 package Entities;
 
 import java.io.File;
+import java.io.Serializable;
 
 import Enums.BranchName;
 import Enums.Status;
@@ -41,6 +42,8 @@ public class Customer extends User {
 		this.w4c = w4c;
 		this.refundedBalance = refundedBalance;
 	}
+	
+	public Customer() {}
 
 	public W4CCard getW4c() {
 		return w4c;

@@ -1,15 +1,19 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.Customer;
 import Entities.Delivery;
 import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
+import Entities.W4CCard;
 import client.ClientGUI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -67,9 +71,69 @@ public class reviewOrderController implements Initializable {
 	@FXML
 	void SubmitOrder(MouseEvent event) {
 		/**
-		 * Save order in the db :) switch to rate us scene.
+		 * Save order in the db, switch to rate us scene.
 		 */
+		Order order = router.getOrder();
+		switch (order.getPaymentMethod()) {
+		case BusinessCode:
+		case Both:
+			Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
+			W4CCard w4cCard = customer.getW4c();
+			if (router.getOrderDeliveryMethod().getFinalPrice() > w4cCard.getDailyBudget()) {
+				w4cCard.setBalance(w4cCard.getBalance() - w4cCard.getDailyBudget());
+				w4cCard.setDailyBalance(0);
+			} else {
+				w4cCard.setBalance(w4cCard.getBalance() - router.getOrderDeliveryMethod().getFinalPrice());
+				w4cCard.setDailyBalance(w4cCard.getDailyBalance() - router.getOrderDeliveryMethod().getFinalPrice());
+			}
+			break;
+		default:
+			break;
+		}
 		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
+		router.setBagItems(null);
+		router.setOrder(new Order());
+		router.setDelivery(null);
+		router.setOrderDeliveryMethod(null);
+		changeToRateUs();
+	}
+
+	private void changeToRateUs() {
+		if (router.getOrderReceivedController() == null) {
+			AnchorPane mainContainer;
+			orderReceivedController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeOrderReceivedPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setItemsCounter();
+				controller.setRates();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Rate Us");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				return;
+			}
+		} else {
+			router.getOrderReceivedController().setAvatar();
+			router.getOrderReceivedController().setItemsCounter();
+			router.getOrderReceivedController().setRates();
+			stage.setTitle("BiteMe - BiteMe - Rate Us");
+			stage.setScene(router.getOrderReceivedController().getScene());
+			stage.show();
+		}
+	}
+
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+		router.changeToMyCart();
 	}
 
 	@FXML
@@ -144,7 +208,7 @@ public class reviewOrderController implements Initializable {
 		for (Product p : products) {
 			Pane pane = new Pane();
 			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "₪");
+			Label priceLabel = new Label(p.getPrice() + "\u20AA");
 			nameLabel.setStyle("-fx-padding: 10 0");
 			priceLabel.setStyle("-fx-padding: 10 0");
 			nameLabel.setLayoutX(15);
@@ -179,7 +243,7 @@ public class reviewOrderController implements Initializable {
 		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
 		deliveryInformation.setLayoutX(100);
 		deliveryInformation.setLayoutY(380);
-		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "₪");
+		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "\u20AA");
 		totalPrice.setFont(new Font("Berlin Sans FB", 22));
 		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
 		totalPrice.setLayoutX(600);
