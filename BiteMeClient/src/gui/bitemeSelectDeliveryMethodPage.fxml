@@ -49,10 +49,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+      <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
             <Image url="@../images/bag-icon.gif" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
       <Text fx:id="itemsCounter" layoutX="551.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />

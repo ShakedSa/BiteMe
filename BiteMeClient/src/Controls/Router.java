@@ -28,18 +28,21 @@ public class Router {
 	private Stage stage;
 	private loginController Logincontroller;
 	private enterGUIController Enterguicontroller;
-	private restaurantSelectionController RestaurantselectionController;
+	private myCartController MyCartController;
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
 	private supplierPanelController SupplierPanelController;
+	private ceoPanelController CEOPanelController;
+	private profileController ProfileController;
+	// Order Process pages:
+	private restaurantSelectionController RestaurantselectionController;
 	private identifyController IdentifyController;
 	private restaurantMenuController RestaurantMenuController;
 	private pickDateAndTimeController PickDateAndTimeController;
 	private deliveryMethodController DeliveryMethodController;
 	private reviewOrderController ReviewOrderController;
 	private paymentController PaymentController;
-	private ceoPanelController CEOPanelController;
-	private profileController ProfileController;
+	private orderReceivedController OrderReceivedController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
 	private viewMonthlyReportsController ViewMonthlyReportsController;
@@ -505,6 +508,34 @@ public class Router {
 	}
 
 	/**
+	 * @return the myCartController
+	 */
+	public myCartController getMyCartController() {
+		return MyCartController;
+	}
+
+	/**
+	 * @param myCartController the myCartController to set
+	 */
+	public void setMyCartController(myCartController myCartController) {
+		MyCartController = myCartController;
+	}
+
+	/**
+	 * @return the orderReceivedController
+	 */
+	public orderReceivedController getOrderReceivedController() {
+		return OrderReceivedController;
+	}
+
+	/**
+	 * @param orderReceivedController the orderReceivedController to set
+	 */
+	public void setOrderReceivedController(orderReceivedController orderReceivedController) {
+		OrderReceivedController = orderReceivedController;
+	}
+
+	/**
 	 * @return the stage
 	 */
 	public Stage getStage() {
@@ -766,6 +797,38 @@ public class Router {
 		}
 	}
 
+	public void changeToMyCart() {
+		if (router.getMyCartController() == null) {
+			AnchorPane mainContainer;
+			myCartController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyCartPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setItemsCounter();
+				controller.displayOrder();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Cart");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyCartController().setItemsCounter();
+			router.getMyCartController().setAvatar();
+			router.getMyCartController().displayOrder();
+			stage.setTitle("BiteMe - My Cart");
+			stage.setScene(router.getMyCartController().getScene());
+			stage.show();
+		}
+	}
+
 	/**
 	 * Setting the order items
 	 * 
@@ -773,6 +836,8 @@ public class Router {
 	 */
 	public void setBagItems(ArrayList<Product> order) {
 		this.order.setProducts(order);
+		if (order != null)
+			this.order.calculateOrderPrice();
 	}
 
 	/**
@@ -842,13 +907,5 @@ public class Router {
 		}
 		return res;
 	}
-
-	/*
-	 * public static void show(Object c) { //
-	 * router.show(loginController.getClass()); switch(c) case loginController: open
-	 * logincontroller; case EnterGUIController: open Enterguicontroller
-	 * 
-	 * }
-	 */
 
 }
