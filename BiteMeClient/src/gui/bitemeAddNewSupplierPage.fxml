@@ -128,18 +128,18 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text fx:id="id" layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier ID">
+      <Text fx:id="userName" layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a User Name">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="idTxtField" focusTraversable="false" layoutX="311.0" layoutY="177.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="311.0" layoutY="177.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
       <Button fx:id="searchBtn" layoutX="515.0" layoutY="178.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
-      <Text fx:id="idError" fill="RED" layoutX="584.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate ID" visible="false">
+      <Text fx:id="userNameError" fill="RED" layoutX="584.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate ID" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

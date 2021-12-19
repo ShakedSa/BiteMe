@@ -349,10 +349,10 @@ public class ClientUI implements ClientIF {
 	}
 
 
-	public void checkID(String id) {
+	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("checkID", id));
+			arr.addAll(Arrays.asList("checkuserName", userName));
 			client.handleMessageFromClientUI(arr);
 		} catch (Exception e) {
 			e.printStackTrace();

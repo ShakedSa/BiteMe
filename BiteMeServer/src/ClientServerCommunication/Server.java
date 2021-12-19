@@ -117,14 +117,14 @@ public class Server extends AbstractServer {
 		case "checkUser":
 			this.sendToClient(mysqlConnection.checkUsername(m.get(1)), client);
 			break;
-		case "checkID":
-			this.sendToClient(mysqlConnection.checkID(m.get(1)), client);
+		case "checkuserName":
+			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(1)), client);
 			break;
 		case "updateUser":
 			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
 			break;
 		case "employersApproval":
-			mysqlConnection.getEmployersForApproval();
+			this.sendToClient(mysqlConnection.getEmployersForApproval(), client);
 			break;
 		default:
 			sendToClient("default", client);
