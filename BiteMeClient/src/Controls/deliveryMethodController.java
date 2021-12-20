@@ -162,6 +162,11 @@ public class deliveryMethodController implements Initializable {
 		router.logOut();
 	}
 
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
+
 	/**
 	 * Checking if all the fields in the basic delivery are filled and valid.
 	 * 
@@ -325,7 +330,8 @@ public class deliveryMethodController implements Initializable {
 			String hours = hourBox.getSelectionModel().getSelectedItem();
 			String minutes = minutesBox.getSelectionModel().getSelectedItem();
 			String time = hours + ":" + minutes;
-			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0, time);
+			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0,
+					time);
 			break;
 		case takeaway:
 			if (!checkBasic()) {
@@ -340,8 +346,8 @@ public class deliveryMethodController implements Initializable {
 			}
 			String amount = amountTextField.getText();
 			String businessCode = businessCodeTextField.getText();
-			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0, businessCode,
-					Integer.parseInt(amount));
+			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0,
+					businessCode, Integer.parseInt(amount));
 			break;
 		default:
 			return;
@@ -509,7 +515,8 @@ public class deliveryMethodController implements Initializable {
 			TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(newVal);
 			nextOrderStep.setDisable(false);
 			errorMsg.setText("");
-			hideBaseOnSelection(typeOfOrder);
+			if (typeOfOrder != null)
+				hideBaseOnSelection(typeOfOrder);
 		});
 		/** Creating the hours and minutes combo boxes for the preorder delivery */
 		ObservableList<String> hourOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(24)));
@@ -551,6 +558,9 @@ public class deliveryMethodController implements Initializable {
 			displayBasic(true);
 			displayShared(false);
 			displayPre(false);
+			addressText.setVisible(false);
+			addressTxtField.setVisible(false);
+			addStar.setVisible(false);
 			break;
 		case RobotDelivery:
 			errorMsg.setText("Robot delivery is not available yet.\nPlease select a different delivery method.");

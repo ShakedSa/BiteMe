@@ -111,10 +111,10 @@
       <TextField fx:id="employerCompanyNameTxtField" editable="false" layoutX="345.0" layoutY="293.0" promptText="Employer Name" />
       <TableView fx:id="approvalTable" layoutX="76.0" layoutY="359.0" prefHeight="99.0" prefWidth="437.0">
         <columns>
-          <TableColumn prefWidth="115.0" text="EmployerCode" />
-          <TableColumn prefWidth="150.0" text="EmployeCompanyName" />
-            <TableColumn prefWidth="82.0" text="IsApproved" />
-            <TableColumn prefWidth="102.0" text="HRname" />
+          <TableColumn fx:id="EmployerCode" prefWidth="115.0" text="EmployerCode" />
+          <TableColumn fx:id="EmployeCompanyName" prefWidth="150.0" text="EmployeCompanyName" />
+            <TableColumn fx:id="IsApproved" prefWidth="82.0" text="IsApproved" />
+            <TableColumn fx:id="HRname" prefWidth="102.0" text="HRname" />
         </columns>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />

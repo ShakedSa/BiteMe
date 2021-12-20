@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import Entities.Order;
 import Entities.ServerResponse;
 import Enums.UserType;
 import client.ClientGUI;
@@ -18,6 +19,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -165,6 +169,11 @@ public class restaurantSelectionController implements Initializable {
 		}
 		createRestaurants(newRestaurants);
 	}
+	
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -207,13 +216,10 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-//		ServerResponse restaurants = ClientGUI.client.getRestaurants();
 		if (resRestaurants == null) {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-//					ServerResponse last = ClientGUI.client.getLastResponse();
-//					while (ClientGUI.client.getLastResponse() == last) {
 					ClientGUI.client.restaurantsRequest();
 					synchronized (ClientGUI.monitor) {
 						try {
@@ -224,7 +230,6 @@ public class restaurantSelectionController implements Initializable {
 						}
 					}
 				}
-//				}
 			});
 			t.start();
 			try {
@@ -233,7 +238,7 @@ public class restaurantSelectionController implements Initializable {
 				e.printStackTrace();
 				return;
 			}
-			resRestaurants = ClientGUI.client.getRestaurants();
+			resRestaurants = ClientGUI.client.getLastResponse();
 		}
 		restaurantsNames = ((HashMap<String, File>) resRestaurants.getServerResponse()).keySet();
 		createRestaurants((HashMap<String, File>) resRestaurants.getServerResponse());
@@ -311,34 +316,51 @@ public class restaurantSelectionController implements Initializable {
 			 * restaurant.
 			 */
 			resOrder.setOnMouseClicked((MouseEvent e) -> {
-				router = Router.getInstance();
-				if (router.getIdentifyController() == null) {
-					AnchorPane mainContainer;
-					identifyController controller;
-					try {
-						FXMLLoader loader = new FXMLLoader();
-						loader.setLocation(getClass().getResource("../gui/bitemeIdentifyBeforeOrderPage.fxml"));
-						mainContainer = loader.load();
-						controller = loader.getController();
-						controller.setAvatar();
-						controller.setRestaurantToOrder(resName);
-						Scene mainScene = new Scene(mainContainer);
-						mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-						controller.setScene(mainScene);
-						stage.setTitle("BiteMe - Identification Page");
-						stage.setScene(mainScene);
-						stage.show();
-					} catch (IOException ex) {
-						ex.printStackTrace();
-						return;
-					}
-				} else {
-					router.getIdentifyController().setRestaurantToOrder(resName);
-					stage.setTitle("BiteMe - Identification page");
-					stage.setScene(router.getIdentifyController().getScene());
-					stage.show();
+				if(router.getOrder().getRestaurantName() != null && !router.getOrder().getRestaurantName().equals(resName)) {
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("Switch restaurants");
+					alert.setHeaderText("You got an order in restaurant " + router.getOrder().getRestaurantName() +
+							"\nChoosing a different restaurant will reset your last order.");
+			        alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
+			        	Order newOrder = new Order();
+						newOrder.setRestaurantName(resName);
+						router.setOrder(newOrder);
+			        	changeToIdentify(resName);
+			        });
+				}else {
+					changeToIdentify(resName);
 				}
+				
 			});
+		}
+	}
+	
+	private void changeToIdentify(String resName) {
+		if (router.getIdentifyController() == null) {
+			AnchorPane mainContainer;
+			identifyController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeIdentifyBeforeOrderPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setRestaurantToOrder(resName);
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Identification Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				return;
+			}
+		} else {
+			router.getIdentifyController().setRestaurantToOrder(resName);
+			stage.setTitle("BiteMe - Identification page");
+			stage.setScene(router.getIdentifyController().getScene());
+			stage.show();
 		}
 	}
 

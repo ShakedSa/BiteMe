@@ -52,25 +52,11 @@ public class Client extends AbstractClient {
 			return;
 		}
 		ServerResponse serverResponse = (ServerResponse) msg;
-		switch (serverResponse.getDataType()) {
-		case "User":
+		if("User".equals(serverResponse.getDataType()))
 			clientUI.setUser(serverResponse);
-			break;
-		case "Restaurants":
-			clientUI.setRestaurants(serverResponse);
-			break;
-		case "FavRestaurants":
-			clientUI.setFavRestaurants(serverResponse);
-			break;
-		case "menu":
-			clientUI.setMenu(serverResponse);
-			break;
-		case "optionalComponents":
-			clientUI.setOptionalComponentsInProduct(serverResponse);
-			break;
-		default:
+		else
 			clientUI.setLastResponse(serverResponse);
-		}
+		//notify gui that message received:
 		synchronized (ClientGUI.monitor) {
 			ClientGUI.monitor.notifyAll();
 		}

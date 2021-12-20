@@ -78,25 +78,16 @@
             <Font name="Arial Italic" size="17.0" />
          </font>
       </Text>
-      <ImageView id="japanika" fx:id="res1" fitHeight="73.0" fitWidth="78.0" layoutX="233.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView id="burgerim" fx:id="res2" fitHeight="73.0" fitWidth="78.0" layoutX="378.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView id="vong" fx:id="res3" fitHeight="73.0" fitWidth="78.0" layoutX="524.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="bagImg" fitHeight="36.0" fitWidth="34.0" layoutX="556.0" layoutY="27.0">
+      <ImageView id="japanika" fx:id="res1" fitHeight="73.0" fitWidth="78.0" layoutX="233.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
+      <ImageView id="burgerim" fx:id="res2" fitHeight="73.0" fitWidth="78.0" layoutX="378.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;" />
+      <ImageView id="vong" fx:id="res3" fitHeight="73.0" fitWidth="78.0" layoutX="524.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
+      <ImageView fx:id="bagImg" fitHeight="36.0" fitWidth="34.0" layoutX="556.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
             <Image url="@../images/bag-icon.gif" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
       <Circle fx:id="itemsCounterCircle" fill="#1f93ff00" layoutX="553.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
       <Text fx:id="itemsCounter" layoutX="550.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
@@ -157,7 +148,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="logOutBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#logOutBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true" visible="false">
+      <Text id="link" fx:id="logOutBtn" layoutX="744.0" layoutY="48.0" onMouseClicked="#logOutBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true" visible="false">
          <font>
             <Font size="14.0" />
          </font>
@@ -167,7 +158,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="profileBtn" layoutX="744.0" layoutY="48.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" visible="false">
+      <Text id="link" fx:id="profileBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" visible="false">
          <font>
             <Font size="14.0" />
          </font>

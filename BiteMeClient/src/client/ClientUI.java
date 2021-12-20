@@ -34,9 +34,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder,
-			lastResponse;
-	HashMap<String, File> restaurants, favRestaurants;
+	ServerResponse user, lastResponse;
 	/** Storing response from the server. */
 	Object res;
 
@@ -65,9 +63,11 @@ public class ClientUI implements ClientIF {
 	 */
 	public void login(String userName, String password) {
 		try {
+			ServerResponse serverResponse = new ServerResponse("login");
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("login", userName, password));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(userName, password));
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -81,9 +81,11 @@ public class ClientUI implements ClientIF {
 	 */
 	public void logout(String userName) {
 		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("logout", userName));
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("logout");
+//			ArrayList<String> arr = new ArrayList<>();
+//			arr.addAll(Arrays.asList("logout", userName));
+			serverResponse.setServerResponse(userName);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -96,9 +98,10 @@ public class ClientUI implements ClientIF {
 	 */
 	public void restaurantsRequest() {
 		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("getRestaurants");
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("Restaurants");
+//			ArrayList<String> arr = new ArrayList<>();
+//			arr.add("getRestaurants");
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -111,9 +114,10 @@ public class ClientUI implements ClientIF {
 	 */
 	public void favRestaurantsRequest() {
 		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("favRestaurants");
-			client.handleMessageFromClientUI(arr);
+//			ArrayList<String> arr = new ArrayList<>();
+//			arr.add("favRestaurants");
+			ServerResponse serverResponse = new ServerResponse("favRestaurants");
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -128,31 +132,35 @@ public class ClientUI implements ClientIF {
 	public void updateUserInfo(String userName, String userType, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("updateUser");
+//			arr.add("updateUser");
 			arr.add(userName);
 			arr.add(userType);
 			arr.add(status);
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("updateUser");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. add new supplier to the db
 	 * 
 	 * @param restaurantName
 	 */
-	public void addNewSupplier(NewUser supplier) {				
+	public void addNewSupplier(NewUser supplier) {
 		try {
-			client.handleMessageFromClientUI(supplier);
+			ServerResponse serverResponse = new ServerResponse("newSupplier");
+			serverResponse.setServerResponse(supplier);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
@@ -162,16 +170,17 @@ public class ClientUI implements ClientIF {
 	public void getRestaurantMenu(String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("menu");
+//			arr.add("menu");
 			arr.add(restaurantName);
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("menu");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
+
 	/**
 	 * Sending a query request from the server. check for employers approvals
 	 * restaurant.
@@ -180,9 +189,10 @@ public class ClientUI implements ClientIF {
 	 */
 	public void checkForApprovals() {
 		try {
-			ArrayList<String> arr = new ArrayList<>();
-			arr.add("employersApproval");
-			client.handleMessageFromClientUI(arr);
+//			ArrayList<String> arr = new ArrayList<>();
+//			arr.add("employersApproval");
+			ServerResponse serverResponse = new ServerResponse("employersApproval");
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -199,10 +209,12 @@ public class ClientUI implements ClientIF {
 	public void componentsInProduct(String restaurantName, String productName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("componentsInProduct");
+//			arr.add("componentsInProduct");
 			arr.add(restaurantName);
 			arr.add(productName);
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("componentsInProduct");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -218,51 +230,55 @@ public class ClientUI implements ClientIF {
 	public void searchOrder(String orderNumber) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("searchOrder", orderNumber));
-			client.handleMessageFromClientUI(arr);
+//			arr.addAll(Arrays.asList("searchOrder", orderNumber));
+			arr.add(orderNumber);
+			ServerResponse serverResponse = new ServerResponse("searchOrder");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
 
-	
 	/**
 	 * Sending the server a creatNewBusinessCustomer request.
 	 *
 	 * @param orderNumber
 	 * 
 	 */
-	public void createNewBusinessCustomer(String hrUserName,String employerCode, String employerCompanyName) {
+	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName,employerCode,employerCompanyName));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(hrUserName, employerCode, employerCompanyName));
+			ServerResponse serverResponse = new ServerResponse("createNewBusinessCustomer");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
 	 *
 	 * @param hrUserName,employerCompanyName
 	 * 
 	 */
-	public void selectCustomerAndbudget( String employerCompanyName) {
+	public void selectCustomerAndbudget(String employerCompanyName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("selectCustomerAndbudget", employerCompanyName));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(employerCompanyName));
+			ServerResponse serverResponse = new ServerResponse("selectCustomerAndbudget");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
 	 *
@@ -272,22 +288,32 @@ public class ClientUI implements ClientIF {
 	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("approveCustomerAsBusiness", employerCompanyName,customerId));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(employerCompanyName, customerId));
+			ServerResponse serverResponse = new ServerResponse("approveCustomerAsBusiness");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
+
+	public void setRate(int orderNumber, int rate) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(orderNumber + "", rate + ""));
+			ServerResponse serverResponse = new ServerResponse("rate");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
 	/**
-	 * Sending the server a request to check if the business customer is already created.
+	 * Sending the server a request to check if the business customer is already
+	 * created.
 	 * 
 	 * @param orderNumber
 	 * 
@@ -295,8 +321,10 @@ public class ClientUI implements ClientIF {
 	public void checkIfBusinessCustomerExist(String hrUserName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("createNewBusinessCustomer", hrUserName));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(hrUserName));
+			ServerResponse serverResponse = new ServerResponse("createNewBusinessCustomer");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -305,14 +333,15 @@ public class ClientUI implements ClientIF {
 
 	public void insertOrder(OrderDeliveryMethod orderToInsert) {
 		try {
-			client.handleMessageFromClientUI(orderToInsert);
+			ServerResponse serverResponse = new ServerResponse("InsertOrder");
+			serverResponse.setServerResponse(orderToInsert);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-  
- 	
+
 	/**
 	 * supplier update order status
 	 * 
@@ -324,52 +353,63 @@ public class ClientUI implements ClientIF {
 	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, String time, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("updateOrderStatus", receivedOrReady, orderNumber, time, status));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(receivedOrReady, orderNumber, time, status));
+			ServerResponse serverResponse = new ServerResponse("updateOrderStatus");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * get order details
+	 * 
 	 * @param orderNumber
 	 */
 	public void getOrderInfo(String orderNumber) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("getOrderInfo", orderNumber));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(orderNumber));
+			ServerResponse serverResponse = new ServerResponse("getOrderInfo");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		
+
 	}
-	
+
 	/**
 	 * get customer details
+	 * 
 	 * @param deliveryNumber
 	 */
 	public void getCustomerInfo(String deliveryNumber) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("getCustomerInfo", deliveryNumber));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(deliveryNumber));
+			ServerResponse serverResponse = new ServerResponse("getCustomerInfo");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	/**
 	 * supplier add new item to menu
+	 * 
 	 * @param product
 	 */
 	public void addItemToMenu(Product product) {
 		try {
-			client.handleMessageFromClientUI(product);
+			ServerResponse serverResponse = new ServerResponse("addItem");
+			serverResponse.setServerResponse(product);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -439,39 +479,6 @@ public class ClientUI implements ClientIF {
 		return user;
 	}
 
-	public void setRestaurants(ServerResponse restaurants) {
-		this.ResRestaurants = restaurants;
-	}
-
-	public ServerResponse getRestaurants() {
-		return ResRestaurants;
-	}
-
-	public void setFavRestaurants(ServerResponse favRestaurants) {
-		this.ResFavRestaurants = favRestaurants;
-
-	}
-
-	public ServerResponse getFavRestaurants() {
-		return ResFavRestaurants;
-	}
-
-	public void setMenu(ServerResponse menu) {
-		ResRestaurantMenu = menu;
-	}
-
-	public ServerResponse getMenu() {
-		return ResRestaurantMenu;
-	}
-
-	public void setOptionalComponentsInProduct(ServerResponse optionalComponents) {
-		ResComponentsInProducts = optionalComponents;
-	}
-
-	public ServerResponse getOptionalComponentsInProduct() {
-		return ResComponentsInProducts;
-	}
-
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
@@ -500,11 +507,13 @@ public class ClientUI implements ClientIF {
 
 	}
 
-	public void checkID(String id) {
+	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList("checkID", id));
-			client.handleMessageFromClientUI(arr);
+			arr.addAll(Arrays.asList(userName));
+			ServerResponse serverResponse = new ServerResponse("checkuserName");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

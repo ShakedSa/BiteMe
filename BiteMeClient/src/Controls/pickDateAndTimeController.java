@@ -88,6 +88,11 @@ public class pickDateAndTimeController implements Initializable {
 		errorMsg.setText("");
 		changeToDelivery();
 	}
+	
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
 
 	private void changeToDelivery() {
 		router = Router.getInstance();

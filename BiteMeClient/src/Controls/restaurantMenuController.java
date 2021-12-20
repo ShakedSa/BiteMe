@@ -51,7 +51,7 @@ public class restaurantMenuController implements Initializable {
 
 	TabPane tabPane;
 
-	private ArrayList<Product> productsInOrder = new ArrayList<>();
+	private ArrayList<Product> productsInOrder;
 
 	@FXML
 	private Rectangle avatar;
@@ -102,7 +102,11 @@ public class restaurantMenuController implements Initializable {
 		if (itemsCounter.getText().equals("0")) {
 			return;
 		}
-		router.getOrder().setProducts(productsInOrder);
+		if (router.getOrder().getProducts() == null) {
+			router.getOrder().setProducts(productsInOrder);
+		}else {
+			router.getOrder().getProducts().addAll(productsInOrder.stream().filter(p -> !router.getOrder().getProducts().contains(p)).collect(Collectors.toList()));
+		}
 		router.getOrder().calculateOrderPrice();
 		router = Router.getInstance();
 		if (router.getPickDateAndTimeController() == null) {
@@ -169,6 +173,12 @@ public class restaurantMenuController implements Initializable {
 		setStage(router.getStage());
 	}
 
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		root.getChildren().remove(tabPane);
+		router.changeToMyCart();
+	}
+
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -197,11 +207,11 @@ public class restaurantMenuController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setMenu() {
-		ClientGUI.client.getRestaurantMenu(restaurantName);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				synchronized (ClientGUI.monitor) {
+					ClientGUI.client.getRestaurantMenu(restaurantName);
 					try {
 						ClientGUI.monitor.wait();
 					} catch (Exception e) {
@@ -218,8 +228,8 @@ public class restaurantMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getMenu() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getMenu().getServerResponse();
+		if (ClientGUI.client.getLastResponse() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
 			if (menu == null) {
 				System.out.println("Menu is not set yet for " + restaurantName);
 			} else {
@@ -248,7 +258,7 @@ public class restaurantMenuController implements Initializable {
 				.collect(Collectors.toList());
 		List<Product> dessertsMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.dessert)
 				.collect(Collectors.toList());
-		/**Creating new tabs for the tabpane.*/
+		/** Creating new tabs for the tabpane. */
 		Tab entrees = new Tab("Entrees");
 		entrees.setClosable(false);
 		Tab mainDishes = new Tab("Main Dishes");
@@ -284,6 +294,7 @@ public class restaurantMenuController implements Initializable {
 	private void setTabContent(Tab tab, List<Product> productsToAdd) {
 		ScrollPane tabContent = new ScrollPane();
 		AnchorPane tabLabels = new AnchorPane();
+		productsInOrder = new ArrayList<>();
 		int i = 0; // Index for the items layout on the scrollpane.
 		/** Creating scrollpane for the tab. */
 		for (Product p : productsToAdd) {
@@ -323,11 +334,11 @@ public class restaurantMenuController implements Initializable {
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
-					ClientGUI.client.setOptionalComponentsInProduct(null);
+					ClientGUI.client.setLastResponse(null);
 				});
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
-				
+
 				title.setFont(new Font("Berlin Sans FB", 30));
 				title.setStyle("-fx-text-fill: black;");
 				title.setLayoutX(41);
@@ -340,7 +351,7 @@ public class restaurantMenuController implements Initializable {
 				line.setEndX(530);
 				line.setStartY(0);
 				line.setEndY(0);
-				
+
 				/** Product's description. */
 				Label description = new Label(p.getDescription());
 				description.setFont(new Font("Berlin Sans FB", 14));
@@ -373,7 +384,7 @@ public class restaurantMenuController implements Initializable {
 					return;
 				}
 				/** Checking the server's response. */
-				ServerResponse serverResponse = ClientGUI.client.getOptionalComponentsInProduct();
+				ServerResponse serverResponse = ClientGUI.client.getLastResponse();
 				ArrayList<Component> componentInDish; // Components received from query.
 				ArrayList<Component> componentInProduct = new ArrayList<>(); // Components in actual dish for the order.
 				if (serverResponse != null) {
@@ -427,10 +438,15 @@ public class restaurantMenuController implements Initializable {
 								componentInProduct.add(c);
 								componentLabels.getChildren().addAll(sizeTitle, size);
 							} else if (checkIfDoneness(c)) {
+								Label sizeTitle = new Label("Doneness");
+								sizeTitle.setFont(new Font("Berlin Sans FB", 14));
+								sizeTitle.setTextFill(Color.BLACK);
+								sizeTitle.setLayoutX(10);
+								sizeTitle.setLayoutY(j * 50 + 10);
 								ComboBox<Doneness> doneness = new ComboBox<>();
 								doneness.getItems().addAll(Doneness.values());
 								doneness.getSelectionModel().select(Doneness.medium);
-								doneness.setLayoutX(10);
+								doneness.setLayoutX(40);
 								doneness.setLayoutY(j * 50 + 10);
 								doneness.getSelectionModel().selectedItemProperty()
 										.addListener((obj, oldVal, newVal) -> {
@@ -465,7 +481,7 @@ public class restaurantMenuController implements Initializable {
 						componentContent.setId("background");
 						componentLabels.setId("background");
 						componentContent.getStyleClass().add("componentContent");
-						
+
 						componentContent.setContent(componentLabels);
 						overlayPane.getChildren().add(componentContent);
 					}

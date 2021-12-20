@@ -128,6 +128,7 @@ public class managerPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -139,6 +140,8 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
+
+			router.getAuthorizedEmployerApprovalController().initTable();
 			stage.setTitle("BiteMe - Authorized Employer Approval");
 			stage.setScene(router.getAuthorizedEmployerApprovalController().getScene());
 			stage.show();

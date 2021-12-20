@@ -354,6 +354,11 @@ public class homePageController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
+	
+	@FXML
+	public void changeToCart(MouseEvent event) {
+		router.changeToMyCart();
+	}
 
 	/**
 	 * Getting the favourite restaurants in the DB.
@@ -361,34 +366,31 @@ public class homePageController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setFavRestaurants() {
-		ServerResponse ResFavRestaurants = ClientGUI.client.getFavRestaurants();
 		HashMap<String, File> favRestaurants;
-		if (ResFavRestaurants == null) {
-			ClientGUI.client.favRestaurantsRequest();
-			Thread t = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (ClientGUI.client.getFavRestaurants() == null) {
-						synchronized (ClientGUI.monitor) {
-							try {
-								ClientGUI.monitor.wait();
-							} catch (Exception e) {
-								e.printStackTrace();
-								return;
-							}
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ClientGUI.client.favRestaurantsRequest();
+					synchronized (ClientGUI.monitor) {
+						try {
+							ClientGUI.monitor.wait();
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
 						}
 					}
 				}
-			});
-			t.start();
-			try {
-				t.join();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
 		}
-		favRestaurants = (HashMap<String, File>) ClientGUI.client.getFavRestaurants().getServerResponse();
+		
+		
+		favRestaurants = (HashMap<String, File>) ClientGUI.client.getLastResponse().getServerResponse();
 		Set<String> resSet = favRestaurants.keySet();
 		String[] res = new String[resSet.size()];
 		int j = 0;
