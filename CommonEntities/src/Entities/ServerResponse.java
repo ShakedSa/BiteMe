@@ -86,7 +86,7 @@ public class ServerResponse implements Serializable {
 		if (serverResponse != null) {
 			return serverResponse.toString();
 		}
-		return "Null object";
+		return dataType;
 	}
 
 }

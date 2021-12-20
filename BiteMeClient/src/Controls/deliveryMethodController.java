@@ -2,6 +2,7 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -329,7 +330,7 @@ public class deliveryMethodController implements Initializable {
 			}
 			String hours = hourBox.getSelectionModel().getSelectedItem();
 			String minutes = minutesBox.getSelectionModel().getSelectedItem();
-			String time = hours + ":" + minutes;
+			String time = LocalDate.now().toString() + " " + hours + ":" + minutes;
 			newDelivery = new PreorderDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0,
 					time);
 			break;

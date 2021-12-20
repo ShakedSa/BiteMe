@@ -90,7 +90,24 @@ public class reviewOrderController implements Initializable {
 		default:
 			break;
 		}
-		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
+		Thread t = new Thread(() -> {
+			synchronized(ClientGUI.monitor) {
+				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
+				try {
+					ClientGUI.monitor.wait();
+				}catch(Exception e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
 		router.setBagItems(null);
 		router.setOrder(new Order());
 		router.setDelivery(null);
@@ -109,7 +126,7 @@ public class reviewOrderController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setItemsCounter();
-				controller.setRates();
+				controller.setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -123,7 +140,7 @@ public class reviewOrderController implements Initializable {
 		} else {
 			router.getOrderReceivedController().setAvatar();
 			router.getOrderReceivedController().setItemsCounter();
-			router.getOrderReceivedController().setRates();
+			router.getOrderReceivedController().setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();

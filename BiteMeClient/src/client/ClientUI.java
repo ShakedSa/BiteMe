@@ -82,9 +82,9 @@ public class ClientUI implements ClientIF {
 	public void logout(String userName) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("logout");
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.addAll(Arrays.asList("logout", userName));
-			serverResponse.setServerResponse(userName);
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(userName));
+			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
