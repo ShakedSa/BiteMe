@@ -33,9 +33,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, ResRestaurants, ResFavRestaurants, ResRestaurantMenu, ResComponentsInProducts, SearchOrder,
-			lastResponse;
-	HashMap<String, File> restaurants, favRestaurants;
+	ServerResponse user, lastResponse;
 	/** Storing response from the server. */
 	Object res;
 
@@ -381,20 +379,6 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * @return the searchOrder
-	 */
-	public ServerResponse getSearchOrder() {
-		return SearchOrder;
-	}
-
-	/**
-	 * @param searchOrder the searchOrder to set
-	 */
-	public void setSearchOrder(ServerResponse searchOrder) {
-		SearchOrder = searchOrder;
-	}
-
-	/**
 	 * A must implemented method from ChatIF interface.
 	 * 
 	 * @param message
@@ -426,39 +410,6 @@ public class ClientUI implements ClientIF {
 
 	public ServerResponse getUser() {
 		return user;
-	}
-
-	public void setRestaurants(ServerResponse restaurants) {
-		this.ResRestaurants = restaurants;
-	}
-
-	public ServerResponse getRestaurants() {
-		return ResRestaurants;
-	}
-
-	public void setFavRestaurants(ServerResponse favRestaurants) {
-		this.ResFavRestaurants = favRestaurants;
-
-	}
-
-	public ServerResponse getFavRestaurants() {
-		return ResFavRestaurants;
-	}
-
-	public void setMenu(ServerResponse menu) {
-		ResRestaurantMenu = menu;
-	}
-
-	public ServerResponse getMenu() {
-		return ResRestaurantMenu;
-	}
-
-	public void setOptionalComponentsInProduct(ServerResponse optionalComponents) {
-		ResComponentsInProducts = optionalComponents;
-	}
-
-	public ServerResponse getOptionalComponentsInProduct() {
-		return ResComponentsInProducts;
 	}
 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {

@@ -228,8 +228,8 @@ public class restaurantMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getMenu() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getMenu().getServerResponse();
+		if (ClientGUI.client.getLastResponse() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
 			if (menu == null) {
 				System.out.println("Menu is not set yet for " + restaurantName);
 			} else {
@@ -334,7 +334,7 @@ public class restaurantMenuController implements Initializable {
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
-					ClientGUI.client.setOptionalComponentsInProduct(null);
+					ClientGUI.client.setLastResponse(null);
 				});
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
@@ -384,7 +384,7 @@ public class restaurantMenuController implements Initializable {
 					return;
 				}
 				/** Checking the server's response. */
-				ServerResponse serverResponse = ClientGUI.client.getOptionalComponentsInProduct();
+				ServerResponse serverResponse = ClientGUI.client.getLastResponse();
 				ArrayList<Component> componentInDish; // Components received from query.
 				ArrayList<Component> componentInProduct = new ArrayList<>(); // Components in actual dish for the order.
 				if (serverResponse != null) {
