@@ -1,4 +1,4 @@
-			  
+
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import Entities.MyFile;
-import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
+import Entities.ServerResponse;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
@@ -48,113 +48,138 @@ public class Server extends AbstractServer {
 	 * @param msg
 	 * @param client
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if(msg instanceof MyFile) // handle upload pdf file to sql
+		if (msg instanceof MyFile) // handle upload pdf file to sql
 		{
-			  MyFile message = ((MyFile) msg);
-			  controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
+			MyFile message = ((MyFile) msg);
+			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
-				InputStream is = new ByteArrayInputStream(((MyFile)msg).getMybytearray());
-				mysqlConnection.updateFile(is,message.getFileName(),message.getDescription());
-			}catch(Exception e) {
+				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
+				mysqlConnection.updateFile(is, message.getFileName(), message.getDescription());
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling files in Server");
 			}
 			return;
 		}
-		
-		if(msg instanceof OrderDeliveryMethod) {
-			try {
-			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg), client);;
-			}catch(Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while handling message in server");
-			}
-			return;
-		}
-		
-		if(msg instanceof NewUser) {
-			try {
-			NewSupplier supplier = ((NewUser)msg).getSupplier();
-			//add supplier to users table
-			mysqlConnection.addNewUser((NewUser)msg);
-			//add supplier to supplliers table
-			mysqlConnection.addNewSupplier(supplier);
-			}catch(Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while handling message in server");
-			}
-			return;
-		}
-		if(msg instanceof Product) {
-			try {
-				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			return;
-		}
 
-		
+//		if(msg instanceof OrderDeliveryMethod) {
+//			try {
+//			
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//				System.out.println("Error while handling message in server");
+//			}
+//			return;
+//		}
+//		
+//		if(msg instanceof NewUser) {
+//			try {
+//			NewSupplier supplier = ((NewUser)msg).getSupplier();
+//			//add supplier to users table
+//			;
+//			//add supplier to supplliers table
+//			mysqlConnection.addNewSupplier(supplier);
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//				System.out.println("Error while handling message in server");
+//			}
+//			return;
+//		}
+//		if(msg instanceof Product) {
+//			try {
+//				
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
+//			return;
+//		}
+
 		controller.setMessage("Msg recieved:" + msg);
-		@SuppressWarnings("unchecked")
-		ArrayList<String> m = (ArrayList<String>) msg;
-						
-		switch (m.get(0)) {
+//		@SuppressWarnings("unchecked")
+//		ArrayList<String> m = (ArrayList<String>) msg;
+		ServerResponse serverResponse = (ServerResponse) msg;
+		ArrayList<String> m;
+		switch (serverResponse.getDataType()) {
 		case "login":
-			this.sendToClient(mysqlConnection.login(m.get(1), m.get(2)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.login(m.get(0), m.get(0)), client);
 			break;
 		case "logout":
-			this.sendToClient(mysqlConnection.logout(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.logout(m.get(0)), client);
 			break;
-		case "getRestaurants":
+		case "Restaurants":
 			this.sendToClient(mysqlConnection.getRestaurants(), client);
 			break;
 		case "favRestaurants":
 			this.sendToClient(mysqlConnection.favRestaurants(), client);
 			break;
 		case "menu":
-			this.sendToClient(mysqlConnection.getMenuToOrder(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getMenuToOrder(m.get(0)), client);
 			break;
 		case "componentsInProduct":
-			this.sendToClient(mysqlConnection.getComponentsInProduct(m.get(1), m.get(2)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getComponentsInProduct(m.get(0), m.get(1)), client);
 			break;
 		case "searchOrder":
-			this.sendToClient(mysqlConnection.searchOrder(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.searchOrder(m.get(0)), client);
 			break;
 		case "checkUser":
-			this.sendToClient(mysqlConnection.checkUsername(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkUsername(m.get(0)), client);
 			break;
 		case "checkuserName":
-			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
 		case "updateUser":
-			mysqlConnection.updateUserInformation(m.get(1), m.get(2), m.get(3));
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			mysqlConnection.updateUserInformation(m.get(0), m.get(1), m.get(2));
 			break;
 		case "employersApproval":
 			this.sendToClient(mysqlConnection.getEmployersForApproval(), client);
 			break;
 		case "createNewBusinessCustomer":
-			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(1),m.get(2),m.get(3)),client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.createNewBusinessCustomer(m.get(0), m.get(1), m.get(2)), client);
 			break;
 		case "selectCustomerAndbudget":
-			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(1)),client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.selectCustomerAndbudget(m.get(0)), client);
 			break;
 		case "approveCustomerAsBusiness":
-			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(1),m.get(2)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.approveCustomerAsBusiness(m.get(0), m.get(1)), client);
 			break;
 		case "updateOrderStatus":
-			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(1), m.get(2), m.get(3), m.get(4)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(0), m.get(1), m.get(2), m.get(3)), client);
 			break;
 		case "getOrderInfo":
-			this.sendToClient(mysqlConnection.getOrderInfo(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0)), client);
 			break;
 		case "getCustomerInfo":
-			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(1)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(0)), client);
 			break;
 		case "rate":
-			this.sendToClient(mysqlConnection.setRate(m.get(1), m.get(2)), client);
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
+			break;
+		case "newSupplier":
+			mysqlConnection.addNewUser((NewUser)serverResponse.getServerResponse());
+			break;
+		case "InsertOrder":
+			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)serverResponse.getServerResponse()), client);
+			break;
+		case "addItem":
+			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
 			break;
 		default:
 			sendToClient("default", client);
