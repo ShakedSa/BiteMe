@@ -32,39 +32,39 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="restaurantName" layoutX="88.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name" visible="false">
+      <Text fx:id="restaurantName" layoutX="88.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Name">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="restaurantAddress" layoutX="88.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Address" visible="false">
+      <Text fx:id="restaurantAddress" layoutX="88.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Address">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="restaurantType" layoutX="88.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Type" visible="false">
+      <Text fx:id="restaurantType" layoutX="88.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurant Type">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="monthlyCommission" layoutX="88.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commission" visible="false">
+      <Text fx:id="monthlyCommission" layoutX="88.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Commission">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="restaurantNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="221.0" prefHeight="26.0" prefWidth="178.0" visible="false">
+      <TextField fx:id="restaurantNameTxtField" focusTraversable="false" layoutX="310.0" layoutY="221.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantAddressTxtField" focusTraversable="false" layoutX="310.0" layoutY="264.0" prefHeight="26.0" prefWidth="178.0" visible="false">
+      <TextField fx:id="restaurantAddressTxtField" focusTraversable="false" layoutX="310.0" layoutY="264.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <TextField fx:id="restaurantTypeTxtField" focusTraversable="false" layoutX="310.0" layoutY="310.0" prefHeight="26.0" prefWidth="178.0" visible="false">
+      <TextField fx:id="restaurantTypeTxtField" focusTraversable="false" layoutX="310.0" layoutY="310.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor></TextField>
-      <ComboBox fx:id="monthlyCommissionBox" focusTraversable="false" layoutX="310.0" layoutY="360.0" prefHeight="27.0" prefWidth="88.0" visible="false">
+      <ComboBox fx:id="monthlyCommissionBox" focusTraversable="false" layoutX="310.0" layoutY="360.0" prefHeight="27.0" prefWidth="88.0">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -118,12 +118,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fx:id="updateSucess" fill="#62d019" layoutX="137.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
+      <Text fx:id="updateSucess" fill="#62d019" layoutX="137.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="455.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="91.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
@@ -149,5 +149,21 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
+      <Text layoutX="134.0" layoutY="427.0" onMouseClicked="#ImportImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="ImportImage" fitHeight="50.0" fitWidth="39.0" layoutX="86.0" layoutY="396.0" onMouseClicked="#ImportImageClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/upload.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>
