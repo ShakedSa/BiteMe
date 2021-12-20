@@ -79,7 +79,7 @@ public class Server extends AbstractServer {
 			NewSupplier supplier = ((NewUser)msg).getSupplier();
 			//add supplier to users table
 			mysqlConnection.addNewUser((NewUser)msg);
-			//add supplier to supplliers table
+			//add supplier to suppliers table
 			mysqlConnection.addNewSupplier(supplier);
 			}catch(Exception e) {
 				e.printStackTrace();
@@ -90,6 +90,7 @@ public class Server extends AbstractServer {
 		if(msg instanceof Product) {
 			try {
 				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
+				//this.sendToClient(mysqlConnection.editItemInMenu((Product)msg), client);
 			}catch(Exception e) {
 				e.printStackTrace();
 			}

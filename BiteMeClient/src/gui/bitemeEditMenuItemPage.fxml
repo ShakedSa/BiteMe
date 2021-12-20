@@ -3,7 +3,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -73,7 +72,6 @@
       </Text>
       <TextField fx:id="itemsNameTxtField" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
       <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
-      <Spinner fx:id="priceSpinner" editable="true" layoutX="383.0" layoutY="314.0" prefHeight="26.0" prefWidth="152.0" />
       <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="396.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
       <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="SupplierPanel">
@@ -117,7 +115,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Label id="btn" fx:id="addItemToMenuBtn" alignment="CENTER" layoutX="607.0" layoutY="514.0" onMouseClicked="#addItemToMenuClicked" prefHeight="25.0" prefWidth="170.0" text="Update">
+      <Label id="btn" fx:id="updateItemBtn" alignment="CENTER" layoutX="607.0" layoutY="514.0" onMouseClicked="#updateItemBtnClicked" prefHeight="25.0" prefWidth="170.0" text="Update">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
@@ -146,5 +144,24 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
+      <TextField fx:id="priceTxtField" layoutX="385.0" layoutY="314.0" prefHeight="26.0" prefWidth="82.0" promptText="100.00" />
+      <Text layoutX="477.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="555.0" layoutY="273.0" onMouseClicked="#infoIconClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/info-icon.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <TextArea fx:id="infoTxtArea" editable="false" layoutX="587.0" layoutY="243.0" prefHeight="122.0" prefWidth="207.0" text="Please separate different&#10;components with a comma.&#10;If the item includes different&#10;sizes, write: Size&#10;If the item includes different&#10;doneness, write: Doneness">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </TextArea>
    </children>
 </AnchorPane>
