@@ -108,8 +108,8 @@ public class updateMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getMenu() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getMenu().getServerResponse();
+		if (ClientGUI.client.getLastResponse() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
 			if (menu == null) {
 				System.out.println("Menu is not set yet for " + restaurant);
 			} 

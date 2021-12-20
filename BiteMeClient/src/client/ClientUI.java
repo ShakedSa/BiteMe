@@ -431,19 +431,19 @@ public class ClientUI implements ClientIF {
 
 																											   				
 
-	/**
-	 * @return the searchOrder
-	 */
-	public ServerResponse getSearchOrder() {
-		return SearchOrder;
-	}
-
-	/**
-	 * @param searchOrder the searchOrder to set
-	 */
-	public void setSearchOrder(ServerResponse searchOrder) {
-		SearchOrder = searchOrder;
-	}
+//	/**
+//	 * @return the searchOrder
+//	 */
+//	public ServerResponse getSearchOrder() {
+//		return SearchOrder;
+//	}
+//
+//	/**
+//	 * @param searchOrder the searchOrder to set
+//	 */
+//	public void setSearchOrder(ServerResponse searchOrder) {
+//		SearchOrder = searchOrder;
+//	}
 
 	/**
 	 * A must implemented method from ChatIF interface.
