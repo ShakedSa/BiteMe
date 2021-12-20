@@ -140,14 +140,13 @@ public class mysqlConnection {
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
 					int cusID = 0;
-					float refBalance = 0;
 					if (rs.next()) {
 						cusID = rs.getInt(1);
-						refBalance = rs.getFloat(3);
 					}
 					W4CCard w4cCard = getW4CCard(cusID);
+					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, w4cCard, refBalance);
+							organization, branch, role, status, avatar, w4cCard, refunds);
 					stmt.close();
 					break;
 				case Supplier:
@@ -285,12 +284,31 @@ public class mysqlConnection {
 				float dailyBudget = rs.getFloat(7);
 				float balance = rs.getFloat(8);
 				float dailyBalance = rs.getFloat(9);
-				return new W4CCard(w4cID, employerCode, qrCode, creditCardNumber, monthlyBudget, balance, dailyBudget, dailyBalance);
+				return new W4CCard(w4cID, employerCode, qrCode, creditCardNumber, monthlyBudget, balance, dailyBudget,
+						dailyBalance);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private static HashMap<String, Float> getRefund(int CustomerID) {
+		PreparedStatement stmt;
+		try {
+			String query = "SELECT RestaurantName, Refund FROM bitemedb.refunds WHERE CustomerID = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, CustomerID);
+			ResultSet rs = stmt.executeQuery();
+			HashMap<String, Float> refunds = new HashMap<>();
+			while (rs.next()) {
+				refunds.put(rs.getString(1), rs.getFloat(2));
+			}
+			return refunds;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -439,11 +457,11 @@ public class mysqlConnection {
 			stmt.setString(2, productName);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				switch (rs.getString(1)) {
-				case "Doneness":
+				switch (rs.getString(1).toLowerCase()) {
+				case "doneness":
 					components.add(new Component(Doneness.medium));
 					break;
-				case "Size":
+				case "size":
 					components.add(new Component(Size.Medium));
 					break;
 				default:
@@ -709,7 +727,7 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
+
 	/**
 	 * Check if a user name number is exist and has no type
 	 * 
@@ -726,15 +744,13 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) { 
-				if(rs.getString(8).equals("")) {
+			if (rs.next()) {
+				if (rs.getString(8).equals("")) {
 					response.add(rs.getString(3));
 					response.add(rs.getString(4));
-				}
-				else
+				} else
 					response.add("already has type");
-			}
-			else {
+			} else {
 				response.add("Error");
 			}
 		} catch (SQLException e) {
@@ -747,18 +763,18 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	//java.sql.SQLIntegrityConstraintViolationException: 
-	//Cannot add or update a child row: a foreign key constraint fails
-	//(`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY (`RestaurantName`) 
-	//REFERENCES `suppliers` (`RestaurantName`))
-	
+
+	// java.sql.SQLIntegrityConstraintViolationException:
+	// Cannot add or update a child row: a foreign key constraint fails
+	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
+	// (`RestaurantName`)
+	// REFERENCES `suppliers` (`RestaurantName`))
+
 	public static void updateFile(InputStream is, String date) {
 		System.out.println("test !");
-		String filename= "Report " + date + ".pdf";
+		String filename = "Report " + date + ".pdf";
 		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
 	}
-
 
 	/**
 	 * @param is   File inputstream to upload as a blob
@@ -820,6 +836,7 @@ public class mysqlConnection {
 					|| orderToInsert.getOrder().getPaymentMethod() == PaymentMethod.BusinessCode) {
 				updateW4C(orderToInsert);
 			}
+			updateRefund(orderToInsert.getCustomerInfo(), orderToInsert.getOrder().getRestaurantName());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg(e.getMessage());
@@ -831,6 +848,29 @@ public class mysqlConnection {
 	}
 
 	/**
+	 * Query to update refund of a customer.
+	 * 
+	 * @param customer
+	 * @param RestaurantName
+	 * 
+	 */
+	private static void updateRefund(Customer customer, String RestaurantName) {
+		PreparedStatement stmt;
+		try {
+			int customerID = getCustomer(customer.getUserName());
+			String query = "UPDATE bitemedb.refunds SET Refund = ? WHERE CustomerID = ? && RestaurantName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setFloat(1, customer.getRefunds().get(RestaurantName));
+			stmt.setInt(2, customerID);
+			stmt.setString(3, RestaurantName);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
 	 * Query to update customer's w4c balance.
 	 * 
 	 * @param orderToInsert
@@ -838,21 +878,8 @@ public class mysqlConnection {
 	private static void updateW4C(OrderDeliveryMethod orderToInsert) {
 		PreparedStatement stmt;
 		try {
-			/** Get customer id: */
-			int customerID = 0;
-			String query = "SELECT CustomerID FROM bitemedb.customers WHERE UserName = ?";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, orderToInsert.getCustomerInfo().getUserName());
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				customerID = rs.getInt(1);
-			}
-			if (customerID == 0) {
-				throw new SQLException("failed to get customer info");
-			}
-			stmt.close();
-			rs.close();
-			query = "UPDATE bitemedb.w4ccards SET Balance = ?, DailyBalance = ? WHERE CustomerID = ?";
+			int customerID = getCustomer(orderToInsert.getCustomerInfo().getUserName());
+			String query = "UPDATE bitemedb.w4ccards SET Balance = ?, DailyBalance = ? WHERE CustomerID = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setFloat(1, orderToInsert.getCustomerInfo().getW4c().getBalance());
 			stmt.setFloat(2, orderToInsert.getCustomerInfo().getW4c().getDailyBalance());
@@ -862,6 +889,35 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	/**
+	 * Query to get customer's id.
+	 * 
+	 * @param userName
+	 * 
+	 * @return int
+	 */
+	private static int getCustomer(String userName) {
+		PreparedStatement stmt;
+		int customerID = 0;
+		try {
+			String query = "SELECT CustomerID FROM bitemedb.customers WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, userName);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				customerID = rs.getInt(1);
+			}
+			if (customerID == 0) {
+				throw new SQLException("failed to get customer info");
+			}
+			stmt.close();
+			rs.close();
+		} catch (SQLException e) {
+			return 0;
+		}
+		return customerID;
 	}
 
 	/**
@@ -1043,10 +1099,9 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery();
 
 			System.out.println("11111");
-			//save in response all employers that needs approval
-			while(rs.next()) {
-				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2),
-						rs.getInt(3), rs.getString(4)));
+			// save in response all employers that needs approval
+			while (rs.next()) {
+				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4)));
 				System.out.println(response.get(0).getEmployeCompanyName());
 			}
 		} catch (SQLException e) {
@@ -1178,7 +1233,6 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-
 	public static ServerResponse addItemToMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
@@ -1208,9 +1262,10 @@ public class mysqlConnection {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM bitemedb.importsimulationuser WHERE UserName NOT IN (SELECT UserName FROM bitemedb.users)");
+			ResultSet rs = stmt.executeQuery(
+					"SELECT * FROM bitemedb.importsimulationuser WHERE UserName NOT IN (SELECT UserName FROM bitemedb.users)");
 			while (rs.next()) {
-				//insert user to users table:
+				// insert user to users table:
 				PreparedStatement pstmt;
 				String query = "INSERT INTO bitemedb.users (UserName, Password, FirstName, LastName, ID, Email, PhoneNumber, UserType, Role, Organization)"
 						+ " VALUES(?,?,?,?,?,?,?,?,?,?)";
@@ -1222,7 +1277,7 @@ public class mysqlConnection {
 				pstmt.setString(5, rs.getString(1)); // id
 				pstmt.setString(6, rs.getString(6)); // email
 				pstmt.setString(7, rs.getString(7)); // phonenumber
-				pstmt.setString(8, "User");		 	 //userType
+				pstmt.setString(8, "User"); // userType
 				pstmt.setString(9, rs.getString(8)); // Role
 				pstmt.setString(10, rs.getString(9)); // organization
 				pstmt.executeUpdate();
@@ -1232,10 +1287,12 @@ public class mysqlConnection {
 			return;
 		}
 	}
-    
-   /* Inserting new rate for order.
+
+	/*
+	 * Inserting new rate for order.
 	 * 
 	 * @param orderNumber
+	 * 
 	 * @param rate
 	 * 
 	 * @return ServerResponse

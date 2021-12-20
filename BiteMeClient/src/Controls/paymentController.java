@@ -8,10 +8,12 @@ import Entities.Customer;
 import Entities.W4CCard;
 import Enums.PaymentMethod;
 import client.ClientGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -73,6 +75,9 @@ public class paymentController implements Initializable {
 	private Text employerCodeTxt;
 
 	@FXML
+	private CheckBox refundCheck;
+
+	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
@@ -85,9 +90,22 @@ public class paymentController implements Initializable {
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		errorMsg.setText("");
+		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		W4CCard w4c = user.getW4c();
+		/** Checking if the user got refund and selected to use it. */
+		if (refundCheck.isSelected()) {
+			float refund = user.getRefunds().get(router.getOrder().getRestaurantName());
+			/** Checking whether the refund is larger than the order final price. */
+			if (refund > router.getOrderDeliveryMethod().getFinalPrice()) {
+				user.getRefunds().put(router.getOrder().getRestaurantName(),
+						refund - router.getOrderDeliveryMethod().getFinalPrice());
+				router.getOrderDeliveryMethod().setFinalPrice(0);
+			} else {
+				router.getOrderDeliveryMethod().setFinalPrice(router.getOrderDeliveryMethod().getFinalPrice() - refund);
+				user.getRefunds().remove(router.getOrder().getRestaurantName());
+			}
+		}
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
-			Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
-			W4CCard w4c = user.getW4c();
 			if (w4c.getBalance() == 0 || w4c.getDailyBalance() == 0) {
 				errorMsg.setText("Employer's balance is 0.\nPlease select different type of payment method.");
 				return;
@@ -104,6 +122,7 @@ public class paymentController implements Initializable {
 		} else {
 			router.getOrder().setPaymentMethod(PaymentMethod.CreditCard);
 		}
+
 		if (router.getReviewOrderController() == null) {
 			AnchorPane mainContainer;
 			reviewOrderController controller;
@@ -202,6 +221,17 @@ public class paymentController implements Initializable {
 		showTextField(false);
 	}
 
+	@FXML
+	void refundClicked(MouseEvent event) {
+//		if (refundCheck.isSelected()) {
+////			refundCheck.setSelected(false);
+//			refundCheck.selectedProperty().setValue(false);
+//		} else {
+////			refundCheck.setSelected(true);
+//			refundCheck.selectedProperty().setValue(true);
+//		}
+	}
+
 	private void showTextField(boolean val) {
 		employerCodeTextField.setVisible(val);
 		employerCodeTxt.setVisible(val);
@@ -224,6 +254,11 @@ public class paymentController implements Initializable {
 		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
+		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
+			refundCheck.setVisible(true);
+			errorMsg.setText("You got a " + user.getRefunds().get(router.getOrder().getRestaurantName())
+					+ "\u20AA for this restaurant.\nCheck the check box if you would like to use it.");
+		}
 		setStage(router.getStage());
 	}
 
