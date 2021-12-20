@@ -35,9 +35,6 @@ public class sendMsgToCustomerController implements Initializable {
 	private Text customerNameTxt;
 
 	@FXML
-	private Text priceTxt;
-
-	@FXML
 	private Text homePageBtn;
 
 	@FXML
@@ -106,7 +103,7 @@ public class sendMsgToCustomerController implements Initializable {
 			return null;
 		}
 		System.out.println(response1.toString());
-		statusTxt.setText("Your order status from " + response1.get(0) + " :" + response1.get(3));
+		statusTxt.setText("Your order status from " + response1.get(0) + ": " + response1.get(3));
 		if (status.equals("Order Received")) {
 			plannedTimeTxt.setText("Order received time: " + response1.get(1));
 		} else

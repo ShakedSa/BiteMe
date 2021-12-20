@@ -1,7 +1,8 @@
 package Entities;
 
 import java.io.File;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import Enums.BranchName;
 import Enums.Status;
@@ -15,7 +16,7 @@ public class Customer extends User {
 	private static final long serialVersionUID = -4046991480431316453L;
 
 	private W4CCard w4c;
-	private float refundedBalance;
+	private HashMap<String, Float> refunds;
 
 	/**
 	 * @param userName
@@ -36,11 +37,11 @@ public class Customer extends User {
 	 */
 	public Customer(String userName, String password, String firstName, String lastName, String id, String email,
 			String phoneNumber, UserType userType, String organization, BranchName mainBranch, String role, Status status,
-			File avatar, W4CCard w4c, float refundedBalance) {
+			File avatar, W4CCard w4c, HashMap<String, Float> refunds) {
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role,
 				status, avatar);
 		this.w4c = w4c;
-		this.refundedBalance = refundedBalance;
+		this.refunds = refunds;
 	}
 	
 	public Customer() {}
@@ -49,16 +50,23 @@ public class Customer extends User {
 		return w4c;
 	}
 
-	public float getRefundedBalance() {
-		return refundedBalance;
-	}
-
 	public void setW4c(W4CCard w4c) {
 		this.w4c = w4c;
 	}
 
-	public void setRefundedBalance(float refundedBalance) {
-		this.refundedBalance = refundedBalance;
+	/**
+	 * @return the refunds
+	 */
+	public HashMap<String, Float> getRefunds() {
+		return refunds;
 	}
 
+	/**
+	 * @param refunds the refunds to set
+	 */
+	public void setRefunds(HashMap<String, Float> refunds) {
+		this.refunds = refunds;
+	}
+	
+	
 }

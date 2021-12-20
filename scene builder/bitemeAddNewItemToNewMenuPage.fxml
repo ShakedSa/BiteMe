@@ -13,18 +13,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewItemController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.addNewItemToNewMenuController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
@@ -59,7 +59,7 @@
       <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
       <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="396.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
       <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefWidth="150.0" promptText="Select type" />
-      <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item to exist menu">
+      <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
          <font>
             <Font name="Berlin Sans FB" size="39.0" />
          </font>
@@ -109,7 +109,7 @@
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="500.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
          <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
+            <Image url="@images/arrow.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -130,7 +130,7 @@
       </Text>
       <ImageView fx:id="uploadImage" fitHeight="50.0" fitWidth="39.0" layoutX="384.0" layoutY="348.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/upload.png" />
+            <Image url="@images/upload.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -152,13 +152,13 @@
       </Text>
       <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="555.0" layoutY="273.0" onMouseClicked="#infoIconClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/info-icon.png" />
+            <Image url="@images/info-icon.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TextArea fx:id="infoTxtArea" editable="false" layoutX="587.0" layoutY="243.0" prefHeight="122.0" prefWidth="207.0" text="Please separate different&#10;components with a comma.&#10;If the item includes different&#10;sizes, write: size&#10;If the item includes different&#10;doneness, write: doneness">
+      <TextArea fx:id="infoTxtArea" editable="false" layoutX="587.0" layoutY="243.0" prefHeight="122.0" prefWidth="207.0" text="Please separate different&#10;components with a comma.&#10;If the item includes different&#10;sizes, write: Size&#10;If the item includes different&#10;doneness, write: Doneness">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>

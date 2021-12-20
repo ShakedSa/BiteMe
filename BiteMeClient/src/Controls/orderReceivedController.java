@@ -55,7 +55,8 @@ public class orderReceivedController implements Initializable {
 
 	@FXML
 	private Text rateTxt;
-
+	
+	private int orderNumber;
 	@FXML
 	void changeToCart(MouseEvent event) {
 		router.changeToMyCart();
@@ -91,7 +92,7 @@ public class orderReceivedController implements Initializable {
 			errorMsg.setText("Please select rate");
 			return;
 		}
-		ClientGUI.client.setRate((int) ClientGUI.client.getLastResponse().getServerResponse(), rates.get(choosenRate));
+		ClientGUI.client.setRate(orderNumber, rates.get(choosenRate));
 		errorMsg.setFill(Color.GREEN);
 		errorMsg.setText("Thank you for rating");
 		Set<ImageView> images = rates.keySet();
@@ -141,7 +142,8 @@ public class orderReceivedController implements Initializable {
 	HashMap<ImageView, Integer> rates = new HashMap<>();
 	ImageView choosenRate = null;
 
-	public void setRates() {
+	public void setRates(int orderNumber) {
+		this.orderNumber = orderNumber;
 		rates.put(veryBadRate, 1);
 		rates.put(badRate, 2);
 		rates.put(okRate, 3);

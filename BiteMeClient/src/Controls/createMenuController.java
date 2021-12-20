@@ -75,12 +75,12 @@ public class createMenuController implements Initializable {
 
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
-		if (router.getAddNewItemController() == null) {
+		if (router.getAddNewItemToNewMenuController() == null) {
 			AnchorPane mainContainer;
-			addNewItemController controller;
+			addNewItemToNewMenuController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeAddNewItemToMenuPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeAddNewItemToNewMenuPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
@@ -96,7 +96,7 @@ public class createMenuController implements Initializable {
 			}
 		} else {
 			stage.setTitle("BiteMe - Add New Item To Menu");
-			stage.setScene(router.getAddNewItemController().getScene());
+			stage.setScene(router.getAddNewItemToNewMenuController().getScene());
 			stage.show();
 		}
 	}

@@ -228,8 +228,8 @@ public class restaurantMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getMenu() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getMenu().getServerResponse();
+		if (ClientGUI.client.getLastResponse() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
 			if (menu == null) {
 				System.out.println("Menu is not set yet for " + restaurantName);
 			} else {
@@ -247,7 +247,7 @@ public class restaurantMenuController implements Initializable {
 	 */
 	private void createMenu(ArrayList<Product> menu) {
 		/**
-		 * Filtering the meun of the restaurant by categories. Entrees, Main Dishes,
+		 * Filtering the menu of the restaurant by categories. Entries, Main Dishes,
 		 * Drinks, Desserts.
 		 */
 		List<Product> entriesMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.entry)
@@ -334,7 +334,7 @@ public class restaurantMenuController implements Initializable {
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
-					ClientGUI.client.setOptionalComponentsInProduct(null);
+					ClientGUI.client.setLastResponse(null);
 				});
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
@@ -384,7 +384,7 @@ public class restaurantMenuController implements Initializable {
 					return;
 				}
 				/** Checking the server's response. */
-				ServerResponse serverResponse = ClientGUI.client.getOptionalComponentsInProduct();
+				ServerResponse serverResponse = ClientGUI.client.getLastResponse();
 				ArrayList<Component> componentInDish; // Components received from query.
 				ArrayList<Component> componentInProduct = new ArrayList<>(); // Components in actual dish for the order.
 				if (serverResponse != null) {
@@ -490,7 +490,7 @@ public class restaurantMenuController implements Initializable {
 					counter.getStyleClass().add("counter");
 					counter.setFont(new Font("Berlin Sans FB", 22));
 
-					/** Button to add more of this product to the order, infinite cap. */
+					/** Button to add more of this product to the order, infinite cap. */ 
 					Label plus = new Label("+");
 					/** Setting position for plus button. */
 					plus.getStyleClass().addAll("plusMinus", "plus");

@@ -118,6 +118,7 @@ public class ServerGUIController {
 		ServerUI.runServer(p);
 		btnDiconnectDB.setDisable(false);
 		btnConnectDB.setDisable(true);
+		importUsersBtn.setDisable(false);
 
 		/** Setting the server UI controller to the server. */
 		if (ServerUI.sv != null) {
@@ -176,6 +177,7 @@ public class ServerGUIController {
 			ServerUI.sv.close();
 			btnDiconnectDB.setDisable(true);
 			btnConnectDB.setDisable(false);
+			importUsersBtn.setDisable(true);
 
 		} catch (IOException e) {
 			e.printStackTrace();

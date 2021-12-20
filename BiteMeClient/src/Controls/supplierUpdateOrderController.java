@@ -40,9 +40,9 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private TextField OrderNumberTxtField;
-	
-    @FXML
-    private ImageView newMsgImage;
+
+	@FXML
+	private ImageView newMsgImage;
 
 	@FXML
 	private ImageView VImage;
@@ -110,7 +110,7 @@ public class supplierUpdateOrderController implements Initializable {
 	ObservableList<String> list;
 	String orderNumber;
 	String receivedOrReady;
-	int deliveryNumber = 0;
+	Integer deliveryNumber = 0;
 
 	// creating list of update status order
 	private void setUpdateComboBox() {
@@ -142,33 +142,33 @@ public class supplierUpdateOrderController implements Initializable {
 	}
 
 	/**
-	 * This method updates order status 
+	 * This method updates order status
 	 * 
 	 * @param event
 	 */
 	@FXML
 	void UpdateOrderClicked(MouseEvent event) {
-		if (includeDeliveryBtn.isSelected() && !checkTime()) {
+		if (includeDeliveryBtn.isSelected() && !checkTime() && !CheckUserInput(orderNumber)) {
 			return;
 		}
+		if (updateDataComboBox.getValue() == null) {
+			errorMsg.setText("Please select the status of the order");
+			return;
+		}
+		errorMsg.setText("");
 		receivedOrReady = updateDataComboBox.getValue();
 		orderNumber = OrderNumberTxtField.getText();
-		//DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		//String nowString = myFormatObj.format(now);
-		//String plannedTimeString = myFormatObj.format(now);
-		//System.out.println(plannedTime.toString());
-
 		LocalDate now = LocalDate.now();
-		
+		// Order received
 		String statusReceived = "Received";
 		LocalTime timeNow = LocalTime.now();
 		String nowTime = now.toString() + " " + timeNow.getHour() + ":" + timeNow.getMinute();
-		
+		// Order is ready
 		String statusReady = "Ready";
 		String hourPlannedTime = hourBox.getSelectionModel().getSelectedItem();
 		String minutePlannedTime = minutesBox.getSelectionModel().getSelectedItem();
 		String plannedTime = now.toString() + " " + hourPlannedTime + ":" + minutePlannedTime;
-		
+
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -183,11 +183,10 @@ public class supplierUpdateOrderController implements Initializable {
 			}
 		});
 		t.start();
-		
-		if(receivedOrReady.equals("Order Received")) {
+
+		if (receivedOrReady.equals("Order Received")) {
 			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, nowTime, statusReceived);
-		}
-		else { // Order Is Ready
+		} else { // Order Is Ready
 			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTime, statusReady);
 		}
 		try {
@@ -197,16 +196,16 @@ public class supplierUpdateOrderController implements Initializable {
 			return;
 		}
 
-//		if(!checkServerResponse()) {
-//			return;
-//		}
-		
-		deliveryNumber = (int)ClientGUI.client.getLastResponse().getServerResponse();
+		if (!checkServerResponse()) {
+			return;
+		}
+
+		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
 		System.out.println(deliveryNumber);
-		
+
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
-		newMsgImage.setVisible(true); //new msg send to customer
+		newMsgImage.setVisible(true); // new message send to customer
 	}
 
 	/**
@@ -243,25 +242,35 @@ public class supplierUpdateOrderController implements Initializable {
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
+		clearPage();
 	}
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+		deliveryNumber = null;
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
-		setStartPage();
-		OrderNumberTxtField.clear();
+		clearPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
+		clearPage();
+	}
+
+	private void clearPage() {
 		setStartPage();
 		OrderNumberTxtField.clear();
+		updateDataComboBox.getSelectionModel().clearSelection();
+		errorMsg.setText("");
+		deliveryNumber = null;
+		notIncludeDeliveryBtn.setSelected(false);
+		includeDeliveryBtn.setSelected(false);
 	}
 
 	/**
@@ -298,10 +307,6 @@ public class supplierUpdateOrderController implements Initializable {
 			return;
 		}
 
-		if(!checkServerResponse()) {
-			return;
-		}
-		
 		updateDataTxt.setVisible(true);
 		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -311,20 +316,20 @@ public class supplierUpdateOrderController implements Initializable {
 				includeDeliveryTxt.setVisible(false);
 				includeDeliveryBtn.setVisible(false);
 				notIncludeDeliveryBtn.setVisible(false);
+				notIncludeDelivery();
 			}
 		});
 	}
-	
-	
+
 	/**
-	 * checks the user information received from Server.
-	 * display relevant information.
+	 * checks the order information received from Server. display relevant
+	 * information.
 	 */
 	private boolean checkServerResponse() {
-		if(ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.client.getLastResponse() == null) {
 			return false;
 		}
-		
+
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
 		case "order number doesn't exist":
 			errorMsg.setText("This order doesn't exist");
@@ -335,7 +340,6 @@ public class supplierUpdateOrderController implements Initializable {
 			return false;
 		}
 	}
-
 
 	private boolean CheckUserInput(String orderNumber) {
 		if (!InputValidation.checkValidText(orderNumber)) {
@@ -393,10 +397,10 @@ public class supplierUpdateOrderController implements Initializable {
 		minutesBox.setVisible(false);
 		minutesTxt.setVisible(false);
 	}
-	
-    @FXML
-    void newMsgClicked(MouseEvent event) {
-    	if (router.getSendMsgToCustomerController() == null) {
+
+	@FXML
+	void newMsgClicked(MouseEvent event) {
+		if (router.getSendMsgToCustomerController() == null) {
 			AnchorPane mainContainer;
 			sendMsgToCustomerController controller;
 			try {
@@ -420,8 +424,8 @@ public class supplierUpdateOrderController implements Initializable {
 			router.getSendMsgToCustomerController().setOrderInfo(getOrderNumber(), getStatus(), getDeliveryNumber());
 			stage.setScene(router.getSendMsgToCustomerController().getScene());
 		}
-    	stage.show();
-    }
+		stage.show();
+	}
 
 	/**
 	 * Setting values for the combo boxes. hourBox values from 0-23, minutesBox
@@ -468,10 +472,15 @@ public class supplierUpdateOrderController implements Initializable {
 		setUpdateComboBox();
 		setStartPage();
 		OrderNumberTxtField.clear();
+		// need to clear updateDataComboBox
+		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
+		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
+		clearPage();
+
 	}
 
 	public void setScene(Scene scene) {
-		this.scene = scene; 
+		this.scene = scene;
 	}
 
 	public Scene getScene() {
@@ -481,19 +490,21 @@ public class supplierUpdateOrderController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
+
 	public String getOrderNumber() {
 		orderNumber = OrderNumberTxtField.getText();
 		return orderNumber;
 	}
-	
+
 	public String getStatus() {
 		receivedOrReady = updateDataComboBox.getValue();
 		return receivedOrReady;
 	}
-	
+
 	public int getDeliveryNumber() {
-		deliveryNumber = (int)ClientGUI.client.getLastResponse().getServerResponse();
+		if (deliveryNumber == null) {
+			deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+		}
 		return deliveryNumber;
 	}
 

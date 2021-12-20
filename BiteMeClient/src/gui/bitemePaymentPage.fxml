@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -125,5 +126,10 @@
          </font>
       </Text>
       <TextField fx:id="employerCodeTextField" layoutX="358.0" layoutY="271.0" promptText="Employer's Code" visible="false" />
+      <CheckBox fx:id="refundCheck" layoutX="358.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#refundClicked" text="Use Refund" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>

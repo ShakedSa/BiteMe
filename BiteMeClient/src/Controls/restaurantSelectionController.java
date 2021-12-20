@@ -216,13 +216,10 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-//		ServerResponse restaurants = ClientGUI.client.getRestaurants();
 		if (resRestaurants == null) {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-//					ServerResponse last = ClientGUI.client.getLastResponse();
-//					while (ClientGUI.client.getLastResponse() == last) {
 					ClientGUI.client.restaurantsRequest();
 					synchronized (ClientGUI.monitor) {
 						try {
@@ -233,7 +230,6 @@ public class restaurantSelectionController implements Initializable {
 						}
 					}
 				}
-//				}
 			});
 			t.start();
 			try {
@@ -242,7 +238,7 @@ public class restaurantSelectionController implements Initializable {
 				e.printStackTrace();
 				return;
 			}
-			resRestaurants = ClientGUI.client.getRestaurants();
+			resRestaurants = ClientGUI.client.getLastResponse();
 		}
 		restaurantsNames = ((HashMap<String, File>) resRestaurants.getServerResponse()).keySet();
 		createRestaurants((HashMap<String, File>) resRestaurants.getServerResponse());

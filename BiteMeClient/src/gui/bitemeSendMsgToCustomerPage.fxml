@@ -29,11 +29,6 @@
             <Font name="Berlin Sans FB" size="39.0" />
          </font>
       </Text>
-      <Text layoutX="130.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for waiting,">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -72,6 +67,11 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
+      <Text fill="#3180bc" layoutX="130.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Content:">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
+         </font>
+      </Text>
       <Text fx:id="customerNameTxt" layoutX="130.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
@@ -82,27 +82,22 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="priceTxt" layoutX="130.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="phoneNumberTxt" layoutX="130.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="phoneNumberTxt" layoutX="130.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="plannedTimeTxt" layoutX="130.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fx:id="plannedTimeTxt" layoutX="130.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text layoutX="130.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for waiting,">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
-      <Text fill="#3180bc" layoutX="130.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message Content:">
-         <font>
-            <Font name="Berlin Sans FB" size="24.0" />
-         </font>
-      </Text>
-      <Text fill="#3180bc" layoutX="208.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
+      <Text fill="#3180bc" layoutX="208.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />
          </font>
