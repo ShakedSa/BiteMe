@@ -198,6 +198,24 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+	
+	/**
+	 * Sending a query request from the server. approve employer in the db
+	 * restaurant.
+	 * 
+	 * @param restaurantName
+	 */
+	public void employerApproval(String employerCode) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("employerApproval");
+			arr.add(employerCode);
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	/**
 	 * Sending a query request from the server, Getting the optional components for

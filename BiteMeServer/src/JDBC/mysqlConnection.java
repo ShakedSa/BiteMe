@@ -1412,4 +1412,24 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
+	
+	/**
+	 * Query to update customer's w4c balance.
+	 * 
+	 * @param orderToInsert
+	 */
+	public static void approveEmployer(String employerCode) {
+		PreparedStatement stmt;
+		String query;
+		try {
+			query = "UPDATE bitemedb.businesscustomer SET IsApproved = ? WHERE EmployerCode = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, 1);
+			stmt.setString(2, employerCode);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 }
