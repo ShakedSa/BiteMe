@@ -7,8 +7,10 @@ import java.util.ResourceBundle;
 
 import Entities.Component;
 import Entities.Product;
+import Entities.User;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,7 +28,7 @@ import javafx.stage.Stage;
 
 public class updateMenuController implements Initializable {
 
-	public final UserType type = UserType.Supplier;
+	public final UserType type = UserType.Supplier; 
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -75,10 +77,53 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private TableView<Product> menuTable;
+	
+	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private String restaurant = user.getOrganization();
+	
+	
+	/**
+	 * Display restaurant menu 
+	 */
+	@SuppressWarnings("unchecked")
+	public void displayMenu() {
+		ClientGUI.client.getRestaurantMenu(restaurant);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		if (ClientGUI.client.getMenu() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getMenu().getServerResponse();
+			if (menu == null) {
+				System.out.println("Menu is not set yet for " + restaurant);
+			} 
+//				else {
+//				createMenu(menu);
+//			}
+		} else {
+			System.out.println("Menu is not set yet for " + restaurant);
+		}
+	}
+
 
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
-		// router.getCreateMenuController().addNewItemClicked(event);
 		if (router.getAddNewItemController() == null) {
 			AnchorPane mainContainer;
 			addNewItemController controller;

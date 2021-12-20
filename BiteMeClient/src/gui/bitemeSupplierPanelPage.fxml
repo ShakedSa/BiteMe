@@ -85,5 +85,10 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Text fx:id="errorMsg" fill="RED" layoutX="140.0" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

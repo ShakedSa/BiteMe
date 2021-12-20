@@ -18,7 +18,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -27,71 +26,74 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class editMenuItemController implements Initializable {
-
-	public final UserType type = UserType.Supplier; 
+public class addNewItemToNewMenuController implements Initializable{
+	
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
-	@FXML
-	private ImageView infoIcon;
 
-	@FXML
-	private TextArea infoTxtArea;
+    @FXML
+    private Label addItemToMenuBtn;
 
-	@FXML
-	private Label updateItemBtn;
+    @FXML
+    private Rectangle avatar;
 
-	@FXML
-	private Text errorMsg;
+    @FXML
+    private TextArea descriptionTxtArea;
 
-	@FXML
-	private Rectangle avatar;
+    @FXML
+    private Text errorMsg;
 
-	@FXML
-	private TextArea descriptionTxtArea;
+    @FXML
+    private Text homePageBtn;
 
-	@FXML
-	private Text homePageBtn;
+    @FXML
+    private ImageView infoIcon;
 
-	@FXML
-	private Text uploadImageTxt;
+    @FXML
+    private TextArea infoTxtArea;
 
-	@FXML
-	private TextField itemsNameTxtField;
+    @FXML
+    private TextField itemsNameTxtField;
 
-	@FXML
-	private ImageView leftArrowBtn;
+    @FXML
+    private ImageView leftArrowBtn;
 
-	@FXML
-	private Text logoutBtn;
+    @FXML
+    private Text logoutBtn;
 
-	@FXML
-	private TextField optionalComponentsTxtField;
+    @FXML
+    private TextField optionalComponentsTxtField;
 
-	@FXML
-	private TextField priceTxtField;
+    @FXML
+    private TextField priceTxtField;
 
-	@FXML
-	private Text profileBtn;
+    @FXML
+    private Text profileBtn;
 
-	@FXML
-	private ComboBox<TypeOfProduct> selectTypeBox;
+    @FXML
+    private ComboBox<TypeOfProduct> selectTypeBox;
 
-	@FXML
-	private Text supplierPanelBtn;
+    @FXML
+    private Text supplierPanelBtn;
 
-	@FXML
-	private Label uploadImageBtn;
+    @FXML
+    private ImageView uploadImage;
 
-	ObservableList<TypeOfProduct> list;
+    @FXML
+    private Text uploadImageTxt;
+
+	private ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents = new ArrayList<>();
 	private Product product;
 
-	// creating list of Types
+	/**
+	 * creating list of Types
+	 */
 	private void setTypeComboBox() {
 		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
 		type.add(TypeOfProduct.mainDish);
@@ -100,11 +102,11 @@ public class editMenuItemController implements Initializable {
 		type.add(TypeOfProduct.drink);
 
 		list = FXCollections.observableArrayList(type);
-		selectTypeBox.setItems(list);
+		selectTypeBox.setItems(list); 
 	}
 
 	@FXML
-	void updateItemBtnClicked(MouseEvent event) {
+	void addItemToMenuClicked(MouseEvent event) {
 		if (!checkInputs()) {
 			return;
 		}
@@ -114,7 +116,7 @@ public class editMenuItemController implements Initializable {
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
 		String[] components = temp.split(",");
-		for (int i = 0; i < components.length; i++) {
+		for(int i = 0 ; i<components.length; i++) {		
 			optionalComponents.add(new Component(components[i]));
 		}
 		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
@@ -132,7 +134,7 @@ public class editMenuItemController implements Initializable {
 			}
 		});
 		t.start();
-		ClientGUI.client.editItemInMenu(product);
+		ClientGUI.client.addItemToMenu(product);
 		try {
 			t.join();
 		} catch (Exception e) {
@@ -140,15 +142,14 @@ public class editMenuItemController implements Initializable {
 			return;
 		}
 
-		if (!checkServerResponse()) {
+		if(!checkServerResponse()) {
 			return;
 		}
 
 		ClientGUI.client.getLastResponse().getServerResponse();
 
-		// return to update menu
-		router.getSupplierPanelController().updateMenuClicked(event);
-
+		// return to create menu page
+		router.getSupplierPanelController().createMenuClicked(event);
 	}
 
 	private boolean checkInputs() {
@@ -184,7 +185,7 @@ public class editMenuItemController implements Initializable {
 		errorMsg.setText("");
 		return true;
 	}
-
+	
 	/**
 	 * checks the user information received from Server. display relevant
 	 * information.
@@ -204,15 +205,17 @@ public class editMenuItemController implements Initializable {
 			return false;
 		}
 	}
+	
 
-	@FXML
-	void infoIconClicked(MouseEvent event) {
-		infoTxtArea.setVisible(true);
-	}
+    @FXML
+    void infoIconClicked(MouseEvent event) {
+    	infoTxtArea.setVisible(true);
+    }
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
+		clearPage();
 	}
 
 	@FXML
@@ -223,16 +226,28 @@ public class editMenuItemController implements Initializable {
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
+		clearPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
+		clearPage();
 	}
 
 	@FXML
 	void uploadImageClicked(MouseEvent event) {
-
+		
+	}
+	
+	private void clearPage() {
+		infoTxtArea.setVisible(false);
+		errorMsg.setText("");
+		selectTypeBox.getSelectionModel().clearSelection();
+		itemsNameTxtField.clear();
+		optionalComponents.clear();
+		priceTxtField.clear();
+		descriptionTxtArea.clear();
 	}
 
 	/**
@@ -245,10 +260,11 @@ public class editMenuItemController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setEditMenuItemController(this);
+		router.setAddNewItemToNewMenuController(this);
 		setStage(router.getStage());
 		setTypeComboBox();
-		infoTxtArea.setVisible(false);
+		clearPage();
+		
 	}
 
 	public void setScene(Scene scene) {
@@ -264,3 +280,4 @@ public class editMenuItemController implements Initializable {
 	}
 
 }
+

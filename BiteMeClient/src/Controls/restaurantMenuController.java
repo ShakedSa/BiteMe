@@ -247,7 +247,7 @@ public class restaurantMenuController implements Initializable {
 	 */
 	private void createMenu(ArrayList<Product> menu) {
 		/**
-		 * Filtering the meun of the restaurant by categories. Entrees, Main Dishes,
+		 * Filtering the menu of the restaurant by categories. Entries, Main Dishes,
 		 * Drinks, Desserts.
 		 */
 		List<Product> entriesMenu = menu.stream().filter(p -> p.getType() == TypeOfProduct.entry)
@@ -490,7 +490,7 @@ public class restaurantMenuController implements Initializable {
 					counter.getStyleClass().add("counter");
 					counter.setFont(new Font("Berlin Sans FB", 22));
 
-					/** Button to add more of this product to the order, infinite cap. */
+					/** Button to add more of this product to the order, infinite cap. */ 
 					Label plus = new Label("+");
 					/** Setting position for plus button. */
 					plus.getStyleClass().addAll("plusMinus", "plus");

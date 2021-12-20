@@ -35,6 +35,12 @@ public class addNewItemController implements Initializable {
 	private Scene scene;
 
 	@FXML
+	private ImageView infoIcon;
+
+	@FXML
+	private TextArea infoTxtArea;
+
+	@FXML
 	private Label addItemToMenuBtn;
 
 	@FXML
@@ -79,8 +85,12 @@ public class addNewItemController implements Initializable {
 	@FXML
 	private Text errorMsg;
 
-	ObservableList<TypeOfProduct> list;
-
+	private ObservableList<TypeOfProduct> list;
+	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private String restaurant = user.getOrganization();
+	private ArrayList<Component> optionalComponents = new ArrayList<>();
+	private Product product;
+ 
 	/**
 	 * creating list of Types
 	 */
@@ -95,32 +105,21 @@ public class addNewItemController implements Initializable {
 		selectTypeBox.setItems(list);
 	}
 
-	User user = (User) ClientGUI.client.getUser().getServerResponse();
-	String restaurant = user.getOrganization();
-	TypeOfProduct typeOfProduct;
-	String itemName;
-	String temp;
-	ArrayList<Component> optionalComponents = new ArrayList<>();
-	float price;
-	String description;
-	Product product;
-
-
 	@FXML
 	void addItemToMenuClicked(MouseEvent event) {
-		typeOfProduct = selectTypeBox.getValue();
-		itemName = itemsNameTxtField.getText();
-		temp = optionalComponentsTxtField.getText();
-		description = descriptionTxtArea.getText();
-		price = Float.parseFloat(priceTxtField.getText());
-		String[] components = temp.split(",");
-		for(int i = 0 ; i<components.length; i++) {		
-			optionalComponents.add(new Component(components[i]));
-		}
-		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 		if (!checkInputs()) {
 			return;
 		}
+		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
+		String itemName = itemsNameTxtField.getText();
+		String temp = optionalComponentsTxtField.getText();
+		String description = descriptionTxtArea.getText();
+		float price = Float.parseFloat(priceTxtField.getText());
+		String[] components = temp.split(",");
+		for (int i = 0; i < components.length; i++) {
+			optionalComponents.add(new Component(components[i]));
+		}
+		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -142,24 +141,26 @@ public class addNewItemController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-//
-//		if(!checkServerResponse()) {
-//			return;
-//		}
+
+		if (!checkServerResponse()) {
+			return;
+		}
 
 		ClientGUI.client.getLastResponse().getServerResponse();
 
-		// return to create menu page
-		router.getSupplierPanelController().createMenuClicked(event);
+		// return to update menu page
+		router.getSupplierPanelController().updateMenuClicked(event);
 	}
 
 	private boolean checkInputs() {
+		String itemName = itemsNameTxtField.getText();
+		String price = priceTxtField.getText();
 
-		if (typeOfProduct == null) {
+		if (selectTypeBox.getSelectionModel().getSelectedItem() == null) {
 			errorMsg.setText("Please select type of the item");
 			return false;
 		}
-		if (itemName.trim().isEmpty()) {
+		if (!InputValidation.checkValidText(itemName)) {
 			errorMsg.setText("Please enter the name of the item");
 			return false;
 		}
@@ -167,27 +168,53 @@ public class addNewItemController implements Initializable {
 			errorMsg.setText("Special characters aren't allowed in item name");
 			return false;
 		}
-//		if (price.trim().isEmpty()) {
-//			errorMsg.setText("Please enter the price of the item");
-//			return false;
-//		}
-//		if (InputValidation.checkContainCharacters(price)) {
-//			errorMsg.setText("Characters aren't allowed in price");
-//			return false;
-//		}
-//		if (price.contains(".")) {
-//			if (InputValidation.checkSpecialCharacters(price)) {
-//				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
-//				return false;
-//			}
-//		}
+		if (!InputValidation.checkValidText(price)) {
+			errorMsg.setText("Please enter the price of the item");
+			return false;
+		}
+		if (InputValidation.checkContainCharacters(price)) {
+			errorMsg.setText("Characters aren't allowed in price");
+			return false;
+		}
+		if (price.contains(".")) {
+			if (InputValidation.checkSpecialCharacters(price)) {
+				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+				return false;
+			}
+		}
 		errorMsg.setText("");
 		return true;
+	}
+
+	/**
+	 * checks the user information received from Server. display relevant
+	 * information.
+	 */
+	private boolean checkServerResponse() {
+		if (ClientGUI.client.getLastResponse() == null) {
+			return false;
+		}
+
+		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		case "":
+			errorMsg.setText("Adding an item to menu was failed");
+			return false;
+		case "success":
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	@FXML
+	void infoIconClicked(MouseEvent event) {
+		infoTxtArea.setVisible(true);
 	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
+		clearPage();
 	}
 
 	@FXML
@@ -198,16 +225,28 @@ public class addNewItemController implements Initializable {
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
+		clearPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
+		clearPage();
 	}
 
 	@FXML
 	void uploadImageClicked(MouseEvent event) {
 
+	}
+	
+	private void clearPage() {
+		infoTxtArea.setVisible(false);
+		errorMsg.setText("");
+		selectTypeBox.getSelectionModel().clearSelection();
+		itemsNameTxtField.clear();
+		optionalComponents.clear();
+		priceTxtField.clear();
+		descriptionTxtArea.clear();
 	}
 
 	/**
@@ -223,6 +262,7 @@ public class addNewItemController implements Initializable {
 		router.setAddNewItemController(this);
 		setStage(router.getStage());
 		setTypeComboBox();
+		clearPage();
 	}
 
 	public void setScene(Scene scene) {

@@ -57,9 +57,17 @@ public class supplierPanelController implements Initializable {
 
     @FXML
     private Label updateOrderBtn;
+    
+    @FXML
+    private Text errorMsg;
 
     @FXML
     void createMenuClicked(MouseEvent event) {
+    	//check if supplier has a menu
+    	if(checkIfMenuExist()) { 
+    		errorMsg.setText("You already have a menu, please click on 'Update Menu' button");
+			return;
+    	}
     	if (router.getCreateMenuController() == null) {
 			AnchorPane mainContainer;
 			createMenuController controller;
@@ -84,6 +92,12 @@ public class supplierPanelController implements Initializable {
 			stage.setScene(router.getCreateMenuController().getScene());
 			stage.show();
 		}
+    }
+    
+    private boolean checkIfMenuExist() {
+    	return false;
+//    	errorMsg.setText("");
+//		return true;
     }
     
     @FXML

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import ClientServerComm.Client;
+import Entities.Component;
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
@@ -413,7 +414,35 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
+	}
+		
+	/**
+	 * supplier update item in menu
+	 * @param product
+	 */
+	public void editItemInMenu(Product product) {
+		try {
+			client.handleMessageFromClientUI(product);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
+																											   				
+
+	/**
+	 * @return the searchOrder
+	 */
+	public ServerResponse getSearchOrder() {
+		return SearchOrder;
+	}
+
+	/**
+	 * @param searchOrder the searchOrder to set
+	 */
+	public void setSearchOrder(ServerResponse searchOrder) {
+		SearchOrder = searchOrder;
 	}
 
 	/**
@@ -501,4 +530,8 @@ public class ClientUI implements ClientIF {
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
+
+
+
+	
 }

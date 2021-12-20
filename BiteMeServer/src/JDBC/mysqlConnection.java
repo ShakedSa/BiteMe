@@ -16,6 +16,7 @@ import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Spliterator;
 import java.util.concurrent.TimeUnit;
 
 import Config.ReadPropertyFile;
@@ -1251,6 +1252,97 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
+		
+		//set components
+		for(int i=0; i<product.getComponents().size();i++) {
+			try {
+				PreparedStatement stmt;
+				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, product.getRestaurantName());
+				stmt.setString(2, product.getDishName());
+				stmt.setString(3, product.getComponents().get(i).toString());
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				serverResponse.setMsg(e.getMessage());
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+		}
+		serverResponse.setMsg("Success");
+		return serverResponse;
+	}
+	
+	public static ServerResponse editItemInMenu(Product product) {
+		ServerResponse serverResponse = new ServerResponse("String");
+		try {
+			PreparedStatement stmt;//Type, Price, ProductDescription
+			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, product.getType().toString());
+			stmt.setFloat(2, product.getPrice());
+			stmt.setString(3, product.getDescription());
+			stmt.setString(4, product.getRestaurantName());
+			stmt.setString(5, product.getDishName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		
+		//delete the old components
+			try {
+				PreparedStatement stmt;
+				String query = "DELETE FROM bitemedb.components WHERE RestaurantName = ? AND DishName = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, product.getRestaurantName());
+				stmt.setString(2, product.getDishName());
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				serverResponse.setMsg(e.getMessage());
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}		
+		
+		//set the new components
+		for(int i=0; i<product.getComponents().size();i++) {
+			try {
+				PreparedStatement stmt;
+				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, product.getRestaurantName());
+				stmt.setString(2, product.getDishName());
+				stmt.setString(3, product.getComponents().get(i).toString());
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				serverResponse.setMsg(e.getMessage());
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+		}
+		
+//		for(int i=0; i<product.getComponents().size();i++) {
+//			try {
+//				PreparedStatement stmt;
+//				String query = "UPDATE bitemedb.components SET component = ? WHERE RestaurantName = ? AND DishName = ?";
+//				stmt = conn.prepareStatement(query);
+//				stmt.setString(1, product.getComponents().get(i).toString());
+//				stmt.setString(2, product.getRestaurantName());
+//				stmt.setString(3, product.getDishName());
+//				stmt.executeUpdate();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//				serverResponse.setMsg(e.getMessage());
+//				serverResponse.setServerResponse(null);
+//				return serverResponse;
+//			}
+//		}
+		
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}

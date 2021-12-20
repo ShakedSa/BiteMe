@@ -57,6 +57,7 @@ public class Router {
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
+	private addNewItemToNewMenuController AddNewItemToNewMenuController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -274,6 +275,13 @@ public class Router {
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
+	}
+	
+	/**
+	 * @param addNewItemToNewMenuController the addNewItemToNewMenuController to set
+	 */
+	public void setAddNewItemToNewMenuController(addNewItemToNewMenuController addNewItemToNewMenuController) {
+		AddNewItemToNewMenuController = addNewItemToNewMenuController;
 	}
 
 	/**
@@ -498,6 +506,13 @@ public class Router {
 	 */
 	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
 		return ViewPDFQuarterlyReportController;
+	}
+
+	/**
+	 * @return the addNewItemToNewMenuController
+	 */
+	public addNewItemToNewMenuController getAddNewItemToNewMenuController() {
+		return AddNewItemToNewMenuController;
 	}
 
 	/**

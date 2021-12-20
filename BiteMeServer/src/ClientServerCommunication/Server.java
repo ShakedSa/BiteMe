@@ -64,38 +64,39 @@ public class Server extends AbstractServer {
 			}
 			return;
 		}
-
-//		if(msg instanceof OrderDeliveryMethod) {
-//			try {
-//			
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//				System.out.println("Error while handling message in server");
-//			}
-//			return;
-//		}
-//		
-//		if(msg instanceof NewUser) {
-//			try {
-//			NewSupplier supplier = ((NewUser)msg).getSupplier();
-//			//add supplier to users table
-//			;
-//			//add supplier to supplliers table
-//			mysqlConnection.addNewSupplier(supplier);
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//				System.out.println("Error while handling message in server");
-//			}
-//			return;
-//		}
-//		if(msg instanceof Product) {
-//			try {
-//				
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
-//			return;
-//		}
+		
+// 		if(msg instanceof OrderDeliveryMethod) {
+// 			try {
+// 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
+// 			}catch(Exception e) {
+// 				e.printStackTrace();
+// 				System.out.println("Error while handling message in server");
+// 			}
+// 			return;
+// 		}
+		
+// 		if(msg instanceof NewUser) {
+// 			try {
+// 			NewSupplier supplier = ((NewUser)msg).getSupplier();
+// 			//add supplier to users table
+// 			mysqlConnection.addNewUser((NewUser)msg);
+// 			//add supplier to suppliers table
+// 			mysqlConnection.addNewSupplier(supplier);
+// 			}catch(Exception e) {
+// 				e.printStackTrace();
+// 				System.out.println("Error while handling message in server");
+// 			}
+// 			return;
+// 		}
+// 		if(msg instanceof Product) {
+// 			try {
+// 				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
+// 				//this.sendToClient(mysqlConnection.editItemInMenu((Product)msg), client);
+// 			}catch(Exception e) {
+// 				e.printStackTrace();
+// 			}
+// 			return;
+// 		}
 
 		controller.setMessage("Msg recieved:" + msg);
 //		@SuppressWarnings("unchecked")
