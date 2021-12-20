@@ -311,23 +311,23 @@ public class addNewSupplierController implements Initializable {
     		return;
 		}
 		
-		try {
-			//prepare fields for table bitemedb.suppliers	
-			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
-					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
-					restaurantAddressTxtField.getText(),info.getAvatar(),
-					monthlyCommissionBox.getValue(), info.getMainBranch());
-			newUser.setSupplier(newSupplier);
-				
-			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
-			userNameError.setVisible(false);
-			Error.setVisible(false);
-			updateSucess.setVisible(true);
-			updateSucess1.setVisible(true);
-		}
-		catch (Exception e) {
-			System.out.println("Error sending (Files msg) to Server");
-		}
+//		try {
+//			//prepare fields for table bitemedb.suppliers	
+//			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
+//					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
+//					restaurantAddressTxtField.getText(),info.getAvatar(),
+//					monthlyCommissionBox.getValue(), info.getMainBranch());
+//			newUser.setSupplier(newSupplier);
+//				
+//			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
+//			userNameError.setVisible(false);
+//			Error.setVisible(false);
+//			updateSucess.setVisible(true);
+//			updateSucess1.setVisible(true);
+//		}
+//		catch (Exception e) {
+//			System.out.println("Error sending (Files msg) to Server");
+//		}
 		
 	}
 	

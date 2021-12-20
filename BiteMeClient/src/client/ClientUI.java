@@ -422,7 +422,9 @@ public class ClientUI implements ClientIF {
 	 */
 	public void editItemInMenu(Product product) {
 		try {
-			client.handleMessageFromClientUI(product);
+			ServerResponse serverResponse = new ServerResponse("editItemInMenu");
+			serverResponse.setServerResponse(product);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -431,19 +433,19 @@ public class ClientUI implements ClientIF {
 
 																											   				
 
-	/**
-	 * @return the searchOrder
-	 */
-	public ServerResponse getSearchOrder() {
-		return SearchOrder;
-	}
-
-	/**
-	 * @param searchOrder the searchOrder to set
-	 */
-	public void setSearchOrder(ServerResponse searchOrder) {
-		SearchOrder = searchOrder;
-	}
+//	/**
+//	 * @return the searchOrder
+//	 */
+//	public ServerResponse getSearchOrder() {
+//		return SearchOrder;
+//	}
+//
+//	/**
+//	 * @param searchOrder the searchOrder to set
+//	 */
+//	public void setSearchOrder(ServerResponse searchOrder) {
+//		SearchOrder = searchOrder;
+//	}
 
 	/**
 	 * A must implemented method from ChatIF interface.

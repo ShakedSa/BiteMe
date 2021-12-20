@@ -106,7 +106,7 @@ public class Server extends AbstractServer {
 		switch (serverResponse.getDataType()) {
 		case "login":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.login(m.get(0), m.get(0)), client);
+			this.sendToClient(mysqlConnection.login(m.get(0), m.get(1)), client);
 			break;
 		case "logout":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -182,6 +182,8 @@ public class Server extends AbstractServer {
 		case "addItem":
 			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
 			break;
+		case "editItemInMenu":
+			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
 		default:
 			sendToClient("default", client);
 			break;

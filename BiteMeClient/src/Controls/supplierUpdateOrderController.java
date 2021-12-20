@@ -110,7 +110,7 @@ public class supplierUpdateOrderController implements Initializable {
 	ObservableList<String> list;
 	String orderNumber;
 	String receivedOrReady;
-	int deliveryNumber = 0;
+	Integer deliveryNumber = 0;
 
 	// creating list of update status order
 	private void setUpdateComboBox() {
@@ -248,6 +248,7 @@ public class supplierUpdateOrderController implements Initializable {
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+		deliveryNumber = null;
 	}
 
 	@FXML
@@ -261,12 +262,15 @@ public class supplierUpdateOrderController implements Initializable {
 		router.returnToSupplierPanel(event);
 		clearPage();
 	}
-	
+
 	private void clearPage() {
 		setStartPage();
 		OrderNumberTxtField.clear();
 		updateDataComboBox.getSelectionModel().clearSelection();
 		errorMsg.setText("");
+		deliveryNumber = null;
+		notIncludeDeliveryBtn.setSelected(false);
+		includeDeliveryBtn.setSelected(false);
 	}
 
 	/**
@@ -324,7 +328,7 @@ public class supplierUpdateOrderController implements Initializable {
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
 			return false;
-		} 
+		}
 
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
 		case "order number doesn't exist":
@@ -498,7 +502,9 @@ public class supplierUpdateOrderController implements Initializable {
 	}
 
 	public int getDeliveryNumber() {
-		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+		if (deliveryNumber == null) {
+			deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+		}
 		return deliveryNumber;
 	}
 
