@@ -422,7 +422,9 @@ public class ClientUI implements ClientIF {
 	 */
 	public void editItemInMenu(Product product) {
 		try {
-			client.handleMessageFromClientUI(product);
+			ServerResponse serverResponse = new ServerResponse("editItemInMenu");
+			serverResponse.setServerResponse(product);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;

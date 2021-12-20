@@ -1280,6 +1280,7 @@ public class mysqlConnection {
 			PreparedStatement stmt;//Type, Price, ProductDescription
 			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
 			stmt = conn.prepareStatement(query);
+			System.out.println(product);
 			stmt.setString(1, product.getType().toString());
 			stmt.setFloat(2, product.getPrice());
 			stmt.setString(3, product.getDescription());
@@ -1292,6 +1293,8 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
+		
+		System.out.println("update");
 		
 		//delete the old components
 			try {
@@ -1307,6 +1310,8 @@ public class mysqlConnection {
 				serverResponse.setServerResponse(null);
 				return serverResponse;
 			}		
+			
+			System.out.println("delete");
 		
 		//set the new components
 		for(int i=0; i<product.getComponents().size();i++) {
@@ -1325,6 +1330,8 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 		}
+		
+		System.out.println("final update");
 		
 //		for(int i=0; i<product.getComponents().size();i++) {
 //			try {

@@ -182,6 +182,8 @@ public class Server extends AbstractServer {
 		case "addItem":
 			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
 			break;
+		case "editItemInMenu":
+			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
 		default:
 			sendToClient("default", client);
 			break;
