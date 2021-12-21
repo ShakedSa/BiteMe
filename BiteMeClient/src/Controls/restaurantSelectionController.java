@@ -324,7 +324,7 @@ public class restaurantSelectionController implements Initializable {
 			        alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
 			        	Order newOrder = new Order();
 						newOrder.setRestaurantName(resName);
-						router.setOrder(newOrder);
+						router.setOrder(new Order());
 			        	changeToIdentify(resName);
 			        });
 				}else {
@@ -346,6 +346,7 @@ public class restaurantSelectionController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurantToOrder(resName);
+				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -358,6 +359,7 @@ public class restaurantSelectionController implements Initializable {
 			}
 		} else {
 			router.getIdentifyController().setRestaurantToOrder(resName);
+			router.getIdentifyController().setItemsCounter();
 			stage.setTitle("BiteMe - Identification page");
 			stage.setScene(router.getIdentifyController().getScene());
 			stage.show();

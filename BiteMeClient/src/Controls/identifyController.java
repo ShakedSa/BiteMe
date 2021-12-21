@@ -83,7 +83,7 @@ public class identifyController implements Initializable {
 			errorMsg.setText("Failed to read QR code");
 			return;
 		} else {
-			readingMsg.setText("QR Reading...");
+			readingMsg.setText("Reading QR...");
 		}
 	}
 
@@ -202,7 +202,6 @@ public class identifyController implements Initializable {
 	 */
 	public void setRestaurantToOrder(String restaurantName) {
 		this.restaurantsName = restaurantName;
-		router.getOrder().setRestaurantName(restaurantName);
 	}
 
 	/**

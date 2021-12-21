@@ -66,9 +66,9 @@
     * 
     */
     -fx-background-color: #fff;
-    -fx-border-width:0;
-    -fx-padding: 5;
-    -fx-font-size: 14px;
+    -fx-border-width:0.0;
+    -fx-padding: 5.0;
+    -fx-font-size: 14.0px;
     -fx-font-family: "Berlin Sans FB";
 }
 
@@ -105,68 +105,68 @@
 
 .date-picker:focused{
 	-fx-background-color:white;
-	-fx-border-width:0;
+	-fx-border-width:0.0;
 }
 .date-picker .combo-box {
--fx-background-insets:0px ;
--fx-border-width: 0px;
+-fx-background-insets:0.0px ;
+-fx-border-width: 0.0px;
   }
 
 .date-picker .text-field{
--fx-background-radius:0px ;
+-fx-background-radius:0.0px ;
 -fx-border-color: transparent;
 }
 
 .date-picker .arrow-button{
--fx-background-radius:0px ;
+-fx-background-radius:0.0px ;
 -fx-background-color: #eee;
 }
 
 .date-picker .arrow-button .arrow{
--fx-background-radius:0px ;
+-fx-background-radius:0.0px ;
 -fx-background-color: black;
 }
 
 .date-picker .arrow-button:hover .arrow{
--fx-background-radius:0px ;
+-fx-background-radius:0.0px ;
 -fx-background-color: -fx-secondary-text-color;
  }
 
  .date-picker .button {
 -fx-background-color: transparent;
 -fx-border-color:transparent;
--fx-pref-height: 35px;
--fx-pref-width: 35px;
+-fx-pref-height: 35.0px;
+-fx-pref-width: 35.0px;
  }
 
  .date-picker .button:hover {
 -fx-border-color:transparent;
--fx-pref-height: 35px;
--fx-pref-width: 35px;
+-fx-pref-height: 35.0px;
+-fx-pref-width: 35.0px;
  }
 
 .date-picker .button .arrow:pressed {
 -fx-border-color:transparent;
--fx-pref-height: 35px;
--fx-pref-width: 35px;
+-fx-pref-height: 35.0px;
+-fx-pref-width: 35.0px;
  }
 
  .date-picker .cell {
 -fx-background-color: white;
--fx-pref-width:20px ;
--fx-pref-height:25px ;
+-fx-pref-width:20.0px ;
+-fx-pref-height:25.0px ;
  }
 
 .date-picker .cell:hover {
 -fx-background-color: -fx-secondary-text-color;
--fx-pref-width:20px ;
--fx-pref-height:25px ;
+-fx-pref-width:20.0px ;
+-fx-pref-height:25.0px ;
 }
 
 .date-picker .cell:focused {
 -fx-background-color:#11659e;
--fx-pref-width:20px ;
--fx-pref-height:25px ;
+-fx-pref-width:20.0px ;
+-fx-pref-height:25.0px ;
  }
 
 .date-picker-popup  {
@@ -178,17 +178,17 @@
 .combo-box{
     -fx-border-color:#E6E6E6;
     -fx-border-style:solid;
-    -fx-border-width:1;
+    -fx-border-width:1.0;
 }
 .combo-box .text-field:focused{
     -fx-background-color: -fx-secondary-text-color;
     -fx-text-fill:#fff;
-	-fx-border-width:0;
-	-fx-border-radius: 0;
+	-fx-border-width:0.0;
+	-fx-border-radius: 0.0;
 }
 .combo-box .text-field{
 	-fx-background-color:white;
-	-fx-border-width:0;
+	-fx-border-width:0.0;
 }
 .combo-box .arrow{
     -fx-background-color:#2478E9;
@@ -411,7 +411,31 @@
 }
 
 .selected{
-	-fx-effect: dropshadow(three-pass-box, rgba(49, 128, 188,0.8),10,0.3,0,0);
+	-fx-effect: dropshadow(three-pass-box, rgba(49.0, 128.0, 188.0,0.8),10.0,0.3,0.0,0.0);
+}
+
+.removeBtn{
+	-fx-border-width: 1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 40.0;
+	-fx-text-fill: red;
+	-fx-cursor: hand;
+	-fx-padding: 10.0 35.0;
+}
+
+.removeBtn:hover{
+	-fx-background-color:#ff000050;
+	-fx-background-radius:40;
+}
+
+.toRemove{
+	-fx-background-color:#ff000050;
+	-fx-background-radius: 40;
+}
+
+.toRemove:hover{
+	-fx-background-color:#ff000050;
+	-fx-background-radius: 40;
 }
 
 

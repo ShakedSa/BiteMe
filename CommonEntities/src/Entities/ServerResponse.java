@@ -84,9 +84,9 @@ public class ServerResponse implements Serializable {
 	@Override
 	public String toString() {
 		if (serverResponse != null) {
-			return serverResponse.toString();
+			return "[Request Type: " + dataType + ",Object: " + serverResponse.toString() + "]";
 		}
-		return dataType;
+		return "[Request Type: " + dataType + "]";
 	}
 
 }

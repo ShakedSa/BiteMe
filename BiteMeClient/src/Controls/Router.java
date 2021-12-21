@@ -822,7 +822,7 @@ public class Router {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setItemsCounter();
+//				controller.setItemsCounter();
 				controller.displayOrder();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -835,7 +835,7 @@ public class Router {
 				return;
 			}
 		} else {
-			router.getMyCartController().setItemsCounter();
+//			router.getMyCartController().setItemsCounter();
 			router.getMyCartController().setAvatar();
 			router.getMyCartController().displayOrder();
 			stage.setTitle("BiteMe - My Cart");
