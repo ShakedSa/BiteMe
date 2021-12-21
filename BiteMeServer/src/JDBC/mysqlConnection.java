@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ModuleLayer.Controller;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -17,15 +18,20 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Spliterator;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import Config.ReadPropertyFile;
+import Config.pdfConfigs;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
 import Entities.CEO;
@@ -53,6 +59,7 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import gui.ServerUI;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -771,25 +778,16 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	// java.sql.SQLIntegrityConstraintViolationException:
-	// Cannot add or update a child row: a foreign key constraint fails
-	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
-	// (`RestaurantName`)
-	// REFERENCES `suppliers` (`RestaurantName`))
-
-	public static void updateFile(InputStream is, String date) {
-		System.out.println("test !");
-		String filename = "Report " + date + ".pdf";
-		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
-	}
-
 	/**
 	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
+	 *  reportType,Month,Year,branch
 	 */
-	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
-		String filename = "Report " + date + ".pdf";
+	public static void updateFile(InputStream is, ArrayList<String> desc) {
+		if(is==null) 
+			return;
+		String filename = "Report " + desc.get(2)+ "-" +desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
@@ -1438,19 +1436,94 @@ public class mysqlConnection {
 			return;
 		}
 	}
-	
-	public static void createMonthlyReportPdf() {
-	Document document = new Document();
+//SELECT * FROM bitemedb.orders WHERE RestaurantName IN (SELECT RestaurantName FROM bitemedb.suppliers WHERE branch="North") ORDER BY RestaurantName;
+	/**
+	 * @param Branch
+	 * @return all orders from restaurants in a given branch
+	 */
+	public static ResultSet getRestaurantsRevenue(String Branch) {
+		PreparedStatement stmt;
+		String query;
+		ResultSet rs;
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream("tempReport.pdf"));
-			document.open();
-			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
-			Chunk chunk = new Chunk("Hello World", font);
-			document.add(chunk);
-			document.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			query = "SELECT * FROM bitemedb.orders WHERE RestaurantName IN "
+					+ "(SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=?) "
+					+ "ORDER BY RestaurantName";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, Branch);
+			rs = stmt.executeQuery();
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
+		// TODO Auto-generated method stub
+		return rs;
 	}
+
+	/**
+	 * @param Branch
+	 * @return arrayList of restaurant names in the branch
+	 */
+	public static ArrayList<String> getRestaurantList(String Branch) {
+		PreparedStatement stmt;
+		String query;
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			query ="SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, Branch);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+				arr.add(rs.getString(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return arr;
+		}
+		return arr;
+	}
+	
+	//SELECT Count(RestaurantName) FROM bitemedb.orders where RestaurantName=?;
+
+	public static int getNumOfOrders(String restaurantName, Month month) {
+		PreparedStatement stmt;
+		String query;
+		int num=0;
+		ResultSet rs;
+		try {
+			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND RestaurantName=?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, month.getValue());
+			stmt.setString(2, restaurantName);
+			rs = stmt.executeQuery();
+			if(rs.next())
+				num=rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
+
+	public static int getEarnings(String restaurantName, Month month) {
+		PreparedStatement stmt;
+		String query;
+		int num=0;
+		ResultSet rs;
+		//SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		try {
+			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setInt(2, month.getValue());
+			rs = stmt.executeQuery();
+			if(rs.next())
+				num=rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
+
+
 }

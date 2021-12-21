@@ -507,7 +507,6 @@ public class ClientUI implements ClientIF {
 		msg.getDescription().add(Month);
 		msg.getDescription().add(Year);
 		msg.getDescription().add(user.getMainBranch().toString());
-		// tbd - adding restaurant name
 		try {
 
 			byte[] mybytearray = new byte[(int) pdfToUpload.length()];

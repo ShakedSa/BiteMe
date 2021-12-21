@@ -2,9 +2,31 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.sun.tools.classfile.Annotation.element_value;
+
+import Config.pdfConfigs;
 import Entities.MyFile;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
@@ -12,6 +34,7 @@ import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
 import gui.ServerGUIController;
+import javafx.css.Style;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -57,7 +80,7 @@ public class Server extends AbstractServer {
 			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
-				mysqlConnection.updateFile(is, message.getFileName(), message.getDescription());
+				mysqlConnection.updateFile(is, message.getDescription());
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling files in Server");
@@ -65,42 +88,7 @@ public class Server extends AbstractServer {
 			return;
 		}
 		
-// 		if(msg instanceof OrderDeliveryMethod) {
-// 			try {
-// 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-		
-// 		if(msg instanceof NewUser) {
-// 			try {
-// 			NewSupplier supplier = ((NewUser)msg).getSupplier();
-// 			//add supplier to users table
-// 			mysqlConnection.addNewUser((NewUser)msg);
-// 			//add supplier to suppliers table
-// 			mysqlConnection.addNewSupplier(supplier);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-// 		if(msg instanceof Product) {
-// 			try {
-// 				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
-// 				//this.sendToClient(mysqlConnection.editItemInMenu((Product)msg), client);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 			}
-// 			return;
-// 		}
-
 		controller.setMessage("Msg recieved:" + msg);
-//		@SuppressWarnings("unchecked")
-//		ArrayList<String> m = (ArrayList<String>) msg;
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
 		switch (serverResponse.getDataType()) {
@@ -215,7 +203,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		mysqlConnection.createMonthlyReportPdf();
+		createMonthlyReportPdf("North","12");
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}
@@ -251,5 +239,76 @@ public class Server extends AbstractServer {
 	public void setController(ServerGUIController controller) {
 		this.controller = controller;
 	}
+	
+	
+	/**
+	 * Creates monthly revenue report for a given branch and month, and stores it in SQL
+	 * @param Branch
+	 * @param Month
+	 */
+	public static void createMonthlyReportPdf(String Branch, String Month) {
+	Document document = new Document();
+	LocalDate currentDate=LocalDate.now();
+	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
+	int numOfOrders;
+	int totalEarnings;
+	int netIncome=0;
+	document.addTitle("Monthly Report");
+	
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempReport.pdf"));
+			document.open();
+			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
+			Chunk c = new Chunk("Monthly Revenue Report\n");
+			c.setFont(font);
+			c.setUnderline(2, -4);
+			Paragraph title = new Paragraph();
+			title.add(c);
+			title.setAlignment(1);
+			document.add(title);
+			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
+			reportDetails.setAlignment(1);
+			document.add(reportDetails);
+			// handling sql data:
+			// table: name,total orders, total income.
+				PdfPTable table = new PdfPTable(3);
+				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income");
+				for(String res: Restaurants) { // for each restaurant in branch:
+						numOfOrders=mysqlConnection.getNumOfOrders(res,LocalDate.now().getMonth());
+						totalEarnings=mysqlConnection.getEarnings(res,LocalDate.now().getMonth());
+						netIncome+=totalEarnings;
+						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
+				}
+				document.add(table);
+				font.setSize(25);
+				document.add(new Paragraph("\n\n\n total NET Income: "+netIncome,font));
+			document.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//after creating the PDF with relevant data, store it inside the SQL as BLOB:
+		ArrayList<String> info = new ArrayList<String>();
+		//reportType,Month,Year,branch
+		info.add("Monthly Revenue Report");
+		info.add(Integer.toString(currentDate.getMonthValue()));
+		info.add(Integer.toString(currentDate.getYear()));
+		info.add(Branch);
+		//loading the temp report:
+		InputStream is=null;
+		try {
+			is = new FileInputStream(new File(Branch + "TempReport.pdf"));
+			mysqlConnection.updateFile(is, info);
+			//close file connection
+			if(is!=null)
+				is.close();
+			//delete temp file from server.
+			File f = new File(Branch + "TempReport.pdf");
+			f.delete();
+		} catch (Exception e) {e.printStackTrace();}
+		
 
+	}
+
+	
+	
 }
