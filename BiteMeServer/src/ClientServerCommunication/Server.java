@@ -170,6 +170,7 @@ public class Server extends AbstractServer {
 			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(0)), client);
 			break;
 		case "employerApproval":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
 			mysqlConnection.approveEmployer(m.get(1));
 			break;
 		case "rate":
