@@ -215,6 +215,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		mysqlConnection.createMonthlyReportPdf();
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}

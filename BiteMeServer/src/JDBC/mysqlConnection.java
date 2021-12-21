@@ -2,7 +2,11 @@ package JDBC;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -18,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Spliterator;
 import java.util.concurrent.TimeUnit;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -1430,6 +1436,21 @@ public class mysqlConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
+		}
+	}
+	
+	public static void createMonthlyReportPdf() {
+	Document document = new Document();
+		try {
+			PdfWriter.getInstance(document, new FileOutputStream("tempReport.pdf"));
+			document.open();
+			Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+			Chunk chunk = new Chunk("Hello World", font);
+			document.add(chunk);
+			document.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
