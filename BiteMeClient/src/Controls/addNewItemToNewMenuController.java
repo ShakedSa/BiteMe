@@ -149,7 +149,7 @@ public class addNewItemToNewMenuController implements Initializable{
 		ClientGUI.client.getLastResponse().getServerResponse();
 
 		// return to create menu page
-		router.getSupplierPanelController().createMenuClicked(event);
+		router.getCreateMenuController();
 	}
 
 	private boolean checkInputs() {
@@ -234,6 +234,12 @@ public class addNewItemToNewMenuController implements Initializable{
 		router.returnToSupplierPanel(event);
 		clearPage();
 	}
+	
+    @FXML
+    void returnToCreateMenu(MouseEvent event) {
+    	router.getSupplierPanelController().createMenuClicked(event);
+		clearPage();
+    }
 
 	@FXML
 	void uploadImageClicked(MouseEvent event) {

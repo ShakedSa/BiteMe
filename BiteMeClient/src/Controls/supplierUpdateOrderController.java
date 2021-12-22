@@ -3,14 +3,14 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Entities.Product;
 import Entities.ServerResponse;
+import Enums.Status;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
@@ -64,6 +64,9 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private Text hourTxt;
+	
+    @FXML
+    private Text orderStatusTxt;
 
 	@FXML
 	private RadioButton includeDeliveryBtn;
@@ -116,8 +119,7 @@ public class supplierUpdateOrderController implements Initializable {
 	private void setUpdateComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
 		type.add("Order Received");
-		type.add("Order Is Ready");
-
+		type.add("Order Is Ready"); 
 		list = FXCollections.observableArrayList(type);
 		updateDataComboBox.setItems(list);
 	}
@@ -183,6 +185,10 @@ public class supplierUpdateOrderController implements Initializable {
 			}
 		});
 		t.start();
+		
+		if(!checkServerResponse()) {
+			return;
+		}
 
 		if (receivedOrReady.equals("Order Received")) {
 			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, nowTime, statusReceived);
@@ -193,10 +199,6 @@ public class supplierUpdateOrderController implements Initializable {
 			t.join();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return;
-		}
-
-		if (!checkServerResponse()) {
 			return;
 		}
 
@@ -271,6 +273,8 @@ public class supplierUpdateOrderController implements Initializable {
 		deliveryNumber = null;
 		notIncludeDeliveryBtn.setSelected(false);
 		includeDeliveryBtn.setSelected(false);
+		OrderNumberTxtField.setDisable(false);
+		orderStatusTxt.setVisible(false);
 	}
 
 	/**
@@ -306,7 +310,12 @@ public class supplierUpdateOrderController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-
+		if (!checkServerResponse()) { //order number doesn't exist
+			return;
+		}
+		
+		OrderNumberTxtField.setDisable(true);
+		getStatusOrder();
 		updateDataTxt.setVisible(true);
 		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -321,6 +330,51 @@ public class supplierUpdateOrderController implements Initializable {
 		});
 	}
 
+	/**
+	 * get the currently order status and display it on screen
+	 */
+	private void getStatusOrder() {
+		orderNumber = OrderNumberTxtField.getText();
+		if (!CheckUserInput(orderNumber)) {
+			return;
+		}
+		ClientGUI.client.getOrderInfo(orderNumber);
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		// handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		if (sr == null) {
+			return;
+		}
+		@SuppressWarnings("unchecked")
+		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
+		if (response == null) {
+			System.out.println("test");
+			return;
+		}
+		orderStatusTxt.setVisible(true);
+		//orderStatusTxt.setText("Order status is: " + response.get(3));
+	}
+	
 	/**
 	 * checks the order information received from Server. display relevant
 	 * information.

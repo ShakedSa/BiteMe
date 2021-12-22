@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -33,7 +34,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text fx:id="saveTxt" layoutX="643.0" layoutY="461.0" onMouseClicked="#saveClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
+      <Text fx:id="saveTxt" layoutX="636.0" layoutY="551.0" onMouseClicked="#saveClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Save">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -41,7 +42,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fitHeight="46.0" fitWidth="34.0" layoutX="604.0" layoutY="434.0" onMouseClicked="#saveClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="46.0" fitWidth="34.0" layoutX="597.0" layoutY="524.0" onMouseClicked="#saveClicked" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/createMenu-icon.gif" />
          </image>
@@ -49,10 +50,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TableView fx:id="menuTable" layoutX="133.0" layoutY="202.0" prefHeight="200.0" prefWidth="565.0">
+      <TableView fx:id="menuTable" layoutX="68.0" layoutY="202.0" prefHeight="200.0" prefWidth="690.0">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <columns>
+            <TableColumn fx:id="table_Type" editable="false" maxWidth="2500.0" prefWidth="95.0" text="Type" />
+            <TableColumn fx:id="table_DishName" editable="false" prefWidth="181.0" text="Dish Name" />
+            <TableColumn fx:id="table_Components" editable="false" prefWidth="75.0" text="Components" />
+            <TableColumn fx:id="table_Price" editable="false" maxWidth="2000.0" minWidth="-1.0" prefWidth="-1.0" text="Price" />
+            <TableColumn fx:id="table_Description" editable="false" prefWidth="159.3333740234375" text="Description" />
+         </columns>
       </TableView>
       <Text layoutX="308.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Menu">
          <font>
@@ -67,7 +75,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="SupplierPanel">
+      <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -118,8 +126,8 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Line endX="-82.0" layoutX="445.0" layoutY="455.0" startX="-100.0" strokeWidth="3.0" />
-      <Circle fx:id="addNewItemPlus" fill="#04b84f7d" layoutX="354.0" layoutY="455.0" onMouseClicked="#addNewItemClicked" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+      <Line endX="-82.0" layoutX="445.0" layoutY="453.0" startX="-100.0" strokeWidth="3.0" />
+      <Circle fx:id="addNewItemPlus" fill="#04b84f7d" layoutX="354.0" layoutY="453.0" onMouseClicked="#addNewItemClicked" radius="16.0" stroke="BLACK" strokeType="INSIDE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -132,6 +140,20 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Line endX="-82.0" layoutX="436.0" layoutY="463.0" startX="-82.0" startY="-16.0" strokeWidth="3.0" />
+      <Line endX="-82.0" layoutX="436.0" layoutY="461.0" startX="-82.0" startY="-16.0" strokeWidth="3.0" />
+      <Line endX="-82.0" layoutX="655.0" layoutY="453.0" startX="-100.0" strokeWidth="3.0" />
+      <Circle fx:id="deleteItemPlus" fill="#ff00007d" layoutX="564.0" layoutY="453.0" onMouseClicked="#deleteItemTxt" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Circle>
+      <Text fx:id="deleteItemTxt" layoutX="591.0" layoutY="460.0" onMouseClicked="#deleteItemTxtClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
    </children>
 </AnchorPane>
