@@ -203,7 +203,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		createMonthlyReportPdf("North","12");
+		//createMonthlyRevenueReportPdf("North","12");
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}
@@ -246,7 +246,7 @@ public class Server extends AbstractServer {
 	 * @param Branch
 	 * @param Month
 	 */
-	public static void createMonthlyReportPdf(String Branch, String Month) {
+	public static void createMonthlyRevenueReportPdf(String Branch, String Month) {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -256,7 +256,7 @@ public class Server extends AbstractServer {
 	document.addTitle("Monthly Report");
 	
 		try {
-			PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempReport.pdf"));
+			PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempRevenueReport.pdf"));
 			document.open();
 			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
 			Chunk c = new Chunk("Monthly Revenue Report\n");
@@ -296,13 +296,13 @@ public class Server extends AbstractServer {
 		//loading the temp report:
 		InputStream is=null;
 		try {
-			is = new FileInputStream(new File(Branch + "TempReport.pdf"));
+			is = new FileInputStream(new File(Branch + "TempRevenueReport.pdf"));
 			mysqlConnection.updateFile(is, info);
 			//close file connection
 			if(is!=null)
 				is.close();
 			//delete temp file from server.
-			File f = new File(Branch + "TempReport.pdf");
+			File f = new File(Branch + "TempRevenueReport.pdf");
 			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
