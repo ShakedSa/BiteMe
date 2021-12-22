@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -26,7 +27,7 @@ public class reportsHandler {
 	 * @param Branch
 	 * @param Month
 	 */
-	public static void createMonthlyRevenueReportPdf(String Branch, String Month) {
+	public static void createMonthlyRevenueReportPdf(String Branch, String Month, String Year) {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -41,16 +42,16 @@ public class reportsHandler {
 			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
 			//add title and report details:
 			document.add(pdfConfigs.createTitle("Monthly Revenue Report\n", font));
-			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
-			reportDetails.setAlignment(1);
+			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
+					+ "Creation Date: "+currentDate.toString() +"\n\n",font);			reportDetails.setAlignment(1);
 			document.add(reportDetails);
 			// handling sql data:
 			// table: name,total orders, total income.
 				PdfPTable table = new PdfPTable(3);
 				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income");
 				for(String res: Restaurants) { // for each restaurant in branch:
-						numOfOrders=mysqlConnection.getNumOfOrders(res,LocalDate.now().getMonth());
-						totalEarnings=mysqlConnection.getEarnings(res,LocalDate.now().getMonth());
+						numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
+						totalEarnings=mysqlConnection.getEarnings(res,Month,Year);
 						netIncome+=totalEarnings;
 						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
 				}
@@ -65,8 +66,8 @@ public class reportsHandler {
 		ArrayList<String> info = new ArrayList<String>();
 		//reportType,Month,Year,branch
 		info.add("MonthlyRevenueReport");
-		info.add(Integer.toString(currentDate.getMonthValue()));
-		info.add(Integer.toString(currentDate.getYear()));
+		info.add(Month);
+		info.add(Year);
 		info.add(Branch);
 		//loading the temp report:
 		InputStream is=null;
@@ -88,7 +89,7 @@ public class reportsHandler {
 	 * @param Branch
 	 * @param Month
 	 */
-	public static void createMonthlyOrdersReportPdf(String Branch, String Month) {
+	public static void createMonthlyOrdersReportPdf(String Branch, String Month,String Year) {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -107,14 +108,15 @@ public class reportsHandler {
 			//set title:
 			document.add(pdfConfigs.createTitle("Monthly Order Report\n", font));
 			//set branch and date info:
-			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
+			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
+					+ "Creation Date: "+currentDate.toString() +"\n\n",font);
 			reportDetails.setAlignment(1);
 			document.add(reportDetails);
 			//table for restaurant x:
 			for(String res: Restaurants) {
 				i=1;
 				//get dishes list:
-				OrderedDishes= mysqlConnection.getDishesList(res,LocalDate.now().getMonth());
+				OrderedDishes= mysqlConnection.getDishesList(res,Month,Year);
 				if(OrderedDishes.size()==0) {
 					document.add(new Paragraph(" "+res + " Had no orders this month. \n\n"));
 					continue; // dont create empty tables
@@ -127,7 +129,7 @@ public class reportsHandler {
 
 				//get total orders of the dish and create table row per dish in a restaurant
 				for(String dish:OrderedDishes) {
-					numOfOrders = mysqlConnection.getNumOfOrderedDishes(res,LocalDate.now().getMonth(),dish);
+					numOfOrders = mysqlConnection.getNumOfOrderedDishes(res,Month,Year,dish);
 					pdfConfigs.addRows(table,i,dish,numOfOrders);
 					ordersSum+=numOfOrders;
 					i++;
@@ -148,8 +150,8 @@ public class reportsHandler {
 		ArrayList<String> info = new ArrayList<String>();
 		//arraylist inside order: reportType,Month,Year,branch
 		info.add("MonthlyOrdersReport");
-		info.add(Integer.toString(currentDate.getMonthValue()));
-		info.add(Integer.toString(currentDate.getYear()));
+		info.add(Month);
+		info.add(Year);
 		info.add(Branch);
 		//loading the temp report:
 		InputStream is=null;
@@ -173,12 +175,12 @@ public class reportsHandler {
 	 * @param Branch
 	 * @param Month
 	 */
-	public static void createMonthlyPerformanceReportPdf(String Branch, String Month) {
+	public static void createMonthlyPerformanceReportPdf(String Branch, String Month, String Year) {
 
 		Document document = new Document();
 		LocalDate currentDate=LocalDate.now();
 		ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-		int numOfOrders, delayedOrders, netIncome=0,totalDelayedOrders=0,totalOrders=0;
+		int numOfOrders, delayedOrders, totalDelayedOrders=0,totalOrders=0;
 		float delayedPercentage=0,totalDelayedPercentage=0;
 		document.addTitle("Monthly Report");
 		
@@ -187,16 +189,16 @@ public class reportsHandler {
 				document.open();
 				Font font = FontFactory.getFont(FontFactory.COURIER, 30, BaseColor.BLACK);
 				document.add(pdfConfigs.createTitle("Monthly Performance Report\n", font));
-				Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
-				reportDetails.setAlignment(1);//center=1
+				Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
+						+ "Creation Date: "+currentDate.toString() +"\n\n",font);				reportDetails.setAlignment(1);//center=1
 				document.add(reportDetails);
 				// handling sql data:
 				// table: restaurant name,total orders,# delayed orders, %delayed orders 
 					PdfPTable table = new PdfPTable(4);
 					pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Delayed orders","% of orders delayed");
 					for(String res: Restaurants) { // for each restaurant in branch:
-							numOfOrders=mysqlConnection.getNumOfOrders(res,LocalDate.now().getMonth());
-							delayedOrders=mysqlConnection.getDelayedOrders(res,LocalDate.now().getMonth());
+							numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
+							delayedOrders=mysqlConnection.getDelayedOrders(res,Month,Year);
 							if(numOfOrders!=0)
 								delayedPercentage=(float)100*delayedOrders/numOfOrders;
 							else
@@ -220,8 +222,8 @@ public class reportsHandler {
 			ArrayList<String> info = new ArrayList<String>();
 			//reportType,Month,Year,branch
 			info.add("MonthlyPerformanceReport");
-			info.add(Integer.toString(currentDate.getMonthValue()));
-			info.add(Integer.toString(currentDate.getYear()));
+			info.add(Month);
+			info.add(Year);
 			info.add(Branch);
 			//loading the temp report:
 			InputStream is=null;
@@ -237,5 +239,55 @@ public class reportsHandler {
 			} catch (Exception e) {e.printStackTrace();}
 			
 
+	}
+	
+	/**
+	 * creates all 3 types of monthly reports for the given month and year.
+	 * @param month
+	 * @param year
+	 */
+	public static void createAllReports(int month, int year) {
+		if(month==13) // make sure to create new year reports if needed
+		{
+			month=0;
+			year++;
+		}
+		String monthS=Integer.toString(month),yearS=Integer.toString(year);
+		String[] Branches = {"North","Center","South"};//,"South","Center"};
+		for(String s:Branches) {
+			createMonthlyOrdersReportPdf(s, monthS, yearS);
+			createMonthlyPerformanceReportPdf(s, monthS, yearS);
+			createMonthlyRevenueReportPdf(s, monthS, yearS);
+		}
+	}
+	/**
+	 * @return the date of the last report on sql
+	 * returns today if null
+	 */
+	public static int[] getLastReportDate() {
+		int year,month;
+
+		Date d = mysqlConnection.checkLastReportDate();
+		if(d!=null)
+		{
+			//deNormalize values:
+			month=d.getMonth()+1;
+			year=d.getYear()+1900;
+		}
+		else {//if no reports were ever made, return last month (to initialize empty reports on sql)
+			month=LocalDate.now().getMonthValue()-1;
+			year=LocalDate.now().getYear();
+			System.out.println(month + " "+year);
+			if(month==0) {
+				month=12;
+				year--;
+			}
+		}
+		if(month==1) {
+			month=12;
+			year--;
+		}
+		int arr[] = {year,month};
+		return arr;
 	}
 }

@@ -11,9 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.sql.Time;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.sun.glass.ui.EventLoop.State;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -786,7 +790,7 @@ public class mysqlConnection {
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setString(1, filename);
-			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-01"));
+			statement.setDate(2, Date.valueOf("" + desc.get(2) + "-" + desc.get(1) + "-02"));
 			statement.setBlob(3, is);
 			statement.setString(4, desc.get(3));
 			statement.setString(5, desc.get(0));
@@ -1474,29 +1478,6 @@ public class mysqlConnection {
 			return;
 		}
 	}
-//SELECT * FROM bitemedb.orders WHERE RestaurantName IN (SELECT RestaurantName FROM bitemedb.suppliers WHERE branch="North") ORDER BY RestaurantName;
-	/**
-	 * @param Branch
-	 * @return all orders from restaurants in a given branch
-	 */
-	public static ResultSet getRestaurantsRevenue(String Branch) {
-		PreparedStatement stmt;
-		String query;
-		ResultSet rs;
-		try {
-			query = "SELECT * FROM bitemedb.orders WHERE RestaurantName IN "
-					+ "(SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=?) "
-					+ "ORDER BY RestaurantName";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, Branch);
-			rs = stmt.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		// TODO Auto-generated method stub
-		return rs;
-	}
 
 	/**
 	 * @param Branch
@@ -1523,18 +1504,20 @@ public class mysqlConnection {
 	/**
 	 * @param restaurantName
 	 * @param month
+	 * @param year
 	 * @return number of orders made in restaurant on chosen month.
 	 */
-	public static int getNumOfOrders(String restaurantName, Month month) {
+	public static int getNumOfOrders(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
 		int num=0;
 		ResultSet rs;
 		try {
-			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND RestaurantName=?";
+			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND YEAR(OrderReceived)=? AND RestaurantName=?";
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, month.getValue());
-			stmt.setString(2, restaurantName);
+			stmt.setString(1, month);
+			stmt.setString(2, year);
+			stmt.setString(3, restaurantName);
 			rs = stmt.executeQuery();
 			if(rs.next())
 				num=rs.getInt(1);
@@ -1548,19 +1531,21 @@ public class mysqlConnection {
 	/**
 	 * @param restaurantName
 	 * @param month
+	 * @param year
 	 * @return total income in selected restaurants on the given month.
 	 */
-	public static int getEarnings(String restaurantName, Month month) {
+	public static int getEarnings(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
 		int num=0;
 		ResultSet rs;
 		//SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
 		try {
-			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=?)";
+			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
-			stmt.setInt(2, month.getValue());
+			stmt.setString(2, month);
+			stmt.setString(3, year);
 			rs = stmt.executeQuery();
 			if(rs.next())
 				num=rs.getInt(1);
@@ -1574,9 +1559,10 @@ public class mysqlConnection {
 	/**
 	 * @param res
 	 * @param month
+	 * @param year
 	 * @return arrayList of dishes ordered in a restaurant in the given month.
 	 */
-	public static ArrayList<String> getDishesList(String restaurantName, Month month) {
+	public static ArrayList<String> getDishesList(String restaurantName, String month, String year) {
 
 		PreparedStatement stmt;
 		String query;
@@ -1584,10 +1570,11 @@ public class mysqlConnection {
 		try {
 			query ="SELECT distinct(DishName) FROM bitemedb.productinorder "
 					+ "WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders "
-					+ "WHERE RestaurantName=? and MONTH(OrderReceived)=?)";
+					+ "WHERE RestaurantName=? and MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
-			stmt.setInt(2, month.getValue());
+			stmt.setString(2, month);
+			stmt.setString(3, year);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next())
 				arr.add(rs.getString(1));
@@ -1601,10 +1588,11 @@ public class mysqlConnection {
 	/**
 	 * @param restaurantName
 	 * @param month
+	 * @param year
 	 * @param dish
 	 * @return returns the number of dishes ordered on restaurant in selected month
 	 */
-	public static int getNumOfOrderedDishes(String restaurantName, Month month, String dish) {
+	public static int getNumOfOrderedDishes(String restaurantName, String month, String year, String dish) {
 
 		PreparedStatement stmt;
 		String query;
@@ -1612,11 +1600,12 @@ public class mysqlConnection {
 		try {
 			query ="SELECT Count(DishName) as count FROM bitemedb.productinorder WHERE"
 					+ " Dishname=? and OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders"
-					+ " WHERE RestaurantName=? and MONTH(OrderReceived)=?)";
+					+ " WHERE RestaurantName=? and MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, dish);
 			stmt.setString(2, restaurantName);
-			stmt.setInt(3, month.getValue());
+			stmt.setString(3, month);
+			stmt.setString(4, year);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next())
 				num=rs.getInt(1);
@@ -1630,9 +1619,10 @@ public class mysqlConnection {
 	/**
 	 * @param restaurantName
 	 * @param month
+	 * @param year
 	 * @return returns number of delayed orders on a restaurant in chosen month
 	 */
-	public static int getDelayedOrders(String restaurantName, Month month) {
+	public static int getDelayedOrders(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
 		int delayedOrders=0;
@@ -1640,14 +1630,15 @@ public class mysqlConnection {
 		//get delayed non preorders:
 		try {
 			query = "SELECT count(OrderNumber) as num FROM bitemedb.orders where MONTH(OrderReceived)=?"
-					+ " AND RestaurantName=? AND HOUR(TIMEDIFF(CustomerReceived, OrderReceived))>1"
+					+ " AND YEAR(OrderReceived)=? AND RestaurantName=? AND HOUR(TIMEDIFF(CustomerReceived, OrderReceived))>1"
 					+ " AND OrderNumber in ( SELECT OrderNumber FROM bitemedb.ordereddelivery where"
 					+ " deliveryNumber not in (SELECT DeliveryNumber FROM bitemedb.deliveries"
 					+ " WHERE deliverytype=?))";
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, month.getValue());
-			stmt.setString(2, restaurantName);
-			stmt.setString(3, "Preorder Delivery");
+			stmt.setString(1, month);
+			stmt.setString(2, year);
+			stmt.setString(3, restaurantName);
+			stmt.setString(4, "Preorder Delivery");
 			rs = stmt.executeQuery();
 			if(rs.next())
 				delayedOrders+=rs.getInt(1);
@@ -1658,14 +1649,15 @@ public class mysqlConnection {
 		//get delayed preorders
 		try {
 			query = "SELECT count(OrderNumber) as num FROM bitemedb.orders where MONTH(OrderReceived)=?"
-					+ " AND RestaurantName=? AND MINUTE(TIMEDIFF(CustomerReceived, OrderReceived))>=20"
+					+ " AND YEAR(OrderReceived)=? AND RestaurantName=? AND MINUTE(TIMEDIFF(CustomerReceived, OrderReceived))>=20"
 					+ " AND OrderNumber in ( SELECT OrderNumber FROM bitemedb.ordereddelivery where"
 					+ " deliveryNumber in (SELECT DeliveryNumber FROM bitemedb.deliveries"
 					+ " WHERE deliverytype=?))";
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, month.getValue());
-			stmt.setString(2, restaurantName);
-			stmt.setString(3, "Preorder Delivery");
+			stmt.setString(1, month);
+			stmt.setString(2, year);
+			stmt.setString(3, restaurantName);
+			stmt.setString(4, "Preorder Delivery");
 			rs = stmt.executeQuery();
 			if(rs.next())
 				delayedOrders+=rs.getInt(1);
@@ -1676,5 +1668,21 @@ public class mysqlConnection {
 		return delayedOrders;
 	}
 
-
+	//SELECT Date FROM bitemedb.reports order by Date desc;
+	public static Date checkLastReportDate() {
+		Statement stmt;
+		ResultSet rs;
+		Date date=null;
+		try {
+		    stmt = conn.createStatement();
+		    rs = stmt.executeQuery("SELECT Date FROM bitemedb.reports order by Date desc");
+		    if(rs.next())
+		    	date =rs.getDate(1);
+		}catch (SQLException e) {
+			// TODO: handle exception
+		}
+		return date;
+	}
+		
+	
 }
