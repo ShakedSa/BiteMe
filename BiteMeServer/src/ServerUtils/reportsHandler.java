@@ -39,13 +39,8 @@ public class reportsHandler {
 			PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempRevenueReport.pdf"));
 			document.open();
 			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
-			Chunk c = new Chunk("Monthly Revenue Report\n");
-			c.setFont(font);
-			c.setUnderline(2, -4);
-			Paragraph title = new Paragraph();
-			title.add(c);
-			title.setAlignment(1);
-			document.add(title);
+			//add title and report details:
+			document.add(pdfConfigs.createTitle("Monthly Revenue Report\n", font));
 			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
 			reportDetails.setAlignment(1);
 			document.add(reportDetails);
@@ -110,13 +105,7 @@ public class reportsHandler {
 			document.open();
 			Font font = FontFactory.getFont(FontFactory.HELVETICA, 35, BaseColor.BLACK);
 			//set title:
-			Chunk c = new Chunk(" Monthly Order Report\n");
-			c.setFont(font);
-			c.setUnderline(2, -4);
-			Paragraph title = new Paragraph();
-			title.add(c);
-			title.setAlignment(1);
-			document.add(title);
+			document.add(pdfConfigs.createTitle("Monthly Order Report\n", font));
 			//set branch and date info:
 			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
 			reportDetails.setAlignment(1);
@@ -197,13 +186,7 @@ public class reportsHandler {
 				PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempPerformanceReport.pdf"));
 				document.open();
 				Font font = FontFactory.getFont(FontFactory.COURIER, 30, BaseColor.BLACK);
-				Chunk c = new Chunk("Monthly Performance Report\n");
-				c.setFont(font);
-				c.setUnderline(2, -4);
-				Paragraph title = new Paragraph();
-				title.add(c);
-				title.setAlignment(1);
-				document.add(title);
+				document.add(pdfConfigs.createTitle("Monthly Performance Report\n", font));
 				Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Date :" + currentDate.toString() +"\n\n\n",font);
 				reportDetails.setAlignment(1);//center=1
 				document.add(reportDetails);

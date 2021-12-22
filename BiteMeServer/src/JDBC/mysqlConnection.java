@@ -1598,6 +1598,12 @@ public class mysqlConnection {
 		return arr;
 	}
 
+	/**
+	 * @param restaurantName
+	 * @param month
+	 * @param dish
+	 * @return returns the number of dishes ordered on restaurant in selected month
+	 */
 	public static int getNumOfOrderedDishes(String restaurantName, Month month, String dish) {
 
 		PreparedStatement stmt;
@@ -1621,6 +1627,11 @@ public class mysqlConnection {
 		return num;
 	}
 
+	/**
+	 * @param restaurantName
+	 * @param month
+	 * @return returns number of delayed orders on a restaurant in chosen month
+	 */
 	public static int getDelayedOrders(String restaurantName, Month month) {
 		PreparedStatement stmt;
 		String query;
