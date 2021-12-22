@@ -19,8 +19,8 @@ public class Order implements Serializable {
 	private float orderPrice;
 	private String orderRecieved;
 	private String dateTime;
-	
-	
+	private String status;
+
 	public Order(int orderNumber, String restaurantName, ArrayList<Product> products, PaymentMethod paymentMethod,
 			String ordeTime, float orderPrice, String orderRecieved, String dateTime) {
 		super();
@@ -33,15 +33,16 @@ public class Order implements Serializable {
 		this.orderRecieved = orderRecieved;
 		this.dateTime = dateTime;
 	}
-	
-	public Order() {}
+
+	public Order() {
+	}
+
 	/**
 	 * @return the orderNumber
 	 */
 	public int getOrderNumber() {
 		return orderNumber;
 	}
-
 
 	/**
 	 * @return the restaurantName
@@ -50,14 +51,12 @@ public class Order implements Serializable {
 		return restaurantName;
 	}
 
-
 	/**
 	 * @return the products
 	 */
 	public ArrayList<Product> getProducts() {
 		return products;
 	}
-
 
 	/**
 	 * @return the paymentMethod
@@ -66,14 +65,12 @@ public class Order implements Serializable {
 		return paymentMethod;
 	}
 
-
 	/**
 	 * @return the ordeTime
 	 */
 	public String getOrdeTime() {
 		return OrdeTime;
 	}
-
 
 	/**
 	 * @return the orderPrice
@@ -82,14 +79,12 @@ public class Order implements Serializable {
 		return orderPrice;
 	}
 
-
 	/**
 	 * @return the orderRecieved
 	 */
 	public String getOrderRecieved() {
 		return orderRecieved;
 	}
-
 
 	/**
 	 * @return the dateTime
@@ -98,14 +93,12 @@ public class Order implements Serializable {
 		return dateTime;
 	}
 
-
 	/**
 	 * @param restaurantName the restaurantName to set
 	 */
 	public void setRestaurantName(String restaurantName) {
 		this.restaurantName = restaurantName;
 	}
-
 
 	/**
 	 * @param products the products to set
@@ -114,14 +107,12 @@ public class Order implements Serializable {
 		this.products = products;
 	}
 
-
 	/**
 	 * @param paymentMethod the paymentMethod to set
 	 */
 	public void setPaymentMethod(PaymentMethod paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-
 
 	/**
 	 * @param ordeTime the ordeTime to set
@@ -130,14 +121,12 @@ public class Order implements Serializable {
 		OrdeTime = ordeTime;
 	}
 
-
 	/**
 	 * @param orderPrice the orderPrice to set
 	 */
 	public void setOrderPrice(float orderPrice) {
 		this.orderPrice = orderPrice;
 	}
-
 
 	/**
 	 * @param orderRecieved the orderRecieved to set
@@ -146,14 +135,34 @@ public class Order implements Serializable {
 		this.orderRecieved = orderRecieved;
 	}
 
-
 	/**
 	 * @param dateTime the dateTime to set
 	 */
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
+
+	/**
+	 * @param orderNumber the orderNumber to set
+	 */
+	public void setOrderNumber(int orderNumber) {
+		this.orderNumber = orderNumber;
+	}
 	
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public void calculateOrderPrice() {
 		float price = 0;
 		for (Product p : products) {
@@ -161,7 +170,7 @@ public class Order implements Serializable {
 		}
 		setOrderPrice(price);
 	}
-	
+
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append("Order from: " + restaurantName);
@@ -169,5 +178,5 @@ public class Order implements Serializable {
 		b.append("\nOrder time: " + dateTime);
 		return b.toString();
 	}
-	
+
 }

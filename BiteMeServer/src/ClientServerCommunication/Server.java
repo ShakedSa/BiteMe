@@ -2,40 +2,18 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.sun.tools.classfile.Annotation.element_value;
-
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
-import ServerUtils.pdfConfigs;
 import gui.ServerGUIController;
-import javafx.css.Style;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -177,6 +155,12 @@ public class Server extends AbstractServer {
 			break;
 		case "editItemInMenu":
 			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
+			break;
+		case "customersOrders":
+			this.sendToClient(mysqlConnection.customersOrder((Customer)serverResponse.getServerResponse()), client);
+			break;
+		case "UpdateorderReceived":
+			this.sendToClient(mysqlConnection.updateOrderReceived((Order)serverResponse.getServerResponse()), client);
 			break;
 		default:
 			sendToClient("default", client);

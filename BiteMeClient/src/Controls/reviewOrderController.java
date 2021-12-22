@@ -12,6 +12,8 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.W4CCard;
 import client.ClientGUI;
+import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,10 +24,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class reviewOrderController implements Initializable {
 
@@ -69,10 +73,32 @@ public class reviewOrderController implements Initializable {
 	private Text showProfile;
 
 	@FXML
+	private Circle circle;
+
+	@FXML
 	void SubmitOrder(MouseEvent event) {
 		/**
 		 * Save order in the db, switch to rate us scene.
 		 */
+		Thread animation = new Thread(() -> {
+//			Platform.runLater(() -> {
+//				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);				
+//			});
+			circle.setVisible(true);
+			RotateTransition rotateTransition = new RotateTransition(Duration.seconds(10), circle);
+			rotateTransition.setByAngle(360);
+			rotateTransition.setDelay(Duration.seconds(0));
+			rotateTransition.setRate(10);
+			rotateTransition.setCycleCount(18);
+			rotateTransition.play();
+		});
+		animation.start();
+//		try {
+//			Thread.sleep(300);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
 		Order order = router.getOrder();
 		switch (order.getPaymentMethod()) {
 		case BusinessCode:
@@ -91,28 +117,34 @@ public class reviewOrderController implements Initializable {
 			break;
 		}
 		Thread t = new Thread(() -> {
-			synchronized(ClientGUI.monitor) {
+			synchronized (ClientGUI.monitor) {
+				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 				try {
 					ClientGUI.monitor.wait();
-				}catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return;
 				}
 			}
 		});
 		t.start();
-		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 		try {
 			t.join();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
-		router.setBagItems(null);
-		router.setOrder(new Order());
-		router.setDelivery(null);
-		router.setOrderDeliveryMethod(null);
-		changeToRateUs();
+		circle.setVisible(false);
+		if (ClientGUI.client.getLastResponse() != null
+				&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
+			router.setBagItems(null);
+			router.setOrder(new Order());
+			router.setDelivery(null);
+			router.setOrderDeliveryMethod(null);
+			changeToRateUs();
+		} else {
+			System.out.println("Failed to insert order");
+		}
 	}
 
 	private void changeToRateUs() {
@@ -267,6 +299,7 @@ public class reviewOrderController implements Initializable {
 		totalPrice.setLayoutY(400);
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+			circle.toFront();
 		}
 	}
 }

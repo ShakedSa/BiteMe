@@ -97,5 +97,6 @@
          </font>
       </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Circle fx:id="circle" fill="#1f93ff00" layoutX="415.0" layoutY="292.5" radius="100.0" stroke="BLACK" strokeDashOffset="10.0" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" visible="false" />
    </children>
 </AnchorPane>
