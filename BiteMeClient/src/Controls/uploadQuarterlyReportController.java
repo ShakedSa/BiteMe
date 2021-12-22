@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -128,7 +129,6 @@ public class uploadQuarterlyReportController implements Initializable{
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }
-    
     
 	@FXML
 	void profileBtnClicked(MouseEvent event) {

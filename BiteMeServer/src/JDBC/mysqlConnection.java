@@ -1,7 +1,12 @@
 package JDBC;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.ModuleLayer.Controller;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -11,6 +16,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Spliterator;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -43,6 +62,8 @@ import Enums.TypeOfProduct;
 import Enums.UserType;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import ServerUtils.pdfConfigs;
+import gui.ServerUI;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -761,25 +782,21 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	// java.sql.SQLIntegrityConstraintViolationException:
-	// Cannot add or update a child row: a foreign key constraint fails
-	// (`bitemedb`.`reports`, CONSTRAINT `RestaurantNameFK10` FOREIGN KEY
-	// (`RestaurantName`)
-	// REFERENCES `suppliers` (`RestaurantName`))
-
-	public static void updateFile(InputStream is, String date) {
-		System.out.println("test !");
-		String filename = "Report " + date + ".pdf";
-		String sql = "INSERT INTO reports (ReportID,Title,Date,content,BranchName,ReportType,RestaurantName) values(?, ?, ?, ?, ?, ?, ?)";
-	}
-
 	/**
 	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
+	 *  reportType,Month,Year,branch
 	 */
-	public static void updateFile(InputStream is, String date, ArrayList<String> desc) {
-		String filename = "Report " + date + ".pdf";
+	public static void updateFile(InputStream is, ArrayList<String> desc) {
+		if(is==null) 
+			return;
+		String filename;
+		int month = Integer.parseInt(desc.get(1).toString());
+		if(desc.get(0).equals("Quarterly Report"))
+			filename="Report" + desc.get(2) +"-Quarter"+ ((month/4)+1) + ".pdf";
+		else
+			filename = "Report " + desc.get(2)+ "-" +desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
@@ -1304,6 +1321,7 @@ public class mysqlConnection {
 			PreparedStatement stmt;// Type, Price, ProductDescription
 			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
 			stmt = conn.prepareStatement(query);
+			System.out.println(product);
 			stmt.setString(1, product.getType().toString());
 			stmt.setFloat(2, product.getPrice());
 			stmt.setString(3, product.getDescription());
@@ -1316,7 +1334,6 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
-
 		// delete the old components
 		try {
 			PreparedStatement stmt;
@@ -1334,6 +1351,27 @@ public class mysqlConnection {
 
 		// set the new components
 		for (int i = 0; i < product.getComponents().size(); i++) {
+		System.out.println("update");
+		
+		//delete the old components
+			try {
+				PreparedStatement stmt;
+				String query = "DELETE FROM bitemedb.components WHERE RestaurantName = ? AND DishName = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, product.getRestaurantName());
+				stmt.setString(2, product.getDishName());
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				serverResponse.setMsg(e.getMessage());
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}		
+			
+			System.out.println("delete");
+		
+		//set the new components
+		for(int i=0; i<product.getComponents().size();i++) {
 			try {
 				PreparedStatement stmt;
 				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
@@ -1349,7 +1387,7 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 		}
-
+		System.out.println("final update");
 //		for(int i=0; i<product.getComponents().size();i++) {
 //			try {
 //				PreparedStatement stmt;
@@ -1429,4 +1467,114 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
+	
+	/**
+	 * Query to update customer's w4c balance.
+	 * 
+	 * @param orderToInsert
+	 */
+	public static void approveEmployer(String employerCode) {
+		PreparedStatement stmt;
+		String query;
+		try {
+			query = "UPDATE bitemedb.businesscustomer SET IsApproved = ? WHERE EmployerCode = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, 1);
+			stmt.setString(2, employerCode);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+//SELECT * FROM bitemedb.orders WHERE RestaurantName IN (SELECT RestaurantName FROM bitemedb.suppliers WHERE branch="North") ORDER BY RestaurantName;
+	/**
+	 * @param Branch
+	 * @return all orders from restaurants in a given branch
+	 */
+	public static ResultSet getRestaurantsRevenue(String Branch) {
+		PreparedStatement stmt;
+		String query;
+		ResultSet rs;
+		try {
+			query = "SELECT * FROM bitemedb.orders WHERE RestaurantName IN "
+					+ "(SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=?) "
+					+ "ORDER BY RestaurantName";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, Branch);
+			rs = stmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		// TODO Auto-generated method stub
+		return rs;
+	}
+
+	/**
+	 * @param Branch
+	 * @return arrayList of restaurant names in the branch
+	 */
+	public static ArrayList<String> getRestaurantList(String Branch) {
+		PreparedStatement stmt;
+		String query;
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			query ="SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, Branch);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next())
+				arr.add(rs.getString(1));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return arr;
+		}
+		return arr;
+	}
+	
+	//SELECT Count(RestaurantName) FROM bitemedb.orders where RestaurantName=?;
+
+	public static int getNumOfOrders(String restaurantName, Month month) {
+		PreparedStatement stmt;
+		String query;
+		int num=0;
+		ResultSet rs;
+		try {
+			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND RestaurantName=?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, month.getValue());
+			stmt.setString(2, restaurantName);
+			rs = stmt.executeQuery();
+			if(rs.next())
+				num=rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
+
+	public static int getEarnings(String restaurantName, Month month) {
+		PreparedStatement stmt;
+		String query;
+		int num=0;
+		ResultSet rs;
+		//SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		try {
+			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setInt(2, month.getValue());
+			rs = stmt.executeQuery();
+			if(rs.next())
+				num=rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
+
+
 }

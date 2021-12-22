@@ -2,8 +2,29 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.sun.tools.classfile.Annotation.element_value;
 
 import Entities.MyFile;
 import Entities.NewUser;
@@ -11,7 +32,9 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
+import ServerUtils.pdfConfigs;
 import gui.ServerGUIController;
+import javafx.css.Style;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -57,7 +80,7 @@ public class Server extends AbstractServer {
 			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
 			try {
 				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
-				mysqlConnection.updateFile(is, message.getFileName(), message.getDescription());
+				mysqlConnection.updateFile(is, message.getDescription());
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error while handling files in Server");
@@ -65,42 +88,7 @@ public class Server extends AbstractServer {
 			return;
 		}
 		
-// 		if(msg instanceof OrderDeliveryMethod) {
-// 			try {
-// 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-		
-// 		if(msg instanceof NewUser) {
-// 			try {
-// 			NewSupplier supplier = ((NewUser)msg).getSupplier();
-// 			//add supplier to users table
-// 			mysqlConnection.addNewUser((NewUser)msg);
-// 			//add supplier to suppliers table
-// 			mysqlConnection.addNewSupplier(supplier);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-// 		if(msg instanceof Product) {
-// 			try {
-// 				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
-// 				//this.sendToClient(mysqlConnection.editItemInMenu((Product)msg), client);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 			}
-// 			return;
-// 		}
-
 		controller.setMessage("Msg recieved:" + msg);
-//		@SuppressWarnings("unchecked")
-//		ArrayList<String> m = (ArrayList<String>) msg;
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
 		switch (serverResponse.getDataType()) {
@@ -169,6 +157,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.getCustomerInfo(m.get(0)), client);
 			break;
+		case "employerApproval":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			mysqlConnection.approveEmployer(m.get(1));
+			break;
 		case "rate":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
@@ -182,6 +174,8 @@ public class Server extends AbstractServer {
 		case "addItem":
 			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
 			break;
+		case "editItemInMenu":
+			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
 		default:
 			sendToClient("default", client);
 			break;
@@ -209,6 +203,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		//createMonthlyRevenueReportPdf("North","12");
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}
@@ -244,5 +239,8 @@ public class Server extends AbstractServer {
 	public void setController(ServerGUIController controller) {
 		this.controller = controller;
 	}
+	
 
+	
+	
 }

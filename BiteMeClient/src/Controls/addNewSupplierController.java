@@ -299,7 +299,7 @@ public class addNewSupplierController implements Initializable {
 	
 	@FXML
 	void addSupplierClicked(MouseEvent event) {
-		//check that userName text field has'nt changed
+		//check that the userName text field has'nt changed since it was checked
 		if(!userNameTxtField.getText().equals(validUserName) ) {
 			userNameError.setVisible(true);
 			userNameError.setText("Unable to locate ID");
@@ -311,9 +311,10 @@ public class addNewSupplierController implements Initializable {
     		return;
 		}
 		
+
 		try {
 			//prepare fields for table bitemedb.suppliers	
-			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
+			NewSupplier newSupplier = new NewSupplier(userNameTxtField.getText(),
 					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
 					restaurantAddressTxtField.getText(),info.getAvatar(),
 					monthlyCommissionBox.getValue(), info.getMainBranch());
@@ -328,6 +329,24 @@ public class addNewSupplierController implements Initializable {
 		catch (Exception e) {
 			System.out.println("Error sending (Files msg) to Server");
 		}
+
+//		try {
+//			//prepare fields for table bitemedb.suppliers	
+//			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
+//					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
+//					restaurantAddressTxtField.getText(),info.getAvatar(),
+//					monthlyCommissionBox.getValue(), info.getMainBranch());
+//			newUser.setSupplier(newSupplier);
+//				
+//			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
+//			userNameError.setVisible(false);
+//			Error.setVisible(false);
+//			updateSucess.setVisible(true);
+//			updateSucess1.setVisible(true);
+//		}
+//		catch (Exception e) {
+//			System.out.println("Error sending (Files msg) to Server");
+//		}
 		
 	}
 	

@@ -198,6 +198,24 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+	
+	/**
+	 * Sending a query request from the server. approve employer in the db
+	 * restaurant.
+	 * 
+	 * @param restaurantName
+	 */
+	public void employerApproval(String employerCode) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.add("employerApproval");
+			arr.add(employerCode);
+			client.handleMessageFromClientUI(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 	/**
 	 * Sending a query request from the server, Getting the optional components for
@@ -422,7 +440,9 @@ public class ClientUI implements ClientIF {
 	 */
 	public void editItemInMenu(Product product) {
 		try {
-			client.handleMessageFromClientUI(product);
+			ServerResponse serverResponse = new ServerResponse("editItemInMenu");
+			serverResponse.setServerResponse(product);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -487,7 +507,6 @@ public class ClientUI implements ClientIF {
 		msg.getDescription().add(Month);
 		msg.getDescription().add(Year);
 		msg.getDescription().add(user.getMainBranch().toString());
-		// tbd - adding restaurant name
 		try {
 
 			byte[] mybytearray = new byte[(int) pdfToUpload.length()];

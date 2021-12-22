@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Entities.BusinessCustomer;
-import Entities.ImportedUser;
 import Entities.ServerResponse;
-import Entities.User;
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,9 +26,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -91,18 +87,66 @@ public class authorizedEmployerApprovalController implements Initializable{
 
 		@FXML
 		private TableColumn<BusinessCustomer, String> HRname;
+		
+		@FXML
+		private ImageView approvalSuccsess;
+		
+		@FXML
+		private Text approvalSuccsess1;
+		
+		private ArrayList<BusinessCustomer> needApproval;
 
-	    @FXML
-	    private Button checkForApprovals;
-
+		
 	@FXML
     void approvalClicked(MouseEvent event) {
-
+		boolean ableToAprrove = false;
+		//check user input
+		if(!checkFields())
+			return;
+		for(BusinessCustomer bc: needApproval) {
+			if(bc.getEmployeCompanyName().equals(employerCompanyNameTxtField.getText()) &&
+					bc.getEmployerCode().equals(employerCodeTxtField.getText()))
+				ableToAprrove = true;
+		}
+		if(!ableToAprrove) {
+			noApprovals.setVisible(true);
+			noApprovals.setText("Unable to improve this Employer");
+			return;
+		}
+		//user input does requiers an approval, make the approval
+		ClientGUI.client.employerApproval(employerCodeTxtField.getText());
+		approvalSuccsess.setVisible(true);
+		approvalSuccsess1.setVisible(true);
+		noApprovals.setVisible(false);
 	}
-
-	@FXML
-	void checkForApprovalsClicked(MouseEvent event){}
-	public void initTable(){// checkForApprovalsClicked(MouseEvent event) {
+	
+	private boolean checkFields() {
+		if( InputValidation.checkSpecialCharacters(employerCodeTxtField.getText())) {
+    		noApprovals.setVisible(true);
+    		noApprovals.setText("Employer code can't contain special characters!");
+    		return false;
+    	}
+    	if(employerCodeTxtField.getText().length() == 0) {
+    		noApprovals.setVisible(true);
+    		noApprovals.setText("Please fill an employer code!");
+    		return false;
+    	}
+    	if( InputValidation.checkSpecialCharacters(employerCompanyNameTxtField.getText())) {
+    		noApprovals.setVisible(true);
+    		noApprovals.setText("Employer code can't contain special characters!");
+    		return false;
+    	}
+    	if(employerCompanyNameTxtField.getText().length() == 0) {
+    		noApprovals.setVisible(true);
+    		noApprovals.setText("Please fill a company name!");
+    		return false;
+    	}
+    	return true;	
+	}
+	
+	
+	//show table with employers that are waiting for approval
+	public void initTable(){
 		ClientGUI.client.checkForApprovals();
 		//wait for response
 		Thread t = new Thread(new Runnable() {
@@ -134,18 +178,21 @@ public class authorizedEmployerApprovalController implements Initializable{
 		if(response.size() == 0)
 		{
 			noApprovals.setVisible(true);
-			enableEdit(false);
 			return;
 		}
-		enableEdit(true);
+		needApproval = response;
 		setTable( response);
-		//System.out.println(observableBusiness.get(0).getEmployerCode());
-		//approvalTable.setItems(observableBusiness);	
+		ObservableList<BusinessCustomer> list = approvalTable.getItems();
+		if(list.isEmpty())
+			noApprovals.setVisible(true);
+		else {
+			noApprovals.setText("Some employers are waiting for your approval");
+			noApprovals.setVisible(true);
+		}
 	}
 	
-	
+	//set table columns and values
 	private void setTable(ArrayList<BusinessCustomer> list) {
-		System.out.println("test: " + list.get(0).getEmployerCode() + " " + list.get(0));
 		EmployerCode.setCellValueFactory(new PropertyValueFactory<>("EmployerCode"));
 		EmployeCompanyName.setCellValueFactory(new PropertyValueFactory<>("EmployeCompanyName"));
 		IsApproved.setCellValueFactory(new PropertyValueFactory<>("IsApproved"));
@@ -154,6 +201,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 		approvalTable.setEditable(true);
 	}
 	
+	//change arrayList to ObservableList
 	private ObservableList<BusinessCustomer> getCustomer(ArrayList<BusinessCustomer> list) {
 		ObservableList<BusinessCustomer> customers = FXCollections.observableArrayList();
 		for (BusinessCustomer customer : list) {
@@ -165,13 +213,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 	}
 	
 	
-	private void enableEdit(boolean val) {
-		employerCode.setVisible(val);
-		employerCodeTxtField.setVisible(val);
-		employerCompanyName.setVisible(val);
-		employerCompanyNameTxtField.setVisible(val);
-		approvalTable.setVisible(val);
-	}
+
     
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
