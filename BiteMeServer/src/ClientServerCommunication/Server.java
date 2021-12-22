@@ -33,6 +33,7 @@ import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
 import ServerUtils.pdfConfigs;
+import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
 import javafx.css.Style;
 import ocsf.server.AbstractServer;
@@ -203,7 +204,9 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		//createMonthlyRevenueReportPdf("North","12");
+		//reportsHandler.createMonthlyOrdersReportPdf("North","12");
+		reportsHandler.createMonthlyPerformanceReportPdf("North","12");
+		reportsHandler.createMonthlyOrdersReportPdf("North","12");
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
 	}
