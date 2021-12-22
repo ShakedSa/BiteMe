@@ -31,7 +31,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import Config.ReadPropertyFile;
-import Config.pdfConfigs;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
 import Entities.CEO;
@@ -59,6 +58,7 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import ServerUtils.pdfConfigs;
 import gui.ServerUI;
 
 /**
@@ -787,7 +787,12 @@ public class mysqlConnection {
 	public static void updateFile(InputStream is, ArrayList<String> desc) {
 		if(is==null) 
 			return;
-		String filename = "Report " + desc.get(2)+ "-" +desc.get(1) + ".pdf";
+		String filename;
+		int month = Integer.parseInt(desc.get(1).toString());
+		if(desc.get(0).equals("Quarterly Report"))
+			filename="Report" + desc.get(2) +"-Quarter"+ ((month/4)+1) + ".pdf";
+		else
+			filename = "Report " + desc.get(2)+ "-" +desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
