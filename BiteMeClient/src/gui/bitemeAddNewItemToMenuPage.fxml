@@ -107,7 +107,7 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="500.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="500.0" onMouseClicked="#returnToUpdateMenu" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>

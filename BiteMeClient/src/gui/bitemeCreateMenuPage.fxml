@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -52,11 +53,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TableView fx:id="menuTable" layoutX="133.0" layoutY="202.0" prefHeight="200.0" prefWidth="565.0">
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
       <Text layoutX="260.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Menu Page">
          <font>
             <Font name="Berlin Sans FB" size="36.0" />
@@ -129,5 +125,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
+      <TableView fx:id="menuTable" layoutX="68.0" layoutY="202.0" prefHeight="200.0" prefWidth="690.0">
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+         <columns>
+            <TableColumn fx:id="table_Type" editable="false" maxWidth="2500.0" prefWidth="95.0" text="Type" />
+            <TableColumn fx:id="table_DishName" editable="false" prefWidth="181.0" text="Dish Name" />
+            <TableColumn fx:id="table_Components" editable="false" prefWidth="75.0" text="Components" />
+            <TableColumn fx:id="table_Price" editable="false" maxWidth="2000.0" minWidth="-1.0" prefWidth="-1.0" text="Price" />
+            <TableColumn fx:id="table_Description" editable="false" prefWidth="159.3333740234375" text="Description" />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>

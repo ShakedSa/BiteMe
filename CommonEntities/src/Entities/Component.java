@@ -112,7 +112,10 @@ public class Component implements Serializable {
 		if (doneness != null) {
 			return doneness.toString();
 		}
-		return restrictions;
+		if (restrictions != null) {
+			return restrictions;
+		}
+		return "";
 	}
 	
 	@Override

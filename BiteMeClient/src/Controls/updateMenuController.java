@@ -3,14 +3,21 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Controls.confirmBusinessAccountController.CustomerPlusBudget;
+import Entities.BusinessCustomer;
 import Entities.Component;
+import Entities.Customer;
 import Entities.Product;
+import Entities.ServerResponse;
 import Entities.User;
 import Enums.TypeOfProduct;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,7 +35,7 @@ import javafx.stage.Stage;
 
 public class updateMenuController implements Initializable {
 
-	public final UserType type = UserType.Supplier; 
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -41,6 +48,12 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private Circle addNewItemPlus;
+	
+    @FXML
+    private Circle deleteItemPlus;
+
+    @FXML
+    private Text deleteItemTxt;
 
 	@FXML
 	private Text addNewItemTxt;
@@ -77,16 +90,26 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private TableView<Product> menuTable;
-	
+
+	@FXML
+	private TableColumn<Product, ArrayList<Component>> table_Components;
+
+	@FXML
+	private TableColumn<Product, String> table_Description;
+
+	@FXML
+	private TableColumn<Product, String> table_DishName;
+
+	@FXML
+	private TableColumn<Product, Float> table_Price;
+
+	@FXML
+	private TableColumn<Product, TypeOfProduct> table_Type;
+
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
-	
-	
-	/**
-	 * Display restaurant menu 
-	 */
-	@SuppressWarnings("unchecked")
-	public void displayMenu() {
+
+	public void Menu() {
 		ClientGUI.client.getRestaurantMenu(restaurant);
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -108,19 +131,46 @@ public class updateMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getLastResponse() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
-			if (menu == null) {
-				System.out.println("Menu is not set yet for " + restaurant);
-			} 
-//				else {
-//				createMenu(menu);
-//			}
-		} else {
-			System.out.println("Menu is not set yet for " + restaurant);
-		}
-	}
 
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		@SuppressWarnings("unchecked")
+		// get the server response- list of product (menu)
+		ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
+
+		// get components for each product
+//		for (int i = 0; i < response.size(); i++) {
+//			ClientGUI.client.componentsInProduct(restaurant, response.get(i).getDishName());
+//			Thread t1 = new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					synchronized (ClientGUI.monitor) {
+//						try {
+//							ClientGUI.monitor.wait();
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//							return;
+//						}
+//					}
+//				}
+//			});
+//			t1.start();
+//			try {
+//				t1.join();
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				return;
+//			}
+//
+//			ServerResponse sr1 = ClientGUI.client.getLastResponse();
+//			@SuppressWarnings("unchecked")
+//			// get the server response- list of components
+//			ArrayList<Component> components = (ArrayList<Component>) sr1.getServerResponse();
+//			// set components in each product
+//			response.get(i).setComponents(components);
+//		}
+		setTable(response);
+		return;
+	}
 
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
@@ -177,6 +227,11 @@ public class updateMenuController implements Initializable {
 			stage.show();
 		}
 	}
+	
+    @FXML
+    void deleteItemTxt(MouseEvent event) {
+
+    }
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -231,7 +286,7 @@ public class updateMenuController implements Initializable {
 		setStage(router.getStage());
 		VImage.setVisible(false);
 		menuUpdatedSuccessfullyTxt.setVisible(false);
-		createTable();
+		// createTable();
 	}
 
 	public void setScene(Scene scene) {
@@ -249,24 +304,50 @@ public class updateMenuController implements Initializable {
 	/**
 	 * Creating the view table columns.
 	 */
-	public void createTable() {
-		TableColumn<Product, TypeOfProduct> typeCol = new TableColumn<Product, TypeOfProduct>("Type");
-		typeCol.setCellValueFactory(new PropertyValueFactory<Product, TypeOfProduct>("type"));
-		menuTable.getColumns().add(typeCol);
-		TableColumn<Product, String> nameCol = new TableColumn<Product, String>("Dish Name");
-		nameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("restaurantName"));
-		menuTable.getColumns().add(nameCol);
-		TableColumn<Product, ArrayList<Component>> componentCol = new TableColumn<Product, ArrayList<Component>>(
-				"Components");
-		componentCol.setCellValueFactory(new PropertyValueFactory<Product, ArrayList<Component>>("components"));
-		menuTable.getColumns().add(componentCol);
-		TableColumn<Product, Float> priceCol = new TableColumn<Product, Float>("Price");
-		priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
-		menuTable.getColumns().add(priceCol);
-		TableColumn<Product, String> descriptionCol = new TableColumn<Product, String>("Description");
-		descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
-		menuTable.getColumns().add(descriptionCol);
-		menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//	public void createTable() {
+//		TableColumn<Product, TypeOfProduct> typeCol = new TableColumn<Product, TypeOfProduct>("Type");
+//		typeCol.setCellValueFactory(new PropertyValueFactory<Product, TypeOfProduct>("type"));
+//		menuTable.getColumns().add(typeCol);
+//		TableColumn<Product, String> nameCol = new TableColumn<Product, String>("Dish Name");
+//		nameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("restaurantName"));
+//		menuTable.getColumns().add(nameCol);
+//		TableColumn<Product, ArrayList<Component>> componentCol = new TableColumn<Product, ArrayList<Component>>(
+//				"Components");
+//		componentCol.setCellValueFactory(new PropertyValueFactory<Product, ArrayList<Component>>("components"));
+//		menuTable.getColumns().add(componentCol);
+//		TableColumn<Product, Float> priceCol = new TableColumn<Product, Float>("Price");
+//		priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
+//		menuTable.getColumns().add(priceCol);
+//		TableColumn<Product, String> descriptionCol = new TableColumn<Product, String>("Description");
+//		descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
+//		menuTable.getColumns().add(descriptionCol);
+//		menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//	}
+//	
+
+	// set table columns and values
+	private void setTable(ArrayList<Product> menu) {
+		table_Type.setCellValueFactory(new PropertyValueFactory<>("type"));
+		table_DishName.setCellValueFactory(new PropertyValueFactory<>("dishName"));
+		table_Components.setCellValueFactory(new PropertyValueFactory<>("components"));
+		table_Price.setCellValueFactory(new PropertyValueFactory<>("price"));
+		table_Description.setCellValueFactory(new PropertyValueFactory<>("description"));
+		menuTable.setItems(getProduct(menu));
+		menuTable.setEditable(true);
 	}
 
+	// change arrayList to ObservableList
+	private ObservableList<Product> getProduct(ArrayList<Product> list) {
+		ObservableList<Product> menu = FXCollections.observableArrayList();
+		list.forEach(p -> {
+			if (p.getDescription() == null || p.getDescription().equals("")) {
+				p.setDescription("");
+			}
+			if (p.getComponents() == null || p.getComponents().size() == 0) {
+				p.setComponents(new ArrayList<>(Arrays.asList(new Component("None"))));
+			}
+		});
+		menu.addAll(list);
+		return menu;
+	}
 }
