@@ -253,7 +253,7 @@ public class reportsHandler {
 			year++;
 		}
 		String monthS=Integer.toString(month),yearS=Integer.toString(year);
-		String[] Branches = {"North","Center","South"};//,"South","Center"};
+		String[] Branches = {"North","Central","South"};//,"South","Center"};
 		for(String s:Branches) {
 			createMonthlyOrdersReportPdf(s, monthS, yearS);
 			createMonthlyPerformanceReportPdf(s, monthS, yearS);
@@ -290,4 +290,6 @@ public class reportsHandler {
 		int arr[] = {year,month};
 		return arr;
 	}
+	
+
 }

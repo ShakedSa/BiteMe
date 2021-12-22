@@ -33,6 +33,7 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
+import ServerUtils.ReportsThread;
 import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
@@ -55,6 +56,7 @@ public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
 	private ServerGUIController controller;
+	private ReportsThread reportsThread;
 	public static final int DEFAULT_PORT = 5555;
 
 	/**
@@ -206,8 +208,8 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		//int lastReportMonth=
-
+		reportsThread = new ReportsThread();
+		reportsThread.run();
 		int date[]=reportsHandler.getLastReportDate();
 		int year=date[0],month=date[1];
 		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
