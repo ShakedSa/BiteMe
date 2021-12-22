@@ -27,6 +27,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.tools.classfile.Annotation.element_value;
 
 import Entities.MyFile;
+import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
@@ -159,14 +160,14 @@ public class Server extends AbstractServer {
 			break;
 		case "employerApproval":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			mysqlConnection.approveEmployer(m.get(1));
+			mysqlConnection.approveEmployer(m.get(0));
 			break;
 		case "rate":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
 			break;
 		case "newSupplier":
-			mysqlConnection.addNewUser((NewUser)serverResponse.getServerResponse());
+			mysqlConnection.addNewSupplier((NewSupplier)serverResponse.getServerResponse());
 			break;
 		case "InsertOrder":
 			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)serverResponse.getServerResponse()), client);
@@ -176,6 +177,7 @@ public class Server extends AbstractServer {
 			break;
 		case "editItemInMenu":
 			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

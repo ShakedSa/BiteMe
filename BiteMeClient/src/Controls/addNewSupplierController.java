@@ -3,40 +3,29 @@ package Controls;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Entities.ImportedUser;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
 import Entities.ServerResponse;
-import Entities.User;
 import Enums.BranchName;
-import Enums.Status;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -73,8 +62,7 @@ public class addNewSupplierController implements Initializable {
 	@FXML
 	private Text monthlyCommission;
 
-
-	@FXML
+    @FXML
 	private Text homePageBtn;
 
 	@FXML
@@ -108,7 +96,7 @@ public class addNewSupplierController implements Initializable {
 	private Text profileBtn;
 	
 	@FXML
-	private Text UploadMsgImg;
+	private Text UploadMsgTxt1;
 	
 	@FXML
 	private TextField userNameTxtField;
@@ -121,12 +109,21 @@ public class addNewSupplierController implements Initializable {
 
 	@FXML
 	private TextField restaurantNameTxtField;
+	
+	@FXML
+	private Text importImage1;
 
 	@FXML
-	private TextField restaurantTypeTxtField;
+	private ImageView importImage;
 
 	@FXML
 	private ImageView uploadImage;
+	
+    @FXML
+    private Text UploadMsgTxt;
+    
+    @FXML
+    private ComboBox<String> restaurantTypeCombo;
 	
 	private String validUserName;
 	
@@ -138,7 +135,10 @@ public class addNewSupplierController implements Initializable {
 	
 	private ArrayList<String> info;
 	
-	ObservableList<String> list;
+	private String branchName;
+	
+	private ObservableList<String> list;
+	
 
 	// creating list of Commission
 	private void setMonthlyCommissionComboBox() {
@@ -149,10 +149,20 @@ public class addNewSupplierController implements Initializable {
 		type.add("10%");
 		type.add("11%");
 		type.add("12%");
-
 		list = FXCollections.observableArrayList(type);
 		monthlyCommissionBox.setItems(list);
 	}
+	
+	// creating list of Commission
+		private void setRestaurantTypeComboBox() {
+			ArrayList<String> type = new ArrayList<String>();
+			type.add("Italian");
+			type.add("Fastfood");
+			type.add("Asian");
+			type.add("Other");
+			list = FXCollections.observableArrayList(type);
+			restaurantTypeCombo.setItems(list);
+		}
 	
 	//search for the given username in the database
 	//checks that this user is'nt alreay defind
@@ -186,11 +196,10 @@ public class addNewSupplierController implements Initializable {
 		//handle server response
 		ServerResponse sr = ClientGUI.client.getLastResponse();
 		@SuppressWarnings("unchecked")
-		//get the server response- user information from outside the system
+		//get the server response- Business employers that needs approval
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
-
 		//check if UserName is in the database
-		if(response.get(0).equalsIgnoreCase("Error"))
+		if(sr.getMsg().equals("Error"))
 		{
 			userNameError.setText("Unable to locate UserName");
 			userNameError.setVisible(true);
@@ -198,7 +207,7 @@ public class addNewSupplierController implements Initializable {
 			return;
 		}
 		//check if UserName already has a permission 
-		else if(response.get(0).equals("already has type")){
+		else if(sr.getMsg().equals("already has type")){
 			userNameError.setText("This user already has a type");
 			userNameError.setVisible(true);
 			enableEdit(false);
@@ -208,20 +217,26 @@ public class addNewSupplierController implements Initializable {
 		//idError.setVisible(false);
 		userNameError.setText(response.get(0) +" " + response.get(1));
 		validUserName = userNameTxtField.getText();
+		branchName = response.get(2);
     }
 
+	
+	
 	//hides or shows certain components
-	private void enableEdit(boolean val) {
+	public void enableEdit(boolean val) {
 		restaurantName.setVisible(val);
 		restaurantNameTxtField.setVisible(val);
 		restaurantAddress.setVisible(val);
 		restaurantAddressTxtField.setVisible(val);
 		restaurantType.setVisible(val);
-		restaurantTypeTxtField.setVisible(val);
+		restaurantTypeCombo.setVisible(val);
 		monthlyCommission.setVisible(val);
 		monthlyCommissionBox.setVisible(val);
 		monthlyCommissionBox.setVisible(val);
 		monthlyCommissionBox.setVisible(val);
+		importImage.setVisible(val);
+		importImage1.setVisible(val);
+		addSupplierBtn.setVisible(val);
 		if(val == false) {
 			updateSucess.setVisible(val);
 	    	updateSucess1.setVisible(val);
@@ -243,6 +258,13 @@ public class addNewSupplierController implements Initializable {
     	}
     	return true;
     }
+	
+	public void removeAllMessages() {
+		UploadMsgTxt.setVisible(false);
+		Error.setVisible(false);
+		userNameError.setVisible(false);
+		userNameTxtField.clear();
+	}
 
 	
 	private boolean checkInfoFields() {
@@ -268,12 +290,12 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Name must be filled!");
     		return false;
     	}
-    	if( InputValidation.checkSpecialCharacters(restaurantTypeTxtField.getText())) {
+    	if( InputValidation.checkSpecialCharacters(restaurantTypeCombo.getValue())) {
     		Error.setVisible(true);
     		Error.setText("Type can't contain special characters!");
     		return false;
     	}
-    	if(restaurantTypeTxtField.getText().length() == 0) {
+    	if(restaurantTypeCombo.getValue().length() == 0) {
     		Error.setVisible(true);
     		Error.setText("Type must be filled!");
     		return false;
@@ -306,62 +328,69 @@ public class addNewSupplierController implements Initializable {
 			Error.setVisible(false);
     		return;
     	}
+		
 		if(!checkInfoFields()) { //check that all the fields are filled and correct
 			Error.setVisible(true);
     		return;
 		}
-		
-
 		try {
-			//prepare fields for table bitemedb.suppliers	
+			MyFile image = new MyFile("Supplier Report");
+			
+			//convert file uploaded into a blob
+			byte[] mybytearray = new byte[(int) imgToUpload.length()];
+			FileInputStream fis = new FileInputStream(imgToUpload);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+
+			image.initArray(mybytearray.length);
+			image.setSize(mybytearray.length);
+			bis.read(image.getMybytearray(), 0, mybytearray.length);
+			//prepare fields for table bitemedb.suppliers
 			NewSupplier newSupplier = new NewSupplier(userNameTxtField.getText(),
-					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
-					restaurantAddressTxtField.getText(),info.getAvatar(),
-					monthlyCommissionBox.getValue(), info.getMainBranch());
-			newUser.setSupplier(newSupplier);
-				
-			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
+					restaurantTypeCombo.getValue(),restaurantNameTxtField.getText(),
+					restaurantAddressTxtField.getText(),image,
+					monthlyCommissionBox.getValue(), BranchName.valueOf(branchName));
+			
+			ClientGUI.client.addNewSupplier(newSupplier);//send to clientUI
+			fis.close();
+			bis.close();
 			userNameError.setVisible(false);
 			Error.setVisible(false);
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);
+			UploadMsgTxt.setVisible(false);
 		}
 		catch (Exception e) {
 			System.out.println("Error sending (Files msg) to Server");
 		}
-
-//		try {
-//			//prepare fields for table bitemedb.suppliers	
-//			NewSupplier newSupplier = new NewSupplier(info.getUserName(),
-//					restaurantTypeTxtField.getText(),restaurantNameTxtField.getText(),
-//					restaurantAddressTxtField.getText(),info.getAvatar(),
-//					monthlyCommissionBox.getValue(), info.getMainBranch());
-//			newUser.setSupplier(newSupplier);
-//				
-//			ClientGUI.client.addNewSupplier(newUser);//send to clientUI
-//			userNameError.setVisible(false);
-//			Error.setVisible(false);
-//			updateSucess.setVisible(true);
-//			updateSucess1.setVisible(true);
-//		}
-//		catch (Exception e) {
-//			System.out.println("Error sending (Files msg) to Server");
-//		}
-		
 	}
 	
 	
-	/*@FXML
+	@FXML
     void uploadImageClicked(MouseEvent event) {
-    	UploadMsgImg.setVisible(false);
+    	UploadMsgTxt.setVisible(false);
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");
     	imgToUpload = fc.showOpenDialog(router.getStage());
-    	if(imgToUpload == null || !imgToUpload.toString().contains("jpg"))
-    		InvalidMsg.setVisible(true);
-    	else
-    		InvalidMsg.setVisible(false);
-    }*/
+    	if(!checkImageFormat() ) {
+    		UploadMsgTxt.setText("The image was uploaded successfully!");
+    		UploadMsgTxt.setVisible(true);
+    	}
+    	else {
+    		UploadMsgTxt.setText("File foramt must be: jpj, gif or png");
+    		UploadMsgTxt.setVisible(true);
+    	}
+    }
+	
+	
+	/**
+	 * @return true if the file format is suitable for image
+	 */
+	private boolean checkImageFormat() {
+		return imgToUpload == null || 
+				!( (imgToUpload.toString().toLowerCase().contains("jpg") ) ||
+    			(imgToUpload.toString().toLowerCase().contains("png")) ||
+    			(imgToUpload.toString().toLowerCase().contains("gif")) );
+	}
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {

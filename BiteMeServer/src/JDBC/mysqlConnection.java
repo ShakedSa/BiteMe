@@ -346,7 +346,7 @@ public class mysqlConnection {
 			stmt.setString(2, supplier.getResturantAddress());
 			stmt.setString(3, supplier.getUserName());
 			stmt.setInt(4, monthlyCommision);
-			stmt.setBlob(5, supplier.getImagUpload());
+			stmt.setBlob(5, new ByteArrayInputStream(supplier.getImagUpload().mybytearray));
 			stmt.setString(6, supplier.getResturantType());
 			stmt.setString(7, supplier.getBranchName().name());
 			stmt.executeUpdate();
@@ -763,13 +763,17 @@ public class mysqlConnection {
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				if (rs.getString(8).equals("")) {
+				if (rs.getString(8).equals("User")) {
 					response.add(rs.getString(3));
 					response.add(rs.getString(4));
-				} else
-					response.add("already has type");
+					response.add(rs.getString(11));
+				} else {
+					serverResponse.setMsg("already has type");
+					return serverResponse;
+				}
 			} else {
-				response.add("Error");
+				serverResponse.setMsg("Error");
+				return serverResponse;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
