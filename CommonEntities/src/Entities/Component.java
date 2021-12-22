@@ -104,6 +104,7 @@ public class Component implements Serializable {
 		this.doneness = doneness;
 	}
 
+	@Override
 	public String toString() {
 		if (size != null) {
 			return size.toString();
@@ -112,5 +113,23 @@ public class Component implements Serializable {
 			return doneness.toString();
 		}
 		return restrictions;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Component)) {
+			return false;
+		}
+		Component other = (Component)obj;
+		if(restrictions != null && other.restrictions != null) {
+			return restrictions.equals(other.restrictions);
+		}
+		if(doneness != null && other.doneness != null) {
+			return doneness.equals(other.doneness);
+		}
+		if(size != null && other.size != null) {
+			return size.equals(other.size);
+		}
+		return false;
 	}
 }

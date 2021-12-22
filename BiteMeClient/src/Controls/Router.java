@@ -619,6 +619,15 @@ public class Router {
 				UploadQuarterlyReportController = null;
 				ViewMonthlyReportsController = null;
 				ViewPDFQuarterlyReportController = null;
+				RestaurantMenuController = null;
+				RestaurantselectionController = null;
+				IdentifyController = null;
+				MyCartController = null;
+				PaymentController = null;
+				PickDateAndTimeController = null;
+				DeliveryMethodController = null;
+				ReviewOrderController = null;
+				OrderReceivedController = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -794,6 +803,7 @@ public class Router {
 				controller.setAvatar();
 				controller.setRestaurants();
 				controller.setItemsCounter();
+				controller.setButtons();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -806,13 +816,14 @@ public class Router {
 			}
 		} else {
 			router.getRestaurantselectionController().setItemsCounter();
+			router.getRestaurantselectionController().setButtons();
 			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(router.getRestaurantselectionController().getScene());
 			stage.show();
 		}
 	}
 
-	public void changeToMyCart() {
+	public void changeToMyCart(String lastPage) {
 		if (router.getMyCartController() == null) {
 			AnchorPane mainContainer;
 			myCartController controller;
@@ -822,8 +833,8 @@ public class Router {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setItemsCounter();
 				controller.displayOrder();
+				controller.setLastPage(lastPage);
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -835,9 +846,9 @@ public class Router {
 				return;
 			}
 		} else {
-			router.getMyCartController().setItemsCounter();
 			router.getMyCartController().setAvatar();
 			router.getMyCartController().displayOrder();
+			router.getMyCartController().setLastPage(lastPage);
 			stage.setTitle("BiteMe - My Cart");
 			stage.setScene(router.getMyCartController().getScene());
 			stage.show();

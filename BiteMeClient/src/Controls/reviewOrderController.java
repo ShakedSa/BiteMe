@@ -92,7 +92,6 @@ public class reviewOrderController implements Initializable {
 		}
 		Thread t = new Thread(() -> {
 			synchronized(ClientGUI.monitor) {
-				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 				try {
 					ClientGUI.monitor.wait();
 				}catch(Exception e) {
@@ -102,6 +101,7 @@ public class reviewOrderController implements Initializable {
 			}
 		});
 		t.start();
+		ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 		try {
 			t.join();
 		}catch(Exception e) {
@@ -150,7 +150,7 @@ public class reviewOrderController implements Initializable {
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
-		router.changeToMyCart();
+		router.changeToMyCart("Review");
 	}
 
 	@FXML

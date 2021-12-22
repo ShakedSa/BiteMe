@@ -1,6 +1,5 @@
 package JDBC;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -53,11 +54,14 @@ import Entities.W4CCard;
 import Enums.BranchName;
 import Enums.Doneness;
 import Enums.PaymentMethod;
+import Enums.RestaurantType;
 import Enums.Size;
 import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import ServerUtils.pdfConfigs;
 import gui.ServerUI;
 
@@ -234,13 +238,13 @@ public class mysqlConnection {
 	public static ServerResponse getRestaurants() {
 		ServerResponse serverResponse = new ServerResponse("Restaurants");
 		PreparedStatement stmt;
-		HashMap<String, File> names = new HashMap<>();
+		ArrayList<Supplier> restaurants = new ArrayList<>();
 		try {
-			String query = "SELECT RestaurantName, Image FROM bitemedb.suppliers";
+			String query = "SELECT RestaurantName, RestaurantType FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				names.put(rs.getString(1), null);
+				restaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2))));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -249,7 +253,7 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		serverResponse.setServerResponse(names);
+		serverResponse.setServerResponse(restaurants);
 		return serverResponse;
 	}
 
@@ -868,6 +872,10 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		try {
 			int customerID = getCustomer(customer.getUserName());
+			if (customer.getRefunds().get(RestaurantName) == null || customer.getRefunds().get(RestaurantName) == 0) {
+				deleteRefund(customerID, RestaurantName);
+				return;
+			}
 			String query = "UPDATE bitemedb.refunds SET Refund = ? WHERE CustomerID = ? && RestaurantName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setFloat(1, customer.getRefunds().get(RestaurantName));
@@ -879,7 +887,26 @@ public class mysqlConnection {
 			return;
 		}
 	}
-
+	
+	/**
+	 * Query to delete row from refunds table.
+	 * 
+	 * @param customerID
+	 * @param RestaurantName
+	 * */
+	private static void deleteRefund(int customerID, String RestaurantName) {
+		PreparedStatement stmt;
+		try {
+			String query = "DELETE FROM bitemedb.refunds WHERE CustomerID = ? AND RestaurantName =?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, customerID);
+			stmt.setString(2, RestaurantName);
+			stmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 	/**
 	 * Query to update customer's w4c balance.
 	 * 
@@ -975,12 +1002,13 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		try {
 			for (Product p : products) {
-				String query = "INSERT INTO bitemedb.productinorder (OrderNumber, RestaurantName, DishName, Components) VALUES(?,?,?,?)";
+				String query = "INSERT INTO bitemedb.productinorder (OrderNumber, RestaurantName, DishName, Components, Amount) VALUES(?,?,?,?,?)";
 				stmt = conn.prepareStatement(query);
 				stmt.setInt(1, orderNumber);
 				stmt.setString(2, p.getRestaurantName());
 				stmt.setString(3, p.getDishName());
 				stmt.setString(4, p.getComponents().toString());
+				stmt.setInt(5, p.getAmount());
 				stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
@@ -1014,6 +1042,7 @@ public class mysqlConnection {
 				stmt.setString(4, preorder.getDeliveryTime());
 				stmt.setString(5, delivery.getPhoneNumber());
 				stmt.setString(6, name);
+				break;
 			case sharedDelivery:
 				SharedDelivery shared = (SharedDelivery) delivery;
 				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, AmountOfPeople, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?,?)";
@@ -1024,6 +1053,7 @@ public class mysqlConnection {
 				stmt.setInt(4, shared.getAmountOfPeople());
 				stmt.setString(5, delivery.getPhoneNumber());
 				stmt.setString(6, name);
+				break;
 			case takeaway:
 				query = "INSERT INTO bitemedb.deliveries (DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?)";
 				stmt = conn.prepareStatement(query, keys);
@@ -1031,6 +1061,7 @@ public class mysqlConnection {
 				stmt.setFloat(2, delivery.getDiscount());
 				stmt.setString(3, delivery.getPhoneNumber());
 				stmt.setString(4, name);
+				break;
 			default:
 				query = "INSERT INTO bitemedb.deliveries (OrderAddress, DeliveryType, Discount, DeliveryPhoneNumber, DeliveryReceiver) VALUES (?,?,?,?,?)";
 				stmt = conn.prepareStatement(query, keys);
@@ -1039,6 +1070,7 @@ public class mysqlConnection {
 				stmt.setFloat(3, delivery.getDiscount());
 				stmt.setString(4, delivery.getPhoneNumber());
 				stmt.setString(5, name);
+				break;
 			}
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -1261,9 +1293,9 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
-		
-		//set components
-		for(int i=0; i<product.getComponents().size();i++) {
+
+		// set components
+		for (int i = 0; i < product.getComponents().size(); i++) {
 			try {
 				PreparedStatement stmt;
 				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
@@ -1282,11 +1314,11 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
-	
+
 	public static ServerResponse editItemInMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
-			PreparedStatement stmt;//Type, Price, ProductDescription
+			PreparedStatement stmt;// Type, Price, ProductDescription
 			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
 			stmt = conn.prepareStatement(query);
 			System.out.println(product);
@@ -1302,7 +1334,23 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
-		
+		// delete the old components
+		try {
+			PreparedStatement stmt;
+			String query = "DELETE FROM bitemedb.components WHERE RestaurantName = ? AND DishName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, product.getRestaurantName());
+			stmt.setString(2, product.getDishName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+
+		// set the new components
+		for (int i = 0; i < product.getComponents().size(); i++) {
 		System.out.println("update");
 		
 		//delete the old components
@@ -1339,9 +1387,7 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 		}
-		
 		System.out.println("final update");
-		
 //		for(int i=0; i<product.getComponents().size();i++) {
 //			try {
 //				PreparedStatement stmt;
@@ -1358,7 +1404,7 @@ public class mysqlConnection {
 //				return serverResponse;
 //			}
 //		}
-		
+
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}

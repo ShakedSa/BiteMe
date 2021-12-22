@@ -6,7 +6,6 @@ import Enums.TypeOfProduct;
 
 import Enums.Size;
 
-
 /**
  * @author Eden test Product class, stores : int productID, String type, String
  *         dishName, ArrayList<Component> components, float price
@@ -24,8 +23,8 @@ public class Product implements Serializable {
 	private ArrayList<Component> components;
 	private float price;
 	private String description;
+	private int amount = 1;
 
-	
 	/**
 	 * @param restaurantName
 	 * @param type
@@ -34,8 +33,8 @@ public class Product implements Serializable {
 	 * @param price
 	 * @param description
 	 */
-	public Product(String restaurantName, TypeOfProduct type, String dishName, ArrayList<Component> components, float price,
-			String description) {
+	public Product(String restaurantName, TypeOfProduct type, String dishName, ArrayList<Component> components,
+			float price, String description) {
 		super();
 		this.restaurantName = restaurantName;
 		this.type = type;
@@ -122,11 +121,33 @@ public class Product implements Serializable {
 		this.description = description;
 	}
 
+	/**
+	 * @return the amount
+	 */
+	public int getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @param amount the amount to set
+	 */
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+
 	@Override
 	public String toString() {
 		if (components != null)
 			return dishName + " <" + price + "¤> " + "components: " + components;
 		return dishName + "<" + price + ">";
 	}
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Product)) {
+			return false;
+		}
+		Product other = (Product)obj;
+		return dishName.equals(other.dishName) && restaurantName.equals(other.restaurantName);
+	}
 }

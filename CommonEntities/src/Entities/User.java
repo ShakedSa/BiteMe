@@ -67,7 +67,8 @@ public abstract class User implements Serializable {
 		this.avatar = avatar;
 	}
 	
-	
+	public User() {
+	}	
 
 	public void setIsLoggedIn(int isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
@@ -76,10 +77,6 @@ public abstract class User implements Serializable {
 	public int getIsLoggedIn() {
 		return isLoggedIn;
   }
-	public User() {
-		
-
-	}
 
 	public String getPassword() {
 		return password;
