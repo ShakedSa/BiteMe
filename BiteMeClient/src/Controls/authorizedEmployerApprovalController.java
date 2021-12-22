@@ -25,6 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -59,19 +60,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 	    private Text profileBtn;
 
 	    @FXML
-	    private Text employerCode;
-
-	    @FXML
-	    private TextField employerCodeTxtField;
-
-	    @FXML
 	    private Text noApprovals;
-
-	    @FXML
-	    private Text employerCompanyName;
-
-	    @FXML
-	    private TextField employerCompanyNameTxtField;
 
 	    @FXML
 	    private TableView<BusinessCustomer> approvalTable;
@@ -94,54 +83,29 @@ public class authorizedEmployerApprovalController implements Initializable{
 		@FXML
 		private Text approvalSuccsess1;
 		
-		private ArrayList<BusinessCustomer> needApproval;
+	    @FXML
+	    private Text instructions;
+
+		
+		private String employerCode = "";
 
 		
 	@FXML
     void approvalClicked(MouseEvent event) {
-		boolean ableToAprrove = false;
-		//check user input
-		if(!checkFields())
-			return;
-		for(BusinessCustomer bc: needApproval) {
-			if(bc.getEmployeCompanyName().equals(employerCompanyNameTxtField.getText()) &&
-					bc.getEmployerCode().equals(employerCodeTxtField.getText()))
-				ableToAprrove = true;
-		}
-		if(!ableToAprrove) {
+		if(employerCode.equals("")) {
 			noApprovals.setVisible(true);
-			noApprovals.setText("Unable to improve this Employer");
+			noApprovals.setText("Please double click on a user!");
+			approvalSuccsess.setVisible(false);
+			approvalSuccsess1.setVisible(false);
 			return;
 		}
-		//user input does requiers an approval, make the approval
-		ClientGUI.client.employerApproval(employerCodeTxtField.getText());
+		ClientGUI.client.employerApproval(employerCode);
+		BusinessCustomer selectedItem = approvalTable.getSelectionModel().getSelectedItem();
+		approvalTable.getItems().remove(selectedItem);
 		approvalSuccsess.setVisible(true);
 		approvalSuccsess1.setVisible(true);
 		noApprovals.setVisible(false);
-	}
-	
-	private boolean checkFields() {
-		if( InputValidation.checkSpecialCharacters(employerCodeTxtField.getText())) {
-    		noApprovals.setVisible(true);
-    		noApprovals.setText("Employer code can't contain special characters!");
-    		return false;
-    	}
-    	if(employerCodeTxtField.getText().length() == 0) {
-    		noApprovals.setVisible(true);
-    		noApprovals.setText("Please fill an employer code!");
-    		return false;
-    	}
-    	if( InputValidation.checkSpecialCharacters(employerCompanyNameTxtField.getText())) {
-    		noApprovals.setVisible(true);
-    		noApprovals.setText("Employer code can't contain special characters!");
-    		return false;
-    	}
-    	if(employerCompanyNameTxtField.getText().length() == 0) {
-    		noApprovals.setVisible(true);
-    		noApprovals.setText("Please fill a company name!");
-    		return false;
-    	}
-    	return true;	
+		employerCode = "";
 	}
 	
 	
@@ -177,18 +141,23 @@ public class authorizedEmployerApprovalController implements Initializable{
 		//check if business customers are waiting for approval
 		if(response.size() == 0)
 		{
+			noApprovals.setText("No employers waiting for approvallll");
 			noApprovals.setVisible(true);
+			approvalBtn.setVisible(false);
+			instructions.setVisible(false);
+			noApprovals.setVisible(true);
+			approvalSuccsess.setVisible(false);
+			approvalSuccsess1.setVisible(false);
 			return;
 		}
-		needApproval = response;
 		setTable( response);
-		ObservableList<BusinessCustomer> list = approvalTable.getItems();
-		if(list.isEmpty())
-			noApprovals.setVisible(true);
-		else {
 			noApprovals.setText("Some employers are waiting for your approval");
 			noApprovals.setVisible(true);
-		}
+			approvalSuccsess.setVisible(false);
+			approvalSuccsess1.setVisible(false);
+			approvalBtn.setVisible(true);
+			instructions.setVisible(true);
+			
 	}
 	
 	//set table columns and values
@@ -212,8 +181,15 @@ public class authorizedEmployerApprovalController implements Initializable{
 		return customers;
 	}
 	
-	
-
+    @FXML
+    void copyTableData(MouseEvent event) {
+    	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+            employerCode = (approvalTable.getSelectionModel().getSelectedItem().getEmployerCode());
+            approvalSuccsess.setVisible(false);
+            approvalSuccsess1.setVisible(false);
+    	}
+    }
+    
     
 	@FXML
 	void profileBtnClicked(MouseEvent event) {

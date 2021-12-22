@@ -103,9 +103,12 @@ public class managerPanelController implements Initializable {
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
+				controller.enableEdit(false);
+				controller.removeAllMessages();
 				stage.setTitle("BiteMe - Add New Supplier");
 				stage.setScene(mainScene);
 				stage.show();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;

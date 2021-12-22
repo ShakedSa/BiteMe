@@ -150,7 +150,7 @@ public class ClientUI implements ClientIF {
 	 * 
 	 * @param restaurantName
 	 */
-	public void addNewSupplier(NewUser supplier) {
+	public void addNewSupplier(NewSupplier supplier) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("newSupplier");
 			serverResponse.setServerResponse(supplier);
@@ -208,9 +208,11 @@ public class ClientUI implements ClientIF {
 	public void employerApproval(String employerCode) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("employerApproval");
+			//arr.add("employerApproval");
 			arr.add(employerCode);
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("employerApproval");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
