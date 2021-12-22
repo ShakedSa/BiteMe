@@ -420,8 +420,7 @@ public class mysqlConnection {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				TypeOfProduct type = TypeOfProduct.getEnum(rs.getString(3));
-				ArrayList<Component> components = (ArrayList<Component>)(getComponentsInProduct(restaurantName, rs.getString(2))).getServerResponse();
-				menu.add(new Product(restaurantName, type, rs.getString(2), components, rs.getFloat(4), rs.getString(5)));
+				menu.add(new Product(restaurantName, type, rs.getString(2), null, rs.getFloat(4), rs.getString(5)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
