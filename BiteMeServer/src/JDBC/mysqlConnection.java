@@ -1,12 +1,8 @@
 package JDBC;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ModuleLayer.Controller;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -14,22 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Spliterator;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -60,10 +43,6 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import ServerUtils.pdfConfigs;
-import gui.ServerUI;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -1373,7 +1352,7 @@ public class mysqlConnection {
 			}		
 			
 			System.out.println("delete");
-		
+		}
 		//set the new components
 		for(int i=0; i<product.getComponents().size();i++) {
 			try {
