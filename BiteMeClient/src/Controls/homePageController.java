@@ -13,16 +13,16 @@ import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -78,7 +78,7 @@ public class homePageController implements Initializable {
 	private Text profileBtn;
 
 	@FXML
-	private Text restaurantBtn;
+	private Button restaurantBtn;
 
 	@FXML
 	private Text userFirstName;
@@ -177,8 +177,8 @@ public class homePageController implements Initializable {
 	 * @param MouseEvent event
 	 */
 	@FXML
-	void restaurantBtnClicked(MouseEvent event) {
-		router.returnToCustomerPanel(event);
+	void restaurantBtnClicked(ActionEvent event) {
+		router.returnToCustomerPanel(null);
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
 			restaurantSelectionController controller;
@@ -357,7 +357,7 @@ public class homePageController implements Initializable {
 	
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("HomePage");
 	}
 
 	/**

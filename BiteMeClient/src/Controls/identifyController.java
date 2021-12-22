@@ -89,7 +89,7 @@ public class identifyController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Identify");
 	}
 
 	/**

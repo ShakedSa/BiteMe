@@ -46,6 +46,7 @@
 .scroll-pane {
     -fx-background-insets: 0.0;
     -fx-padding: 0.0;
+    -fx-background:-fx-primary-bg-color;
 }
 /*Scroll pane global styling */
 .scroll-pane:focused {
@@ -58,13 +59,6 @@
 
 /*Text field global styling */
 .text-field {
-   /*  -fx-background-color: -fx-input-bg-color;
-    -fx-background-radius:5;
-    -fx-border-width: 1.0;
-    -fx-border-radius: 5;
-    -fx-border-color: -fx-primary-text-color;
-    * 
-    */
     -fx-background-color: #fff;
     -fx-border-width:0.0;
     -fx-padding: 5.0;
@@ -73,12 +67,6 @@
 }
 
 .text-field:focused {
-	/* 
-    -fx-background-color: -fx-input-bg-color;
-    -fx-border-width: 2.0;
-    -fx-border-color: -fx-secondary-text-color;
-    * 
-    */
     -fx-background-color: -fx-secondary-text-color;
     -fx-text-fill:#fff;
 }
@@ -437,5 +425,26 @@
 	-fx-background-color:#ff000050;
 	-fx-background-radius: 40;
 }
+
+#cta{
+	-fx-border-width:5;
+	-fx-border-color: #0d3354;
+	-fx-border-radius: 5;
+	-fx-text-fill: black; 
+	-fx-background-color:#eee;
+	-fx-padding: 10 20;
+	-fx-font-size: 18;
+	-fx-font-family: "Berlin Sans FB";
+	-fx-translate-x: -20;
+	-fx-translate-y: -5;
+}
+
+#cta:hover{
+	-fx-border-radius: 5;
+	-fx-background-color: #0d3354;
+	-fx-background-radius: 5;
+	-fx-text-fill: #fff; 
+}
+
 
 

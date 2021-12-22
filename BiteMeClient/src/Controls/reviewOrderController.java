@@ -150,7 +150,7 @@ public class reviewOrderController implements Initializable {
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
-		router.changeToMyCart();
+		router.changeToMyCart("Review");
 	}
 
 	@FXML

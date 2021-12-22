@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import Entities.Order;
 import Entities.Product;
+import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -36,6 +37,7 @@ public class myCartController implements Initializable {
 	Label deliveryInformation;
 	Label totalPrice;
 	Label removeItem;
+	private String lastPage;
 
 	@FXML
 	private Rectangle avatar;
@@ -94,6 +96,78 @@ public class myCartController implements Initializable {
 		setStage(router.getStage());
 	}
 
+	@FXML
+	void returnToLastPage(MouseEvent event) {
+		switch (lastPage) {
+		case "Menu":
+			if (router.getOrder().getRestaurantName() != null) {
+				stage.setTitle("BiteMe - " + router.getOrder().getRestaurantName() + " Menu");
+				stage.setScene(router.getRestaurantMenuController().getScene());
+				router.getRestaurantMenuController().setRestaurantName(router.getOrder().getRestaurantName());
+				router.getRestaurantMenuController().setMenu();
+				router.getRestaurantMenuController().setItemsCounter();
+				stage.show();
+			} else {
+				returnToRestaurants(null);
+			}
+			break;
+		case "Restaurants":
+			returnToRestaurants(null);
+			break;
+		case "Identify":
+			returnToRestaurants(null);
+			break;
+		case "Review":
+			router.getReviewOrderController().setItemsCounter();
+			stage.setTitle("BiteMe - Review Order");
+			stage.setScene(router.getReviewOrderController().getScene());
+			stage.show();
+			router.getReviewOrderController().displayOrder();
+			break;
+		case "Payment":
+			router.getPaymentController().setAvatar();
+			router.getPaymentController().setItemsCounter();
+			stage.setTitle("BiteMe - Select Payment Method");
+			stage.setScene(router.getPaymentController().getScene());
+			stage.show();
+			break;
+		case "Delivery":
+			router.getDeliveryMethodController().setAvatar();
+			router.getDeliveryMethodController().setItemsCounter();
+			router.getDeliveryMethodController().createCombo();
+			stage.setTitle("BiteMe - Select Delivery Method");
+			stage.setScene(router.getDeliveryMethodController().getScene());
+			stage.show();
+			break;
+		case "HomePage":
+			returnToHomePage(null);
+			break;
+		case "MyCart":
+			router.changeToMyCart("MyCart");
+			break;
+		case "Profile":
+			openProfile(null);
+			break;
+		case "DateTime":
+			router.getPickDateAndTimeController().setRestaurant(router.getOrder().getRestaurantName());
+			router.getPickDateAndTimeController().setAvatar();
+			router.getPickDateAndTimeController().setItemsCounter();
+			router.getPickDateAndTimeController().createCombos();
+			stage.setTitle("BiteMe - Pick Date And Time");
+			stage.setScene(router.getPickDateAndTimeController().getScene());
+			stage.show();
+			break;
+		case "Received":
+			router.getOrderReceivedController().setAvatar();
+			router.getOrderReceivedController().setItemsCounter();
+			router.getOrderReceivedController().setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
+			stage.setTitle("BiteMe - BiteMe - Rate Us");
+			stage.setScene(router.getOrderReceivedController().getScene());
+			stage.show();
+			break;
+		}
+	}
+
 	/**
 	 * Setting the avatar image of the user.
 	 */
@@ -125,7 +199,11 @@ public class myCartController implements Initializable {
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		clearScreen();
-		router.changeToMyCart();
+		router.changeToMyCart("MyCart");
+	}
+
+	public void setLastPage(String lastPage) {
+		this.lastPage = lastPage;
 	}
 
 	/**
@@ -139,7 +217,7 @@ public class myCartController implements Initializable {
 		itemsTitle = new Label("Products:");
 		itemsTitle.setFont(new Font("Berlin Sans FB", 14));
 		itemsTitle.setLayoutX(120);
-		itemsTitle.setLayoutY(193);
+		itemsTitle.setLayoutY(65);
 		if (products == null || products.size() == 0) {
 			itemsTitle.setText("Cart is empty");
 			if (root != null) {
@@ -182,20 +260,20 @@ public class myCartController implements Initializable {
 		}
 		orderDisplay.setContent(orderDisplayContent);
 		orderDisplay.setPrefWidth(676);
-		orderDisplay.setMaxHeight(200);
+		orderDisplay.setMaxHeight(130);
 		orderDisplay.setLayoutX(100);
-		orderDisplay.setLayoutY(213);
+		orderDisplay.setLayoutY(100);
 		orderDisplay.setId("scrollPane");
 		totalPrice = new Label("Total: " + order.getOrderPrice() + "\u20AA");
 		totalPrice.setFont(new Font("Berlin Sans FB", 22));
 		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
 		totalPrice.setLayoutX(600);
-		totalPrice.setLayoutY(450);
+		totalPrice.setLayoutY(250);
 		removeItem = new Label("Remove Selected");
 		removeItem.getStyleClass().add("removeBtn");
 		removeItem.setFont(new Font("Berlin Sans FB", 16));
 		removeItem.setLayoutX(100);
-		removeItem.setLayoutY(450);
+		removeItem.setLayoutY(250);
 		/** On click event to remove all selected products. */
 		removeItem.setOnMouseClicked(e -> {
 			ArrayList<Product> newProducts = new ArrayList<>();

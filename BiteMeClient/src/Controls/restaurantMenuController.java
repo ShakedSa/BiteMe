@@ -192,7 +192,7 @@ public class restaurantMenuController implements Initializable {
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		root.getChildren().remove(tabPane);
-		router.changeToMyCart();
+		router.changeToMyCart("Menu");
 	}
 
 	public void setScene(Scene scene) {
@@ -376,7 +376,7 @@ public class restaurantMenuController implements Initializable {
 						setItemsCounter();
 					});
 					removeItem.setId("addItem");
-					removeItem.setLayoutX(545);
+					removeItem.setLayoutX(535);
 					removeItem.setLayoutY(330);
 					overlayPane.getChildren().addAll(closeBtn, title, removeItem);
 					overlayPaneTransition(overlayPane);

@@ -35,6 +35,7 @@ import Entities.W4CCard;
 import Enums.BranchName;
 import Enums.Doneness;
 import Enums.PaymentMethod;
+import Enums.RestaurantType;
 import Enums.Size;
 import Enums.Status;
 import Enums.TypeOfOrder;
@@ -216,13 +217,13 @@ public class mysqlConnection {
 	public static ServerResponse getRestaurants() {
 		ServerResponse serverResponse = new ServerResponse("Restaurants");
 		PreparedStatement stmt;
-		HashMap<String, File> names = new HashMap<>();
+		ArrayList<Supplier> restaurants = new ArrayList<>();
 		try {
-			String query = "SELECT RestaurantName, Image FROM bitemedb.suppliers";
+			String query = "SELECT RestaurantName, RestaurantType FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				names.put(rs.getString(1), null);
+				restaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2))));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -231,7 +232,7 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		serverResponse.setMsg("Success");
-		serverResponse.setServerResponse(names);
+		serverResponse.setServerResponse(restaurants);
 		return serverResponse;
 	}
 

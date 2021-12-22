@@ -84,7 +84,7 @@ public class paymentController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Payment");
 	}
 
 	@FXML

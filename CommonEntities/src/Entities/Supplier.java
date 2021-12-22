@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import Enums.BranchName;
+import Enums.RestaurantType;
 import Enums.Status;
 import Enums.UserType;
 
@@ -21,6 +22,7 @@ public class Supplier extends User{
 	Float monthlyComissionPercent;
 	//BranchName relatedBranch;
 	String restaurantAddress; // change line 22 - aviel
+	RestaurantType restaurantType; 
 
 	public Supplier(String userName, String password, String firstName, String lastName, String id, String email,
 					String phoneNumber, UserType userType, String organization,
@@ -35,6 +37,12 @@ public class Supplier extends User{
 		this.restaurantAddress=relatedBranch; // change related branch to the actual address of the restaurant that is in the DB - aviel
 		this.Menu=Menu;
 		this.monthlyComissionPercent=monthlyComissionPercent;
+	}
+	
+	public Supplier(String restaurantName, RestaurantType restaurantType) {
+		super();
+		this.restaurantName=restaurantName;
+		this.restaurantType = restaurantType;
 	}
 
 	/**
@@ -110,6 +118,20 @@ public class Supplier extends User{
 		this.restaurantAddress = restaurantAddress;
 	}
 	
+	/**
+	 * @return the restaurantType
+	 */
+	public RestaurantType getRestaurantType() {
+		return restaurantType;
+	}
+
+	/**
+	 * @param restaurantType the restaurantType to set
+	 */
+	public void setRestaurantType(RestaurantType restaurantType) {
+		this.restaurantType = restaurantType;
+	}
+
 	@Override
 	public String toString() {
 		return super.toString() + "Restaurant: " + restaurantName;
