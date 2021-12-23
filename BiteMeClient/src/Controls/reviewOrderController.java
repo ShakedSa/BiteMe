@@ -11,6 +11,7 @@ import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.W4CCard;
+import Util.LoadingAnimation;
 import client.ClientGUI;
 import javafx.animation.RotateTransition;
 import javafx.application.Platform;
@@ -75,30 +76,20 @@ public class reviewOrderController implements Initializable {
 	@FXML
 	private Circle circle;
 
+	/**
+	 * Save order in the db, switch to rate us scene.
+	 */
 	@FXML
 	void SubmitOrder(MouseEvent event) {
-		/**
-		 * Save order in the db, switch to rate us scene.
-		 */
+		/** Creating loading animation to display while server processing the data. */
 		Thread animation = new Thread(() -> {
-//			Platform.runLater(() -> {
-//				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);				
-//			});
+			Platform.runLater(() -> {
+				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+			});
 			circle.setVisible(true);
-			RotateTransition rotateTransition = new RotateTransition(Duration.seconds(10), circle);
-			rotateTransition.setByAngle(360);
-			rotateTransition.setDelay(Duration.seconds(0));
-			rotateTransition.setRate(10);
-			rotateTransition.setCycleCount(18);
-			rotateTransition.play();
+			LoadingAnimation.LoadStart(circle);
 		});
 		animation.start();
-//		try {
-//			Thread.sleep(300);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
 		Order order = router.getOrder();
 		switch (order.getPaymentMethod()) {
 		case BusinessCode:
@@ -116,6 +107,19 @@ public class reviewOrderController implements Initializable {
 		default:
 			break;
 		}
+		// Before:
+//		Thread t = new Thread(() -> {
+//			synchronized (ClientGUI.monitor) {
+//				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
+//				try {
+//					ClientGUI.monitor.wait();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					return;
+//				}
+//			}
+//		});
+		// After
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {
 				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
@@ -125,26 +129,29 @@ public class reviewOrderController implements Initializable {
 					e.printStackTrace();
 					return;
 				}
+				/** After server finished handling the request continue executing. */
+				if (ClientGUI.client.getLastResponse() != null
+						&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
+					router.setBagItems(null);
+					router.setOrder(new Order());
+					router.setDelivery(null);
+					router.setOrderDeliveryMethod(null);
+					/**
+					 * Platform.runLater allows to change the view in a not fx application thread.
+					 */
+					Platform.runLater(() -> changeToRateUs());
+				} else {
+					System.out.println("Failed to insert order");
+				}
 			}
 		});
 		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		circle.setVisible(false);
-		if (ClientGUI.client.getLastResponse() != null
-				&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
-			router.setBagItems(null);
-			router.setOrder(new Order());
-			router.setDelivery(null);
-			router.setOrderDeliveryMethod(null);
-			changeToRateUs();
-		} else {
-			System.out.println("Failed to insert order");
-		}
+//		try {
+//			t.join();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
 	}
 
 	private void changeToRateUs() {
