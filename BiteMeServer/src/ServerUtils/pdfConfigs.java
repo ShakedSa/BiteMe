@@ -146,8 +146,8 @@ public class pdfConfigs {
         HistogramDataset dataset = new HistogramDataset();
         dataset.addSeries("key", values, 5);
 
-        JFreeChart histogram = ChartFactory.createHistogram("Monthly revenue of restaurants",
-                   "Restaurants income in NIS", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
+        JFreeChart histogram = ChartFactory.createHistogram("Quarterly orders in restaurants",
+                   "Orders from a restaurant in a quarter", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
 
 
 		return histogram;

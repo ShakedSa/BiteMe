@@ -47,7 +47,7 @@ public class reportsHandler {
 		try {
 			PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempRevenueReport.pdf"));
 			document.open();
-			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
+			Font font = FontFactory.getFont(FontFactory.HELVETICA, 35, BaseColor.BLACK);
 			//add title and report details:
 			document.add(pdfConfigs.createTitle("Monthly Revenue Report\n", font));
 			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
@@ -195,7 +195,7 @@ public class reportsHandler {
 			try {
 				PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempPerformanceReport.pdf"));
 				document.open();
-				Font font = FontFactory.getFont(FontFactory.COURIER, 30, BaseColor.BLACK);
+				Font font = FontFactory.getFont(FontFactory.HELVETICA, 30, BaseColor.BLACK);
 				document.add(pdfConfigs.createTitle("Monthly Performance Report\n", font));
 				Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
 						+ "Creation Date: "+currentDate.toString() +"\n\n",font);				reportDetails.setAlignment(1);//center=1
@@ -303,50 +303,56 @@ public class reportsHandler {
 
 
 	/**
-	 * Creates monthly revenue report for a given branch and month, and stores it in SQL
+	 * Creates quarterly revenue report for a given branch and quarter, and stores it in SQL
 	 * @param Branch
 	 * @param Month
-	 */
-	public static void testReportPdf(String Branch, String Month, String Year) {
+	 */ // 1,2,3 4,5,6 7,8,9 10,11,12
+	public static void quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-	int numOfOrders;
-	int totalEarnings;
-	int netIncome=0;
+	int numOfOrders, totalEarnings;
+	int quarterInt = Integer.parseInt(quarter);
+	int netIncome=0, endMonth=quarterInt*3, startMonth=endMonth-2;
 	ArrayList<Double> values = new ArrayList<Double>();
-	document.addTitle("Monthly Report");
+	document.addTitle("Quarterly Revenue Report");
 	
 		try {
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempRevenueReport.pdf"));
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempQRevenueReport.pdf"));
 			document.open();
-			Font font = FontFactory.getFont(FontFactory.COURIER, 35, BaseColor.BLACK);
+			Font font = FontFactory.getFont(FontFactory.HELVETICA, 30, BaseColor.BLACK);
 			//add title and report details:
-			document.add(pdfConfigs.createTitle("Monthly Revenue Report\n", font));
-			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report Date :" + Year+"-"+Month+"-01"+"\n"
-					+ "Creation Date: "+currentDate.toString() +"\n\n",font);			reportDetails.setAlignment(1);
+			document.add(pdfConfigs.createTitle("Quarterly Revenue Report\n", font));
+			font.setSize(20);
+			Paragraph reportDetails= new Paragraph("Branch: "+ Branch + " \n Report date:" + Year+" Quarter: "+quarter+"\n"
+					+ "Creation Date: "+currentDate.toString() +"\n\n",font);
+			reportDetails.setAlignment(1);
 			document.add(reportDetails);
 			// handling sql data:
 			// table: name,total orders, total income.
 				PdfPTable table = new PdfPTable(3);
 				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income");
 				for(String res: Restaurants) { // for each restaurant in branch:
-						numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
-						totalEarnings=mysqlConnection.getEarnings(res,Month,Year);
-						values.add((double) totalEarnings);
+					totalEarnings=0; // reset
+					numOfOrders=0;
+					for(int i=startMonth; i<=endMonth;i++) {
+						numOfOrders+=mysqlConnection.getNumOfOrders(res,Integer.toString(i),Year);
+						totalEarnings+=mysqlConnection.getEarnings(res,Integer.toString(i),Year);
+					}
+						values.add((double) numOfOrders);
 						netIncome+=totalEarnings;
 						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
 				}
 				document.add(table);
 				font.setSize(25);
-				document.add(new Paragraph("\n\n\n total NET Income: "+netIncome+ "\n\n\n",font));
+				document.add(new Paragraph("\n total NET Income: "+netIncome+ "\n\n\n",font));
 				//document.newPage();
 				PdfContentByte contentByte = writer.getDirectContent();
-				PdfTemplate template = contentByte.createTemplate(250, 250);
-				Graphics2D graphics2d = template.createGraphics(250, 250,new DefaultFontMapper());
-				Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 250,250);
+				PdfTemplate template = contentByte.createTemplate(350, 350);
+				Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
+				Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
 				JFreeChart chart =pdfConfigs.generateHist(values);
-				chart.draw(graphics2d, rectangle2d);				
+				chart.draw(graphics2d, rectangle2d);
 				graphics2d.dispose();
 				contentByte.addTemplate(template, 0, 0);
 			document.close();
@@ -356,33 +362,24 @@ public class reportsHandler {
 		//after creating the PDF with relevant data, store it inside the SQL as BLOB:
 		ArrayList<String> info = new ArrayList<String>();
 		//reportType,Month,Year,branch
-		info.add("MonthlyRevenueReport");
-		info.add(Month);
+		info.add("QuarterlyRevenueReport");
+		info.add(quarter);
 		info.add(Year);
 		info.add(Branch);
 		//loading the temp report:
 		InputStream is=null;
 		try {
-			is = new FileInputStream(new File(Branch + "TempRevenueReport.pdf"));
+			is = new FileInputStream(new File(Branch + "TempQRevenueReport.pdf"));
 			mysqlConnection.updateFile(is, info);
 			//close file connection
 			if(is!=null)
-				is.close();
+				is.close(); 
 			//delete temp file from server.
-			//File f = new File(Branch + "TempRevenueReport.pdf");
-			//f.delete();
+			File f = new File(Branch + "TempRevenueReport.pdf");
+			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
 
 	}
-/*
- * 					PdfContentByte contentByte = writer.getDirectContent();
-					PdfTemplate template = contentByte.createTemplate(500, 500);
-					Graphics2D graphics2d = template.createGraphics(500, 500,new DefaultFontMapper());
-					Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 500,500);
-					JFreeChart chart =pdfConfigs.generateHist();
-					chart.draw(graphics2d, rectangle2d);				
-					graphics2d.dispose();
-					contentByte.addTemplate(template, 0, 0);
- */
+
 }
