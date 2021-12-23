@@ -16,5 +16,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="itextpdf-5.5.13.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
