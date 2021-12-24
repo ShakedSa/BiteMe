@@ -113,9 +113,10 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		User user = null;
 		try {
-			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ? AND Password = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, userName);
+			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				if (rs.getInt(12) == 1) {
@@ -123,16 +124,17 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (!rs.getString(2).equals(password)) {
-					serverResponse.setMsg("Wrong Password");
+				if (rs.getString(13).equals("Frozen")) {
+					serverResponse.setMsg("Frozen");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (rs.getString(8).equals("User")) {
+				if (rs.getString(8).equals("User")||rs.getString(13).equals("Unverified")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
+				
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
 				String id = rs.getString(5);
@@ -541,7 +543,7 @@ public class mysqlConnection {
 		try {
 			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+ 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				favRestaurants.put(rs.getString(1), null);
 			}

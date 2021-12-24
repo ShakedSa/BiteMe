@@ -235,7 +235,7 @@ public class Server extends AbstractServer {
 		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
 		{//report updates needed for last report month+1:
 		//(no need next ones since server was off and no other data was collected)
-			reportsHandler.createAllReports(month+1, year);
+		//	reportsHandler.createAllReports(month+1, year);
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
