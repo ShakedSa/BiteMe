@@ -91,7 +91,7 @@ public class Server extends AbstractServer {
 			}
 			return;
 		}
-		
+
 		controller.setMessage("Msg recieved:" + msg);
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
@@ -170,23 +170,26 @@ public class Server extends AbstractServer {
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
 			break;
 		case "newSupplier":
-			mysqlConnection.addNewSupplier((NewSupplier)serverResponse.getServerResponse());
+			mysqlConnection.addNewSupplier((NewSupplier) serverResponse.getServerResponse());
 			break;
 		case "InsertOrder":
-			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)serverResponse.getServerResponse()), client);
+			this.sendToClient(
+					mysqlConnection.insertOrderDelivery((OrderDeliveryMethod) serverResponse.getServerResponse()),
+					client);
 			break;
 		case "addItem":
-			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
+			this.sendToClient(mysqlConnection.addItemToMenu((Product) serverResponse.getServerResponse()), client);
 			break;
 		case "editItemInMenu":
-			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
+			this.sendToClient(mysqlConnection.editItemInMenu((Product) serverResponse.getServerResponse()), client);
 			break;
 		case "deleteItemFromMenu":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.deleteItemFromMenu(m.get(0), m.get(1)), client);
+			break;
 		case "viewQuarterReport":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0),m.get(1),m.get(2),m.get(3)), client);
+			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0), m.get(1), m.get(2), m.get(3)), client);
 			break;
 		/*
 		 * case "CheckQuarterReport": m = (ArrayList<String>)
@@ -197,7 +200,11 @@ public class Server extends AbstractServer {
 
 		case "getReport":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
+			this.sendToClient(mysqlConnection.getMonthlyReport(m), client);
+			break;
+		case "getSupplierImage":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getSupplierImage(m.get(0)), client);
 			break;
 		default:
 			sendToClient("default", client);
@@ -226,16 +233,18 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		//reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
+		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
 		reportsThread = new ReportsThread();
 		Thread t = new Thread(reportsThread);
 		t.start();
-		int date[]=reportsHandler.getLastReportDate();
-		int year=date[0],month=date[1];
-		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
-		{//report updates needed for last report month+1:
-		//(no need next ones since server was off and no other data was collected)
-			reportsHandler.createAllReports(month+1, year);
+		int date[] = reportsHandler.getLastReportDate();
+		int year = date[0], month = date[1];
+		if (year != LocalDate.now().getYear() || month != LocalDate.now().getMonthValue()) {// report updates needed for
+																							// last report month+1:
+																							// (no need next ones since
+																							// server was off and no
+																							// other data was collected)
+			reportsHandler.createAllReports(month + 1, year);
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
@@ -273,8 +282,5 @@ public class Server extends AbstractServer {
 	public void setController(ServerGUIController controller) {
 		this.controller = controller;
 	}
-	
 
-	
-	
 }
