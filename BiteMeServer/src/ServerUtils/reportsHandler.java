@@ -255,13 +255,18 @@ public class reportsHandler {
 	 * @param year
 	 */
 	public static void createAllReports(int month, int year) {
+		String[] Branches = {"North","Central","South"};
 		if(month==13) // make sure to create new year reports if needed
 		{
 			month=0;
 			year++;
 		}
+		if(month%3==0) {//quarter ended, create new quarter revenue report.
+			for(String branch:Branches)
+    			reportsHandler.quarterlyRevenueReportPdf(branch, Integer.toString(month/3), Integer.toString(year));
+		}
 		String monthS=Integer.toString(month),yearS=Integer.toString(year);
-		String[] Branches = {"North","Central","South"};//,"South","Center"};
+
 		for(String s:Branches) {
 			createMonthlyOrdersReportPdf(s, monthS, yearS);
 			createMonthlyPerformanceReportPdf(s, monthS, yearS);

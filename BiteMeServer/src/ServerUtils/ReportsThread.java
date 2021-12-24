@@ -47,6 +47,7 @@ public class ReportsThread extends Thread{
         		}
         		else
         			reportsHandler.createAllReports(month-1,year);
+        		
         	}
             try {
                 Thread.sleep(sleepTime);
