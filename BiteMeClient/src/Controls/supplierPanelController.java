@@ -60,47 +60,6 @@ public class supplierPanelController implements Initializable {
     
     @FXML
     private Text errorMsg;
-
-    @FXML
-    void createMenuClicked(MouseEvent event) {
-    	//check if supplier has a menu
-    	if(checkIfMenuExist()) { 
-    		errorMsg.setText("You already have a menu, please click on 'Update Menu' button");
-			return;
-    	}
-    	if (router.getCreateMenuController() == null) {
-			AnchorPane mainContainer;
-			createMenuController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeCreateMenuPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				//controller.Menu();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Create Menu");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return; 
-			}
-		} else {
-			//router.getCreateMenuController().Menu();
-			stage.setTitle("BiteMe - Create Menu");
-			stage.setScene(router.getCreateMenuController().getScene());
-			stage.show();
-		}
-    }
-    
-    private boolean checkIfMenuExist() {
-    	return false;
-//    	errorMsg.setText("");
-//		return true;
-    }
     
     @FXML
     void updateMenuClicked(MouseEvent event) {

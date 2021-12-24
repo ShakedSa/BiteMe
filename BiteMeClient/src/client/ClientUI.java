@@ -450,9 +450,21 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
+	
+	public void deleteItemFromMenu(String restaurant, String dishName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(restaurant, dishName));
+			ServerResponse serverResponse = new ServerResponse("deleteItemFromMenu");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
 																											   				
-
 //	/**
 //	 * @return the searchOrder
 //	 */
@@ -551,6 +563,8 @@ public class ClientUI implements ClientIF {
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
+
+	
 
 
 

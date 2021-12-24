@@ -6,10 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import Controls.confirmBusinessAccountController.CustomerPlusBudget;
-import Entities.BusinessCustomer;
 import Entities.Component;
-import Entities.Customer;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
@@ -24,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -39,6 +37,12 @@ public class updateMenuController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
+	
+    @FXML
+    private TextArea deleteExplanation;
+    
+    @FXML
+    private TextArea editExplanation;
 
 	@FXML
 	private ImageView VImage;
@@ -48,12 +52,12 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private Circle addNewItemPlus;
-	
-    @FXML
-    private Circle deleteItemPlus;
 
-    @FXML
-    private Text deleteItemTxt;
+	@FXML
+	private Circle deleteItemPlus;
+
+	@FXML
+	private Text deleteItemTxt;
 
 	@FXML
 	private Text addNewItemTxt;
@@ -78,9 +82,6 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	private Text profileBtn;
-
-	@FXML
-	private Text saveTxt;
 
 	@FXML
 	private Text supplierPanelBtn;
@@ -108,6 +109,7 @@ public class updateMenuController implements Initializable {
 
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
+	private Product product;
 
 	public void Menu() {
 		ClientGUI.client.getRestaurantMenu(restaurant);
@@ -136,44 +138,13 @@ public class updateMenuController implements Initializable {
 		@SuppressWarnings("unchecked")
 		// get the server response- list of product (menu)
 		ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
-
-		// get components for each product
-//		for (int i = 0; i < response.size(); i++) {
-//			ClientGUI.client.componentsInProduct(restaurant, response.get(i).getDishName());
-//			Thread t1 = new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					synchronized (ClientGUI.monitor) {
-//						try {
-//							ClientGUI.monitor.wait();
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//							return;
-//						}
-//					}
-//				}
-//			});
-//			t1.start();
-//			try {
-//				t1.join();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				return;
-//			}
-//
-//			ServerResponse sr1 = ClientGUI.client.getLastResponse();
-//			@SuppressWarnings("unchecked")
-//			// get the server response- list of components
-//			ArrayList<Component> components = (ArrayList<Component>) sr1.getServerResponse();
-//			// set components in each product
-//			response.get(i).setComponents(components);
-//		}
 		setTable(response);
 		return;
 	}
 
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
+		clearPage();
 		if (router.getAddNewItemController() == null) {
 			AnchorPane mainContainer;
 			addNewItemController controller;
@@ -202,6 +173,7 @@ public class updateMenuController implements Initializable {
 
 	@FXML
 	void editItemClicked(MouseEvent event) {
+		clearPage();
 		if (router.getEditMenuItemController() == null) {
 			AnchorPane mainContainer;
 			editMenuItemController controller;
@@ -211,6 +183,7 @@ public class updateMenuController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.setProduct(product);
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -222,16 +195,91 @@ public class updateMenuController implements Initializable {
 				return;
 			}
 		} else {
+			router.getEditMenuItemController().setProduct(product);
 			stage.setTitle("BiteMe - Edit Menu Item");
 			stage.setScene(router.getEditMenuItemController().getScene());
 			stage.show();
 		}
 	}
+
+	@FXML
+    void deleteItemTxtClicked(MouseEvent event) {
+		if(product == null) {
+			return;
+		}
+    	Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		ClientGUI.client.deleteItemFromMenu(restaurant, product.getDishName());
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (!checkServerResponse()) {
+			return;
+		}
+
+		ClientGUI.client.getLastResponse().getServerResponse();
+		//update the new menu after delete item
+		Menu();
+		//display that the delete was successes
+		VImage.setVisible(true);
+		menuUpdatedSuccessfullyTxt.setText("The item was deleted successfully");
+    }
 	
     @FXML
-    void deleteItemTxt(MouseEvent event) {
-
+    void explainHowEdit(MouseEvent event) {
+    	editExplanation.setVisible(true);
     }
+    
+    @FXML
+    void closeExplainEdit(MouseEvent event) {
+    	editExplanation.setVisible(false);
+    }
+	
+    @FXML
+    void explainHowDelete(MouseEvent event) {
+    	deleteExplanation.setVisible(true);
+    }
+	
+    @FXML
+    void closeExplainDelete(MouseEvent event) {
+    	deleteExplanation.setVisible(false);
+    }
+	
+	/**
+	 * checks the user information received from Server. display relevant
+	 * information.
+	 */
+	private boolean checkServerResponse() {
+		if (ClientGUI.client.getLastResponse() == null) {
+			return false;
+		}
+
+		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		case "":
+			errorMsg.setText("Adding an item to menu was failed");
+			return false;
+		case "success":
+			return true;
+		default:
+			return false;
+		}
+	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -241,35 +289,19 @@ public class updateMenuController implements Initializable {
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+		clearPage();
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
+		clearPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
-	}
-
-	@FXML
-	void saveClicked(MouseEvent event) {
-		// need to check server response
-		if (checkServerResponse()) {
-			VImage.setVisible(true);
-			menuUpdatedSuccessfullyTxt.setVisible(true);
-		}
-	}
-
-	private boolean checkServerResponse() {
-//    	retVal = servaerResponse;
-//    	if(retVal == null) {
-//			errorMsg.setText("No items checked into menu");
-//			return false;
-//		}
-//		errorMsg.setText(""); 
-		return true;
+		clearPage();
 	}
 
 	/**
@@ -284,9 +316,14 @@ public class updateMenuController implements Initializable {
 		router = Router.getInstance();
 		router.setUpdateMenuController(this);
 		setStage(router.getStage());
+		clearPage();
+	}
+	
+	private void clearPage() {
 		VImage.setVisible(false);
-		menuUpdatedSuccessfullyTxt.setVisible(false);
-		// createTable();
+		menuUpdatedSuccessfullyTxt.setText("");
+		deleteExplanation.setVisible(false);
+		editExplanation.setVisible(false);
 	}
 
 	public void setScene(Scene scene) {
@@ -300,30 +337,6 @@ public class updateMenuController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
-	/**
-	 * Creating the view table columns.
-	 */
-//	public void createTable() {
-//		TableColumn<Product, TypeOfProduct> typeCol = new TableColumn<Product, TypeOfProduct>("Type");
-//		typeCol.setCellValueFactory(new PropertyValueFactory<Product, TypeOfProduct>("type"));
-//		menuTable.getColumns().add(typeCol);
-//		TableColumn<Product, String> nameCol = new TableColumn<Product, String>("Dish Name");
-//		nameCol.setCellValueFactory(new PropertyValueFactory<Product, String>("restaurantName"));
-//		menuTable.getColumns().add(nameCol);
-//		TableColumn<Product, ArrayList<Component>> componentCol = new TableColumn<Product, ArrayList<Component>>(
-//				"Components");
-//		componentCol.setCellValueFactory(new PropertyValueFactory<Product, ArrayList<Component>>("components"));
-//		menuTable.getColumns().add(componentCol);
-//		TableColumn<Product, Float> priceCol = new TableColumn<Product, Float>("Price");
-//		priceCol.setCellValueFactory(new PropertyValueFactory<Product, Float>("price"));
-//		menuTable.getColumns().add(priceCol);
-//		TableColumn<Product, String> descriptionCol = new TableColumn<Product, String>("Description");
-//		descriptionCol.setCellValueFactory(new PropertyValueFactory<Product, String>("description"));
-//		menuTable.getColumns().add(descriptionCol);
-//		menuTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//	}
-//	
 
 	// set table columns and values
 	private void setTable(ArrayList<Product> menu) {
@@ -344,10 +357,36 @@ public class updateMenuController implements Initializable {
 				p.setDescription("");
 			}
 			if (p.getComponents() == null || p.getComponents().size() == 0) {
-				p.setComponents(new ArrayList<>(Arrays.asList(new Component("None"))));
+				p.setComponents(new ArrayList<>(Arrays.asList(new Component(""))));
 			}
 		});
 		menu.addAll(list);
 		return menu;
 	}
+
+	/**
+	 * get the data of specific item that selected
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void getRowData(MouseEvent event) {
+		if (menuTable.getSelectionModel() == null) {
+			return;
+		}
+		product = menuTable.getSelectionModel().getSelectedItem();
+		if (product == null) {
+			return;
+		}
+	}
+	
+	/**
+	 * @param product the product to set
+	 */
+	public void setProduct(Product product) {
+		if(product!=null) {
+			this.product = product;
+		}
+	}
+
 }

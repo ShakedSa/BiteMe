@@ -51,13 +51,11 @@ public class Router {
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
 	// Supplier Panel pages:
-	private createMenuController CreateMenuController;
 	private addNewItemController AddNewItemController;
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
-	private addNewItemToNewMenuController AddNewItemToNewMenuController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -203,13 +201,6 @@ public class Router {
 	}
 
 	/**
-	 * @param createMenuController the createMenuController to set
-	 */
-	public void setCreateMenuController(createMenuController createMenuController) {
-		CreateMenuController = createMenuController;
-	}
-
-	/**
 	 * @param addNewItemController the addNewItemController to set
 	 */
 	public void setAddNewItemController(addNewItemController addNewItemController) {
@@ -275,13 +266,6 @@ public class Router {
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
-	}
-	
-	/**
-	 * @param addNewItemToNewMenuController the addNewItemToNewMenuController to set
-	 */
-	public void setAddNewItemToNewMenuController(addNewItemToNewMenuController addNewItemToNewMenuController) {
-		AddNewItemToNewMenuController = addNewItemToNewMenuController;
 	}
 
 	/**
@@ -404,13 +388,6 @@ public class Router {
 	}
 
 	/**
-	 * @return the createMenuController
-	 */
-	public createMenuController getCreateMenuController() {
-		return CreateMenuController;
-	}
-
-	/**
 	 * @return the addNewItemController
 	 */
 	public addNewItemController getAddNewItemController() {
@@ -509,13 +486,6 @@ public class Router {
 	}
 
 	/**
-	 * @return the addNewItemToNewMenuController
-	 */
-	public addNewItemToNewMenuController getAddNewItemToNewMenuController() {
-		return AddNewItemToNewMenuController;
-	}
-
-	/**
 	 * @param reviewOrderController the reviewOrderController to set
 	 */
 	public void setReviewOrderController(reviewOrderController reviewOrderController) {
@@ -608,7 +578,6 @@ public class Router {
 				AddNewItemController = null;
 				AddNewSupplierController = null;
 				AuthorizedEmployerApprovalController = null;
-				CreateMenuController = null;
 				EditMenuItemController = null;
 				OpenNewAccountController = null;
 				RegisterEmployerAsLegacyController = null;

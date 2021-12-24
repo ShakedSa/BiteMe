@@ -62,17 +62,12 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="createMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="230.0" onMouseClicked="#createMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Create Menu">
+      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="564.0" layoutY="265.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Label>
-      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="565.0" layoutY="373.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
+      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="564.0" layoutY="337.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
