@@ -198,7 +198,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. approve employer in the db
 	 * restaurant.
@@ -435,9 +435,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-		
+
 	/**
 	 * supplier update item in menu
+	 * 
 	 * @param product
 	 */
 	public void editItemInMenu(Product product) {
@@ -450,6 +451,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
+
 	
 	public void deleteItemFromMenu(String restaurant, String dishName) {
 		try {
@@ -513,6 +515,13 @@ public class ClientUI implements ClientIF {
 		return user;
 	}
 
+	/**
+	 * @param pdfToUpload
+	 * @param Month
+	 * @param Year
+	 * @param ReportType
+	 * sends a PDF quarterly report from manager's file system to SQL
+	 */
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
@@ -540,6 +549,30 @@ public class ClientUI implements ClientIF {
 
 	}
 
+	public void viewORcheckQuarterReport(String quarter, String Year, String branch, String func) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch,func));
+			ServerResponse serverResponse = new ServerResponse("viewQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	public void CheckQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("CheckQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -564,9 +597,18 @@ public class ClientUI implements ClientIF {
 		return lastResponse;
 	}
 
-	
+
+	/**
+	 * sends a report data request to server sql
+	 * @param arr  order : reportType,month,year,branch
+	 */
+	public void getReport(ArrayList<String> arr) {
+		ServerResponse serverResponse = new ServerResponse("getReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
 
 
 
-	
+
 }
