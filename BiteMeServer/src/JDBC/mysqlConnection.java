@@ -1,5 +1,6 @@
 package JDBC;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -1636,7 +1637,6 @@ public class mysqlConnection {
 
 		PreparedStatement stmt;
 		String query;
-		ResultSet rs;
 		int num=0;
 
 		try {
