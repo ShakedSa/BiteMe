@@ -30,7 +30,7 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="86.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific month">
+      <Text layoutX="88.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific quarter">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -89,15 +89,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ComboBox fx:id="monthBox" focusTraversable="false" layoutX="283.0" layoutY="318.0" prefHeight="20.0" prefWidth="119.0" promptText="Month" />
+      <ComboBox fx:id="quarterBox" focusTraversable="false" layoutX="283.0" layoutY="320.0" onAction="#searchOndb" prefHeight="25.0" prefWidth="93.0" promptText="Quarter" />
       <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
-      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="132.0" promptText="Branch" />
-      <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="283.0" layoutY="260.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Year" />
+      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="283.0" layoutY="200.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="101.0" promptText="Branch" />
+      <Text fx:id="textMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

@@ -1,34 +1,22 @@
 package JDBC;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ModuleLayer.Controller;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Spliterator;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.codec.Base64.OutputStream;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -39,6 +27,7 @@ import Entities.Customer;
 import Entities.Delivery;
 import Entities.EmployerHR;
 import Entities.ImportedUser;
+import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.Order;
@@ -58,8 +47,6 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
-import ServerUtils.pdfConfigs;
-import gui.ServerUI;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -782,17 +769,17 @@ public class mysqlConnection {
 	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
-	 *  reportType,Month,Year,branch
+	 *             reportType,Month,Year,branch
 	 */
 	public static void updateFile(InputStream is, ArrayList<String> desc) {
-		if(is==null) 
+		if (is == null)
 			return;
 		String filename;
 		int month = Integer.parseInt(desc.get(1).toString());
-		if(desc.get(0).equals("Quarterly Report"))
-			filename="Report" + desc.get(2) +"-Quarter"+ ((month/4)+1) + ".pdf";
+		if (desc.get(0).equals("Quarterly Report"))
+			filename = "Report" + desc.get(2) + "-Quarter" + ((month / 4) + 1) + ".pdf";
 		else
-			filename = "Report " + desc.get(2)+ "-" +desc.get(1) + ".pdf";
+			filename = "Report " + desc.get(2) + "-" + desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
@@ -878,6 +865,57 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	/**
+	 * Query to get Quarterly Report OR to check if exists.
+	 * 
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 * @param Func    {"View","Check"}
+	 */
+	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch, String func) {
+
+		ServerResponse serverResponse = new ServerResponse("MyFile");
+		try {
+
+			String query = "SELECT distinct Content FROM bitemedb.reports where date like ? and Title like ? and ReportType = 'Quarterly Report' and BranchName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, year + "%");
+			stmt.setString(2, "%Quarter" + quarter + "%");
+			stmt.setString(3, branch);
+			ResultSet rs = stmt.executeQuery();
+
+			if (!rs.next()) {
+				serverResponse.setMsg("NotExists");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+			
+			if (func.toLowerCase().equals("view")) {
+				Blob blob = rs.getBlob(1);
+				MyFile file = new MyFile("Blob");
+				byte[] array = blob.getBytes(1, (int) blob.length());
+				file.initArray(array.length);
+				file.setMybytearray(array);
+				serverResponse.setServerResponse(file);
+				serverResponse.setMsg("Success");
+			} else if (func.toLowerCase().equals("check")) {
+				serverResponse.setServerResponse(null);
+				serverResponse.setMsg("Exists");
+			} else {
+				serverResponse.setMsg("Unknown Command");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
 	}
 
 	/**
@@ -1261,9 +1299,9 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
-		
-		//set components
-		for(int i=0; i<product.getComponents().size();i++) {
+
+		// set components
+		for (int i = 0; i < product.getComponents().size(); i++) {
 			try {
 				PreparedStatement stmt;
 				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
@@ -1282,11 +1320,11 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
-	
+
 	public static ServerResponse editItemInMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
-			PreparedStatement stmt;//Type, Price, ProductDescription
+			PreparedStatement stmt;// Type, Price, ProductDescription
 			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
 			stmt = conn.prepareStatement(query);
 			System.out.println(product);
@@ -1302,28 +1340,28 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 			return serverResponse;
 		}
-		
+
 		System.out.println("update");
-		
-		//delete the old components
-			try {
-				PreparedStatement stmt;
-				String query = "DELETE FROM bitemedb.components WHERE RestaurantName = ? AND DishName = ?";
-				stmt = conn.prepareStatement(query);
-				stmt.setString(1, product.getRestaurantName());
-				stmt.setString(2, product.getDishName());
-				stmt.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				serverResponse.setMsg(e.getMessage());
-				serverResponse.setServerResponse(null);
-				return serverResponse;
-			}		
-			
-			System.out.println("delete");
-		
-		//set the new components
-		for(int i=0; i<product.getComponents().size();i++) {
+
+		// delete the old components
+		try {
+			PreparedStatement stmt;
+			String query = "DELETE FROM bitemedb.components WHERE RestaurantName = ? AND DishName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, product.getRestaurantName());
+			stmt.setString(2, product.getDishName());
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+
+		System.out.println("delete");
+
+		// set the new components
+		for (int i = 0; i < product.getComponents().size(); i++) {
 			try {
 				PreparedStatement stmt;
 				String query = "INSERT INTO bitemedb.components (RestaurantName, DishName, component) VALUES(?,?,?)";
@@ -1339,9 +1377,9 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 		}
-		
+
 		System.out.println("final update");
-		
+
 //		for(int i=0; i<product.getComponents().size();i++) {
 //			try {
 //				PreparedStatement stmt;
@@ -1358,7 +1396,7 @@ public class mysqlConnection {
 //				return serverResponse;
 //			}
 //		}
-		
+
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
@@ -1421,7 +1459,7 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
-	
+
 	/**
 	 * Query to update customer's w4c balance.
 	 * 
@@ -1441,6 +1479,7 @@ public class mysqlConnection {
 			return;
 		}
 	}
+
 //SELECT * FROM bitemedb.orders WHERE RestaurantName IN (SELECT RestaurantName FROM bitemedb.suppliers WHERE branch="North") ORDER BY RestaurantName;
 	/**
 	 * @param Branch
@@ -1452,8 +1491,7 @@ public class mysqlConnection {
 		ResultSet rs;
 		try {
 			query = "SELECT * FROM bitemedb.orders WHERE RestaurantName IN "
-					+ "(SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=?) "
-					+ "ORDER BY RestaurantName";
+					+ "(SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=?) " + "ORDER BY RestaurantName";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, Branch);
 			rs = stmt.executeQuery();
@@ -1474,11 +1512,11 @@ public class mysqlConnection {
 		String query;
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
-			query ="SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
+			query = "SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, Branch);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				arr.add(rs.getString(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1486,13 +1524,13 @@ public class mysqlConnection {
 		}
 		return arr;
 	}
-	
-	//SELECT Count(RestaurantName) FROM bitemedb.orders where RestaurantName=?;
+
+	// SELECT Count(RestaurantName) FROM bitemedb.orders where RestaurantName=?;
 
 	public static int getNumOfOrders(String restaurantName, Month month) {
 		PreparedStatement stmt;
 		String query;
-		int num=0;
+		int num = 0;
 		ResultSet rs;
 		try {
 			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND RestaurantName=?";
@@ -1500,8 +1538,8 @@ public class mysqlConnection {
 			stmt.setInt(1, month.getValue());
 			stmt.setString(2, restaurantName);
 			rs = stmt.executeQuery();
-			if(rs.next())
-				num=rs.getInt(1);
+			if (rs.next())
+				num = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1512,23 +1550,22 @@ public class mysqlConnection {
 	public static int getEarnings(String restaurantName, Month month) {
 		PreparedStatement stmt;
 		String query;
-		int num=0;
+		int num = 0;
 		ResultSet rs;
-		//SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		// SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
 		try {
 			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setInt(2, month.getValue());
 			rs = stmt.executeQuery();
-			if(rs.next())
-				num=rs.getInt(1);
+			if (rs.next())
+				num = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
 		}
 		return num;
 	}
-
 
 }
