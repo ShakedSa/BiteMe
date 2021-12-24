@@ -139,9 +139,13 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
-		case "updateUser":
+		case "checkuserNameIsClient":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			mysqlConnection.updateUserInformation(m.get(0), m.get(1), m.get(2));
+			this.sendToClient(mysqlConnection.checkUserNameIsClient(m.get(0)), client);
+			break;
+		case "changeClientPerrmisions":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			mysqlConnection.changeClientPerrmisions(m.get(0), m.get(1));
 			break;
 		case "employersApproval":
 			this.sendToClient(mysqlConnection.getEmployersForApproval(), client);

@@ -124,26 +124,6 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	/**
-	 * Sending a query request from the server. update a user information
-	 * 
-	 * @param restaurantName
-	 */
-	public void updateUserInfo(String userName, String userType, String status) {
-		try {
-			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("updateUser");
-			arr.add(userName);
-			arr.add(userType);
-			arr.add(status);
-			ServerResponse serverResponse = new ServerResponse("updateUser");
-			serverResponse.setServerResponse(arr);
-			client.handleMessageFromClientUI(serverResponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-	}
 
 	/**
 	 * Sending a query request from the server. add new supplier to the db
@@ -528,12 +508,42 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-
+	
 	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList(userName));
-			ServerResponse serverResponse = new ServerResponse("checkuserName");
+			ServerResponse serverResponse = new ServerResponse("checkuserNameIsClient");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+	}
+	
+	
+	public void checkUserNameIsClient(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(userName));
+			ServerResponse serverResponse = new ServerResponse("checkuserNameIsClient");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+	}
+	
+	
+	public void changeClientPerrmisions(String userName, String newStatus) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(userName, newStatus));
+			ServerResponse serverResponse = new ServerResponse("changeClientPerrmisions");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {

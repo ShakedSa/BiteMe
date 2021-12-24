@@ -241,21 +241,36 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Query to update a user information in the db.
+	 * Query to update a client information in the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void updateUserInformation(String userName, String userType, String status) {
+	public static void changeClientPerrmisions(String userName,String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
+		String query;
 		try {
-			String query = "UPDATE bitemedb.users SET UserType = ?, Status = ? WHERE UserName = ?";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, userType);
-			stmt.setString(2, status);
-			stmt.setString(3, userName);
-//			ResultSet rs = stmt.executeQuery();
-			stmt.executeUpdate();
+			if(status.equals("Active") || status.equals("Frozen")) {
+				query = "UPDATE bitemedb.users SET Status = ? WHERE UserName = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, status);
+				stmt.setString(2, userName);
+				stmt.executeUpdate();
+			}
+			//delete the client completlely from the db
+			else if(status.equals("Delete")) {
+				query = "delete from bitemedb.customers where UserName = ?";
+			    stmt = conn.prepareStatement(query);
+			    stmt.setString(1, userName);
+			    // execute the preparedstatement
+			    stmt.execute();
+			    
+				query = "delete from bitemedb.users where UserName = ?";
+			    stmt = conn.prepareStatement(query);
+			    stmt.setString(1, userName);
+			    // execute the preparedstatement
+			    stmt.execute();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("no man");
@@ -321,7 +336,15 @@ public class mysqlConnection {
 		PreparedStatement stmt = null;
 		int monthlyCommision = Character.getNumericValue(supplier.getMonthlyCommision().charAt(0));
 		try {
-			String query = "INSERT INTO bitemedb.suppliers"
+			//give  supplier permissions to the chosen user
+			String query = "UPDATE bitemedb.users SET UserType = ?  WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, "Supplier");
+			stmt.setString(2, supplier.getUserName());
+			stmt.executeUpdate();
+			
+			//add a new supplier to the suppliers table
+			query = "INSERT INTO bitemedb.suppliers"
 					+ "(RestaurantName, RestaurantAddress, UserName, MonthlyComission,"
 					+ " Image, RestaurantType, branch)" + "VALUES(?, ?, ?, ?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query);
@@ -752,6 +775,47 @@ public class mysqlConnection {
 					response.add(rs.getString(11));
 				} else {
 					serverResponse.setMsg("already has type");
+					return serverResponse;
+				}
+			} else {
+				serverResponse.setMsg("Error");
+				return serverResponse;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
+	
+	/**
+	 * Check if a user name number is exist and has no type
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+
+	public static ServerResponse checkUserNameIsClient(String username) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				if (rs.getString(8).equals("Customer")) {
+					response.add(rs.getString(3));
+					response.add(rs.getString(4));
+					response.add(rs.getString(13));
+				} else {
+					serverResponse.setMsg("is not client");
 					return serverResponse;
 				}
 			} else {

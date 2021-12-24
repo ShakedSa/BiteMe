@@ -2,8 +2,8 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -27,22 +27,12 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update User Information">
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Client Information">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="userPremTxt" layoutX="88.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Permition" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="userStatusTxt" layoutX="88.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Status" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="65.0" layoutX="73.0" layoutY="471.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="65.0" layoutX="54.0" layoutY="497.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
@@ -83,37 +73,74 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <ComboBox fx:id="userStatusBox" layoutX="244.0" layoutY="329.0" prefHeight="27.0" prefWidth="122.0" visible="false" />
-      <Label id="btn" fx:id="saveUpdateBtn" alignment="CENTER" disable="true" layoutX="576.0" layoutY="501.0" onMouseClicked="#saveUpdateClicked" prefHeight="25.0" prefWidth="212.0" text="Save Update">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Label>
-      <ComboBox fx:id="userPermitionBox" layoutX="244.0" layoutY="268.0" prefHeight="27.0" prefWidth="122.0" visible="false" />
-      <Text layoutX="88.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter User Name">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <TextField fx:id="userNameTxtField" layoutX="244.0" layoutY="206.0" promptText="User Name" />
-      <Text fx:id="userNameError" fill="RED" layoutX="88.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This user name doesn't exist">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="updateSucess" fill="#62d019" layoutX="132.0" layoutY="451.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The update was saved successfully!" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="20.0" />
-         </font>
-      </Text>
       <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="424.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Button fx:id="searchBtn" layoutX="459.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
+      <Label id="btn" fx:id="updateUserBtn" alignment="CENTER" layoutX="570.0" layoutY="525.0" onMouseClicked="#updateUserBtnClicked" prefHeight="25.0" prefWidth="253.0" text="Add Supplier" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="23.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <Text fx:id="updateSucess2" fill="#62d019" layoutX="123.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="87.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+         </image>
+      </ImageView>
+      <Text fx:id="userName" layoutX="89.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a client UserName">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="289.0" layoutY="191.0" prefHeight="26.0" prefWidth="178.0">
+         <cursor>
+            <Cursor fx:constant="TEXT" />
+         </cursor>
+      </TextField>
+      <Button fx:id="searchBtn" layoutX="493.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
+      <Text fx:id="userNameError" fill="RED" layoutX="567.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate UserName" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="Error" fill="RED" layoutX="525.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose one of the options" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Label fx:id="informUser" layoutX="87.0" layoutY="237.0" text="This User is currently:" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Text fx:id="userStatusLabel" fill="#62d019" layoutX="313.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
+      <Label fx:id="informUser1" layoutX="87.0" layoutY="304.0" text="Please choose the action that you wish to take: " visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="action1" layoutX="87.0" layoutY="344.0" mnemonicParsing="false" onMouseClicked="#freezeClientClicked" text="Freeze client account " visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="action2" layoutX="87.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" text="Permanently remove this client" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>

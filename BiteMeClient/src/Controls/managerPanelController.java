@@ -100,11 +100,11 @@ public class managerPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.reSetTheScreen();
+				controller.removeAllMessages();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				controller.enableEdit(false);
-				controller.removeAllMessages();
 				stage.setTitle("BiteMe - Add New Supplier");
 				stage.setScene(mainScene);
 				stage.show();
@@ -114,6 +114,8 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
+			router.getAddNewSupplierController().reSetTheScreen();
+			router.getAddNewSupplierController().removeAllMessages();
 			stage.setTitle("BiteMe - Add New Supplier");
 			stage.setScene(router.getAddNewSupplierController().getScene());
 			stage.show();
