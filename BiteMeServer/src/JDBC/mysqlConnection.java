@@ -784,7 +784,7 @@ public class mysqlConnection {
 		if(desc.get(0).equals("Quarterly Report"))
 			filename="Report" + desc.get(2) +"-Quarter"+ ((month/4)+1) + ".pdf";
 		else if(desc.get(0).equals("QuarterlyRevenueReport"))
-			filename="RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
+			filename=desc.get(3)+"RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
 		else//format: <branch>-<reportType>Report<Year>-<Month>.pdf
 			filename = desc.get(3)+"-"+desc.get(0) + desc.get(2)+ "-" +desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
@@ -1684,6 +1684,15 @@ public class mysqlConnection {
 			// TODO: handle exception
 		}
 		return date;
+	}
+	
+	/**
+	 * @param m order: reportType,month,year,branch
+	 * @return "fail" if report doesn't exists, report file otherwise.
+	 */
+	public static ServerResponse getMonthlyReport(ArrayList<String> m) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 	

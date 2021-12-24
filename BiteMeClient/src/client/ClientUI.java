@@ -501,6 +501,13 @@ public class ClientUI implements ClientIF {
 		return user;
 	}
 
+	/**
+	 * @param pdfToUpload
+	 * @param Month
+	 * @param Year
+	 * @param ReportType
+	 * sends a PDF quarterly report from manager's file system to SQL
+	 */
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
@@ -550,6 +557,16 @@ public class ClientUI implements ClientIF {
 
 	public ServerResponse getLastResponse() {
 		return lastResponse;
+	}
+
+	/**
+	 * sends a report data request to server sql
+	 * @param arr  order : reportType,month,year,branch
+	 */
+	public void getReport(ArrayList<String> arr) {
+		ServerResponse serverResponse = new ServerResponse("getReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
 	}
 
 

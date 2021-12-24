@@ -39,9 +39,9 @@ public class reportsHandler {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-	int numOfOrders;
-	int totalEarnings;
+	int numOfOrders, totalEarnings, highestEarning=0;
 	int netIncome=0;
+	String profitableRestaurant="";
 	document.addTitle("Monthly Report");
 	
 		try {
@@ -62,10 +62,15 @@ public class reportsHandler {
 						totalEarnings=mysqlConnection.getEarnings(res,Month,Year);
 						netIncome+=totalEarnings;
 						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
+						if(totalEarnings>=highestEarning) {
+							highestEarning=totalEarnings;
+							profitableRestaurant=res;
+						}
 				}
 				document.add(table);
 				font.setSize(25);
-				document.add(new Paragraph("\n\n\n total NET Income: "+netIncome,font));
+				document.add(new Paragraph("\nMost profitable restaurant: " + profitableRestaurant 
+						+ " that earned "+ highestEarning +" NIS"+"\n total NET Income: "+netIncome,font));
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -316,8 +321,9 @@ public class reportsHandler {
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-	int numOfOrders, totalEarnings;
+	int numOfOrders, totalEarnings,highestEarning=0;
 	int quarterInt = Integer.parseInt(quarter);
+	String profitableRestaurant="";
 	int netIncome=0, endMonth=quarterInt*3, startMonth=endMonth-2;
 	ArrayList<Double> values = new ArrayList<Double>();
 	document.addTitle("Quarterly Revenue Report");
@@ -347,11 +353,16 @@ public class reportsHandler {
 						values.add((double) numOfOrders);
 						netIncome+=totalEarnings;
 						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
+						if(totalEarnings>=highestEarning)
+						{
+							highestEarning=totalEarnings;
+							profitableRestaurant=res;
+						}
 				}
 				document.add(table);
 				font.setSize(25);
-				document.add(new Paragraph("\n total NET Income: "+netIncome+ "\n\n\n",font));
-				//document.newPage();
+				document.add(new Paragraph("\nMost profitable restaurant:" + profitableRestaurant +
+						" that earned "+ highestEarning +" NIS"+ "\nTotal branch income: "+netIncome+ "\n",font));
 				PdfContentByte contentByte = writer.getDirectContent();
 				PdfTemplate template = contentByte.createTemplate(350, 350);
 				Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
@@ -380,7 +391,7 @@ public class reportsHandler {
 			if(is!=null)
 				is.close(); 
 			//delete temp file from server.
-			File f = new File(Branch + "TempRevenueReport.pdf");
+			File f = new File(Branch + "TempQRevenueReport.pdf");
 			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
