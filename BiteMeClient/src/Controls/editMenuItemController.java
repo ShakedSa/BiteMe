@@ -56,9 +56,6 @@ public class editMenuItemController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private Text uploadImageTxt;
-
-	@FXML
 	private TextField itemsNameTxtField;
 
 	@FXML
@@ -81,9 +78,6 @@ public class editMenuItemController implements Initializable {
 
 	@FXML
 	private Text supplierPanelBtn;
-
-	@FXML
-	private Label uploadImageBtn;
 
 	ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
@@ -113,11 +107,15 @@ public class editMenuItemController implements Initializable {
 		String temp = optionalComponentsTxtField.getText();
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
-		String[] components = temp.split(",");
-		for (int i = 0; i < components.length; i++) {
-			optionalComponents.add(new Component(components[i]));
-		}
-		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		if (temp.equals("") == false) {
+			String[] components = temp.split(",");
+			for (int i = 0; i < components.length; i++) {
+				optionalComponents.add(new Component(components[i]));
+			}
+			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		} else //there aren't components
+			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
+		
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -145,9 +143,11 @@ public class editMenuItemController implements Initializable {
 		}
 
 		ClientGUI.client.getLastResponse().getServerResponse();
-
+		clearPage();
+//		//update the new menu in update menu controller
+//		router.getUpdateMenuController();
 		// return to update menu
-		router.getUpdateMenuController();
+		router.getSupplierPanelController().updateMenuClicked(event);
 
 	}
 
@@ -175,11 +175,9 @@ public class editMenuItemController implements Initializable {
 			errorMsg.setText("Characters aren't allowed in price");
 			return false;
 		}
-		if (price.contains(".")) {
-			if (InputValidation.checkSpecialCharacters(price)) {
-				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
-				return false;
-			}
+		if (InputValidation.checkSpecialCharacters(price) && !price.contains(".")) {
+			errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+			return false;
 		}
 		errorMsg.setText("");
 		return true;
@@ -205,10 +203,15 @@ public class editMenuItemController implements Initializable {
 		}
 	}
 
-	@FXML
-	void infoIconClicked(MouseEvent event) {
-		infoTxtArea.setVisible(true);
-	}
+    @FXML
+    void infoIconEnter(MouseEvent event) {
+    	infoTxtArea.setVisible(true);
+    }
+
+    @FXML
+    void infoIconExit(MouseEvent event) {
+    	infoTxtArea.setVisible(false);
+    }
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -219,6 +222,7 @@ public class editMenuItemController implements Initializable {
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+		clearPage();
 	}
 
 	@FXML
@@ -237,22 +241,17 @@ public class editMenuItemController implements Initializable {
     @FXML
     void returnToUpdateMenu(MouseEvent event) {
     	router.getSupplierPanelController().updateMenuClicked(event);
-		clearPage();
+    	clearPage();
     }
     
 	private void clearPage() {
-		infoTxtArea.setVisible(false);
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();
 		itemsNameTxtField.clear();
 		optionalComponents.clear();
 		priceTxtField.clear();
 		descriptionTxtArea.clear();
-	}
-
-	@FXML
-	void uploadImageClicked(MouseEvent event) {
-
+		infoTxtArea.setVisible(false);
 	}
 
 	/**
@@ -268,7 +267,7 @@ public class editMenuItemController implements Initializable {
 		router.setEditMenuItemController(this);
 		setStage(router.getStage());
 		setTypeComboBox();
-		infoTxtArea.setVisible(false);
+		clearPage();
 	}
 
 	public void setScene(Scene scene) {
@@ -281,6 +280,18 @@ public class editMenuItemController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public void setProduct(Product product) {
+		if(product!=null) {
+			selectTypeBox.setValue(product.getType());
+			itemsNameTxtField.setText(product.getDishName());
+			String components = product.getComponents().toString();
+			components = components.substring(1, components.length()-1);
+			optionalComponentsTxtField.setText(components);
+			priceTxtField.setText(((Float)product.getPrice()).toString());
+			descriptionTxtArea.setText(product.getDescription());	
+		}
 	}
 
 }

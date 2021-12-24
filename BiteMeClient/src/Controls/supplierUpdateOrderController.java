@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import Entities.Product;
 import Entities.ServerResponse;
-import Enums.Status;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
@@ -40,6 +38,15 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private TextField OrderNumberTxtField;
+	
+    @FXML
+    private Text PendingTxt;
+
+    @FXML
+    private Text ReadyTxt;
+
+    @FXML
+    private Text ReceivedTxt;
 
 	@FXML
 	private ImageView newMsgImage;
@@ -109,30 +116,29 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private Label updateOrderBtn;
+	
+    @FXML
+    private Text noUpdate;
 
 	ObservableList<String> list;
 	String orderNumber;
 	String receivedOrReady;
 	Integer deliveryNumber = 0;
-
-	// creating list of update status order
-	private void setUpdateComboBox() {
-		ArrayList<String> type = new ArrayList<String>();
-		type.add("Order Received");
-		type.add("Order Is Ready"); 
-		list = FXCollections.observableArrayList(type);
-		updateDataComboBox.setItems(list);
-	}
+	String status;
 
 	/**
 	 * This method initialized this screen
 	 */
 	private void setStartPage() {
+		updateOrderBtn.setDisable(true);
 		updateDataTxt.setVisible(false);
 		updateDataComboBox.setVisible(false);
+		updateDataComboBox.getSelectionModel().clearSelection();
 		includeDeliveryTxt.setVisible(false);
+		includeDeliveryBtn.setSelected(false);
 		includeDeliveryBtn.setVisible(false);
 		notIncludeDeliveryBtn.setVisible(false);
+		notIncludeDeliveryBtn.setSelected(false);
 		enterPlannedTineTxt.setVisible(false);
 		hourBox.setVisible(false);
 		hourTxt.setVisible(false);
@@ -141,6 +147,14 @@ public class supplierUpdateOrderController implements Initializable {
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
 		newMsgImage.setVisible(false);
+		errorMsg.setText("");
+		deliveryNumber = null;
+		noUpdate.setText("");
+		//hide status line:
+		orderStatusTxt.setVisible(false);
+		PendingTxt.setVisible(false);
+		ReceivedTxt.setVisible(false);
+		ReadyTxt.setVisible(false);
 	}
 
 	/**
@@ -208,6 +222,7 @@ public class supplierUpdateOrderController implements Initializable {
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
 		newMsgImage.setVisible(true); // new message send to customer
+		updateOrderBtn.setDisable(true);
 	}
 
 	/**
@@ -239,42 +254,6 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 		errorMsg.setText("");
 		return true;
-	}
-
-	@FXML
-	void logoutClicked(MouseEvent event) {
-		router.logOut();
-		clearPage();
-	}
-
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-		deliveryNumber = null;
-	}
-
-	@FXML
-	void returnToHomePage(MouseEvent event) {
-		router.changeSceneToHomePage();
-		clearPage();
-	}
-
-	@FXML
-	void returnToSupplierPanel(MouseEvent event) {
-		router.returnToSupplierPanel(event);
-		clearPage();
-	}
-
-	private void clearPage() {
-		setStartPage();
-		OrderNumberTxtField.clear();
-		updateDataComboBox.getSelectionModel().clearSelection();
-		errorMsg.setText("");
-		deliveryNumber = null;
-		notIncludeDeliveryBtn.setSelected(false);
-		includeDeliveryBtn.setSelected(false);
-		OrderNumberTxtField.setDisable(false);
-		orderStatusTxt.setVisible(false);
 	}
 
 	/**
@@ -313,9 +292,27 @@ public class supplierUpdateOrderController implements Initializable {
 		if (!checkServerResponse()) { //order number doesn't exist
 			return;
 		}
-		
-		OrderNumberTxtField.setDisable(true);
-		getStatusOrder();
+		setStartPage();
+		//OrderNumberTxtField.setDisable(true);
+		getStatusOrder(); //get currently order status
+		//set comboBox
+		   if(status.equals("Pending")) {
+			   ArrayList<String> type = new ArrayList<String>();
+				type.add("Order Received");
+				list = FXCollections.observableArrayList(type);
+				updateDataComboBox.setItems(list);
+		   }
+		   else if(status.equals("Received")) {
+			   ArrayList<String> type = new ArrayList<String>();
+				type.add("Order Is Ready"); 
+				list = FXCollections.observableArrayList(type);
+				updateDataComboBox.setItems(list);
+		   }
+		   else { //status.equals("Ready")) 
+			   noUpdate.setText("There is no available update for this order.");
+			   updateOrderBtn.setDisable(true);
+			   return;
+		   }
 		updateDataTxt.setVisible(true);
 		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -328,6 +325,7 @@ public class supplierUpdateOrderController implements Initializable {
 				notIncludeDelivery();
 			}
 		});
+		
 	}
 
 	/**
@@ -372,7 +370,24 @@ public class supplierUpdateOrderController implements Initializable {
 			return;
 		}
 		orderStatusTxt.setVisible(true);
-		//orderStatusTxt.setText("Order status is: " + response.get(3));
+		status = response.get(3);
+	   if(status.equals("Pending")) {
+		   PendingTxt.setVisible(true);
+		   ReceivedTxt.setVisible(false);
+		   ReadyTxt.setVisible(false);
+		   updateOrderBtn.setDisable(false);
+	   }
+	   else if(status.equals("Received")) {
+		   PendingTxt.setVisible(false);
+		   ReceivedTxt.setVisible(true);
+		   ReadyTxt.setVisible(false);
+		   updateOrderBtn.setDisable(false);
+	   }
+	   else { //status.equals("Ready")) 
+		   PendingTxt.setVisible(false);
+		   ReceivedTxt.setVisible(false);
+		   ReadyTxt.setVisible(true);
+	   }
 	}
 	
 	/**
@@ -387,8 +402,26 @@ public class supplierUpdateOrderController implements Initializable {
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
 		case "order number doesn't exist":
 			errorMsg.setText("This order doesn't exist");
+			//hide status line:
+			orderStatusTxt.setVisible(false);
+			PendingTxt.setVisible(false);
+			ReceivedTxt.setVisible(false);
+			ReadyTxt.setVisible(false);
+			//hide combo
+			updateDataTxt.setVisible(false);
+			updateDataComboBox.setVisible(false);
+			//hide success feedback
+			successMsg.setVisible(false);
+			VImage.setVisible(false);
+			//hide the buttons of ready status
+			includeDeliveryTxt.setVisible(false);
+			includeDeliveryBtn.setVisible(false);
+			notIncludeDeliveryBtn.setVisible(false);
+			notIncludeDelivery();
+			updateOrderBtn.setDisable(true);
 			return false;
 		case "success":
+			updateOrderBtn.setDisable(false);
 			return true;
 		default:
 			return false;
@@ -510,6 +543,35 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 		return res;
 	}
+	
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+		setStartPage();
+		OrderNumberTxtField.clear();
+	}
+
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+		deliveryNumber = null;
+		setStartPage();
+		OrderNumberTxtField.clear();
+	}
+
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+		setStartPage();
+		OrderNumberTxtField.clear();
+	}
+
+	@FXML
+	void returnToSupplierPanel(MouseEvent event) {
+		router.returnToSupplierPanel(event);
+		setStartPage();
+		OrderNumberTxtField.clear();
+	}
 
 	/**
 	 * Setting the avatar image of the user.
@@ -523,13 +585,11 @@ public class supplierUpdateOrderController implements Initializable {
 		router = Router.getInstance();
 		router.setSupplierUpdateOrderController(this);
 		setStage(router.getStage());
-		setUpdateComboBox();
 		setStartPage();
 		OrderNumberTxtField.clear();
-		// need to clear updateDataComboBox
+		//setUpdateComboBox();
 		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
 		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
-		clearPage();
 
 	}
 
