@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 import com.sun.javafx.tk.FileChooserType;
 
+import Entities.Months;
 import Entities.MyFile;
 import Entities.ServerResponse;
 import Entities.User;
@@ -95,6 +96,7 @@ public class uploadQuarterlyReportController implements Initializable{
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");
     	pdfToUpload = fc.showOpenDialog(router.getStage());
+    	
     	if(pdfToUpload == null || !pdfToUpload.toString().contains("pdf"))
     		InvalidMsg.setVisible(true);
     	else
@@ -125,7 +127,7 @@ public class uploadQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload, monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
+    	ClientGUI.client.sendReport(pdfToUpload,Months.getMonthNumberString(monthBox.getValue()), yearBox.getValue(), "Quarterly Report");
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }
@@ -147,9 +149,8 @@ public class uploadQuarterlyReportController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setUploadQuarterlyReportController(this);
-		String months_tmp[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
 		yearBox.getItems().addAll(generateYears());
-		monthBox.getItems().addAll(months_tmp);
+		monthBox.getItems().addAll(Months.getMonths());
 	}
 
     

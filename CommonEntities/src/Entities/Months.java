@@ -40,6 +40,10 @@ public class Months {
 		if(i<0||i> 12 ) return null;
 		return monthInNumbers.get(i);
 	}
+	public static String getMonthNumberString (String m) {
+		if(!month.containsKey(m)) return null;
+		return month.get(m).toString();
+	}
 	public static int getMonth (String m) {
 		if(!month.containsKey(m)) return -1;
 		return month.get(m);

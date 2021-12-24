@@ -198,7 +198,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. approve employer in the db
 	 * restaurant.
@@ -435,9 +435,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-		
+
 	/**
 	 * supplier update item in menu
+	 * 
 	 * @param product
 	 */
 	public void editItemInMenu(Product product) {
@@ -450,8 +451,6 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
-																											   				
 
 //	/**
 //	 * @return the searchOrder
@@ -535,6 +534,30 @@ public class ClientUI implements ClientIF {
 
 	}
 
+	public void viewORcheckQuarterReport(String quarter, String Year, String branch, String func) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch,func));
+			ServerResponse serverResponse = new ServerResponse("viewQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	public void CheckQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("CheckQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -571,5 +594,4 @@ public class ClientUI implements ClientIF {
 
 
 
-	
 }

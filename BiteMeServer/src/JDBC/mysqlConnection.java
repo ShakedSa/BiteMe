@@ -1,14 +1,20 @@
 package JDBC;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.sql.Blob;
+
+import java.io.InputStream;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -16,8 +22,10 @@ import java.sql.Time;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.itextpdf.text.pdf.codec.Base64.OutputStream;
 
 import com.sun.glass.ui.EventLoop.State;
+
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -28,6 +36,7 @@ import Entities.Customer;
 import Entities.Delivery;
 import Entities.EmployerHR;
 import Entities.ImportedUser;
+import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.Order;
@@ -774,15 +783,16 @@ public class mysqlConnection {
 	 * @param is   File inputstream to upload as a blob
 	 * @param date - report date
 	 * @param desc - contains info about the report as string arrayList
-	 *  reportType,Month,Year,branch
+	 *             reportType,Month,Year,branch
 	 */
 	public static void updateFile(InputStream is, ArrayList<String> desc) {
-		if(is==null) 
+		if (is == null)
 			return;
 		String filename;
 		int month = Integer.parseInt(desc.get(1).toString());
-		if(desc.get(0).equals("Quarterly Report"))
-			filename="Report" + desc.get(2) +"-Quarter"+ ((month/4)+1) + ".pdf";
+
+		if (desc.get(0).equals("Quarterly Report"))
+			filename = "Report" + desc.get(2) + "-Quarter" + ((month / 4) + 1) + ".pdf";
 		else if(desc.get(0).equals("QuarterlyRevenueReport"))
 			filename=desc.get(3)+"RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
 		else//format: <branch>-<reportType>Report<Year>-<Month>.pdf
@@ -900,6 +910,57 @@ public class mysqlConnection {
 			return;
 		}
 	}
+	/**
+	 * Query to get Quarterly Report OR to check if exists.
+	 * 
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 * @param Func    {"View","Check"}
+	 */
+	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch, String func) {
+
+		ServerResponse serverResponse = new ServerResponse("MyFile");
+		try {
+
+			String query = "SELECT distinct Content FROM bitemedb.reports where date like ? and Title like ? and ReportType = 'Quarterly Report' and BranchName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, year + "%");
+			stmt.setString(2, "%Quarter" + quarter + "%");
+			stmt.setString(3, branch);
+			ResultSet rs = stmt.executeQuery();
+
+			if (!rs.next()) {
+				serverResponse.setMsg("NotExists");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+			
+			if (func.toLowerCase().equals("view")) {
+				Blob blob = rs.getBlob(1);
+				MyFile file = new MyFile("Blob");
+				byte[] array = blob.getBytes(1, (int) blob.length());
+				file.initArray(array.length);
+				file.setMybytearray(array);
+				serverResponse.setServerResponse(file);
+				serverResponse.setMsg("Success");
+			} else if (func.toLowerCase().equals("check")) {
+				serverResponse.setServerResponse(null);
+				serverResponse.setMsg("Exists");
+			} else {
+				serverResponse.setMsg("Unknown Command");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
+	}
+
 	/**
 	 * Query to update customer's w4c balance.
 	 * 
@@ -1381,6 +1442,7 @@ public class mysqlConnection {
 			}
 		}
 		System.out.println("final update");
+
 //		for(int i=0; i<product.getComponents().size();i++) {
 //			try {
 //				PreparedStatement stmt;
@@ -1460,7 +1522,7 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return serverResponse;
 	}
-	
+
 	/**
 	 * Query to update customer's w4c balance.
 	 * 
@@ -1490,11 +1552,11 @@ public class mysqlConnection {
 		String query;
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
-			query ="SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
+			query = "SELECT RestaurantName FROM bitemedb.suppliers WHERE branch=? order by RestaurantName";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, Branch);
 			ResultSet rs = stmt.executeQuery();
-			while(rs.next())
+			while (rs.next())
 				arr.add(rs.getString(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1512,7 +1574,7 @@ public class mysqlConnection {
 	public static int getNumOfOrders(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
-		int num=0;
+		int num = 0;
 		ResultSet rs;
 		try {
 			query = "SELECT count(OrderNumber) FROM bitemedb.orders where MONTH(OrderReceived)=? AND YEAR(OrderReceived)=? AND RestaurantName=?";
@@ -1521,8 +1583,8 @@ public class mysqlConnection {
 			stmt.setString(2, year);
 			stmt.setString(3, restaurantName);
 			rs = stmt.executeQuery();
-			if(rs.next())
-				num=rs.getInt(1);
+			if (rs.next())
+				num = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1539,9 +1601,9 @@ public class mysqlConnection {
 	public static int getEarnings(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
-		int num=0;
+		int num = 0;
 		ResultSet rs;
-		//SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		// SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
 		try {
 			query = "SELECT SUM(FinalPrice) FROM bitemedb.ordereddelivery WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
 			stmt = conn.prepareStatement(query);
@@ -1549,8 +1611,8 @@ public class mysqlConnection {
 			stmt.setString(2, month);
 			stmt.setString(3, year);
 			rs = stmt.executeQuery();
-			if(rs.next())
-				num=rs.getInt(1);
+			if (rs.next())
+				num = rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1694,6 +1756,4 @@ public class mysqlConnection {
 		// TODO Auto-generated method stub
 		return null;
 	}
-		
-	
 }

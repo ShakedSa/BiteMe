@@ -61,6 +61,7 @@ public class employerHRPanelController implements Initializable {
 	@FXML
 	void confirmBusinessAccountBtnClicked(MouseEvent event) {
 		if (router.getConfirmBusinessAccountController() == null) {
+			
 			AnchorPane mainContainer;
 			confirmBusinessAccountController controller;
 			try {
