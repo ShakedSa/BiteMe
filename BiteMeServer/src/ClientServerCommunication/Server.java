@@ -27,12 +27,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.sun.tools.classfile.Annotation.element_value;
 
 import Entities.MyFile;
+import Entities.NewSupplier;
 import Entities.NewUser;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
+import ServerUtils.ReportsThread;
 import ServerUtils.pdfConfigs;
+import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
 import javafx.css.Style;
 import ocsf.server.AbstractServer;
@@ -53,6 +56,7 @@ public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
 	private ServerGUIController controller;
+	private ReportsThread reportsThread;
 	public static final int DEFAULT_PORT = 5555;
 
 	/**
@@ -159,14 +163,14 @@ public class Server extends AbstractServer {
 			break;
 		case "employerApproval":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			mysqlConnection.approveEmployer(m.get(1));
+			mysqlConnection.approveEmployer(m.get(0));
 			break;
 		case "rate":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
 			break;
 		case "newSupplier":
-			mysqlConnection.addNewUser((NewUser)serverResponse.getServerResponse());
+			mysqlConnection.addNewSupplier((NewSupplier)serverResponse.getServerResponse());
 			break;
 		case "InsertOrder":
 			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)serverResponse.getServerResponse()), client);
@@ -187,6 +191,11 @@ public class Server extends AbstractServer {
 		 * this.sendToClient(mysqlConnection.CheckQuarterReport(m.get(0),m.get(1),m.get(
 		 * 2)), client); break;
 		 */
+
+		case "getReport":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;
@@ -214,9 +223,20 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		//createMonthlyRevenueReportPdf("North","12");
+		//reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
+		reportsThread = new ReportsThread();
+		Thread t = new Thread(reportsThread);
+		t.start();
+		int date[]=reportsHandler.getLastReportDate();
+		int year=date[0],month=date[1];
+		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
+		{//report updates needed for last report month+1:
+		//(no need next ones since server was off and no other data was collected)
+			reportsHandler.createAllReports(month+1, year);
+		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
+
 	}
 
 	/**

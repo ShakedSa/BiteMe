@@ -16,7 +16,7 @@ public class NewSupplier implements Serializable{
 	private String resturantType;
 	private String resturantName;
 	private String resturantAddress;
-	private Blob imagUpload;
+	private MyFile imagUpload;
 	private String monthlyCommision;
 	private BranchName branchName;
 	/**
@@ -29,7 +29,7 @@ public class NewSupplier implements Serializable{
 	 * @param branchName
 	 */
 	public NewSupplier(String userName, String resturantType, String resturantName, String resturantAddress,
-			Blob imagUpload, String monthlyCommision, BranchName branchName) {
+			MyFile imagUpload, String monthlyCommision, BranchName branchName) {
 		super();
 		this.userName = userName;
 		this.resturantType = resturantType;
@@ -66,7 +66,7 @@ public class NewSupplier implements Serializable{
 	/**
 	 * @return the imagUpload
 	 */
-	public Blob getImagUpload() {
+	public MyFile getImagUpload() {
 		return imagUpload;
 	}
 	/**
@@ -108,7 +108,7 @@ public class NewSupplier implements Serializable{
 	/**
 	 * @param imagUpload the imagUpload to set
 	 */
-	public void setImagUpload(Blob imagUpload) {
+	public void setImagUpload(MyFile imagUpload) {
 		this.imagUpload = imagUpload;
 	}
 	/**

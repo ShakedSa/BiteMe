@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -35,7 +34,7 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="215.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
+      <Text layoutX="220.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -81,44 +80,37 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="employerCode" layoutX="199.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Code">
+      <Text fx:id="noApprovals" fill="RED" layoutX="258.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employerCodeTxtField" layoutX="463.0" layoutY="205.0" promptText="Employer Code" />
-      <Text fx:id="noApprovals" fill="RED" layoutX="200.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="approvalSuccsess1" fill="#62d019" layoutX="256.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This Employer was approved successfully!" visible="false">
+      <Text fx:id="approvalSuccsess1" fill="#62d019" layoutX="241.0" layoutY="523.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This Employer was approved successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fx:id="approvalSuccsess" fitHeight="50.0" fitWidth="34.0" layoutX="212.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="approvalSuccsess" fitHeight="50.0" fitWidth="34.0" layoutX="197.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text fx:id="employerCompanyName" layoutX="199.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Employer Company Name">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <TextField fx:id="employerCompanyNameTxtField" layoutX="463.0" layoutY="264.0" promptText="Employer Name" />
-      <TableView fx:id="approvalTable" layoutX="199.0" layoutY="345.0" prefHeight="105.0" prefWidth="437.0">
+      <TableView fx:id="approvalTable" layoutX="172.0" layoutY="263.0" onMousePressed="#copyTableData" prefHeight="194.0" prefWidth="497.0">
         <columns>
           <TableColumn fx:id="EmployerCode" prefWidth="115.0" text="EmployerCode" />
           <TableColumn fx:id="EmployeCompanyName" prefWidth="150.0" text="EmployeCompanyName" />
-            <TableColumn fx:id="IsApproved" prefWidth="82.0" text="IsApproved" />
-            <TableColumn fx:id="HRname" prefWidth="102.0" text="HRname" />
+            <TableColumn fx:id="IsApproved" prefWidth="95.0" text="IsApproved" />
+            <TableColumn fx:id="HRname" prefWidth="136.0" text="HRname" />
         </columns>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </TableView>
+      <Text fx:id="instructions" layoutX="274.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Double click on the employer that you want to approve, then press &quot;Approval&quot;" wrappingWidth="289.919921875">
+         <font>
+            <Font name="Berlin Sans FB" size="17.0" />
+         </font>
+      </Text>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

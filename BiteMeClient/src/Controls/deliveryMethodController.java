@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Entities.Customer;
 import Entities.Delivery;
@@ -26,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -165,7 +164,7 @@ public class deliveryMethodController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Delivery");
 	}
 
 	/**
@@ -303,12 +302,16 @@ public class deliveryMethodController implements Initializable {
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		/** Validating method selection. */
-		String selectedMethod = deliveryMethodBox.getSelectionModel().getSelectedItem();
+		SingleSelectionModel<String> selectedMethod = deliveryMethodBox.getSelectionModel();
 		if (selectedMethod == null) {
 			errorMsg.setText("Please select delivery method.");
 			return;
 		}
-		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
+		if(selectedMethod.getSelectedItem() == null || selectedMethod.getSelectedItem().equals("")) {
+			errorMsg.setText("Please select delivery method.");
+			return;
+		}
+		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod.getSelectedItem());
 		Delivery newDelivery;
 		String address = addressTxtField.getText();
 		String firstName = firstNameTxtField.getText();
@@ -495,6 +498,7 @@ public class deliveryMethodController implements Initializable {
 	 * value.
 	 */
 	public void createCombo() {
+		deliveryMethodBox.getItems().clear();
 		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
 		ObservableList<String> typeOfOrders;

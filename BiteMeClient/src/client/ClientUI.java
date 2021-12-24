@@ -150,7 +150,7 @@ public class ClientUI implements ClientIF {
 	 * 
 	 * @param restaurantName
 	 */
-	public void addNewSupplier(NewUser supplier) {
+	public void addNewSupplier(NewSupplier supplier) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("newSupplier");
 			serverResponse.setServerResponse(supplier);
@@ -208,9 +208,11 @@ public class ClientUI implements ClientIF {
 	public void employerApproval(String employerCode) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.add("employerApproval");
+			//arr.add("employerApproval");
 			arr.add(employerCode);
-			client.handleMessageFromClientUI(arr);
+			ServerResponse serverResponse = new ServerResponse("employerApproval");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -498,6 +500,13 @@ public class ClientUI implements ClientIF {
 		return user;
 	}
 
+	/**
+	 * @param pdfToUpload
+	 * @param Month
+	 * @param Year
+	 * @param ReportType
+	 * sends a PDF quarterly report from manager's file system to SQL
+	 */
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
@@ -572,5 +581,17 @@ public class ClientUI implements ClientIF {
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
+
+	/**
+	 * sends a report data request to server sql
+	 * @param arr  order : reportType,month,year,branch
+	 */
+	public void getReport(ArrayList<String> arr) {
+		ServerResponse serverResponse = new ServerResponse("getReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+
 
 }

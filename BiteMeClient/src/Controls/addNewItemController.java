@@ -103,7 +103,7 @@ public class addNewItemController implements Initializable {
 
 		list = FXCollections.observableArrayList(type);
 		selectTypeBox.setItems(list);
-	}
+	} 
 
 	@FXML
 	void addItemToMenuClicked(MouseEvent event) {
@@ -149,7 +149,7 @@ public class addNewItemController implements Initializable {
 		ClientGUI.client.getLastResponse().getServerResponse();
 
 		// return to update menu page
-		router.getSupplierPanelController().updateMenuClicked(event);
+		router.getUpdateMenuController();
 	}
 
 	private boolean checkInputs() {
@@ -233,6 +233,12 @@ public class addNewItemController implements Initializable {
 		router.returnToSupplierPanel(event);
 		clearPage();
 	}
+	
+    @FXML
+    void returnToUpdateMenu(MouseEvent event) {
+    	router.getSupplierPanelController().updateMenuClicked(event);
+		clearPage();
+    }
 
 	@FXML
 	void uploadImageClicked(MouseEvent event) {

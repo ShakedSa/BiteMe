@@ -147,7 +147,7 @@ public class editMenuItemController implements Initializable {
 		ClientGUI.client.getLastResponse().getServerResponse();
 
 		// return to update menu
-		router.getSupplierPanelController().updateMenuClicked(event);
+		router.getUpdateMenuController();
 
 	}
 
@@ -213,6 +213,7 @@ public class editMenuItemController implements Initializable {
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
+		clearPage();
 	}
 
 	@FXML
@@ -223,11 +224,30 @@ public class editMenuItemController implements Initializable {
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
+		clearPage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
+		clearPage();
+	}
+	
+
+    @FXML
+    void returnToUpdateMenu(MouseEvent event) {
+    	router.getSupplierPanelController().updateMenuClicked(event);
+		clearPage();
+    }
+    
+	private void clearPage() {
+		infoTxtArea.setVisible(false);
+		errorMsg.setText("");
+		selectTypeBox.getSelectionModel().clearSelection();
+		itemsNameTxtField.clear();
+		optionalComponents.clear();
+		priceTxtField.clear();
+		descriptionTxtArea.clear();
 	}
 
 	@FXML

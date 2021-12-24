@@ -59,7 +59,7 @@ public class orderReceivedController implements Initializable {
 	private int orderNumber;
 	@FXML
 	void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Received");
 	}
 
 	@FXML

@@ -77,6 +77,7 @@ public class supplierPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				//controller.Menu();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -88,6 +89,7 @@ public class supplierPanelController implements Initializable {
 				return; 
 			}
 		} else {
+			//router.getCreateMenuController().Menu();
 			stage.setTitle("BiteMe - Create Menu");
 			stage.setScene(router.getCreateMenuController().getScene());
 			stage.show();
@@ -111,6 +113,7 @@ public class supplierPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.Menu();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -122,6 +125,7 @@ public class supplierPanelController implements Initializable {
 				return; 
 			}
 		} else {
+			router.getUpdateMenuController().Menu();
 			stage.setTitle("BiteMe - Update Menu");
 			stage.setScene(router.getUpdateMenuController().getScene());
 			stage.show();
