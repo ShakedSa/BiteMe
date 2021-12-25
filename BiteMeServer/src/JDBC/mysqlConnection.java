@@ -794,7 +794,7 @@ public class mysqlConnection {
 		String filename;
 		int month = Integer.parseInt(desc.get(1).toString());
 		if (desc.get(0).equals("Quarterly Report"))
-			filename = "Report" + desc.get(2) + "-Quarter" + ((month / 4) + 1) + ".pdf";
+			filename = "Report" + desc.get(2) + "-Quarter" + month  + ".pdf";
 		else if(desc.get(0).equals("QuarterlyRevenueReport"))
 			filename=desc.get(3)+"RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
 		else//format: <branch>-<reportType>Report<Year>-<Month>.pdf

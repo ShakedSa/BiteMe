@@ -102,7 +102,7 @@ public class uploadQuarterlyReportController implements Initializable{
     	else
     		InvalidMsg.setVisible(false);
     }
-
+ 
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
@@ -127,7 +127,7 @@ public class uploadQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload,Months.getMonthNumberString(monthBox.getValue()), yearBox.getValue(), "Quarterly Report");
+    	ClientGUI.client.sendReport(pdfToUpload,monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }
@@ -149,8 +149,9 @@ public class uploadQuarterlyReportController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setUploadQuarterlyReportController(this);
+		String[] tempQuarter= {"1", "2", "3", "4"};
 		yearBox.getItems().addAll(generateYears());
-		monthBox.getItems().addAll(Months.getMonths());
+		monthBox.getItems().addAll(tempQuarter);
 	}
 
     

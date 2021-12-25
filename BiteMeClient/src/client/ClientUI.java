@@ -519,8 +519,9 @@ public class ClientUI implements ClientIF {
 	 * @param Year
 	 * @param ReportType
 	 * sends a PDF quarterly report from manager's file system to SQL
-	 */
+	 */ 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
+		ServerResponse serverResponse = new ServerResponse("uploadQuarterlyReport");
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
 		User user = (User) this.user.getServerResponse();
@@ -538,7 +539,8 @@ public class ClientUI implements ClientIF {
 			msg.setSize(mybytearray.length);
 
 			bis.read(msg.getMybytearray(), 0, mybytearray.length);
-			client.handleMessageFromClientUI(msg);
+			serverResponse.setServerResponse(msg);
+			client.handleMessageFromClientUI(serverResponse);
 			fis.close();
 			bis.close();
 		} catch (Exception e) {

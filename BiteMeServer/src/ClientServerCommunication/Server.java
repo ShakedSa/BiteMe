@@ -3,6 +3,7 @@ package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import Entities.Customer;
 import Entities.MyFile;
@@ -56,20 +57,7 @@ public class Server extends AbstractServer {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if (msg instanceof MyFile) // handle upload pdf file to sql
-		{
-			MyFile message = ((MyFile) msg);
-			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
-			try {
-				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
-				mysqlConnection.updateFile(is, message.getDescription());
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while handling files in Server");
-			}
-			return;
-		}
-		
+	
 		controller.setMessage("Msg recieved:" + msg);
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
@@ -182,6 +170,17 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
 
+			break;
+		case "uploadQuarterlyReport":
+			MyFile message = (MyFile) serverResponse.getServerResponse();
+			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
+			try {
+			InputStream is = new ByteArrayInputStream(((MyFile) message).getMybytearray());
+			mysqlConnection.updateFile(is, message.getDescription());
+		} catch (Exception e) {
+			e.printStackTrace();
+			controller.setMessage("Error while handling files in Server");
+		}
 			break;
 		default:
 			sendToClient("default", client);
