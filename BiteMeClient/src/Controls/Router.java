@@ -546,6 +546,7 @@ public class Router {
 				ProfileController.setAvatar();
 				ProfileController.initProfile();
 				ProfileController.setItemsCounter();
+				ProfileController.setLastScene(stage.getScene(), stage.getTitle());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				ProfileController.setScene(mainScene);
@@ -560,6 +561,7 @@ public class Router {
 		{
 			ProfileController.initProfile();
 			ProfileController.setItemsCounter();
+			ProfileController.setLastScene(stage.getScene(), stage.getTitle());
 			stage.setTitle("BiteMe - Profile");
 			stage.setScene(ProfileController.getScene());
 			stage.show();
