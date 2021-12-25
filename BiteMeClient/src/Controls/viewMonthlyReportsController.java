@@ -64,7 +64,7 @@ public class viewMonthlyReportsController implements Initializable{
 
     @FXML
     private ComboBox<String> yearBox;
-    
+     
 
     @FXML
     private Text reportErrorMsg;
@@ -84,7 +84,39 @@ public class viewMonthlyReportsController implements Initializable{
     	arr.add(yearBox.getValue());
     	arr.add(user.getMainBranch().toString());
     	// fetch report from server's sql (if valid)
-    	ClientGUI.client.getReport(arr);
+    	//wait for response:
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+		    	ClientGUI.client.getReport(arr);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		//wait for thread to finish (response receiver)
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		//check if report exists:
+		ServerResponse response = ClientGUI.client.getLastResponse();
+		if(response==null) {
+			reportErrorMsg.setVisible(true);
+		}
+		else {
+			reportErrorMsg.setVisible(false);
+			
+		}
+		
     }
     
 	@FXML

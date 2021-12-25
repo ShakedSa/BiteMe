@@ -2,33 +2,13 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.sql.ResultSet;
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.sun.tools.classfile.Annotation.element_value;
-
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -37,7 +17,6 @@ import ServerUtils.ReportsThread;
 import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
-import javafx.css.Style;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -78,20 +57,6 @@ public class Server extends AbstractServer {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if (msg instanceof MyFile) // handle upload pdf file to sql
-		{
-			MyFile message = ((MyFile) msg);
-			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
-			try {
-				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
-				mysqlConnection.updateFile(is, message.getDescription());
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while handling files in Server");
-			}
-			return;
-		}
-
 		controller.setMessage("Msg recieved:" + msg);
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
@@ -183,6 +148,11 @@ public class Server extends AbstractServer {
 		case "editItemInMenu":
 			this.sendToClient(mysqlConnection.editItemInMenu((Product) serverResponse.getServerResponse()), client);
 			break;
+		case "customersOrders":
+			this.sendToClient(mysqlConnection.customersOrder((Customer)serverResponse.getServerResponse()), client);
+			break;
+		case "UpdateorderReceived":
+			this.sendToClient(mysqlConnection.updateOrderReceived((Order)serverResponse.getServerResponse()), client);
 		case "deleteItemFromMenu":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.deleteItemFromMenu(m.get(0), m.get(1)), client);
@@ -197,14 +167,24 @@ public class Server extends AbstractServer {
 		 * this.sendToClient(mysqlConnection.CheckQuarterReport(m.get(0),m.get(1),m.get(
 		 * 2)), client); break;
 		 */
-
 		case "getReport":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getMonthlyReport(m), client);
+			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
 			break;
 		case "getSupplierImage":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.getSupplierImage(m.get(0)), client);
+			break;
+		case "uploadQuarterlyReport":
+			MyFile message = (MyFile) serverResponse.getServerResponse();
+			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
+			try {
+			InputStream is = new ByteArrayInputStream(((MyFile) message).getMybytearray());
+			mysqlConnection.updateFile(is, message.getDescription());
+		} catch (Exception e) {
+			e.printStackTrace();
+			controller.setMessage("Error while handling files in Server");
+		}
 			break;
 		default:
 			sendToClient("default", client);
@@ -237,14 +217,13 @@ public class Server extends AbstractServer {
 		reportsThread = new ReportsThread();
 		Thread t = new Thread(reportsThread);
 		t.start();
-		int date[] = reportsHandler.getLastReportDate();
-		int year = date[0], month = date[1];
-		if (year != LocalDate.now().getYear() || month != LocalDate.now().getMonthValue()) {// report updates needed for
-																							// last report month+1:
-																							// (no need next ones since
-																							// server was off and no
-																							// other data was collected)
-			reportsHandler.createAllReports(month + 1, year);
+		int date[]=reportsHandler.getLastReportDate();
+		int year=date[0],month=date[1];
+		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
+		{//report updates needed for last report month+1:
+		//(no need next ones since server was off and no other data was collected)
+		//	reportsHandler.createAllReports(month+1, year);
+
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());

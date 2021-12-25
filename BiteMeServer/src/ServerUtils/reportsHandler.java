@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -261,17 +262,13 @@ public class reportsHandler {
 	 */
 	public static void createAllReports(int month, int year) {
 		String[] Branches = {"North","Central","South"};
-		if(month==13) // make sure to create new year reports if needed
+		if(month==13) // make sure to create new year reports if needed (since we enter month+1 here on server.java)
 		{
-			month=0;
+			month=1;
 			year++;
 		}
-		if(month%3==0) {//quarter ended, create new quarter revenue report.
-			for(String branch:Branches)
-    			reportsHandler.quarterlyRevenueReportPdf(branch, Integer.toString(month/3), Integer.toString(year));
-		}
+		createQuarterlyReports(month, year, Branches);
 		String monthS=Integer.toString(month),yearS=Integer.toString(year);
-
 		for(String s:Branches) {
 			createMonthlyOrdersReportPdf(s, monthS, yearS);
 			createMonthlyPerformanceReportPdf(s, monthS, yearS);
@@ -293,9 +290,8 @@ public class reportsHandler {
 			year=d.getYear()+1900;
 		}
 		else {//if no reports were ever made, return last month (to initialize empty reports on sql)
-			month=LocalDate.now().getMonthValue()-1;
+			month=LocalDate.now().getMonthValue()-2;
 			year=LocalDate.now().getYear();
-			System.out.println(month + " "+year);
 			if(month==0) {
 				month=12;
 				year--;
@@ -310,6 +306,13 @@ public class reportsHandler {
 	}
 	
 	
+	public static void createQuarterlyReports(int month, int year, String[] Branches) {
+		int currentMonth= LocalDate.now().getMonthValue();
+		if(month%3==0 || (currentMonth-1)%3==0 ) {//quarter ended, create new quarter revenue report.
+			for(String branch:Branches)
+    			reportsHandler.quarterlyRevenueReportPdf(branch, Integer.toString(month/3), Integer.toString(year));
+		}
+	}
 
 
 	/**
@@ -368,7 +371,8 @@ public class reportsHandler {
 				Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
 				Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
 				JFreeChart chart =pdfConfigs.generateHist(values);
-				chart.draw(graphics2d, rectangle2d);
+				if(chart!=null)
+					chart.draw(graphics2d, rectangle2d);
 				graphics2d.dispose();
 				contentByte.addTemplate(template, 0, 0);
 			document.close();

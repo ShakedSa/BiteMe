@@ -18,15 +18,14 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.sql.Time;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.itextpdf.text.pdf.codec.Base64.OutputStream;
-
 import com.sun.glass.ui.EventLoop.State;
-
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
@@ -112,9 +111,10 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		User user = null;
 		try {
-			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ? AND Password = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, userName);
+			stmt.setString(2, password);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				if (rs.getInt(12) == 1) {
@@ -122,16 +122,17 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (!rs.getString(2).equals(password)) {
-					serverResponse.setMsg("Wrong Password");
+				if (rs.getString(13).equals("Frozen")) {
+					serverResponse.setMsg("Frozen");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (rs.getString(8).equals("User")) {
+				if (rs.getString(8).equals("User")||rs.getString(13).equals("Unverified")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
+				
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
 				String id = rs.getString(5);
@@ -540,7 +541,7 @@ public class mysqlConnection {
 		try {
 			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+ 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				favRestaurants.put(rs.getString(1), null);
 			}
@@ -795,11 +796,11 @@ public class mysqlConnection {
 		String filename;
 		int month = Integer.parseInt(desc.get(1).toString());
 		if (desc.get(0).equals("Quarterly Report"))
-			filename = "Report" + desc.get(2) + "-Quarter" + ((month / 4) + 1) + ".pdf";
-		else if (desc.get(0).equals("QuarterlyRevenueReport"))
-			filename = desc.get(3) + "RevenueReport" + desc.get(2) + "-Quarter" + month + ".pdf";
-		else// format: <branch>-<reportType>Report<Year>-<Month>.pdf
-			filename = desc.get(3) + "-" + desc.get(0) + desc.get(2) + "-" + desc.get(1) + ".pdf";
+			filename = "Report" + desc.get(2) + "-Quarter" + month  + ".pdf";
+		else if(desc.get(0).equals("QuarterlyRevenueReport"))
+			filename=desc.get(3)+"RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
+		else//format: <branch>-<reportType>Report<Year>-<Month>.pdf
+			filename = desc.get(3)+"-"+desc.get(0) + desc.get(2)+ "-" +desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
@@ -1649,7 +1650,6 @@ public class mysqlConnection {
 			query = "SELECT distinct(DishName) FROM bitemedb.productinorder "
 					+ "WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders "
 					+ "WHERE RestaurantName=? and MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
-
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, month);
@@ -1675,8 +1675,7 @@ public class mysqlConnection {
 
 		PreparedStatement stmt;
 		String query;
-		int num = 0;
-
+		int num=0;
 		try {
 			query = "SELECT Count(DishName) as count FROM bitemedb.productinorder WHERE"
 					+ " Dishname=? and OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders"
@@ -1707,8 +1706,7 @@ public class mysqlConnection {
 		String query;
 		int delayedOrders = 0;
 		ResultSet rs;
-		// get delayed non preorders:
-
+		//get delayed non preorders:
 		try {
 			query = "SELECT count(OrderNumber) as num FROM bitemedb.orders where MONTH(OrderReceived)=?"
 					+ " AND YEAR(OrderReceived)=? AND RestaurantName=? AND HOUR(TIMEDIFF(CustomerReceived, OrderReceived))>1"
@@ -1721,9 +1719,8 @@ public class mysqlConnection {
 			stmt.setString(3, restaurantName);
 			stmt.setString(4, "Preorder Delivery");
 			rs = stmt.executeQuery();
-			if (rs.next())
-				delayedOrders += rs.getInt(1);
-
+			if(rs.next())
+				delayedOrders+=rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1749,7 +1746,92 @@ public class mysqlConnection {
 		return delayedOrders;
 	}
 
+
+  
+	 * Query to received all the open orders that the customer have.
+	 * 
+	 * @param customer
+	 * @return
+	 */
+	public static ServerResponse customersOrder(Customer customer) {
+		ServerResponse serverResponse = new ServerResponse("CustomersOrders");
+		PreparedStatement stmt;
+		ArrayList<Order> orders = new ArrayList<>();
+		try {
+			String query = "SELECT OrderNumber, FinalPrice FROM bitemedb.ordereddelivery WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, customer.getUserName());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Order order = getOrderInfo(rs.getInt(1), rs.getFloat(2));
+				if (order != null) {
+					orders.add(order);
+				}
+			}
+			serverResponse.setMsg("Success");
+			serverResponse.setServerResponse(orders);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return serverResponse;
+	}
+
 	/**
+	 * Private query to received orders by their order number.
+	 * 
+	 * @param orderNumber
+	 * @param finalPrice
+	 * @return
+	 */
+	private static Order getOrderInfo(int orderNumber, float finalPrice) {
+		Order order = new Order();
+		PreparedStatement stmt;
+		try {
+			String query = "SELECT RestaurantName, OrderTime, OrderStatus FROM bitemedb.orders WHERE OrderNumber = ? AND CustomerReceived IS NULL";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				order.setOrderNumber(orderNumber);
+				order.setRestaurantName(rs.getString(1));
+				order.setDateTime(rs.getString(2));
+				order.setOrderPrice(finalPrice);
+				order.setStatus(rs.getString(3));
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return order;
+	}
+
+	/**
+	 * Query to update that the customer received the order.
+	 * 
+	 * @param order
+	 * @return
+	 */
+	public static ServerResponse updateOrderReceived(Order order) {
+		ServerResponse serverResponse = new ServerResponse("Update Order");
+		PreparedStatement stmt;
+		try {
+			String query = "UPDATE bitemedb.orders SET CustomerReceived = ? WHERE OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, LocalDateTime.now().toString());
+			stmt.setInt(2, order.getOrderNumber());
+			stmt.executeUpdate();
+			serverResponse.setMsg("Success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return serverResponse;
+	}
+
+  	/**
 	 * delete an item from menu by supplier
 	 * 
 	 * @param restaurantName
@@ -1867,7 +1949,10 @@ public class mysqlConnection {
 		return getMenuToOrder(restaurantName);
 	}
 
-	// SELECT Date FROM bitemedb.reports order by Date desc;
+	//SELECT Date FROM bitemedb.reports order by Date desc;
+	/**
+	 * @return creation date of latest report
+	 */
 	public static Date checkLastReportDate() {
 		Statement stmt;
 		ResultSet rs;
@@ -1887,9 +1972,30 @@ public class mysqlConnection {
 	 * @param m order: reportType,month,year,branch
 	 * @return "fail" if report doesn't exists, report file otherwise.
 	 */
+	//SELECT * FROM bitemedb.reports WHERE MONTH(date)=11 AND YEAR(DATE)=2021 and BranchName="north" and ReportType like "%Perf%";
 	public static ServerResponse getMonthlyReport(ArrayList<String> m) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement stmt;
+		Blob content;
+		ServerResponse serverResponse = new ServerResponse("ReportContent");
+		try {
+			String query = "SELECT Content FROM bitemedb.reports WHERE MONTH(date)=? AND YEAR(DATE)=? and BranchName=? and ReportType like ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, m.get(1)); // month
+			stmt.setString(2, m.get(2)); // year
+			stmt.setString(3, m.get(3)); // branch
+			stmt.setString(4, "%"+m.get(0)+"%"); // report type
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				content=rs.getBlob(1);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		serverResponse.setServerResponse(content);
+		return serverResponse;
 	}
 
 	public static ServerResponse getSupplierImage(String restaurant) {

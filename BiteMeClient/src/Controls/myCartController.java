@@ -2,22 +2,29 @@ package Controls;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
+import Entities.Customer;
 import Entities.Order;
 import Entities.Product;
 import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -30,14 +37,20 @@ public class myCartController implements Initializable {
 	private Stage stage;
 
 	private Scene scene;
+	@FXML
+	private ImageView backButton;
 
 	ScrollPane orderDisplay;
+	Text cartTitle = new Text("My Cart");
 	Label itemsTitle;
 	Label deliveryTitle;
 	Label deliveryInformation;
 	Label totalPrice;
 	Label removeItem;
+	Label tableTitle;
+	TableView<Order> orderTable;
 	private String lastPage;
+	Label errorMsg;
 
 	@FXML
 	private Rectangle avatar;
@@ -57,12 +70,16 @@ public class myCartController implements Initializable {
 	@FXML
 	private Text restaurantsBtn;
 
-	@FXML
 	private AnchorPane root;
+
+	@FXML
+	private ScrollPane scrollRoot;
 
 	/** When ever the user switch scenes remove the order from the screen. */
 	private void clearScreen() {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, totalPrice, removeItem);
+		root.getChildren().clear();
+		scrollRoot.setContent(null);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, totalPrice, removeItem, orderTable, tableTitle);
 	}
 
 	@FXML
@@ -212,86 +229,197 @@ public class myCartController implements Initializable {
 	 */
 	public void displayOrder() {
 		setItemsCounter();
+		backButton.setLayoutX(52);
+		backButton.setLayoutY(570);
+		backButton.setOnMouseClicked(e -> returnToLastPage(e));
+		backButton.setCursor(Cursor.HAND);
+		root = new AnchorPane();
+		root.getChildren().add(backButton);
+		cartTitle.setFont(new Font("Berlin Sans FB", 30));
+		cartTitle.setLayoutX(51);
+		cartTitle.setLayoutY(41);
 		Order order = router.getOrder();
 		ArrayList<Product> products = order.getProducts();
 		itemsTitle = new Label("Products:");
-		itemsTitle.setFont(new Font("Berlin Sans FB", 14));
-		itemsTitle.setLayoutX(120);
+		itemsTitle.setFont(new Font("Berlin Sans FB", 16));
+		itemsTitle.setLayoutX(140);
 		itemsTitle.setLayoutY(65);
 		if (products == null || products.size() == 0) {
 			itemsTitle.setText("Cart is empty");
 			if (root != null) {
-				root.getChildren().addAll(itemsTitle);
+				root.getChildren().addAll(cartTitle, itemsTitle);
 			}
-			return;
-		}
-		orderDisplay = new ScrollPane();
-		Pane orderDisplayContent = new Pane();
-		int i = 0;
-		/** Creating the pane layout of the screen. */
-		for (Product p : products) {
-			Pane pane = new Pane();
-			Label nameLabel = new Label(p.getDishName());
-			Label priceLabel = new Label(p.getPrice() + "\u20AA");
-			nameLabel.setStyle("-fx-padding: 10 0");
-			priceLabel.setStyle("-fx-padding: 10 0");
-			nameLabel.setLayoutX(15);
-			priceLabel.setLayoutX(260);
-			if (i % 2 != 0) {
-				pane.setLayoutX(305);
-				pane.setLayoutY((i - 1) * 25 + 15);
-			} else {
-				pane.setLayoutY(i * 25 + 15);
-				pane.setLayoutX(5);
-			}
-			pane.setId("menuBtn");
-			pane.getStyleClass().add(p.getDishName());
-			/** On click event to select items to remove. */
-			pane.setOnMouseClicked(e -> {
-				if (pane.getStyleClass().contains("toRemove")) {
-					pane.getStyleClass().remove("toRemove");
+		} else {
+			orderDisplay = new ScrollPane();
+			Pane orderDisplayContent = new Pane();
+			int i = 0;
+			/** Creating the pane layout of the screen. */
+			for (Product p : products) {
+				Pane pane = new Pane();
+				Label nameLabel = new Label(p.getDishName());
+				Label priceLabel = new Label(p.getPrice() + "\u20AA");
+				nameLabel.setStyle("-fx-padding: 10 0");
+				priceLabel.setStyle("-fx-padding: 10 0");
+				nameLabel.setLayoutX(15);
+				priceLabel.setLayoutX(260);
+				if (i % 2 != 0) {
+					pane.setLayoutX(305);
+					pane.setLayoutY((i - 1) * 25 + 15);
 				} else {
-					pane.getStyleClass().add("toRemove");
+					pane.setLayoutY(i * 25 + 15);
+					pane.setLayoutX(5);
 				}
-			});
-			pane.getChildren().addAll(nameLabel, priceLabel);
-			orderDisplayContent.getChildren().add(pane);
-			i++;
-		}
-		orderDisplay.setContent(orderDisplayContent);
-		orderDisplay.setPrefWidth(676);
-		orderDisplay.setMaxHeight(130);
-		orderDisplay.setLayoutX(100);
-		orderDisplay.setLayoutY(100);
-		orderDisplay.setId("scrollPane");
-		totalPrice = new Label("Total: " + order.getOrderPrice() + "\u20AA");
-		totalPrice.setFont(new Font("Berlin Sans FB", 22));
-		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
-		totalPrice.setLayoutX(600);
-		totalPrice.setLayoutY(250);
-		removeItem = new Label("Remove Selected");
-		removeItem.getStyleClass().add("removeBtn");
-		removeItem.setFont(new Font("Berlin Sans FB", 16));
-		removeItem.setLayoutX(100);
-		removeItem.setLayoutY(250);
-		/** On click event to remove all selected products. */
-		removeItem.setOnMouseClicked(e -> {
-			ArrayList<Product> newProducts = new ArrayList<>();
-			orderDisplayContent.getChildren().removeIf(pane -> pane.getStyleClass().contains("toRemove"));
-			products.forEach(p -> {
-				/** Creating new products list */
-				orderDisplayContent.getChildren().forEach(pane -> {
-					if (pane.getStyleClass().contains(p.getDishName())) {
-						newProducts.add(p);
+				pane.setId("menuBtn");
+				pane.getStyleClass().add(p.getDishName());
+				/** On click event to select items to remove. */
+				pane.setOnMouseClicked(e -> {
+					if (pane.getStyleClass().contains("toRemove")) {
+						pane.getStyleClass().remove("toRemove");
+					} else {
+						pane.getStyleClass().add("toRemove");
 					}
 				});
+				pane.getChildren().addAll(nameLabel, priceLabel);
+				orderDisplayContent.getChildren().add(pane);
+				i++;
+			}
+			orderDisplay.setContent(orderDisplayContent);
+			orderDisplay.setPrefWidth(630);
+			orderDisplay.setMaxHeight(130);
+			orderDisplay.setLayoutX(120);
+			orderDisplay.setLayoutY(100);
+			orderDisplay.setId("scrollPane");
+			totalPrice = new Label("Total: " + order.getOrderPrice() + "\u20AA");
+			totalPrice.setFont(new Font("Berlin Sans FB", 22));
+			totalPrice.setStyle("-fx-text-fill: #0a62a1;");
+			totalPrice.setLayoutX(620);
+			totalPrice.setLayoutY(250);
+			removeItem = new Label("Remove Selected");
+			removeItem.getStyleClass().add("removeBtn");
+			removeItem.setFont(new Font("Berlin Sans FB", 16));
+			removeItem.setLayoutX(120);
+			removeItem.setLayoutY(250);
+			/** On click event to remove all selected products. */
+			removeItem.setOnMouseClicked(e -> {
+				ArrayList<Product> newProducts = new ArrayList<>();
+				orderDisplayContent.getChildren().removeIf(pane -> pane.getStyleClass().contains("toRemove"));
+				products.forEach(p -> {
+					/** Creating new products list */
+					orderDisplayContent.getChildren().forEach(pane -> {
+						if (pane.getStyleClass().contains(p.getDishName())) {
+							newProducts.add(p);
+						}
+					});
+				});
+				router.setBagItems(newProducts);
+				clearScreen();
+				displayOrder();
 			});
-			router.setBagItems(newProducts);
-			clearScreen();
-			displayOrder();
+			root.getChildren().addAll(cartTitle, orderDisplay, itemsTitle, totalPrice, removeItem);
+		}
+		scrollRoot.setContent(root);
+		displayOpenOrders();
+	}
+
+	/**
+	 * Private method to build the view table with all the customer's open orders.
+	 */
+	@SuppressWarnings("unchecked")
+	private void displayOpenOrders() {
+		orderTable = new TableView<>();
+		TableColumn<Order, String> orderNumCol = new TableColumn<Order, String>("Order Number");
+		orderNumCol.setCellValueFactory(new PropertyValueFactory<Order, String>("orderNumber"));
+		orderTable.getColumns().add(orderNumCol);
+		TableColumn<Order, String> restaurantCol = new TableColumn<Order, String>("Restaurant");
+		restaurantCol.setCellValueFactory(new PropertyValueFactory<Order, String>("restaurantName"));
+		orderTable.getColumns().add(restaurantCol);
+		TableColumn<Order, String> orderTimeCol = new TableColumn<Order, String>("Order Time");
+		orderTimeCol.setCellValueFactory(new PropertyValueFactory<Order, String>("dateTime"));
+		orderTable.getColumns().add(orderTimeCol);
+		TableColumn<Order, String> typeOfOrderCol = new TableColumn<Order, String>("Order Price");
+		typeOfOrderCol.setCellValueFactory(new PropertyValueFactory<Order, String>("orderPrice"));
+		orderTable.getColumns().add(typeOfOrderCol);
+		TableColumn<Order, String> orderAddressCol = new TableColumn<Order, String>("Status");
+		orderAddressCol.setCellValueFactory(new PropertyValueFactory<Order, String>("status"));
+		orderTable.getColumns().add(orderAddressCol);
+		orderTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.monitor) {
+				ClientGUI.client.getCustomersOrder((Customer) (ClientGUI.client.getUser()).getServerResponse());
+				try {
+					ClientGUI.monitor.wait();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
+				}
+			}
 		});
-		if (root != null) {
-			root.getChildren().addAll(orderDisplay, itemsTitle, totalPrice, removeItem);
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		ArrayList<Order> orders = (ArrayList<Order>) (ClientGUI.client.getLastResponse().getServerResponse());
+		tableTitle = new Label("Orders:");
+		tableTitle.setFont(new Font("Berlin Sans FB", 16));
+		tableTitle.setLayoutX(140);
+		tableTitle.setLayoutY(300);
+		if (orders.size() == 0) {
+			tableTitle.setText("You dont have any open orders on your account!");
+			root.getChildren().add(tableTitle);
+			return;
+		} else {
+			ObservableList<Order> ordersObservable = FXCollections.observableArrayList(orders);
+			orderTable.setItems(ordersObservable);
+			orderTable.setLayoutX(120);
+			orderTable.setLayoutY(320);
+			orderTable.setMaxHeight(250);
+			orderTable.setPrefWidth(630);
+			Button updateOrder = new Button("Update Received Order");
+			errorMsg = new Label();
+			updateOrder.setOnAction(e -> {
+				Order order = orderTable.getSelectionModel().getSelectedItem();
+				errorMsg.setLayoutX(120);
+				errorMsg.setLayoutY(570);
+				errorMsg.setTextFill(Color.RED);
+				if (order == null) {
+					errorMsg.setText("Please select order to update.");
+					return;
+				}
+				if (order.getStatus() == null || !order.getStatus().equals("Ready")) {
+					errorMsg.setText("Selected order was not deliveried yet.");
+					return;
+				}
+				Thread th = new Thread(() -> {
+					synchronized (ClientGUI.monitor) {
+						ClientGUI.client.updateOrderReceived(order);
+						try {
+							ClientGUI.monitor.wait();
+						} catch (Exception ex) {
+							ex.printStackTrace();
+							return;
+						}
+					}
+				});
+				th.start();
+				try {
+					th.join();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					return;
+				}
+				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+					errorMsg.setText("Table Updated");
+					errorMsg.setTextFill(Color.GREEN);
+					ordersObservable.remove(orderTable.getSelectionModel().getSelectedItem());
+					orderTable.refresh();
+				}
+			});
+			updateOrder.setLayoutX(200);
+			updateOrder.setLayoutY(600);
+			root.getChildren().addAll(orderTable, tableTitle, errorMsg, updateOrder);
 		}
 	}
 

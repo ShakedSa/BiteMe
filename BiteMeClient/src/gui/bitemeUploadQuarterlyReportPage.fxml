@@ -84,12 +84,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific month" wrappingWidth="153.2197265625">
+      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Quarter" wrappingWidth="153.2197265625">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="monthBox" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="119.0" promptText="Month" />
+      <ComboBox fx:id="monthBox" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="119.0" promptText="Quarter" />
       <ComboBox fx:id="yearBox" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
       <Text layoutX="134.0" layoutY="340.0" onMouseClicked="#ImportImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
          <font>

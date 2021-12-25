@@ -5,16 +5,14 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Entities.Component;
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -518,8 +516,9 @@ public class ClientUI implements ClientIF {
 	 * @param Year
 	 * @param ReportType
 	 * sends a PDF quarterly report from manager's file system to SQL
-	 */
+	 */ 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
+		ServerResponse serverResponse = new ServerResponse("uploadQuarterlyReport");
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
 		User user = (User) this.user.getServerResponse();
@@ -537,7 +536,8 @@ public class ClientUI implements ClientIF {
 			msg.setSize(mybytearray.length);
 
 			bis.read(msg.getMybytearray(), 0, mybytearray.length);
-			client.handleMessageFromClientUI(msg);
+			serverResponse.setServerResponse(msg);
+			client.handleMessageFromClientUI(serverResponse);
 			fis.close();
 			bis.close();
 		} catch (Exception e) {
@@ -582,6 +582,28 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 
+	}
+	
+	public void getCustomersOrder(Customer customer) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("customersOrders");
+			serverResponse.setServerResponse(customer);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void updateOrderReceived(Order order) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("UpdateorderReceived");
+			serverResponse.setServerResponse(order);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@Override
