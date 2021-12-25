@@ -1822,7 +1822,7 @@ public class mysqlConnection {
 	}
 
 
-  
+	/*
 	 * Query to received all the open orders that the customer have.
 	 * 
 	 * @param customer

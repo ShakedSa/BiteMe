@@ -587,8 +587,9 @@ public class ClientUI implements ClientIF {
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return;
+			return; 
 		}
+	}
 
 	public void getCustomersOrder(Customer customer) {
 		try {
