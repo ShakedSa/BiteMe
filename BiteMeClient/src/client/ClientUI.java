@@ -462,22 +462,19 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-		
 	}
-																											   				
-//	/**
-//	 * @return the searchOrder
-//	 */
-//	public ServerResponse getSearchOrder() {
-//		return SearchOrder;
-//	}
-//
-//	/**
-//	 * @param searchOrder the searchOrder to set
-//	 */
-//	public void setSearchOrder(ServerResponse searchOrder) {
-//		SearchOrder = searchOrder;
-//	}
+	
+	public void getSupplierImage(String restaurant) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(restaurant));
+			ServerResponse serverResponse = new ServerResponse("getSupplierImage");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}																											   		
 
 	/**
 	 * A must implemented method from ChatIF interface.
@@ -629,8 +626,5 @@ public class ClientUI implements ClientIF {
 		serverResponse.setServerResponse(arr);
 		client.handleMessageFromClientUI(serverResponse);
 	}
-
-
-
 
 }

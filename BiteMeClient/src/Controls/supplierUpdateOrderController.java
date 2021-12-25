@@ -217,7 +217,6 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 
 		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
-		System.out.println(deliveryNumber);
 
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
@@ -268,10 +267,10 @@ public class supplierUpdateOrderController implements Initializable {
 		if (!CheckUserInput(orderNumber)) {
 			return;
 		}
-		ClientGUI.client.searchOrder(orderNumber);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ClientGUI.client.searchOrder(orderNumber);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -336,10 +335,10 @@ public class supplierUpdateOrderController implements Initializable {
 		if (!CheckUserInput(orderNumber)) {
 			return;
 		}
-		ClientGUI.client.getOrderInfo(orderNumber);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ClientGUI.client.getOrderInfo(orderNumber);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -387,6 +386,7 @@ public class supplierUpdateOrderController implements Initializable {
 		   PendingTxt.setVisible(false);
 		   ReceivedTxt.setVisible(false);
 		   ReadyTxt.setVisible(true);
+		   noUpdate.setVisible(true);
 	   }
 	}
 	
@@ -398,7 +398,6 @@ public class supplierUpdateOrderController implements Initializable {
 		if (ClientGUI.client.getLastResponse() == null) {
 			return false;
 		}
-
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
 		case "order number doesn't exist":
 			errorMsg.setText("This order doesn't exist");
@@ -414,6 +413,7 @@ public class supplierUpdateOrderController implements Initializable {
 			successMsg.setVisible(false);
 			VImage.setVisible(false);
 			//hide the buttons of ready status
+			noUpdate.setVisible(false);
 			includeDeliveryTxt.setVisible(false);
 			includeDeliveryBtn.setVisible(false);
 			notIncludeDeliveryBtn.setVisible(false);
@@ -547,8 +547,6 @@ public class supplierUpdateOrderController implements Initializable {
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
-		setStartPage();
-		OrderNumberTxtField.clear();
 	}
 
 	@FXML
