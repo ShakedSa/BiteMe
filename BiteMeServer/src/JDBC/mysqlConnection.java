@@ -111,7 +111,7 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		User user = null;
 		try {
-			String query = "SELECT * FROM bitemedb.users WHERE UserName = ? AND Password = ?";
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ? AND Password = ? And NOT Status = 'Deleted'";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, userName);
 			stmt.setString(2, password);
