@@ -525,13 +525,13 @@ public class mysqlConnection {
 	 * 
 	 * @param String userName
 	 * 
-	 * @return String msg
+	 * @return ServerResponse 
 	 */
-	public static String logout(String userName) {
+	public static ServerResponse logout(String userName) {
 		if (!updateIsLoggedIn(userName, 0)) {
-			return "Failed to logout";
+			return new ServerResponse("Logout Failed.");
 		}
-		return "Logout successful";
+		return new ServerResponse("Logout Successful.");
 	}
 
 	/**

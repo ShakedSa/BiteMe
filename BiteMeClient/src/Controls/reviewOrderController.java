@@ -85,6 +85,7 @@ public class reviewOrderController implements Initializable {
 		Thread animation = new Thread(() -> {
 			Platform.runLater(() -> {
 				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+				root.setDisable(true);
 			});
 			circle.setVisible(true);
 			LoadingAnimation.LoadStart(circle);

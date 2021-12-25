@@ -19,10 +19,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -52,13 +55,12 @@ public class homePageController implements Initializable {
 	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
 	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 
+	@FXML
+	private ImageView bagImg;
 
-    @FXML
-    private ImageView bagImg;
+	@FXML
+	private Circle itemsCounterCircle;
 
-    @FXML
-    private Circle itemsCounterCircle;
-    
 	@FXML
 	private ImageView caruasalLeft;
 
@@ -109,6 +111,12 @@ public class homePageController implements Initializable {
 
 	@FXML
 	private Text itemsCounter;
+
+	@FXML
+	private AnchorPane root;
+
+	@FXML
+	private Rectangle arrowLeft;
 
 	/**
 	 * Moving the carousel 1 step backward.
@@ -263,7 +271,7 @@ public class homePageController implements Initializable {
 				setBagVisibility(false);
 				userFirstName.setText("Guest");
 				setDefaults(null, false);
-			}		
+			}
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
@@ -332,7 +340,7 @@ public class homePageController implements Initializable {
 		}
 
 	}
-  
+
 	/**
 	 * Setting the avatar image of the user.
 	 */
@@ -345,6 +353,15 @@ public class homePageController implements Initializable {
 		router = Router.getInstance();
 		router.setHomePageController(this);
 		setStage(router.getStage());
+		arrowLeft.setArcWidth(10);
+		arrowLeft.setArcHeight(10);
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
+		;
+		arrowLeft.setFill(pattern);
+		arrowLeft.setStyle("-fx-stroke: null;-fx-hand: cursor");
+		arrowLeft.setOnMouseClicked(e -> caruasalLeftClicked(e));
+		arrowLeft.setRotate(-90);
+		caruasalLeft.setVisible(false);
 	}
 
 	public void setScene(Scene scene) {
@@ -354,7 +371,7 @@ public class homePageController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("HomePage");
@@ -371,15 +388,15 @@ public class homePageController implements Initializable {
 			@Override
 			public void run() {
 				ClientGUI.client.favRestaurantsRequest();
-					synchronized (ClientGUI.monitor) {
-						try {
-							ClientGUI.monitor.wait();
-						} catch (Exception e) {
-							e.printStackTrace();
-							return;
-						}
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
 					}
 				}
+			}
 		});
 		t.start();
 		try {
@@ -388,8 +405,7 @@ public class homePageController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		
-		
+
 		favRestaurants = (HashMap<String, File>) ClientGUI.client.getLastResponse().getServerResponse();
 		Set<String> resSet = favRestaurants.keySet();
 		String[] res = new String[resSet.size()];
@@ -428,8 +444,7 @@ public class homePageController implements Initializable {
 	public void setContainer(AnchorPane mainContainer) {
 		this.mainContainer = mainContainer;
 	}
-	
-	
+
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
@@ -438,6 +453,6 @@ public class homePageController implements Initializable {
 		bagImg.setVisible(val);
 		itemsCounter.setVisible(val);
 		itemsCounterCircle.setVisible(val);
-		
+
 	}
 }
