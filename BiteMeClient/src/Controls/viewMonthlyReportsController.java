@@ -64,7 +64,7 @@ public class viewMonthlyReportsController implements Initializable{
 
     @FXML
     private ComboBox<String> yearBox;
-    
+     
 
     @FXML
     private Text reportErrorMsg;
@@ -77,13 +77,46 @@ public class viewMonthlyReportsController implements Initializable{
     
     @FXML
     void showReportClicked(MouseEvent event) {
+    	User user = (User) ClientGUI.client.getUser().getServerResponse();
     	ArrayList<String> arr = new ArrayList<>();
-    	arr.add("getReport");
     	arr.add(reportTypeBox.getValue());
     	arr.add(monthBox.getValue());
     	arr.add(yearBox.getValue());
+    	arr.add(user.getMainBranch().toString());
     	// fetch report from server's sql (if valid)
-    	//ClientGUI.client.getReport(arr);
+    	//wait for response:
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+		    	ClientGUI.client.getReport(arr);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		//wait for thread to finish (response receiver)
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		//check if report exists:
+		ServerResponse response = ClientGUI.client.getLastResponse();
+		if(response==null) {
+			reportErrorMsg.setVisible(true);
+		}
+		else {
+			reportErrorMsg.setVisible(false);
+			
+		}
+		
     }
     
 	@FXML
@@ -116,10 +149,13 @@ public class viewMonthlyReportsController implements Initializable{
 		router.setViewMonthlyReportsController(this);
 		setStage(router.getStage());
 		String months_tmp[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+		String reports_tmp[] = {"Revenue", "Orders", "Performance"};
 		yearBox.getItems().addAll(generateYears());
 		monthBox.getItems().addAll(months_tmp);
-		
-		//reportTypeBox.getItems().addAll();// tbd
+		reportTypeBox.getItems().addAll(reports_tmp);// tbd
+		yearBox.setValue("2021");
+		monthBox.setValue("1");
+		reportTypeBox.setValue("Revenue");
 	}
 
 	/**

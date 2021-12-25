@@ -5,16 +5,14 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Entities.Component;
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -178,7 +176,7 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
 	 * Sending a query request from the server. approve employer in the db
 	 * restaurant.
@@ -415,9 +413,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-		
+
 	/**
 	 * supplier update item in menu
+	 * 
 	 * @param product
 	 */
 	public void editItemInMenu(Product product) {
@@ -431,21 +430,31 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-																											   				
-
-//	/**
-//	 * @return the searchOrder
-//	 */
-//	public ServerResponse getSearchOrder() {
-//		return SearchOrder;
-//	}
-//
-//	/**
-//	 * @param searchOrder the searchOrder to set
-//	 */
-//	public void setSearchOrder(ServerResponse searchOrder) {
-//		SearchOrder = searchOrder;
-//	}
+	
+	public void deleteItemFromMenu(String restaurant, String dishName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(restaurant, dishName));
+			ServerResponse serverResponse = new ServerResponse("deleteItemFromMenu");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void getSupplierImage(String restaurant) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(restaurant));
+			ServerResponse serverResponse = new ServerResponse("getSupplierImage");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}																											   		
 
 	/**
 	 * A must implemented method from ChatIF interface.
@@ -481,7 +490,15 @@ public class ClientUI implements ClientIF {
 		return user;
 	}
 
+	/**
+	 * @param pdfToUpload
+	 * @param Month
+	 * @param Year
+	 * @param ReportType
+	 * sends a PDF quarterly report from manager's file system to SQL
+	 */ 
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
+		ServerResponse serverResponse = new ServerResponse("uploadQuarterlyReport");
 		MyFile msg = new MyFile(Month + " " + Year);
 		// extract user:
 		User user = (User) this.user.getServerResponse();
@@ -489,7 +506,6 @@ public class ClientUI implements ClientIF {
 		msg.getDescription().add(Month);
 		msg.getDescription().add(Year);
 		msg.getDescription().add(user.getMainBranch().toString());
-		// tbd - adding restaurant name
 		try {
 
 			byte[] mybytearray = new byte[(int) pdfToUpload.length()];
@@ -500,7 +516,8 @@ public class ClientUI implements ClientIF {
 			msg.setSize(mybytearray.length);
 
 			bis.read(msg.getMybytearray(), 0, mybytearray.length);
-			client.handleMessageFromClientUI(msg);
+			serverResponse.setServerResponse(msg);
+			client.handleMessageFromClientUI(serverResponse);
 			fis.close();
 			bis.close();
 		} catch (Exception e) {
@@ -508,7 +525,30 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-	
+
+	public void viewORcheckQuarterReport(String quarter, String Year, String branch, String func) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch,func));
+			ServerResponse serverResponse = new ServerResponse("viewQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	public void CheckQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("CheckQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void checkUserName(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -522,7 +562,6 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-	
 	
 	public void checkUserNameIsClient(String userName) {
 		try {
@@ -551,6 +590,26 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 
+	public void getCustomersOrder(Customer customer) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("customersOrders");
+			serverResponse.setServerResponse(customer);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void updateOrderReceived(Order order) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("UpdateorderReceived");
+			serverResponse.setServerResponse(order);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@Override
@@ -564,6 +623,14 @@ public class ClientUI implements ClientIF {
 	}
 
 
+	/**
+	 * sends a report data request to server sql
+	 * @param arr  order : reportType,month,year,branch
+	 */
+	public void getReport(ArrayList<String> arr) {
+		ServerResponse serverResponse = new ServerResponse("getReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
 
-	
 }

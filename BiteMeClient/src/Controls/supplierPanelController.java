@@ -1,25 +1,28 @@
 package Controls;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+
+import Entities.MyFile;
 import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -32,6 +35,9 @@ public class supplierPanelController implements Initializable {
 	private Scene scene;
 	
     @FXML
+    private ImageView supplierImage;
+	
+    @FXML
     private Rectangle avatar;
 
     @FXML
@@ -42,6 +48,9 @@ public class supplierPanelController implements Initializable {
 
     @FXML
     private ImageView leftArrowBtn;
+    
+    @FXML
+    private Text loadingTxt;
 
     @FXML
     private Text logoutBtn;
@@ -60,44 +69,42 @@ public class supplierPanelController implements Initializable {
     
     @FXML
     private Text errorMsg;
-
-    @FXML
-    void createMenuClicked(MouseEvent event) {
-    	//check if supplier has a menu
-    	if(checkIfMenuExist()) { 
-    		errorMsg.setText("You already have a menu, please click on 'Update Menu' button");
-			return;
-    	}
-    	if (router.getCreateMenuController() == null) {
-			AnchorPane mainContainer;
-			createMenuController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeCreateMenuPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Create Menu");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return; 
-			}
-		} else {
-			stage.setTitle("BiteMe - Create Menu");
-			stage.setScene(router.getCreateMenuController().getScene());
-			stage.show();
-		}
-    }
     
-    private boolean checkIfMenuExist() {
-    	return false;
-//    	errorMsg.setText("");
-//		return true;
+	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private String restaurant = user.getOrganization();
+    
+    public void setImage() {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ClientGUI.client.getSupplierImage(restaurant);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+				ServerResponse sr = ClientGUI.client.getLastResponse();
+				MyFile myFile = (MyFile) sr.getServerResponse();
+				byte[] imageArr = myFile.getMybytearray(); 
+				BufferedImage img;
+				try {
+					img = ImageIO.read(new ByteArrayInputStream(imageArr));
+					Image image = SwingFXUtils.toFXImage(img, null);
+					loadingTxt.setVisible(false);// hide loading text
+					supplierImage.setImage(image);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+				
+			}
+		});
+		t.start();
+
     }
     
     @FXML
@@ -110,6 +117,7 @@ public class supplierPanelController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeUpdateMenuPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
+				controller.setMenu();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -122,6 +130,7 @@ public class supplierPanelController implements Initializable {
 				return; 
 			}
 		} else {
+			router.getUpdateMenuController().setMenu();
 			stage.setTitle("BiteMe - Update Menu");
 			stage.setScene(router.getUpdateMenuController().getScene());
 			stage.show();

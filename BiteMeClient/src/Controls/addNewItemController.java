@@ -2,7 +2,6 @@ package Controls;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import Entities.Component;
@@ -12,11 +11,13 @@ import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -33,6 +34,18 @@ public class addNewItemController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
+
+	@FXML
+	private CheckBox donenessCheckBox;
+
+	@FXML
+	private CheckBox sizeCheckBox;
+
+	@FXML
+	private ImageView VImage;
+
+	@FXML
+	private Text successMsg;
 
 	@FXML
 	private ImageView infoIcon;
@@ -62,9 +75,6 @@ public class addNewItemController implements Initializable {
 	private Text logoutBtn;
 
 	@FXML
-	private Text uploadImageTxt;
-
-	@FXML
 	private TextField optionalComponentsTxtField;
 
 	@FXML
@@ -80,9 +90,6 @@ public class addNewItemController implements Initializable {
 	private Text supplierPanelBtn;
 
 	@FXML
-	private Label uploadImageBtn;
-
-	@FXML
 	private Text errorMsg;
 
 	private ObservableList<TypeOfProduct> list;
@@ -90,7 +97,7 @@ public class addNewItemController implements Initializable {
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents = new ArrayList<>();
 	private Product product;
- 
+
 	/**
 	 * creating list of Types
 	 */
@@ -113,16 +120,36 @@ public class addNewItemController implements Initializable {
 		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
+		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
+			String size = sizeCheckBox.getText();
+			if (temp.equals("") == false) { // there are some free text components
+				temp = temp + "," + size;
+			} else
+				temp = temp + size;
+		}
+		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
+			String doneness = donenessCheckBox.getText();
+			if (temp.equals("") == false) { // there are some free text components or size
+				temp = temp + "," + doneness;
+			} else
+				temp = temp + doneness;
+		}
+		System.out.println(temp);
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
-		String[] components = temp.split(",");
-		for (int i = 0; i < components.length; i++) {
-			optionalComponents.add(new Component(components[i]));
-		}
-		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		if (temp.equals("") == false) { // there are components
+			String[] components = temp.split(",");
+			for (int i = 0; i < components.length; i++) {
+				optionalComponents.add(new Component(components[i]));
+			}
+			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		} else
+			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
+
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ClientGUI.client.addItemToMenu(product);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -131,30 +158,24 @@ public class addNewItemController implements Initializable {
 						return;
 					}
 				}
+				if (!checkServerResponse()) {
+					return;
+				}
+				Platform.runLater(() -> {
+					clearPage();
+					VImage.setVisible(true);
+					successMsg.setVisible(true);
+				});
 			}
 		});
 		t.start();
-		ClientGUI.client.addItemToMenu(product);
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-
-		if (!checkServerResponse()) {
-			return;
-		}
-
-		ClientGUI.client.getLastResponse().getServerResponse();
-
-		// return to update menu page
-		router.getSupplierPanelController().updateMenuClicked(event);
 	}
 
 	private boolean checkInputs() {
 		String itemName = itemsNameTxtField.getText();
 		String price = priceTxtField.getText();
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
 
 		if (selectTypeBox.getSelectionModel().getSelectedItem() == null) {
 			errorMsg.setText("Please select type of the item");
@@ -176,11 +197,13 @@ public class addNewItemController implements Initializable {
 			errorMsg.setText("Characters aren't allowed in price");
 			return false;
 		}
-		if (price.contains(".")) {
-			if (InputValidation.checkSpecialCharacters(price)) {
-				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
-				return false;
-			}
+		if (InputValidation.CheckIntegerInput(price)) {
+			errorMsg.setText("Price must contains digits");
+			return false;
+		}
+		if (InputValidation.checkSpecialCharacters(price) && !price.contains(".")) {
+			errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+			return false;
 		}
 		errorMsg.setText("");
 		return true;
@@ -202,51 +225,63 @@ public class addNewItemController implements Initializable {
 		case "success":
 			return true;
 		default:
+			errorMsg.setText("This item already exist in menu");
 			return false;
 		}
 	}
 
 	@FXML
-	void infoIconClicked(MouseEvent event) {
+	void infoIconEnter(MouseEvent event) {
 		infoTxtArea.setVisible(true);
+	}
+
+	@FXML
+	void infoIconExit(MouseEvent event) {
+		infoTxtArea.setVisible(false);
 	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
-		clearPage();
 	}
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
+		clearPage();
 		router.showProfile();
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		router.changeSceneToHomePage();
 		clearPage();
+		router.changeSceneToHomePage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
-		router.returnToSupplierPanel(event);
 		clearPage();
+		router.returnToSupplierPanel(event);
 	}
 
 	@FXML
-	void uploadImageClicked(MouseEvent event) {
-
+	void returnToUpdateMenu(MouseEvent event) {
+		clearPage();
+		router.getSupplierPanelController().updateMenuClicked(event);
 	}
-	
+
 	private void clearPage() {
-		infoTxtArea.setVisible(false);
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();
 		itemsNameTxtField.clear();
-		optionalComponents.clear();
+		optionalComponentsTxtField.clear();
+		donenessCheckBox.setSelected(false);
+		//donenessCheckBox
+		sizeCheckBox.setSelected(false);
 		priceTxtField.clear();
 		descriptionTxtArea.clear();
+		infoTxtArea.setVisible(false);
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
 	}
 
 	/**
@@ -276,5 +311,4 @@ public class addNewItemController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
 }

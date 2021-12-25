@@ -24,11 +24,7 @@
             <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fitHeight="287.0" fitWidth="494.0" layoutX="51.0" layoutY="185.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../scene%20builder/images/ruben-supplier-panel.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="supplierImage" fitHeight="287.0" fitWidth="386.0" layoutX="94.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true" />
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
@@ -62,17 +58,12 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="createMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="230.0" onMouseClicked="#createMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Create Menu">
+      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="488.0" layoutY="265.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="565.0" layoutY="301.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Label>
-      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="565.0" layoutY="373.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
+      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="488.0" layoutY="337.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -88,6 +79,11 @@
       <Text fx:id="errorMsg" fill="RED" layoutX="140.0" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt" fill="#3180bc" layoutX="180.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="24.0" />
          </font>
       </Text>
    </children>

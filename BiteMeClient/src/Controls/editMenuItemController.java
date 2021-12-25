@@ -11,11 +11,13 @@ import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -33,6 +35,18 @@ public class editMenuItemController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
+	
+	@FXML
+	private CheckBox donenessCheckBox;
+
+	@FXML
+	private CheckBox sizeCheckBox;
+	
+    @FXML
+    private ImageView VImage;
+    
+    @FXML
+    private Text successMsg;
 
 	@FXML
 	private ImageView infoIcon;
@@ -54,9 +68,6 @@ public class editMenuItemController implements Initializable {
 
 	@FXML
 	private Text homePageBtn;
-
-	@FXML
-	private Text uploadImageTxt;
 
 	@FXML
 	private TextField itemsNameTxtField;
@@ -81,9 +92,6 @@ public class editMenuItemController implements Initializable {
 
 	@FXML
 	private Text supplierPanelBtn;
-
-	@FXML
-	private Label uploadImageBtn;
 
 	ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
@@ -111,16 +119,35 @@ public class editMenuItemController implements Initializable {
 		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
+		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
+			String size = sizeCheckBox.getText();
+			if (temp.equals("") == false) { // there are some free text components
+				temp = temp + "," + size;
+			} else
+				temp = temp + size;
+		}
+		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
+			String doneness = donenessCheckBox.getText();
+			if (temp.equals("") == false) { // there are some free text components or size
+				temp = temp + "," + doneness;
+			} else
+				temp = temp + doneness;
+		}
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
-		String[] components = temp.split(",");
-		for (int i = 0; i < components.length; i++) {
-			optionalComponents.add(new Component(components[i]));
-		}
-		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		if (temp.equals("") == false) { // there are components
+			String[] components = temp.split(",");
+			for (int i = 0; i < components.length; i++) {
+				optionalComponents.add(new Component(components[i]));
+			}
+			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		} else // there aren't components
+			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
+		
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				ClientGUI.client.editItemInMenu(product);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -129,31 +156,24 @@ public class editMenuItemController implements Initializable {
 						return;
 					}
 				}
+				if (!checkServerResponse()) {
+					return;
+				}
+				Platform.runLater(() -> {
+					clearPage();
+					VImage.setVisible(true);
+					successMsg.setVisible(true);
+				});
 			}
 		});
 		t.start();
-		ClientGUI.client.editItemInMenu(product);
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-
-		if (!checkServerResponse()) {
-			return;
-		}
-
-		ClientGUI.client.getLastResponse().getServerResponse();
-
-		// return to update menu
-		router.getSupplierPanelController().updateMenuClicked(event);
-
 	}
 
 	private boolean checkInputs() {
 		String itemName = itemsNameTxtField.getText();
 		String price = priceTxtField.getText();
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
 
 		if (selectTypeBox.getSelectionModel().getSelectedItem() == null) {
 			errorMsg.setText("Please select type of the item");
@@ -175,11 +195,9 @@ public class editMenuItemController implements Initializable {
 			errorMsg.setText("Characters aren't allowed in price");
 			return false;
 		}
-		if (price.contains(".")) {
-			if (InputValidation.checkSpecialCharacters(price)) {
-				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
-				return false;
-			}
+		if (InputValidation.checkSpecialCharacters(price) && !price.contains(".")) {
+			errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+			return false;
 		}
 		errorMsg.setText("");
 		return true;
@@ -196,19 +214,25 @@ public class editMenuItemController implements Initializable {
 
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
 		case "":
-			errorMsg.setText("Adding an item to menu was failed");
+			errorMsg.setText("Edit an item in menu was failed");
 			return false;
 		case "success":
 			return true;
 		default:
+			errorMsg.setText("Edit an item in menu was failed");
 			return false;
 		}
 	}
 
-	@FXML
-	void infoIconClicked(MouseEvent event) {
-		infoTxtArea.setVisible(true);
-	}
+    @FXML
+    void infoIconEnter(MouseEvent event) {
+    	infoTxtArea.setVisible(true);
+    }
+
+    @FXML
+    void infoIconExit(MouseEvent event) {
+    	infoTxtArea.setVisible(false);
+    }
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -217,22 +241,39 @@ public class editMenuItemController implements Initializable {
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
+		clearPage();
 		router.showProfile();
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
+		clearPage();
 		router.changeSceneToHomePage();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
+		clearPage();
 		router.returnToSupplierPanel(event);
 	}
+	
 
-	@FXML
-	void uploadImageClicked(MouseEvent event) {
-
+    @FXML
+    void returnToUpdateMenu(MouseEvent event) {
+    	clearPage();
+    	router.getSupplierPanelController().updateMenuClicked(event);
+    }
+    
+	private void clearPage() {
+		errorMsg.setText("");
+		selectTypeBox.getSelectionModel().clearSelection();
+		itemsNameTxtField.clear();
+		optionalComponentsTxtField.clear();
+		priceTxtField.clear();
+		descriptionTxtArea.clear();
+		infoTxtArea.setVisible(false);
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
 	}
 
 	/**
@@ -248,7 +289,7 @@ public class editMenuItemController implements Initializable {
 		router.setEditMenuItemController(this);
 		setStage(router.getStage());
 		setTypeComboBox();
-		infoTxtArea.setVisible(false);
+		clearPage();
 	}
 
 	public void setScene(Scene scene) {
@@ -261,6 +302,18 @@ public class editMenuItemController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public void setProduct(Product product) {
+		if(product!=null) {
+			selectTypeBox.setValue(product.getType());
+			itemsNameTxtField.setText(product.getDishName());
+			String components = product.getComponents().toString();
+			components = components.substring(1, components.length()-1);
+			optionalComponentsTxtField.setText(components);
+			priceTxtField.setText(((Float)product.getPrice()).toString());
+			descriptionTxtArea.setText(product.getDescription());	
+		}
 	}
 
 }

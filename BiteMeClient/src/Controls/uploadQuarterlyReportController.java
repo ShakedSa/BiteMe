@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -13,6 +14,7 @@ import java.util.ResourceBundle;
 
 import com.sun.javafx.tk.FileChooserType;
 
+import Entities.Months;
 import Entities.MyFile;
 import Entities.ServerResponse;
 import Entities.User;
@@ -94,12 +96,13 @@ public class uploadQuarterlyReportController implements Initializable{
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");
     	pdfToUpload = fc.showOpenDialog(router.getStage());
+    	
     	if(pdfToUpload == null || !pdfToUpload.toString().contains("pdf"))
     		InvalidMsg.setVisible(true);
     	else
     		InvalidMsg.setVisible(false);
     }
-
+ 
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
@@ -124,11 +127,10 @@ public class uploadQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload, monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
+    	ClientGUI.client.sendReport(pdfToUpload,monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }
-    
     
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
@@ -147,9 +149,9 @@ public class uploadQuarterlyReportController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setUploadQuarterlyReportController(this);
-		String months_tmp[]= {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+		String[] tempQuarter= {"1", "2", "3", "4"};
 		yearBox.getItems().addAll(generateYears());
-		monthBox.getItems().addAll(months_tmp);
+		monthBox.getItems().addAll(tempQuarter);
 	}
 
     

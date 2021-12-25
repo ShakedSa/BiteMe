@@ -91,7 +91,7 @@ public class pickDateAndTimeController implements Initializable {
 	
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("DateTime");
 	}
 
 	private void changeToDelivery() {
@@ -118,10 +118,9 @@ public class pickDateAndTimeController implements Initializable {
 				return;
 			}
 		} else {
-			router.getPickDateAndTimeController().setRestaurant(restaurantName);
-			router.getPickDateAndTimeController().setAvatar();
-			router.getPickDateAndTimeController().setItemsCounter();
-			router.getPickDateAndTimeController().createCombos();
+			router.getDeliveryMethodController().setAvatar();
+			router.getDeliveryMethodController().setItemsCounter();
+			router.getDeliveryMethodController().createCombo();
 			stage.setTitle("BiteMe - Select Delivery Method");
 			stage.setScene(router.getDeliveryMethodController().getScene());
 			stage.show();
