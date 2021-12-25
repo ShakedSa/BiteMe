@@ -1,39 +1,26 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
-import Entities.User;
-import Enums.Status;
-import Enums.TypeOfOrder;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
-import client.ClientUI;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 
 public class updateUserInformationController implements Initializable{
 
@@ -43,20 +30,17 @@ public class updateUserInformationController implements Initializable{
 	private Scene scene;
 
 
-    @FXML
-    private Button searchBtn;
-    
-    @FXML
-    private Text managerPanelBtn;
+	@FXML
+    private ImageView leftArrowBtn;
 
     @FXML
     private Rectangle avatar;
 
     @FXML
-    private Text homePageBtn;
+    private Text managerPanelBtn;
 
     @FXML
-    private ImageView leftArrowBtn;
+    private Text homePageBtn;
 
     @FXML
     private Text logoutBtn;
@@ -65,58 +49,51 @@ public class updateUserInformationController implements Initializable{
     private Text profileBtn;
 
     @FXML
-    private Label saveUpdateBtn;
+    private ImageView updateSucess1;
+
+    @FXML
+    private Label updateUserBtn;
+
+    @FXML
+    private Text updateSucess2;
+
+    @FXML
+    private Text userName;
 
     @FXML
     private TextField userNameTxtField;
-    
+
+    @FXML
+    private Button searchBtn;
+
     @FXML
     private Text userNameError;
 
     @FXML
-    private Text updateSucess;
+    private Text Error;
 
     @FXML
-    private ImageView updateSucess1;
+    private Label informUser;
 
     @FXML
-    private ComboBox<String> userPermitionBox;
+    private Text userStatusLabel;
 
     @FXML
-    private ComboBox<String> userStatusBox;
+    private Label informUser1;
 
     @FXML
-    private Text userPremTxt;
+    private RadioButton action1;
 
     @FXML
-    private Text userStatusTxt;
+    private RadioButton action2;
     
     private String validUserName;
     
-    /**
-	 * Creating the combo boxes in this scene. for userPermitionBox
-	 * 
-	 */
-	public void createUserTypeCombo() {
-		ObservableList<String> typeOfUsers = FXCollections
-				.observableArrayList(Arrays.asList(UserType.BranchManager.toString(),
-						UserType.BusinessCustomer.toString(), UserType.Customer.toString(),
-						UserType.EmployerHR.toString()));
-		userPermitionBox.getItems().addAll(typeOfUsers);
-	}
+    private String clientStatus;
+    
+    private String newStatus = "";
+    
 	
-	/**
-	 * Creating the combo boxes in this scene. for deliveryMethodBox set on change
-	 * event listener to change the state of the scene accordingly to the selected
-	 * value.
-	 */
-	public void createUserStatusCombo() {
-		ObservableList<String> typeOfStatus = FXCollections
-				.observableArrayList(Arrays.asList(Status.Active.toString(),
-						Status.Frozen.toString(), Status.Unverified.toString()));
-		userStatusBox.getItems().addAll(typeOfStatus);
-
-	}
 	
 	@FXML
     void searchClicked(MouseEvent event) {
@@ -124,7 +101,7 @@ public class updateUserInformationController implements Initializable{
     		return;
     	}
 
-		//ClientGUI.client.checkUser(userNameTxtField.getText());
+		ClientGUI.client.checkUserNameIsClient(userNameTxtField.getText());
 
 		//wait for response
 		Thread t = new Thread(new Runnable() {
@@ -155,41 +132,161 @@ public class updateUserInformationController implements Initializable{
 		}
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
-		if(response== null) {
-			System.out.println("test");
-			return;
-		}
-		//check if user name is valid
-		if(response.get(0).equals("Error"))
-		{
-			userNameError.setText("This user name doesn't exist");
+		//check if the username is a client
+		if(sr.getMsg().equals("is not client")) {
+			userNameError.setText("This username is not a client!");
 			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
 		}
+		//check if username is valid
+		if(sr.getMsg().equals("Error"))
+		{
+			userNameError.setText("This username doesn't exist");
+			userNameError.setVisible(true);
+			enableEdit(false);
+			return;
+		}
+		userNameError.setVisible(true);
+		userNameError.setText("Name: " + response.get(0) +" " + response.get(1));
+		userStatusLabel.setText(response.get(2));
+		updateSucess1.setVisible(false);
+    	updateSucess2.setVisible(false);
 		enableEdit(true);
-		userPermitionBox.setValue(response.get(0));
-		userStatusBox.setValue(response.get(1));
-		userNameError.setVisible(false);
+		setUserOptions(response.get(2));
 		validUserName = userNameTxtField.getText();
-//		userPermitionBox.setValue(response.get(0));
-//		userStatusBox.setValue(response.get(1));
-		userPermitionBox.getSelectionModel().select(response.get(0));
-		userStatusBox.getSelectionModel().select(response.get(1));
+		clientStatus = response.get(2);	
     }
-
+	
+	
+	
+	/**change the visibality of screen items
+	 * @param val
+	 */
 	private void enableEdit(boolean val) {
-		userPermitionBox.setVisible(val);
-		userStatusBox.setVisible(val);
-		userPremTxt.setVisible(val);
-		userStatusTxt.setVisible(val);
-		saveUpdateBtn.setDisable(!val);
+		informUser.setVisible(val);
+		userStatusLabel.setVisible(val);
+		informUser1.setVisible(val);
+		action1.setVisible(val);
+		action2.setVisible(val);
+		updateUserBtn.setVisible(val);
 		if(val == false) {
-			updateSucess.setVisible(val);
-	    	updateSucess1.setVisible(val);
+			updateSucess1.setVisible(val);
+	    	updateSucess2.setVisible(val);
 		}
 	}
+	
+	private void setUserOptions(String status) {
+		switch(status){
+			case "Active":
+				action1.setText("Freeze client account");
+				action2.setText("Permanently remove this client");
+				break;
+			case "Frozen":
+				action1.setText("Change client status to Active");
+				action2.setText("Permanently remove this client");
+				break;
+			case "Unverified":
+				action1.setText("Freeze client account");
+				action2.setText("Permanently remove this client");
+				break;
+		}
+	}
+	
+	
+	/**manager marks the option of freezing client account
+	* @param event
+	*/
+	@FXML
+	void freezeClientClicked(MouseEvent event) {
+		if(action1.isSelected()) {
+			if(action2.isSelected())
+				action2.setSelected(false);
+			if(clientStatus.equals("Active")) {
+				newStatus = "Frozen";
+				updateSucess2.setText("Client account has been Frozen");
+			}
+			else {
+				updateSucess2.setText("Client account has been Activated");
+				newStatus = "Active";
+			}
+		}
+		else {
+			newStatus = "";
+		}
+	    }
 
+	 
+	/**manager marks the option of removing client account
+	* @param event
+	*/
+	@FXML
+	void removeClientClicked(MouseEvent event) {
+		if(action2.isSelected()) {
+			if(action1.isSelected())
+				action1.setSelected(false); 
+			newStatus = "Deleted";
+			updateSucess2.setText("Client account has been Deleted");
+		}
+		else newStatus = "";
+	}
+
+    
+    /**checks that the needed fields are filled correctly
+     * @return
+     */
+    private boolean checkValues() {
+    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
+    		userNameError.setVisible(true);
+    		enableEdit(false);
+    		userNameError.setText("User name can't contain special characters!");
+    		return false;
+    	}
+    	if(userNameTxtField.getText().length() == 0) {
+    		userNameError.setVisible(true);
+    		enableEdit(false);
+    		userNameError.setText("User name must be filled!");
+    		return false;
+    	}
+    	return true;
+    }
+    
+    @FXML
+    void updateUserBtnClicked(MouseEvent event) {
+    	if(!userNameTxtField.getText().equals(validUserName)) {
+    		userNameError.setText("UserName has to be searched first");
+    		enableEdit(false);
+    		userNameError.setVisible(true);
+    		Error.setVisible(false);
+    		return;
+    	}
+    	if(newStatus.equals("")) {
+    		Error.setVisible(true);
+    		return;
+    	}
+    	ClientGUI.client.changeClientPerrmisions(userNameTxtField.getText(), newStatus);
+    	Error.setVisible(false);
+    	enableEdit(false);
+    	updateSucess2.setVisible(true);
+    	updateSucess1.setVisible(true);
+    	clearChoises();
+    	
+    }
+    
+    private void clearChoises() {
+    	action1.setSelected(false);
+    	action1.setSelected(false);
+    	newStatus = "";
+    }
+    public void resetScreen() {
+    	enableEdit(false);
+    	Error.setVisible(false);
+    	userNameError.setVisible(false);
+    	userNameTxtField.clear();
+    	newStatus = "";
+    }
+    
+    
     @FXML
     void logoutClicked(MouseEvent event) {
     	router.logOut();
@@ -209,35 +306,6 @@ public class updateUserInformationController implements Initializable{
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
-	
-    @FXML
-    void saveUpdateClicked(MouseEvent event) {
-    	if(!userNameTxtField.getText().equals(validUserName)) {
-    		userNameError.setVisible(true);
-    		return;
-    	}
-    	ClientGUI.client.updateUserInfo(userNameTxtField.getText(),userPermitionBox.getValue()
-    			, userStatusBox.getValue());
-    	userNameError.setVisible(false);
-    	updateSucess.setVisible(true);
-    	updateSucess1.setVisible(true);
-    }
-    
-    private boolean checkValues() {
-    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
-    		userNameError.setVisible(true);
-    		enableEdit(false);
-    		userNameError.setText("User name can't contain special characters!");
-    		return false;
-    	}
-    	if(userNameTxtField.getText().length() == 0) {
-    		userNameError.setVisible(true);
-    		enableEdit(false);
-    		userNameError.setText("User name must be filled!");
-    		return false;
-    	}
-    	return true;
-    }
     
     /**
 	 * Setting the avatar image of the user.
@@ -252,8 +320,6 @@ public class updateUserInformationController implements Initializable{
 		router = Router.getInstance();
 		router.setUpdateUserInformationController(this);
 		setStage(router.getStage());
-		createUserTypeCombo();
-		createUserStatusCombo();
 	}
 
     

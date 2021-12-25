@@ -214,8 +214,8 @@ public class addNewSupplierController implements Initializable {
 			return;
 		}
 		enableEdit(true);
-		//idError.setVisible(false);
-		userNameError.setText(response.get(0) +" " + response.get(1));
+		userNameError.setVisible(true);
+		userNameError.setText("Name: " + response.get(0) +" " + response.get(1));
 		validUserName = userNameTxtField.getText();
 		branchName = response.get(2);
     }
@@ -290,16 +290,6 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Name must be filled!");
     		return false;
     	}
-    	if( InputValidation.checkSpecialCharacters(restaurantTypeCombo.getValue())) {
-    		Error.setVisible(true);
-    		Error.setText("Type can't contain special characters!");
-    		return false;
-    	}
-    	if(restaurantTypeCombo.getValue().length() == 0) {
-    		Error.setVisible(true);
-    		Error.setText("Type must be filled!");
-    		return false;
-    	}
     	if(restaurantAddressTxtField.getText().length() == 0) {
     		Error.setVisible(true);
     		Error.setText("Address must be filled!");
@@ -310,9 +300,24 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Address is not valid");
     		return false;
     	}
+    	if(restaurantTypeCombo.getSelectionModel().isEmpty()) {
+    		Error.setVisible(true);
+    		Error.setText("Type must be filled!");
+    		return false;
+    	}
     	if(monthlyCommissionBox.getSelectionModel().isEmpty()) {
     		Error.setVisible(true);
     		Error.setText("Please choose monthly commission");
+    		return false;
+    	}
+    	if(imgToUpload == null) {
+    		Error.setVisible(true);
+    		Error.setText("Please upload an image");
+    		return false;
+    	}
+    	if(checkImageFormat()) {
+    		Error.setVisible(true);
+    		Error.setText("File foramt must be: jpj, gif or png");
     		return false;
     	}
     	return true;
@@ -324,7 +329,7 @@ public class addNewSupplierController implements Initializable {
 		//check that the userName text field has'nt changed since it was checked
 		if(!userNameTxtField.getText().equals(validUserName) ) {
 			userNameError.setVisible(true);
-			userNameError.setText("Unable to locate ID");
+			userNameError.setText("Unable to locate UserName");
 			Error.setVisible(false);
     		return;
     	}
@@ -358,6 +363,7 @@ public class addNewSupplierController implements Initializable {
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);
 			UploadMsgTxt.setVisible(false);
+			addSupplierBtn.setDisable(true);
 		}
 		catch (Exception e) {
 			System.out.println("Error sending (Files msg) to Server");
@@ -369,13 +375,15 @@ public class addNewSupplierController implements Initializable {
     void uploadImageClicked(MouseEvent event) {
     	UploadMsgTxt.setVisible(false);
     	FileChooser fc = new FileChooser();
-    	fc.setTitle("Open Folder");
+    	fc.setTitle("Open Folder");                               
     	imgToUpload = fc.showOpenDialog(router.getStage());
     	if(!checkImageFormat() ) {
+    		UploadMsgTxt.setStyle("-fx-text-fill: green;");
     		UploadMsgTxt.setText("The image was uploaded successfully!");
     		UploadMsgTxt.setVisible(true);
     	}
     	else {
+    		UploadMsgTxt.setStyle("-fx-text-inner-color: #BA55D3;");
     		UploadMsgTxt.setText("File foramt must be: jpj, gif or png");
     		UploadMsgTxt.setVisible(true);
     	}
@@ -390,6 +398,19 @@ public class addNewSupplierController implements Initializable {
 				!( (imgToUpload.toString().toLowerCase().contains("jpg") ) ||
     			(imgToUpload.toString().toLowerCase().contains("png")) ||
     			(imgToUpload.toString().toLowerCase().contains("gif")) );
+	}
+	
+	public void reSetTheScreen() {
+		enableEdit(false);
+		userNameError.setVisible(false);
+		Error.setVisible(false);
+		userNameTxtField.clear();
+		restaurantTypeCombo.valueProperty().set(null);
+		monthlyCommissionBox.valueProperty().set(null);
+		restaurantAddressTxtField.clear();
+		restaurantNameTxtField.clear();
+		UploadMsgTxt.setVisible(false);
+		imgToUpload = null;
 	}
 
 	@FXML
@@ -426,6 +447,8 @@ public class addNewSupplierController implements Initializable {
 		router.setAddNewSupplierController(this);
 		setStage(router.getStage());
 		setMonthlyCommissionComboBox();
+		setRestaurantTypeComboBox();
+		
 	}
 
 	public void setScene(Scene scene) {
