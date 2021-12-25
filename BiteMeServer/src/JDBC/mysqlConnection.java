@@ -1882,6 +1882,9 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 	//SELECT Date FROM bitemedb.reports order by Date desc;
+	/**
+	 * @return creation date of latest report
+	 */
 	public static Date checkLastReportDate() {
 		Statement stmt;
 		ResultSet rs;
@@ -1901,8 +1904,29 @@ public class mysqlConnection {
 	 * @param m order: reportType,month,year,branch
 	 * @return "fail" if report doesn't exists, report file otherwise.
 	 */
+	//SELECT * FROM bitemedb.reports WHERE MONTH(date)=11 AND YEAR(DATE)=2021 and BranchName="north" and ReportType like "%Perf%";
 	public static ServerResponse getMonthlyReport(ArrayList<String> m) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement stmt;
+		Blob content;
+		ServerResponse serverResponse = new ServerResponse("ReportContent");
+		try {
+			String query = "SELECT Content FROM bitemedb.reports WHERE MONTH(date)=? AND YEAR(DATE)=? and BranchName=? and ReportType like ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, m.get(1)); // month
+			stmt.setString(2, m.get(2)); // year
+			stmt.setString(3, m.get(3)); // branch
+			stmt.setString(4, "%"+m.get(0)+"%"); // report type
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				content=rs.getBlob(1);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		serverResponse.setServerResponse(content);
+		return serverResponse;
 	}
 }
