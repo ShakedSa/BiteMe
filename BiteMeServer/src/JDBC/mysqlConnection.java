@@ -127,12 +127,12 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (rs.getString(8).equals("User")||rs.getString(13).equals("Unverified")) {
+				if (rs.getString(8).equals("User") || rs.getString(13).equals("Unverified")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				
+
 				String firstName = rs.getString(3);
 				String lastName = rs.getString(4);
 				String id = rs.getString(5);
@@ -256,43 +256,34 @@ public class mysqlConnection {
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void changeClientPerrmisions(String userName,String status) {
+	public static void changeClientPerrmisions(String userName, String status) {
 //		ServerResponse serverResponse = new ServerResponse("updateUser");
 		PreparedStatement stmt;
 		String query;
 		try {
-				query = "UPDATE bitemedb.users SET Status = ? WHERE UserName = ?";
-				stmt = conn.prepareStatement(query);
-				stmt.setString(1, status);
-				stmt.setString(2, userName);
-				stmt.executeUpdate();
+			query = "UPDATE bitemedb.users SET Status = ? WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, status);
+			stmt.setString(2, userName);
+			stmt.executeUpdate();
 			/*
-			//delete the client completlely from the db
-			else if(status.equals("Delete")) {
-				//get the client id, to be able to delete from the w4c cards table
-				query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
-			    stmt = conn.prepareStatement(query);
-			    stmt.setString(1, userName);
-			    ResultSet rs = stmt.executeQuery();
-			    rs.next();
-				//delete the client from the w4c cards table
-				query = "delete from bitemedb.w4ccards where CustomerID = ?";
-			    stmt = conn.prepareStatement(query);
-			    stmt.setInt(1, rs.getInt(1));
-			    // execute the preparedstatement
-			    stmt.execute();
-				
-				query = "delete from bitemedb.customers where UserName = ?";
-			    stmt = conn.prepareStatement(query);
-			    stmt.setString(1, userName);
-			    // execute the preparedstatement
-			    stmt.execute();
-			    
-				query = "delete from bitemedb.users where UserName = ?";
-			    stmt = conn.prepareStatement(query);
-			    stmt.setString(1, userName);
-			    // execute the preparedstatement
-			    stmt.execute();*/
+			 * //delete the client completlely from the db else if(status.equals("Delete"))
+			 * { //get the client id, to be able to delete from the w4c cards table query =
+			 * "SELECT * FROM bitemedb.customers WHERE UserName = ?"; stmt =
+			 * conn.prepareStatement(query); stmt.setString(1, userName); ResultSet rs =
+			 * stmt.executeQuery(); rs.next(); //delete the client from the w4c cards table
+			 * query = "delete from bitemedb.w4ccards where CustomerID = ?"; stmt =
+			 * conn.prepareStatement(query); stmt.setInt(1, rs.getInt(1)); // execute the
+			 * preparedstatement stmt.execute();
+			 * 
+			 * query = "delete from bitemedb.customers where UserName = ?"; stmt =
+			 * conn.prepareStatement(query); stmt.setString(1, userName); // execute the
+			 * preparedstatement stmt.execute();
+			 * 
+			 * query = "delete from bitemedb.users where UserName = ?"; stmt =
+			 * conn.prepareStatement(query); stmt.setString(1, userName); // execute the
+			 * preparedstatement stmt.execute();
+			 */
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("no man");
@@ -358,16 +349,15 @@ public class mysqlConnection {
 		PreparedStatement stmt = null;
 		int monthlyCommision = Character.getNumericValue(supplier.getMonthlyCommision().charAt(0));
 		try {
-			//give  supplier permissions to the chosen user
+			// give supplier permissions to the chosen user
 			String query = "UPDATE bitemedb.users SET UserType = ?  WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "Supplier");
 			stmt.setString(2, supplier.getUserName());
 			stmt.executeUpdate();
-			
-			//add a new supplier to the suppliers table
-			query = "INSERT INTO bitemedb.suppliers"
-					+ "(RestaurantName, RestaurantAddress, UserName, MonthlyComission,"
+
+			// add a new supplier to the suppliers table
+			query = "INSERT INTO bitemedb.suppliers" + "(RestaurantName, RestaurantAddress, UserName, MonthlyComission,"
 					+ " Image, RestaurantType, branch)" + "VALUES(?, ?, ?, ?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, supplier.getResturantName());
@@ -575,7 +565,7 @@ public class mysqlConnection {
 		try {
 			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.createStatement();
- 			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				favRestaurants.put(rs.getString(1), null);
 			}
@@ -817,8 +807,7 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
-	
-	
+
 	/**
 	 * Check if a user name number is exist and has no type
 	 * 
@@ -871,11 +860,11 @@ public class mysqlConnection {
 		String filename;
 		int month = Integer.parseInt(desc.get(1).toString());
 		if (desc.get(0).equals("Quarterly Report"))
-			filename = "Report" + desc.get(2) + "-Quarter" + month  + ".pdf";
-		else if(desc.get(0).equals("QuarterlyRevenueReport"))
-			filename=desc.get(3)+"RevenueReport" + desc.get(2) +"-Quarter"+ month + ".pdf";
-		else//format: <branch>-<reportType>Report<Year>-<Month>.pdf
-			filename = desc.get(3)+"-"+desc.get(0) + desc.get(2)+ "-" +desc.get(1) + ".pdf";
+			filename = "Report" + desc.get(2) + "-Quarter" + month + ".pdf";
+		else if (desc.get(0).equals("QuarterlyRevenueReport"))
+			filename = desc.get(3) + "RevenueReport" + desc.get(2) + "-Quarter" + month + ".pdf";
+		else// format: <branch>-<reportType>Report<Year>-<Month>.pdf
+			filename = desc.get(3) + "-" + desc.get(0) + desc.get(2) + "-" + desc.get(1) + ".pdf";
 		String sql = "INSERT INTO reports (Title,Date,content,BranchName,ReportType) values( ?, ?, ?, ?, ?)";
 
 		try {
@@ -998,7 +987,7 @@ public class mysqlConnection {
 	 * @param branch
 	 * @param Func    {"View","Check"}
 	 */
-	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch, String func) {
+	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch) {
 
 		ServerResponse serverResponse = new ServerResponse("MyFile");
 		try {
@@ -1017,22 +1006,14 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 
-			if (func.toLowerCase().equals("view")) {
-				Blob blob = rs.getBlob(1);
-				MyFile file = new MyFile("Blob");
-				byte[] array = blob.getBytes(1, (int) blob.length());
-				file.initArray(array.length);
-				file.setMybytearray(array);
-				serverResponse.setServerResponse(file);
-				serverResponse.setMsg("Success");
-			} else if (func.toLowerCase().equals("check")) {
-				serverResponse.setServerResponse(null);
-				serverResponse.setMsg("Exists");
-			} else {
-				serverResponse.setMsg("Unknown Command");
-				serverResponse.setServerResponse(null);
-				return serverResponse;
-			}
+			Blob blob = rs.getBlob(1);
+			MyFile file = new MyFile("Blob");
+			byte[] array = blob.getBytes(1, (int) blob.length());
+			file.initArray(array.length);
+			file.setMybytearray(array);
+			serverResponse.setServerResponse(file);
+			serverResponse.setMsg("Success");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg("Failed");
@@ -1750,7 +1731,7 @@ public class mysqlConnection {
 
 		PreparedStatement stmt;
 		String query;
-		int num=0;
+		int num = 0;
 		try {
 			query = "SELECT Count(DishName) as count FROM bitemedb.productinorder WHERE"
 					+ " Dishname=? and OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders"
@@ -1781,7 +1762,7 @@ public class mysqlConnection {
 		String query;
 		int delayedOrders = 0;
 		ResultSet rs;
-		//get delayed non preorders:
+		// get delayed non preorders:
 		try {
 			query = "SELECT count(OrderNumber) as num FROM bitemedb.orders where MONTH(OrderReceived)=?"
 					+ " AND YEAR(OrderReceived)=? AND RestaurantName=? AND HOUR(TIMEDIFF(CustomerReceived, OrderReceived))>1"
@@ -1794,8 +1775,8 @@ public class mysqlConnection {
 			stmt.setString(3, restaurantName);
 			stmt.setString(4, "Preorder Delivery");
 			rs = stmt.executeQuery();
-			if(rs.next())
-				delayedOrders+=rs.getInt(1);
+			if (rs.next())
+				delayedOrders += rs.getInt(1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1821,11 +1802,11 @@ public class mysqlConnection {
 		return delayedOrders;
 	}
 
-
 	/*
 	 * Query to received all the open orders that the customer have.
 	 * 
 	 * @param customer
+	 * 
 	 * @return
 	 */
 	public static ServerResponse customersOrder(Customer customer) {
@@ -1906,7 +1887,7 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-  	/**
+	/**
 	 * delete an item from menu by supplier
 	 * 
 	 * @param restaurantName
@@ -2024,7 +2005,7 @@ public class mysqlConnection {
 		return getMenuToOrder(restaurantName);
 	}
 
-	//SELECT Date FROM bitemedb.reports order by Date desc;
+	// SELECT Date FROM bitemedb.reports order by Date desc;
 	/**
 	 * @return creation date of latest report
 	 */
@@ -2047,7 +2028,8 @@ public class mysqlConnection {
 	 * @param m order: reportType,month,year,branch
 	 * @return "fail" if report doesn't exists, report file otherwise.
 	 */
-	//SELECT * FROM bitemedb.reports WHERE MONTH(date)=11 AND YEAR(DATE)=2021 and BranchName="north" and ReportType like "%Perf%";
+	// SELECT * FROM bitemedb.reports WHERE MONTH(date)=11 AND YEAR(DATE)=2021 and
+	// BranchName="north" and ReportType like "%Perf%";
 	public static ServerResponse getMonthlyReport(ArrayList<String> m) {
 		PreparedStatement stmt;
 		Blob content;
@@ -2058,10 +2040,10 @@ public class mysqlConnection {
 			stmt.setString(1, m.get(1)); // month
 			stmt.setString(2, m.get(2)); // year
 			stmt.setString(3, m.get(3)); // branch
-			stmt.setString(4, "%"+m.get(0)+"%"); // report type
+			stmt.setString(4, "%" + m.get(0) + "%"); // report type
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				content=rs.getBlob(1);
+				content = rs.getBlob(1);
 			} else {
 				return null;
 			}

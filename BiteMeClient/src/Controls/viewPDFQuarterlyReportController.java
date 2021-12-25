@@ -36,7 +36,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-
+	private MyFile result;
 	@FXML
 	private Text CEOPanelBtn;
 
@@ -134,10 +134,11 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		clearMsg();
 		router.changeSceneToHomePage();
 	}
-	
+
 	@FXML
 	void searchOndb(ActionEvent event) {
-		if(!checkInputs())return ;
+		if (!checkInputs())
+			return;
 		String year = yearBox.getValue();
 		String quarter = quarterBox.getValue();
 		String branch = BranchBox.getValue();
@@ -145,7 +146,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 			@Override
 			public void run() {
 
-				ClientGUI.client.viewORcheckQuarterReport(quarter, year, branch , "check");
+				ClientGUI.client.viewORcheckQuarterReport(quarter, year, branch);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -157,25 +158,24 @@ public class viewPDFQuarterlyReportController implements Initializable {
 
 				if (ClientGUI.client.getLastResponse().getServerResponse() == null) {
 					String msg = "";
-					if(ClientGUI.client.getLastResponse().getMsg().equals("NotExists")) {
-						msg ="Quarter report does not exists";
-					}
-					else if(ClientGUI.client.getLastResponse().getMsg().equals("Exists")) {
-						viewPDFReportBtn.setDisable(false);
-						return;
-					}
-					else if(ClientGUI.client.getLastResponse().getMsg().equals("Failed")) {
+					if (ClientGUI.client.getLastResponse().getMsg().equals("NotExists")) {
+						msg = "Quarter report does not exists";
+					} else if (ClientGUI.client.getLastResponse().getMsg().equals("Failed")) {
 						msg = "Somthing went worng";
-					} 
+					}
 					final String m = msg;
 					Platform.runLater(() -> {
 						textMsg.setFill(Color.RED);
 						textMsg.setText(m);
 					});
 					viewPDFReportBtn.setDisable(true);
-					return;	
+					return;
 				}
-
+				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+					result = (MyFile) ClientGUI.client.getLastResponse().getServerResponse();
+					viewPDFReportBtn.setDisable(false);
+					return;
+				}
 			}
 		});
 		t.start();
@@ -187,66 +187,45 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		textMsg.setText("Downloading...");
 		String year = yearBox.getValue();
 		String quarter = quarterBox.getValue();
-		String branch = BranchBox.getValue();		 
+		String branch = BranchBox.getValue();
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Save PDF File");
 		String fileName = "Report_" + year + "_Quarter" + quarter + "_Branch_" + branch + ".pdf";
 		fc.setInitialFileName(fileName);
 		File pdfToDownload = fc.showSaveDialog(router.getStage());
-		if(pdfToDownload==null) {
+		if (pdfToDownload == null) {
 			clearMsg();
 			return;
 		}
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
 
-				ClientGUI.client.viewORcheckQuarterReport(quarter, year, branch , "view");
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
+		try {
+		FileOutputStream out = new FileOutputStream(pdfToDownload);
+		byte[] buff = result.getMybytearray();
 
-
-				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
-					
-					MyFile pdfFile = (MyFile) ClientGUI.client.getLastResponse().getServerResponse();
-					try {
-						
-						
-						FileOutputStream out = new FileOutputStream(pdfToDownload);
-						byte[] buff = pdfFile.getMybytearray();
-
-						out.write(buff);
-						out.close();
-						
-						File toOpen = new File(pdfToDownload.getPath());
-						Desktop desktop = Desktop.getDesktop();
-						desktop.open(toOpen);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					Platform.runLater(() -> {
-						textMsg.setFill(Color.GREEN);
-						textMsg.setText("Finished!");
-						quarterBox.setOnAction(null);
-						BranchBox.setOnAction(null);
-						yearBox.setOnAction(null);
-						clearSelections();
-						quarterBox.setOnAction(event -> searchOndb(event) );
-						BranchBox.setOnAction(event -> searchOndb(event) );
-						yearBox.setOnAction(event -> searchOndb(event) );
-					});
-					
-				}
-			}
-		});
-		t.start();
+			out.write(buff);
+			out.close();
+			
+			File toOpen = new File(pdfToDownload.getPath());
+			Desktop desktop = Desktop.getDesktop();
+			desktop.open(toOpen);
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 		
+		Platform.runLater(() -> {
+			textMsg.setFill(Color.GREEN);
+			textMsg.setText("Finished!");
+			quarterBox.setOnAction(null);
+			BranchBox.setOnAction(null);
+			yearBox.setOnAction(null);
+			clearSelections();
+			quarterBox.setOnAction(newevent -> searchOndb(newevent) );
+			BranchBox.setOnAction(newevent -> searchOndb(newevent) );
+			yearBox.setOnAction(newevent -> searchOndb(newevent) );
+		});
+		
+
 	}
 
 	private boolean checkInputs() {
@@ -255,7 +234,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		String year = yearBox.getValue();
 		textMsg.setFill(Color.RED);
 		if (branch == null) {
-			
+
 			textMsg.setText("Please select Branch");
 			return false;
 		}
@@ -300,10 +279,12 @@ public class viewPDFQuarterlyReportController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+
 	private void clearMsg() {
 		textMsg.setText("");
-		
+
 	}
+
 	private void clearSelections() {
 		quarterBox.getSelectionModel().clearSelection();
 		BranchBox.getSelectionModel().clearSelection();

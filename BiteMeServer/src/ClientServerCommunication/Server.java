@@ -163,7 +163,7 @@ public class Server extends AbstractServer {
 			break;
 		case "viewQuarterReport":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0), m.get(1), m.get(2), m.get(3)), client);
+			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0), m.get(1), m.get(2)), client);
 			break;
 		/*
 		 * case "CheckQuarterReport": m = (ArrayList<String>)

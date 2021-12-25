@@ -526,10 +526,10 @@ public class ClientUI implements ClientIF {
 
 	}
 
-	public void viewORcheckQuarterReport(String quarter, String Year, String branch, String func) {
+	public void viewORcheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
-			arr.addAll(Arrays.asList(quarter, Year, branch,func));
+			arr.addAll(Arrays.asList(quarter, Year, branch));
 			ServerResponse serverResponse = new ServerResponse("viewQuarterReport");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
