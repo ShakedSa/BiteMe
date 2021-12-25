@@ -133,6 +133,10 @@ public class loginController implements Initializable {
 		case "internal error":
 			errorMsg.setText("Server error, can't logged in");
 			return false;
+		case "frozen":
+			errorMsg.setText("User is Frozen for now");
+			return false;
+		
 		default:
 			usernameTxt.clear();
 			passwordTxt.clear();

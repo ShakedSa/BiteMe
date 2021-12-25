@@ -53,7 +53,7 @@ public class Months {
 	}
 	public static int getQuarter(String m) {
 		if(!month.containsKey(m)) return -1;
-		return month.get(m)%5+1;
+		return month.get(m)%4+1;
 	}
 	
 }
