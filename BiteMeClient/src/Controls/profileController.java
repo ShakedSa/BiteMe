@@ -25,8 +25,9 @@ public class profileController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-
-    @FXML
+	private Scene lastScene;
+	
+	@FXML
     private ImageView bagImg;
 
     @FXML
@@ -88,6 +89,7 @@ public class profileController implements Initializable {
 
 	@FXML
 	private Text itemsCounter;
+	private String lastSceneTitle;
 
 	public void initProfile() {
 		setAvatar();
@@ -116,7 +118,8 @@ public class profileController implements Initializable {
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		router.changeSceneToHomePage();
+		stage.setScene(lastScene);
+		stage.setTitle(lastSceneTitle);
 	}
 
 	/**
@@ -222,6 +225,22 @@ public class profileController implements Initializable {
 
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
+	}
+
+    /**
+	 * @return the lastScene
+	 */
+	public Scene getLastScene() {
+		return lastScene;
+	}
+
+	/**
+	 * @param lastScene the lastScene to set
+	 * @param Title 
+	 */
+	public void setLastScene(Scene lastScene, String title) {
+		this.lastScene = lastScene;
+		this.lastSceneTitle = title;
 	}
 
 }
