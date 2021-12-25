@@ -62,9 +62,6 @@ public class addNewItemController implements Initializable {
 	private Text logoutBtn;
 
 	@FXML
-	private Text uploadImageTxt;
-
-	@FXML
 	private TextField optionalComponentsTxtField;
 
 	@FXML
@@ -80,9 +77,6 @@ public class addNewItemController implements Initializable {
 	private Text supplierPanelBtn;
 
 	@FXML
-	private Label uploadImageBtn;
-
-	@FXML
 	private Text errorMsg;
 
 	private ObservableList<TypeOfProduct> list;
@@ -90,7 +84,7 @@ public class addNewItemController implements Initializable {
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents = new ArrayList<>();
 	private Product product;
- 
+
 	/**
 	 * creating list of Types
 	 */
@@ -103,7 +97,7 @@ public class addNewItemController implements Initializable {
 
 		list = FXCollections.observableArrayList(type);
 		selectTypeBox.setItems(list);
-	} 
+	}
 
 	@FXML
 	void addItemToMenuClicked(MouseEvent event) {
@@ -115,11 +109,15 @@ public class addNewItemController implements Initializable {
 		String temp = optionalComponentsTxtField.getText();
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
-		String[] components = temp.split(",");
-		for (int i = 0; i < components.length; i++) {
-			optionalComponents.add(new Component(components[i]));
-		}
-		product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		if (temp.equals("") == false) {
+			String[] components = temp.split(",");
+			for (int i = 0; i < components.length; i++) {
+				optionalComponents.add(new Component(components[i]));
+			}
+			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
+		} else
+			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
+
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -147,9 +145,11 @@ public class addNewItemController implements Initializable {
 		}
 
 		ClientGUI.client.getLastResponse().getServerResponse();
-
+		clearPage();
+//		//update the new menu in update menu controller
+//		router.getUpdateMenuController();
 		// return to update menu page
-		router.getUpdateMenuController();
+		router.getSupplierPanelController().updateMenuClicked(event);
 	}
 
 	private boolean checkInputs() {
@@ -176,11 +176,9 @@ public class addNewItemController implements Initializable {
 			errorMsg.setText("Characters aren't allowed in price");
 			return false;
 		}
-		if (price.contains(".")) {
-			if (InputValidation.checkSpecialCharacters(price)) {
-				errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
-				return false;
-			}
+		if (InputValidation.checkSpecialCharacters(price) && !price.contains(".")) {
+			errorMsg.setText("Special characters aren't allowed in price,\n Only one decimal point");
+			return false;
 		}
 		errorMsg.setText("");
 		return true;
@@ -207,8 +205,13 @@ public class addNewItemController implements Initializable {
 	}
 
 	@FXML
-	void infoIconClicked(MouseEvent event) {
+	void infoIconEnter(MouseEvent event) {
 		infoTxtArea.setVisible(true);
+	}
+
+	@FXML
+	void infoIconExit(MouseEvent event) {
+		infoTxtArea.setVisible(false);
 	}
 
 	@FXML
@@ -220,6 +223,7 @@ public class addNewItemController implements Initializable {
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
+		clearPage();
 	}
 
 	@FXML
@@ -233,26 +237,21 @@ public class addNewItemController implements Initializable {
 		router.returnToSupplierPanel(event);
 		clearPage();
 	}
-	
-    @FXML
-    void returnToUpdateMenu(MouseEvent event) {
-    	router.getSupplierPanelController().updateMenuClicked(event);
-		clearPage();
-    }
 
 	@FXML
-	void uploadImageClicked(MouseEvent event) {
-
+	void returnToUpdateMenu(MouseEvent event) {
+		router.getSupplierPanelController().updateMenuClicked(event);
+		clearPage();
 	}
-	
+
 	private void clearPage() {
-		infoTxtArea.setVisible(false);
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();
 		itemsNameTxtField.clear();
 		optionalComponents.clear();
 		priceTxtField.clear();
 		descriptionTxtArea.clear();
+		infoTxtArea.setVisible(false);
 	}
 
 	/**
@@ -282,5 +281,4 @@ public class addNewItemController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
 }

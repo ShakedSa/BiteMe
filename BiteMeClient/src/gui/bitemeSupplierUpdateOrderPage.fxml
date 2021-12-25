@@ -176,5 +176,10 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
+      <Text fx:id="noUpdate" layoutX="130.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
