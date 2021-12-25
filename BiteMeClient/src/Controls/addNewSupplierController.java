@@ -405,6 +405,10 @@ public class addNewSupplierController implements Initializable {
 		userNameError.setVisible(false);
 		Error.setVisible(false);
 		userNameTxtField.clear();
+		restaurantTypeCombo.valueProperty().set(null);
+		monthlyCommissionBox.valueProperty().set(null);
+		restaurantAddressTxtField.clear();
+		restaurantNameTxtField.clear();
 		UploadMsgTxt.setVisible(false);
 		imgToUpload = null;
 	}

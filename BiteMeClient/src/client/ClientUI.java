@@ -513,7 +513,7 @@ public class ClientUI implements ClientIF {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList(userName));
-			ServerResponse serverResponse = new ServerResponse("checkuserNameIsClient");
+			ServerResponse serverResponse = new ServerResponse("checkuserName");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {

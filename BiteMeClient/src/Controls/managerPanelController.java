@@ -192,6 +192,7 @@ public class managerPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.resetScreen();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -203,6 +204,7 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
+			router.getUpdateUserInformationController().resetScreen();
 			stage.setTitle("BiteMe - Update User Information");
 			stage.setScene(router.getUpdateUserInformationController().getScene());
 			stage.show();

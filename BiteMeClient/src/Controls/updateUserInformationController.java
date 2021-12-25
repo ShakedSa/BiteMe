@@ -91,7 +91,7 @@ public class updateUserInformationController implements Initializable{
     
     private String clientStatus;
     
-    private String newStatus;
+    private String newStatus = "";
     
 	
 	
@@ -132,17 +132,17 @@ public class updateUserInformationController implements Initializable{
 		}
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
-		//check if the user name is a client
+		//check if the username is a client
 		if(sr.getMsg().equals("is not client")) {
-			userNameError.setText("This user name is not a client!");
+			userNameError.setText("This username is not a client!");
 			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
 		}
-		//check if user name is valid
+		//check if username is valid
 		if(sr.getMsg().equals("Error"))
 		{
-			userNameError.setText("This user name doesn't exist");
+			userNameError.setText("This username doesn't exist");
 			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
@@ -150,12 +150,12 @@ public class updateUserInformationController implements Initializable{
 		userNameError.setVisible(true);
 		userNameError.setText("Name: " + response.get(0) +" " + response.get(1));
 		userStatusLabel.setText(response.get(2));
+		updateSucess1.setVisible(false);
+    	updateSucess2.setVisible(false);
 		enableEdit(true);
 		setUserOptions(response.get(2));
 		validUserName = userNameTxtField.getText();
-		clientStatus = response.get(2);
-		
-		
+		clientStatus = response.get(2);	
     }
 	
 	
@@ -199,16 +199,21 @@ public class updateUserInformationController implements Initializable{
 	*/
 	@FXML
 	void freezeClientClicked(MouseEvent event) {
-		if(action2.isSelected())
-    		action2.setSelected(false);
-		if(clientStatus.equals("Active")) {
-			newStatus = "Frozen";
-			updateSucess2.setText("Client account has been Frozen");
+		if(action1.isSelected()) {
+			if(action2.isSelected())
+				action2.setSelected(false);
+			if(clientStatus.equals("Active")) {
+				newStatus = "Frozen";
+				updateSucess2.setText("Client account has been Frozen");
+			}
+			else {
+				updateSucess2.setText("Client account has been Activated");
+				newStatus = "Active";
+			}
 		}
 		else {
-			updateSucess2.setText("Client account has been Activated");
-			newStatus = "Active";
-			}
+			newStatus = "";
+		}
 	    }
 
 	 
@@ -217,10 +222,13 @@ public class updateUserInformationController implements Initializable{
 	*/
 	@FXML
 	void removeClientClicked(MouseEvent event) {
-		if(action1.isSelected())
-    		action1.setSelected(false); 
-		newStatus = "Delete";
-		updateSucess2.setText("Client account has been Deleted");
+		if(action2.isSelected()) {
+			if(action1.isSelected())
+				action1.setSelected(false); 
+			newStatus = "Deleted";
+			updateSucess2.setText("Client account has been Deleted");
+		}
+		else newStatus = "";
 	}
 
     
@@ -249,12 +257,33 @@ public class updateUserInformationController implements Initializable{
     		userNameError.setText("UserName has to be searched first");
     		enableEdit(false);
     		userNameError.setVisible(true);
+    		Error.setVisible(false);
+    		return;
+    	}
+    	if(newStatus.equals("")) {
+    		Error.setVisible(true);
     		return;
     	}
     	ClientGUI.client.changeClientPerrmisions(userNameTxtField.getText(), newStatus);
-    	userNameError.setVisible(false);
+    	Error.setVisible(false);
+    	enableEdit(false);
     	updateSucess2.setVisible(true);
     	updateSucess1.setVisible(true);
+    	clearChoises();
+    	
+    }
+    
+    private void clearChoises() {
+    	action1.setSelected(false);
+    	action1.setSelected(false);
+    	newStatus = "";
+    }
+    public void resetScreen() {
+    	enableEdit(false);
+    	Error.setVisible(false);
+    	userNameError.setVisible(false);
+    	userNameTxtField.clear();
+    	newStatus = "";
     }
     
     

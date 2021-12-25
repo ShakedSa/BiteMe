@@ -250,15 +250,27 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		String query;
 		try {
-			if(status.equals("Active") || status.equals("Frozen")) {
 				query = "UPDATE bitemedb.users SET Status = ? WHERE UserName = ?";
 				stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
 				stmt.setString(2, userName);
 				stmt.executeUpdate();
-			}
+			/*
 			//delete the client completlely from the db
 			else if(status.equals("Delete")) {
+				//get the client id, to be able to delete from the w4c cards table
+				query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
+			    stmt = conn.prepareStatement(query);
+			    stmt.setString(1, userName);
+			    ResultSet rs = stmt.executeQuery();
+			    rs.next();
+				//delete the client from the w4c cards table
+				query = "delete from bitemedb.w4ccards where CustomerID = ?";
+			    stmt = conn.prepareStatement(query);
+			    stmt.setInt(1, rs.getInt(1));
+			    // execute the preparedstatement
+			    stmt.execute();
+				
 				query = "delete from bitemedb.customers where UserName = ?";
 			    stmt = conn.prepareStatement(query);
 			    stmt.setString(1, userName);
@@ -269,8 +281,7 @@ public class mysqlConnection {
 			    stmt = conn.prepareStatement(query);
 			    stmt.setString(1, userName);
 			    // execute the preparedstatement
-			    stmt.execute();
-			}
+			    stmt.execute();*/
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("no man");
@@ -753,7 +764,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Check if a user name number is exist and has no type
+	 * Check if a user namename is exist and has no perrmissions
 	 * 
 	 * @param orderNumber
 	 * @return ServerResponse
@@ -810,7 +821,7 @@ public class mysqlConnection {
 			stmt.setString(1, username);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				if (rs.getString(8).equals("Customer")) {
+				if (rs.getString(8).equals("Customer") && !rs.getString(13).equals("Deleted")) {
 					response.add(rs.getString(3));
 					response.add(rs.getString(4));
 					response.add(rs.getString(13));

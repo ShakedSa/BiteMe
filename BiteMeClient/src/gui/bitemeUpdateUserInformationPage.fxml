@@ -78,7 +78,7 @@
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Label id="btn" fx:id="updateUserBtn" alignment="CENTER" layoutX="570.0" layoutY="525.0" onMouseClicked="#updateUserBtnClicked" prefHeight="25.0" prefWidth="253.0" text="Add Supplier" visible="false">
+      <Label id="btn" fx:id="updateUserBtn" alignment="CENTER" layoutX="528.0" layoutY="512.0" onMouseClicked="#updateUserBtnClicked" prefHeight="25.0" prefWidth="253.0" text="Submit changes">
          <font>
             <Font name="Berlin Sans FB" size="23.0" />
          </font>
