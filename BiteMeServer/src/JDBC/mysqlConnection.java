@@ -56,6 +56,7 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import jdk.internal.module.Checks;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -1413,6 +1414,26 @@ public class mysqlConnection {
 	public static ServerResponse addItemToMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("ArratList");
 		try {
+			//first check for duplicates:
+			String check = "SELECT DishName FROM bitemedb.products WHERE RestaurantName= ? AND DishName= ? ";
+			PreparedStatement checkStmt;
+			checkStmt = conn.prepareStatement(check);
+			checkStmt.setString(1, product.getRestaurantName());
+			checkStmt.setString(2, product.getDishName());
+			ResultSet rs = checkStmt.executeQuery();
+			if(rs.next()) {
+				System.out.println("test2");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("test1");
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		try {
+			//if not duplicates, insert:
 			PreparedStatement stmt;
 			String query = "INSERT INTO bitemedb.products (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
 			stmt = conn.prepareStatement(query);

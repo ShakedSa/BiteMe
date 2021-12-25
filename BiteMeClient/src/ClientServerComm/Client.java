@@ -45,7 +45,8 @@ public class Client extends AbstractClient {
 	 * @param msg
 	 */
 	public void handleMessageFromServer(Object msg) {
-		if (msg instanceof String) {
+		if(msg==null) {
+			clientUI.setLastResponse(null);
 			synchronized (ClientGUI.monitor) {
 				ClientGUI.monitor.notifyAll();
 			}

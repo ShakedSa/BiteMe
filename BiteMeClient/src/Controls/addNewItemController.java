@@ -145,7 +145,40 @@ public class addNewItemController implements Initializable {
 			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 		} else
 			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
+		
 
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				ClientGUI.client.addItemToMenu(product);
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		if (!checkServerResponse()) {
+			VImage.setVisible(false);
+			successMsg.setVisible(false);
+			return;
+		}
+		else {
+			clearPage();
+			VImage.setVisible(true);
+			successMsg.setVisible(true);
+		}
+		/*
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -169,6 +202,7 @@ public class addNewItemController implements Initializable {
 			}
 		});
 		t.start();
+		*/
 	}
 
 	private boolean checkInputs() {
@@ -215,6 +249,7 @@ public class addNewItemController implements Initializable {
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
+			errorMsg.setText("This item already exist in menu !");
 			return false;
 		}
 
