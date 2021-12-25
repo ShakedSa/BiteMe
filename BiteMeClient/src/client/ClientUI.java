@@ -5,16 +5,14 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import ClientServerComm.Client;
-import Entities.Component;
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -585,6 +583,28 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 
+	}
+	
+	public void getCustomersOrder(Customer customer) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("customersOrders");
+			serverResponse.setServerResponse(customer);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	public void updateOrderReceived(Order order) {
+		try {
+			ServerResponse serverResponse = new ServerResponse("UpdateorderReceived");
+			serverResponse.setServerResponse(order);
+			client.handleMessageFromClientUI(serverResponse);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@Override

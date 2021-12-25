@@ -2,33 +2,12 @@
 package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.sun.tools.classfile.Annotation.element_value;
-
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
@@ -37,7 +16,6 @@ import ServerUtils.ReportsThread;
 import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
-import javafx.css.Style;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -181,6 +159,11 @@ public class Server extends AbstractServer {
 		case "editItemInMenu":
 			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
 			break;
+		case "customersOrders":
+			this.sendToClient(mysqlConnection.customersOrder((Customer)serverResponse.getServerResponse()), client);
+			break;
+		case "UpdateorderReceived":
+			this.sendToClient(mysqlConnection.updateOrderReceived((Order)serverResponse.getServerResponse()), client);
 		case "deleteItemFromMenu":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.deleteItemFromMenu(m.get(0), m.get(1)), client);
@@ -198,6 +181,7 @@ public class Server extends AbstractServer {
 		case "getReport":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
+
 			break;
 		default:
 			sendToClient("default", client);

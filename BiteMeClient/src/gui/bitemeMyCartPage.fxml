@@ -65,26 +65,11 @@
          </image>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ScrollPane layoutX="21.0" layoutY="97.0" maxHeight="477.0" prefHeight="477.0" prefWidth="785.0">
-        <content>
-          <AnchorPane fx:id="root" minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="783.0">
-               <children>
-                  <ImageView fitHeight="85.0" fitWidth="65.0" layoutX="43.0" layoutY="382.0" onMouseClicked="#returnToLastPage" style="-fx-rotate: -90;">
-                     <image>
-                        <Image url="@../images/arrow.gif" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
-                  <Text layoutX="68.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Cart">
-                     <font>
-                        <Font name="Berlin Sans FB" size="30.0" />
-                     </font>
-                  </Text>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <ScrollPane fx:id="scrollRoot" layoutX="13.0" layoutY="93.0" maxHeight="482.0" prefHeight="482.0" prefWidth="807.0" />
+      <ImageView fx:id="backButton" fitHeight="75.0" fitWidth="61.0" layoutX="7.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@../images/arrow.gif" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

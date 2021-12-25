@@ -18,16 +18,14 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.sql.Timestamp;
 import java.sql.Time;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.itextpdf.text.pdf.codec.Base64.OutputStream;
-
 import com.sun.glass.ui.EventLoop.State;
-
-
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
@@ -1610,7 +1608,6 @@ public class mysqlConnection {
 			query ="SELECT distinct(DishName) FROM bitemedb.productinorder "
 					+ "WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders "
 					+ "WHERE RestaurantName=? and MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
-
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, month);
@@ -1625,7 +1622,6 @@ public class mysqlConnection {
 		return arr;
 	}
 
-
 	/**
 	 * @param restaurantName
 	 * @param month
@@ -1638,7 +1634,6 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		String query;
 		int num=0;
-
 		try {
 			query ="SELECT Count(DishName) as count FROM bitemedb.productinorder WHERE"
 					+ " Dishname=? and OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders"
@@ -1670,7 +1665,6 @@ public class mysqlConnection {
 		int delayedOrders=0;
 		ResultSet rs;
 		//get delayed non preorders:
-
 		try {
 			query = "SELECT count(OrderNumber) as num FROM bitemedb.orders where MONTH(OrderReceived)=?"
 					+ " AND YEAR(OrderReceived)=? AND RestaurantName=? AND HOUR(TIMEDIFF(CustomerReceived, OrderReceived))>1"
@@ -1685,7 +1679,6 @@ public class mysqlConnection {
 			rs = stmt.executeQuery();
 			if(rs.next())
 				delayedOrders+=rs.getInt(1);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return 0;
@@ -1712,6 +1705,89 @@ public class mysqlConnection {
 		return delayedOrders;
 	}
 
+	/**
+	 * Query to received all the open orders that the customer have.
+	 * 
+	 * @param customer
+	 * @return
+	 */
+	public static ServerResponse customersOrder(Customer customer) {
+		ServerResponse serverResponse = new ServerResponse("CustomersOrders");
+		PreparedStatement stmt;
+		ArrayList<Order> orders = new ArrayList<>();
+		try {
+			String query = "SELECT OrderNumber, FinalPrice FROM bitemedb.ordereddelivery WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, customer.getUserName());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Order order = getOrderInfo(rs.getInt(1), rs.getFloat(2));
+				if (order != null) {
+					orders.add(order);
+				}
+			}
+			serverResponse.setMsg("Success");
+			serverResponse.setServerResponse(orders);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return serverResponse;
+	}
+
+	/**
+	 * Private query to received orders by their order number.
+	 * 
+	 * @param orderNumber
+	 * @param finalPrice
+	 * @return
+	 */
+	private static Order getOrderInfo(int orderNumber, float finalPrice) {
+		Order order = new Order();
+		PreparedStatement stmt;
+		try {
+			String query = "SELECT RestaurantName, OrderTime, OrderStatus FROM bitemedb.orders WHERE OrderNumber = ? AND CustomerReceived IS NULL";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				order.setOrderNumber(orderNumber);
+				order.setRestaurantName(rs.getString(1));
+				order.setDateTime(rs.getString(2));
+				order.setOrderPrice(finalPrice);
+				order.setStatus(rs.getString(3));
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return order;
+	}
+
+	/**
+	 * Query to update that the customer received the order.
+	 * 
+	 * @param order
+	 * @return
+	 */
+	public static ServerResponse updateOrderReceived(Order order) {
+		ServerResponse serverResponse = new ServerResponse("Update Order");
+		PreparedStatement stmt;
+		try {
+			String query = "UPDATE bitemedb.orders SET CustomerReceived = ? WHERE OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, LocalDateTime.now().toString());
+			stmt.setInt(2, order.getOrderNumber());
+			stmt.executeUpdate();
+			serverResponse.setMsg("Success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return serverResponse;
+	}
 
 	public static ServerResponse deleteItemFromMenu(String restaurantName, String dishName) {
 		ServerResponse serverResponse = new ServerResponse("String");
