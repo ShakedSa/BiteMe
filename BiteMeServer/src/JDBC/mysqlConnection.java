@@ -2015,7 +2015,7 @@ public class mysqlConnection {
 		Date date = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT Date FROM bitemedb.reports order by Date desc");
+			rs = stmt.executeQuery("SELECT Date FROM bitemedb.reports WHERE ReportType like '%Monthly%' order by Date desc");
 			if (rs.next())
 				date = rs.getDate(1);
 		} catch (SQLException e) {
@@ -2081,5 +2081,30 @@ public class mysqlConnection {
 			serverResponse.setServerResponse(null);
 		}
 		return serverResponse;
+	}
+	
+	//SELECT AVG(Rating) FROM bitemedb.ratings where orderNumber IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName="Japanika" and month(OrderTime) = 12);
+
+	/**
+	 * @param res
+	 * @param month
+	 * @param year
+	 * @return average rating
+	 */
+	public static int getAvgRating(String restaurant, String month, String year) {
+		try {
+			String query = "SELECT AVG(Rating) FROM bitemedb.ratings where orderNumber IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName=? and month(OrderTime) = ? and year(OrderTime) = ?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurant);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				return rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

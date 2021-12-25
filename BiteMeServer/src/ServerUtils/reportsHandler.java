@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.statistics.HistogramDataset;
 
 import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.BaseColor;
@@ -190,7 +193,7 @@ public class reportsHandler {
 	 * @param Month
 	 */
 	public static void createMonthlyPerformanceReportPdf(String Branch, String Month, String Year) {
-
+		ArrayList<Double> ratingAverages = new ArrayList<Double>();
 		Document document = new Document();
 		LocalDate currentDate=LocalDate.now();
 		ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -199,7 +202,7 @@ public class reportsHandler {
 		document.addTitle("Monthly Report");
 		
 			try {
-				PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempPerformanceReport.pdf"));
+				PdfWriter writer =	PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempPerformanceReport.pdf"));
 				document.open();
 				Font font = FontFactory.getFont(FontFactory.HELVETICA, 30, BaseColor.BLACK);
 				document.add(pdfConfigs.createTitle("Monthly Performance Report\n", font));
@@ -213,6 +216,8 @@ public class reportsHandler {
 					for(String res: Restaurants) { // for each restaurant in branch:
 							numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
 							delayedOrders=mysqlConnection.getDelayedOrders(res,Month,Year);
+							int ratingAvg = mysqlConnection.getAvgRating(res,Month,Year);
+							ratingAverages.add((double) ratingAvg);
 							if(numOfOrders!=0)
 								delayedPercentage=(float)100*delayedOrders/numOfOrders;
 							else
@@ -227,7 +232,28 @@ public class reportsHandler {
 						totalDelayedPercentage=(float)100*totalDelayedOrders/totalOrders;
 					else
 						totalDelayedPercentage=0;
-					document.add(new Paragraph("\n total Orders: "+totalOrders + "\nTotal Delayed :" + totalDelayedPercentage+"%",font));
+					document.add(new Paragraph("\n total Orders: "+totalOrders + "\nTotal Delayed :" + totalDelayedPercentage+"%\n\n",font));
+					
+					//add ratings histogram : ratingAverages
+					PdfContentByte contentByte = writer.getDirectContent();
+					PdfTemplate template = contentByte.createTemplate(350, 350);
+					Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
+					Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
+				//	JFreeChart chart =pdfConfigs.generateHist(ratingAverages);
+					
+					if(!ratingAverages.isEmpty())
+					{
+						double[] values = ratingAverages.stream().mapToDouble(Double::doubleValue).toArray();
+				        HistogramDataset dataset = new HistogramDataset();
+				        dataset.addSeries("key", values, 5);
+
+				        JFreeChart chart = ChartFactory.createHistogram("Average Ratings in restaurants",
+				                   "Rating Average this month", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
+				        chart.draw(graphics2d, rectangle2d);
+						
+					}
+				graphics2d.dispose();
+				contentByte.addTemplate(template, 0, 0);
 				document.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -248,8 +274,8 @@ public class reportsHandler {
 				if(is!=null)
 					is.close();
 				//delete temp file from server.
-				File f = new File(Branch + "TempRevenuePerformance.pdf");
-				f.delete();
+			//	File f = new File(Branch + "TempPerformanceReport.pdf");
+			//	f.delete();
 			} catch (Exception e) {e.printStackTrace();}
 			
 

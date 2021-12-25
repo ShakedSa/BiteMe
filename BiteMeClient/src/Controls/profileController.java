@@ -184,6 +184,9 @@ public class profileController implements Initializable {
 		homePageBtn.setStyle("-fx-cursor: hand;");
 	}
 
+	/**
+	 *  sets disable to all buttons
+	 */
 	private void hideAllBtns() {
 		restaurantBtn.setVisible(false);
 		managerBtn.setVisible(false);
@@ -223,6 +226,9 @@ public class profileController implements Initializable {
     	router.returnToSupplierPanel(event);
     }
 
+	/**
+	 *  sets item counter to relevant value.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
