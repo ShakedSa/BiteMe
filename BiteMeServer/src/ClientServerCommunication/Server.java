@@ -192,6 +192,9 @@ public class Server extends AbstractServer {
 			controller.setMessage("Error while handling files in Server");
 		}
 			break;
+		case "getRefunds":
+			this.sendToClient(mysqlConnection.getRefund((Customer)serverResponse.getServerResponse()), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

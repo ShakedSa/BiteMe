@@ -2,13 +2,14 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import Entities.Customer;
 import Entities.W4CCard;
 import Enums.PaymentMethod;
 import client.ClientGUI;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -254,12 +255,44 @@ public class paymentController implements Initializable {
 		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
+		setStage(router.getStage());
+		/**
+		 * NEEDDDDDDDDDDDDDDDDDDDS CHANGES :) TO BE CONTINUED...
+		 */
+		checkRefunds();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void checkRefunds() {
+		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.monitor) {
+				System.out.println("Calling refunds");
+				ClientGUI.client.getRefunds(user);
+				try {
+					System.out.println("Waiting for refunds");
+					ClientGUI.monitor.wait();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					return;
+				}
+
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		System.out.println("Done waiting for refunds");
+		user.setRefunds((HashMap<String, Float>) ClientGUI.client.getLastResponse().getServerResponse());
 		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
 			refundCheck.setVisible(true);
 			errorMsg.setText("You got a " + user.getRefunds().get(router.getOrder().getRestaurantName())
 					+ "\u20AA for this restaurant.\nCheck the check box if you would like to use it.");
 		}
-		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {

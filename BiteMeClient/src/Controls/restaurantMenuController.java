@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import Entities.Component;
 import Entities.Order;
 import Entities.Product;
-import Entities.ServerResponse;
 import Enums.Doneness;
 import Enums.Size;
 import Enums.TypeOfProduct;
 import Enums.UserType;
+import Util.LoadingAnimation;
 import client.ClientGUI;
-import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -35,13 +35,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * @author Shaked
@@ -340,14 +337,11 @@ public class restaurantMenuController implements Initializable {
 				nextBtn.setDisable(true);
 				/** Pane for the overlay screen. */
 				Pane overlayPane = new Pane();
-				overlayPane.setPrefHeight(375);
-				overlayPane.setPrefWidth(689);
 				root.getChildren().add(overlayPane);
 				overlayPane.getStyleClass().add("overlayLayout");
 				/** Close button, closing the overlay screen. */
 				Label closeBtn = new Label("X");
 				closeBtn.getStyleClass().add("close");
-				closeBtn.setFont(new Font("Berlin Sans FB", 22));
 				/** Setting a close button for the "choose components" screen. */
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
@@ -356,11 +350,7 @@ public class restaurantMenuController implements Initializable {
 				});
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());
-
-				title.setFont(new Font("Berlin Sans FB", 30));
-				title.setStyle("-fx-text-fill: black;");
-				title.setLayoutX(41);
-				title.setLayoutY(15);
+				title.getStyleClass().add("componentTitle");
 				/**
 				 * If the product is already in the order, won't allow duplicate items.<br>
 				 * User can choose to remove item or not in the pop-up panel.
@@ -376,10 +366,8 @@ public class restaurantMenuController implements Initializable {
 						setItemsCounter();
 					});
 					removeItem.setId("addItem");
-					removeItem.setLayoutX(535);
-					removeItem.setLayoutY(330);
 					overlayPane.getChildren().addAll(closeBtn, title, removeItem);
-					overlayPaneTransition(overlayPane);
+					LoadingAnimation.overlayPaneTransition(overlayPane);
 				} else {
 					/** Under line for the overlay screen's title. */
 					Line line = new Line();
@@ -392,290 +380,218 @@ public class restaurantMenuController implements Initializable {
 					line.setEndX(530);
 					line.setStartY(0);
 					line.setEndY(0);
-
 					/** Product's description. */
 					Label description = new Label(p.getDescription());
-					description.setFont(new Font("Berlin Sans FB", 14));
-					description.setLayoutX(41);
-					description.setLayoutY(61);
-					description.setTextFill(Color.BLACK);
+					description.getStyleClass().add("componentDescription");
 					/** Product's price */
 					final FloatProperty initialProductPrice = new SimpleFloatProperty(p.getPrice());
 					Label price = new Label(String.format("Price %.2f \u20AA", initialProductPrice.get()));
-					price.setFont(new Font("Berlin Sans FB", 14));
-					price.setTextFill(Color.BLACK);
-					price.setLayoutX(580);
-					price.setLayoutY(290);
-					/** Getting the optional component from the server for this specific product. */
-					Thread t = new Thread(() -> {
-						ClientGUI.client.componentsInProduct(restaurantName, p.getDishName());
-						synchronized (ClientGUI.monitor) {
-							try {
-								ClientGUI.monitor.wait();
-							} catch (Exception ex) {
-								ex.printStackTrace();
-								return;
-							}
-						}
-					});
-					t.start();
-					try {
-						t.join();
-					} catch (Exception ex) {
-						ex.printStackTrace();
-						return;
-					}
+					price.getStyleClass().add("productPrice");
 					/** Counter to show how many product of this product are in the order. */
 					Label counter = new Label("1");
 					counter.getStyleClass().add("counter");
-					counter.setFont(new Font("Berlin Sans FB", 22));
-
-					/** Checking the server's response. */
-					ServerResponse serverResponse = ClientGUI.client.getLastResponse();
-					ArrayList<Component> componentInDish; // Components received from query.
-					ArrayList<Component> componentInProduct = new ArrayList<>(); // Components in actual dish for the
-																					// order.
-					if (serverResponse != null) {
-						componentInDish = (ArrayList<Component>) serverResponse.getServerResponse();
-						if (componentInDish == null || componentInDish.size() == 0) {
-							/** If this dish doens't have any optional components */
-							Label noComp = new Label(
-									"Product " + nameLabel.getText() + " doesn't have optional components");
-							noComp.setFont(new Font("Berlin Sans FB", 16));
-							noComp.setTextFill(Color.BLACK);
-							noComp.setLayoutX(30);
-							noComp.setLayoutY(215);
-							overlayPane.getChildren().add(noComp);
-						} else {
-							/** Creating scroll pane for all the optional components. */
-							ScrollPane componentContent = new ScrollPane();
-							AnchorPane componentLabels = new AnchorPane();
-							int j = 0;
-							for (Component c : componentInDish) {
+					/** Components selected for this order */
+					ArrayList<Component> componentInProduct = new ArrayList<>();
+					if (p.getComponents() == null || p.getComponents().size() == 0) {
+						/** If this dish doens't have any optional components */
+						Label noComp = new Label(
+								"Product " + nameLabel.getText() + " doesn't have optional components");
+						noComp.getStyleClass().add("noComponents");
+						overlayPane.getChildren().add(noComp);
+					} else {
+						/** Creating scroll pane for all the optional components. */
+						ScrollPane componentContent = new ScrollPane();
+						AnchorPane componentLabels = new AnchorPane();
+						int j = 0;
+						for (Component c : p.getComponents()) {
+							/**
+							 * Checking what type of component c is.<br>
+							 * Displaying accordingly.
+							 */
+							if (checkIfSize(c)) {
+								Label sizeTitle = new Label("Size");
+								sizeTitle.getStyleClass().add("defaultTitle");
+								sizeTitle.setLayoutX(10);
+								sizeTitle.setLayoutY(j * 50 + 15);
+								ComboBox<Size> size = new ComboBox<>();
+								size.getItems().addAll(Size.values());
+								size.getSelectionModel().select(Size.Medium);
+								size.setLayoutX(40);
+								size.setLayoutY(j * 50 + 10);
 								/**
-								 * Checking which type of component is <c>, creating combobox/label accordingly.
+								 * Event listener on item selection change.<br>
+								 * Calculating and setting the price accordingly.
 								 */
-								if (checkIfSize(c)) {
-									Label sizeTitle = new Label("Size");
-									sizeTitle.setFont(new Font("Berlin Sans FB", 14));
-									sizeTitle.setTextFill(Color.BLACK);
-									sizeTitle.setLayoutX(10);
-									sizeTitle.setLayoutY(j * 50 + 15);
-									ComboBox<Size> size = new ComboBox<>();
-									size.getItems().addAll(Size.values());
-									size.getSelectionModel().select(Size.Medium);
-									size.setLayoutX(40);
-									size.setLayoutY(j * 50 + 10);
-									size.getSelectionModel().selectedItemProperty()
-											.addListener((obj, oldVal, newVal) -> {
-												c.setSize(newVal);
-												float productPrice;
-												switch (newVal) {
-												case Small:
-													productPrice = initialProductPrice.get()
-															* (float) Component.smallSizePrice
-															* Integer.parseInt(counter.getText());
-													price.setText(String.format("Price %.2f \u20AA", productPrice));
-													return;
-												case Large:
-													productPrice = initialProductPrice.get()
-															* (float) Component.largeSizePrice
-															* Integer.parseInt(counter.getText());
-													price.setText(String.format("Price %.2f \u20AA", productPrice));
-													return;
-												default:
-													price.setText(String.format("Price %.2f \u20AA",
-															p.getPrice() * Integer.parseInt(counter.getText())));
-													return;
-												}
-											});
-									componentInProduct.add(c);
-									componentLabels.getChildren().addAll(sizeTitle, size);
-								} else if (checkIfDoneness(c)) {
-									Label donenessTitle = new Label("Doneness");
-									donenessTitle.setFont(new Font("Berlin Sans FB", 14));
-									donenessTitle.setTextFill(Color.BLACK);
-									donenessTitle.setLayoutX(10);
-									donenessTitle.setLayoutY(j * 50 + 15);
-									ComboBox<Doneness> doneness = new ComboBox<>();
-									doneness.getItems().addAll(Doneness.values());
-									doneness.getSelectionModel().select(Doneness.medium);
-									doneness.setLayoutX(70);
-									doneness.setLayoutY(j * 50 + 10);
-									doneness.getSelectionModel().selectedItemProperty()
-											.addListener((obj, oldVal, newVal) -> {
-												c.setDoneness(newVal);
-											});
-									componentInProduct.add(c);
-									componentLabels.getChildren().addAll(donenessTitle, doneness);
-								} else {
-									Label com = new Label(c.toString());
-									com.setLayoutX(10);
-									com.setLayoutY(j * 50 + 10);
-									com.setFont(new Font("Berlin Sans FB", 14));
-									com.setId("optionalBtn");
-									/**
-									 * Setting onclick event for each component, if the user wants this components
-									 * and clicks it --> add to components in product array. in the end add the
-									 * desired component to the prodcut in the products array.
-									 */
-									com.setOnMouseClicked(evnt -> {
-										if (com.getId().equals("clickedBG")) {
-											com.setId("optionalBtn");
-											componentInProduct.remove(c);
-										} else {
-											com.setId("clickedBG");
-											componentInProduct.add(c);
-										}
-									});
-									componentLabels.getChildren().add(com);
-								}
-								j++;
-							}
-							componentContent.setId("background");
-							componentLabels.setId("background");
-							componentContent.getStyleClass().add("componentContent");
-
-							componentContent.setContent(componentLabels);
-							overlayPane.getChildren().add(componentContent);
-						}
-
-						/** Button to add more of this product to the order, infinite cap. */
-						Label plus = new Label("+");
-						/** Setting position for plus button. */
-						plus.getStyleClass().addAll("plusMinus", "plus");
-						plus.setFont(new Font("Berlin Sans FB", 24));
-						plus.setOnMouseClicked(mEvent -> {
-							int count = Integer.parseInt(counter.getText());
-							if (count > 25) {
-								return;
-							}
-							counter.setText(count + 1 + "");
-							if (componentInProduct.contains(new Component(Size.Small))) {
-								price.setText(String.format("Price %.2f \u20AA",
-										(count + 1) * initialProductPrice.get() * Component.smallSizePrice));
+								size.getSelectionModel().selectedItemProperty().addListener((obj, oldVal, newVal) -> {
+									c.setSize(newVal);
+									float productPrice;
+									switch (newVal) {
+									case Small:
+										productPrice = initialProductPrice.get() * (float) Component.smallSizePrice
+												* Integer.parseInt(counter.getText());
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
+										return;
+									case Large:
+										productPrice = initialProductPrice.get() * (float) Component.largeSizePrice
+												* Integer.parseInt(counter.getText());
+										price.setText(String.format("Price %.2f \u20AA", productPrice));
+										return;
+									default:
+										price.setText(String.format("Price %.2f \u20AA",
+												p.getPrice() * Integer.parseInt(counter.getText())));
+										return;
+									}
+								});
+								componentInProduct.add(c);
+								componentLabels.getChildren().addAll(sizeTitle, size);
+							} else if (checkIfDoneness(c)) {
+								Label donenessTitle = new Label("Doneness");
+								donenessTitle.getStyleClass().add("defaultTitle");
+								donenessTitle.setLayoutX(10);
+								donenessTitle.setLayoutY(j * 50 + 15);
+								ComboBox<Doneness> doneness = new ComboBox<>();
+								doneness.getItems().addAll(Doneness.values());
+								doneness.getSelectionModel().select(Doneness.medium);
+								doneness.setLayoutX(70);
+								doneness.setLayoutY(j * 50 + 10);
+								doneness.getSelectionModel().selectedItemProperty()
+										.addListener((obj, oldVal, newVal) -> {
+											c.setDoneness(newVal);
+										});
+								componentInProduct.add(c);
+								componentLabels.getChildren().addAll(donenessTitle, doneness);
 							} else {
-								if (componentInProduct.contains(new Component(Size.Large))) {
-									price.setText(String.format("Price %.2f \u20AA",
-											(count + 1) * initialProductPrice.get() * Component.largeSizePrice));
-								} else {
-									price.setText(String.format("Price %.2f \u20AA",
-											(count + 1) * initialProductPrice.get()));
-								}
+								Label com = new Label(c.toString());
+								com.setLayoutX(10);
+								com.setLayoutY(j * 50 + 10);
+								com.setId("optionalBtn");
+								/**
+								 * Setting onclick event for each component, if the user wants this components
+								 * and clicks it --> add to components in product array. in the end add the
+								 * desired component to the prodcut in the products array.
+								 */
+								com.setOnMouseClicked(evnt -> {
+									if (com.getId().equals("clickedBG")) {
+										com.setId("optionalBtn");
+										componentInProduct.remove(c);
+									} else {
+										com.setId("clickedBG");
+										componentInProduct.add(c);
+									}
+								});
+								componentLabels.getChildren().add(com);
 							}
-						});
-
-						/** Button to remove 1 or more of this product from the order, finite at 1. */
-						Label minus = new Label("-");
-						/** Setting position for minus button. */
-						minus.getStyleClass().addAll("plusMinus", "minus");
-						minus.setFont(new Font("Berlin Sans FB", 24));
-						minus.setOnMouseClicked(mEvent -> {
-							int count = Integer.parseInt(counter.getText());
-							if (count == 1) {
-								return;
-							}
-							counter.setText(count - 1 + "");
-							price.setText(String.format("Price %.2f \u20AA",
-									(count - 1) * Float.parseFloat(price.getText().split(" ")[1])));
-						});
-
-						/** Free text for the user to specify any notes for the order. */
-						TextArea restrictions = new TextArea();
-						restrictions.setPromptText("Anything we need to know?");
-						restrictions.setId("txtarea");
-						restrictions.setLayoutX(384);
-						restrictions.setLayoutY(108);
-						/** Title for the free text. */
-						Label textAreaTitle = new Label("Anything we need to know?");
-						textAreaTitle.setFont(new Font("Berlin Sans FB", 16));
-						textAreaTitle.setLayoutX(384);
-						textAreaTitle.setLayoutY(85);
-						textAreaTitle.setTextFill(Color.BLACK);
+							j++;
+						}
+						componentContent.setId("background");
+						componentLabels.setId("background");
+						componentContent.getStyleClass().add("componentContent");
+						componentContent.setContent(componentLabels);
+						overlayPane.getChildren().add(componentContent);
+					}
+					/** Plus button to increase amount of the same product in the order. */
+					Label plus = new Label("+");
+					plus.getStyleClass().addAll("plusMinus", "plus");
+					/**
+					 * On click event, increase the amount of this product in the order. <br>
+					 * Cap at 25.
+					 */
+					plus.setOnMouseClicked(mEvent -> {
+						int count = Integer.parseInt(counter.getText());
+						if (count > 25) {
+							return;
+						}
+						Platform.runLater(() -> calculateCurrentPrice(componentInProduct, initialProductPrice, price,
+								counter, count, 1));
+					});
+					/** Minus button to decrease amount of the same product in the order. */
+					Label minus = new Label("-");
+					/** Setting position for minus button. */
+					minus.getStyleClass().addAll("plusMinus", "minus");
+					/**
+					 * On click event, decrease the amount of this product in the order. <br>
+					 * Cap at 1.
+					 */
+					minus.setOnMouseClicked(mEvent -> {
+						int count = Integer.parseInt(counter.getText());
+						if (count == 1) {
+							return;
+						}
+						Platform.runLater(() -> calculateCurrentPrice(componentInProduct, initialProductPrice, price,
+								counter, count, -1));
+					});
+					/** Free text for the user to specify any notes for the order. */
+					TextArea restrictions = new TextArea();
+					restrictions.setPromptText("Anything we need to know?");
+					restrictions.setId("txtarea");
+					/** Title for the free text. */
+					Label textAreaTitle = new Label("Anything we need to know?");
+					textAreaTitle.getStyleClass().add("textAreaTitle");
+					/**
+					 * Add item button, adding the selected item with all the selected components
+					 * and the free text from the user. Adding the item <counter> times to the
+					 * order.
+					 */
+					Label addItem = new Label("Add Item");
+					addItem.setId("addItem");
+					/** Adding the desired product to the products array of the order */
+					addItem.setOnMouseClicked(mEvent -> {
+						String notes = restrictions.getText();
 						/**
-						 * Add item button, adding the selected item with all the selected components
-						 * and the free text from the user. Adding the item <counter> times to the
+						 * If the restrictions free text is not null or empty, add new component to the
 						 * order.
 						 */
-
-						Label addItem = new Label("Add Item");
-						addItem.setId("addItem");
-						addItem.setLayoutX(545);
-						addItem.setLayoutY(330);
-						/** Adding the desired product to the products array of the order */
-						addItem.setOnMouseClicked(mEvent -> {
-							String notes = restrictions.getText();
-							/**
-							 * If the restrictions free text is not null or empty, add new component to the
-							 * order.
-							 */
-							if (notes != null && !notes.equals("")) {
-								Component c = new Component(restrictions.getText());
-								componentInProduct.add(c);
-							}
-							/** Adding the components list to this product. */
-							p.setComponents(componentInProduct);
-							p.setPrice(Float.parseFloat(price.getText().split(" ")[1]));
-							/**
-							 * Increasing the counter of the bag items (the one near the profile picture).
-							 */
-							int count = Integer.parseInt(counter.getText());
-							/**
-							 * Adding the product to products array count times(amount specify by the user).
-							 */
-							p.setAmount(count);
-							productsInOrder.add(p);
-							/**
-							 * Checking if this is the first order of the user.<br>
-							 * if so create new order.<br>
-							 * else getting handled in the restaurant selection controller.
-							 */
-							if (firstAdd.get()) {
-								Order newOrder = new Order();
-								newOrder.setRestaurantName(restaurantName);
-								router.setOrder(newOrder);
-								firstAdd.set(false);
-							}
-							/**
-							 * Setting global state for the router, adding <productsInOrder> to router
-							 * singleton.
-							 */
-							router.setBagItems(productsInOrder);
-							setItemsCounter();
-							root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
-							nextBtn.setDisable(false);
-						});
+						if (notes != null && !notes.equals("")) {
+							Component c = new Component(restrictions.getText());
+							componentInProduct.add(c);
+						}
+						/** Adding the components list to this product. */
+						p.setComponents(componentInProduct);
+						p.setPrice(Float.parseFloat(price.getText().split(" ")[1]));
 						/**
-						 * Add all the labels to the overlay.
+						 * Increasing the counter of the bag items (the one near the profile picture).
 						 */
-						overlayPane.getChildren().addAll(title, closeBtn, line, description, plus, minus, counter,
-								addItem, restrictions, textAreaTitle, price);
-						/** Overlay mount animation */
-						overlayPaneTransition(overlayPane);
-					}
+						int count = Integer.parseInt(counter.getText());
+						/**
+						 * Adding the product to products array count times(amount specify by the user).
+						 */
+						p.setAmount(count);
+						productsInOrder.add(p);
+						/**
+						 * Checking if this is the first order of the user.<br>
+						 * if so create new order.<br>
+						 * else getting handled in the restaurant selection controller.
+						 */
+						if (firstAdd.get()) {
+							Order newOrder = new Order();
+							newOrder.setRestaurantName(restaurantName);
+							router.setOrder(newOrder);
+							firstAdd.set(false);
+						}
+						/**
+						 * Setting global state for the router, adding <productsInOrder> to router
+						 * singleton.
+						 */
+						router.setBagItems(productsInOrder);
+						setItemsCounter();
+						root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
+						nextBtn.setDisable(false);
+					});
+					/**
+					 * Add all the labels to the overlay.
+					 */
+					overlayPane.getChildren().addAll(title, closeBtn, line, description, plus, minus, counter, addItem,
+							restrictions, textAreaTitle, price);
+					/** Overlay mount animation */
+					LoadingAnimation.overlayPaneTransition(overlayPane);
 				}
 			});
 			i++;
 		}
-		/** Adding the anchorpane to the scrollpane. */
+		/** Adding the anchor pane to the scroll pane. */
 		tabContent.setContent(tabLabels);
-		/** Adding the scrollpane to the tab. */
+		/** Adding the scroll pane to the tab. */
 		tab.setContent(tabContent);
-	}
-
-	/**
-	 * Overlay loading animation.
-	 * 
-	 * @param overlayPane
-	 */
-	private void overlayPaneTransition(Pane overlayPane) {
-		ScaleTransition st = new ScaleTransition(Duration.millis(300), overlayPane);
-		st.setFromX(0.5);
-		st.fromXProperty();
-		st.setFromY(0.5);
-		st.setToX(1);
-		st.setToY(1);
-		st.play();
 	}
 
 	@FXML
@@ -717,5 +633,30 @@ public class restaurantMenuController implements Initializable {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Private method to calculate the current price of a product by <br>
+	 * increasing / decreasing the amount of product type in the order.
+	 * 
+	 * @param componentInProduct
+	 * @param initialProductPrice
+	 * @param price
+	 * @param counter
+	 */
+	private void calculateCurrentPrice(ArrayList<Component> componentInProduct, FloatProperty initialProductPrice,
+			Label price, Label counter, int count, int toIncrease) {
+		float currentPrice;
+		if (componentInProduct.contains(new Component(Size.Small))) {
+			currentPrice = (count + toIncrease) * initialProductPrice.get() * Component.smallSizePrice;
+		} else {
+			if (componentInProduct.contains(new Component(Size.Large))) {
+				currentPrice = (count + toIncrease) * initialProductPrice.get() * Component.largeSizePrice;
+			} else {
+				currentPrice = (count + toIncrease) * initialProductPrice.get();
+			}
+		}
+		price.setText(String.format("Price %.2f \u20AA", currentPrice));
+		counter.setText(count + toIncrease + "");
 	}
 }

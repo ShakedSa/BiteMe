@@ -1,3 +1,6 @@
+/*=========================== */
+/*Color global variables */
+/*=========================== */
 *{
 	-fx-primary-bg-color: #eee;
 	-fx-primary-text-color:black;
@@ -5,12 +8,13 @@
 	-fx-input-bg-color: #879bab;
 }
 
-/*Global Styling: */
+/*=========================== */
+/*Global Styling */
+/*=========================== */
+/* Tab pane style */
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0.0;
 }
-
-/* Tab pane style */
 
 .tab{
     -fx-background-insets: 0.0 1.0 0.0 1.0,0.0,0.0;
@@ -39,16 +43,18 @@
 }
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
- /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
-    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overridden as 5 2 0 0 */
+    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em;
 }
+
+/* End tab pane styling */
+/*=========================== */
+/* Scroll pane styling */
 
 .scroll-pane {
     -fx-background-insets: 0.0;
     -fx-padding: 0.0;
     -fx-background:-fx-primary-bg-color;
 }
-/*Scroll pane global styling */
 .scroll-pane:focused {
     -fx-background-insets: 0.0;
 }
@@ -57,7 +63,10 @@
     -fx-background-insets: 0.0;
 }
 
-/*Text field global styling */
+/* End scroll pane styling */
+/*=========================== */
+/* Text field styling */
+
 .text-field {
     -fx-background-color: #fff;
     -fx-border-width:0.0;
@@ -71,7 +80,10 @@
     -fx-text-fill:#fff;
 }
 
-/*Button global styling */
+/* End text field styling */
+/*=========================== */
+/* Button styling */
+
 .button{
 	-fx-background-color: transparent;
 	-fx-border-width: 1.0;
@@ -89,7 +101,9 @@
 	-fx-scale-x: 0.9;
 	-fx-scale-y: 0.9;
 }
-/*Datepicker global styling */
+/* End button styling */
+/*=========================== */
+/* Date picker styling */
 
 .date-picker:focused{
 	-fx-background-color:white;
@@ -162,7 +176,10 @@
 -fx-background-color: black;
  }
  
- /*Combo box global styling */
+ /* End date picker styling */
+ /*=========================== */
+ /* Combo box styling */
+ 
 .combo-box{
     -fx-border-color:#E6E6E6;
     -fx-border-style:solid;
@@ -195,8 +212,10 @@
 	-fx-background-color: -fx-secondary-text-color;
 	-fx-fill-text: white;
 }
-
-/**********************************************/
+/* End combo box styling */
+/*=========================== */
+/*End Global Styling */
+/*=========================== */
 
 #btn{
 	-fx-border-width: 1.0;
@@ -252,6 +271,7 @@
 	-fx-padding: 10.0 0.0;
 	-fx-alignment: center;
 	-fx-pref-width: 200.0;
+	-fx-font: 14.0px "Berlin Sans FB";
 }
 
 #optionalBtn:hover{
@@ -281,6 +301,7 @@
 	-fx-padding: 0.0 10.0;
 	-fx-alignment: center;
 	-fx-translate-y: 338.0;
+	-fx-font: 24.0px "Berlin Sans FB";
 }
 
 #addItem{
@@ -291,7 +312,8 @@
 	-fx-cursor: hand;
 	-fx-padding: 10.0 35.0;
 	-fx-alignment: center;
-	-fx-translate-y: -10.0;
+	-fx-translate-x: 535.0;
+	-fx-translate-y: 320.0;
 }
 
 .plusMinus:hover, #addItem:hover{
@@ -301,23 +323,10 @@
 
 .plus{
 	-fx-translate-x:298.0;
-	-fx-text-fill: -fx-primary-text-color;
 }
 
 .minus{
 	-fx-translate-x:372.0;
-	-fx-text-fill: -fx-primary-text-color;
-}
- #txtarea{
-	-fx-border-width:1.0;
-	-fx-border-color: -fx-primary-text-color;
-	-fx-border-radius: 10.0;
-	-fx-text-fill:-fx-primary-text-color;
-	/*-fx-background-color:rgba(0.0,104.0,117.0, 0.4);*/
-	-fx-background-color: -fx-primary-bg-color;
-	-fx-background-radius: 10.0;
-	-fx-pref-width: 250.0;
-	-fx-pref-height: 100.0;
 }
 
 .text-area .viewport, .text-area .content {
@@ -359,6 +368,10 @@
 	-fx-padding: 10.0 10.0;
 }
 
+/*=========================== */
+/* Components layout styling: */
+/*=========================== */
+
 .overylayPriceLayout{
 	-fx-translate-x: 250.0;
 }
@@ -368,12 +381,15 @@
 	-fx-translate-y:105.0;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.5),10.0,0.0,0.0,0.0);
 	-fx-background-color:-fx-primary-bg-color;
+	-fx-pref-height: 375.0;
+	-fx-pref-width: 689.0;
 }
 
 .counter{
+	-fx-text-fill:-fx-primary-text-color;
 	-fx-translate-x:346.0;
 	-fx-translate-y:338.0;
-	-fx-text-fill:-fx-primary-text-color;
+	-fx-font: 22.0px "Berlin Sans FB";
 }
 
 .close{
@@ -381,6 +397,7 @@
 	-fx-cursor: hand;
 	-fx-translate-x:650.0;
 	-fx-translate-y: 15.0;
+	-fx-font: 22.0px "Berlin Sans FB";
 }
 
 .line{
@@ -391,11 +408,32 @@
 	-fx-translate-y: 51.0;
 }
 
+.componentTitle{
+	-fx-text-fill:-fx-primary-text-color;
+	-fx-translate-x:41.0;
+	-fx-translate-y:15.0;
+	-fx-font: 30.0px "Berlin Sans FB";
+}
+
 .componentContent{
 	-fx-max-height: 260.0;
 	-fx-pref-width: 230.0;
 	-fx-translate-x:30.0;
 	-fx-translate-y: 100.0;
+}
+
+.componentDescription{
+	-fx-text-fill:-fx-primary-text-color;
+	-fx-translate-x:41.0;
+	-fx-translate-y:61.0;
+	-fx-font: 14.0px "Berlin Sans FB";
+}
+
+.productPrice{
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-translate-x: 575.0;
+	-fx-translate-y: 290.0;
+	-fx-font: 14.0px "Berlin Sans FB";
 }
 
 .selected{
@@ -413,38 +451,87 @@
 
 .removeBtn:hover{
 	-fx-background-color:#ff000050;
-	-fx-background-radius:40;
+	-fx-background-radius:40.0;
 }
 
+.noComponents{
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-translate-x:30.0;
+	-fx-translate-y: 215.0;
+	-fx-font: 16.0px "Berlin Sans FB";
+}
+
+.defaultTitle{
+	-fx-text-fill:-fx-primary-text-color;
+	-fx-font: 14.0px "Berlin Sans FB";	
+}
+
+#txtarea{
+	-fx-border-width:1.0;
+	-fx-border-color: -fx-primary-text-color;
+	-fx-border-radius: 10.0;
+	-fx-text-fill:-fx-primary-text-color;
+	-fx-background-color: -fx-primary-bg-color;
+	-fx-background-radius: 10.0;
+	-fx-pref-width: 250.0;
+	-fx-pref-height: 100.0;
+	-fx-translate-x: 384.0;
+	-fx-translate-y: 108.0;
+}
+
+.textAreaTitle{
+	-fx-text-fill: -fx-primary-text-color;
+	-fx-translate-x: 384.0;
+	-fx-translate-y: 85.0;
+	-fx-font: 16.0px "Berlin Sans FB";	
+}
+
+/*=========================== */
+/* End Components Styling */
+/*=========================== */
+
+/*=========================== */
+/* Cart Styling */
+/*=========================== */
 .toRemove{
 	-fx-background-color:#ff000050;
-	-fx-background-radius: 40;
+	-fx-background-radius: 40.0;
 }
 
 .toRemove:hover{
 	-fx-background-color:#ff000050;
-	-fx-background-radius: 40;
+	-fx-background-radius: 40.0;
 }
+
+/*=========================== */
+/* End Cart Styling */
+/*=========================== */
+
+/*=========================== */
+/* Call to action button styling*/
+/*=========================== */
 
 #cta{
-	-fx-border-width:5;
+	-fx-border-width:5.0;
 	-fx-border-color: #0d3354;
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-text-fill: black; 
 	-fx-background-color:#eee;
-	-fx-padding: 10 20;
-	-fx-font-size: 18;
+	-fx-padding: 10.0 20.0;
+	-fx-font-size: 18.0;
 	-fx-font-family: "Berlin Sans FB";
-	-fx-translate-x: -20;
-	-fx-translate-y: -5;
+	-fx-translate-x: -20.0;
+	-fx-translate-y: -5.0;
 }
 
+
 #cta:hover{
-	-fx-border-radius: 5;
+	-fx-border-radius: 5.0;
 	-fx-background-color: #0d3354;
-	-fx-background-radius: 5;
+	-fx-background-radius: 5.0;
 	-fx-text-fill: #fff; 
 }
 
-
-
+/*=========================== */
+/* End call to action button styling*/
+/*=========================== */

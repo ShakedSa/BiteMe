@@ -52,7 +52,7 @@
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font></TextField>
-      <PasswordField fx:id="txtDbPass" layoutX="203.0" layoutY="286.0" prefHeight="8.0" prefWidth="118.0" text="1231233">
+      <PasswordField fx:id="txtDbPass" layoutX="203.0" layoutY="286.0" prefHeight="8.0" prefWidth="118.0" text="88888888">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font></PasswordField>

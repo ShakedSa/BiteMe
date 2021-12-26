@@ -17,8 +17,8 @@ public class Component implements Serializable {
 	private String restrictions;
 	private Size size;
 	private Doneness doneness;
-	public static final double largeSizePrice = 1.25;
-	public static final double smallSizePrice = 0.67;
+	public static final float largeSizePrice = (float) 1.25;
+	public static final float smallSizePrice = (float) 0.67;
 
 //	/**
 //	 * constructor for supplier who wants to add new component:
@@ -117,20 +117,20 @@ public class Component implements Serializable {
 		}
 		return "";
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(!(obj instanceof Component)) {
+		if (!(obj instanceof Component)) {
 			return false;
 		}
-		Component other = (Component)obj;
-		if(restrictions != null && other.restrictions != null) {
+		Component other = (Component) obj;
+		if (restrictions != null && other.restrictions != null) {
 			return restrictions.equals(other.restrictions);
 		}
-		if(doneness != null && other.doneness != null) {
+		if (doneness != null && other.doneness != null) {
 			return doneness.equals(other.doneness);
 		}
-		if(size != null && other.size != null) {
+		if (size != null && other.size != null) {
 			return size.equals(other.size);
 		}
 		return false;

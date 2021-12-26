@@ -17,6 +17,7 @@ public class Customer extends User {
 
 	private W4CCard w4c;
 	private HashMap<String, Float> refunds;
+	private int customerID;
 
 	/**
 	 * @param userName
@@ -36,15 +37,17 @@ public class Customer extends User {
 	 * @param refundedBalance
 	 */
 	public Customer(String userName, String password, String firstName, String lastName, String id, String email,
-			String phoneNumber, UserType userType, String organization, BranchName mainBranch, String role, Status status,
-			File avatar, W4CCard w4c, HashMap<String, Float> refunds) {
+			String phoneNumber, UserType userType, String organization, BranchName mainBranch, String role,
+			Status status, File avatar, W4CCard w4c, HashMap<String, Float> refunds, int customerID) {
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role,
 				status, avatar);
 		this.w4c = w4c;
 		this.refunds = refunds;
+		this.customerID = customerID;
 	}
-	
-	public Customer() {}
+
+	public Customer() {
+	}
 
 	public W4CCard getW4c() {
 		return w4c;
@@ -67,6 +70,12 @@ public class Customer extends User {
 	public void setRefunds(HashMap<String, Float> refunds) {
 		this.refunds = refunds;
 	}
-	
-	
+
+	/**
+	 * @return the customerID
+	 */
+	public int getCustomerID() {
+		return customerID;
+	}
+
 }

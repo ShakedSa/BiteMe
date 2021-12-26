@@ -154,6 +154,11 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
+      <Text id="link" fx:id="myOrdersBtn" layoutX="369.0" layoutY="53.0" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#myOrdersClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="My Orders" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
       <Button id="cta" fx:id="restaurantBtn" layoutX="363.0" layoutY="386.0" mnemonicParsing="false" onAction="#restaurantBtnClicked" text="Order Now">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
