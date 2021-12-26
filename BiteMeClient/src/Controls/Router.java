@@ -2,8 +2,8 @@ package Controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import Entities.Delivery;
 import Entities.Order;
@@ -29,6 +29,7 @@ public class Router {
 	private loginController Logincontroller;
 	private enterGUIController Enterguicontroller;
 	private myCartController MyCartController;
+	private myOrdersController MyOrdersController;
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
 	private supplierPanelController SupplierPanelController;
@@ -521,6 +522,20 @@ public class Router {
 	}
 
 	/**
+	 * @return the myOrdersController
+	 */
+	public myOrdersController getMyOrdersController() {
+		return MyOrdersController;
+	}
+
+	/**
+	 * @param myOrdersController the myOrdersController to set
+	 */
+	public void setMyOrdersController(myOrdersController myOrdersController) {
+		MyOrdersController = myOrdersController;
+	}
+
+	/**
 	 * @return the stage
 	 */
 	public Stage getStage() {
@@ -833,10 +848,15 @@ public class Router {
 	 * 
 	 * @param order
 	 */
-	public void setBagItems(ArrayList<Product> order) {
-		this.order.setProducts(order);
-		if (order != null)
-			this.order.calculateOrderPrice();
+	public void setBagItems(ArrayList<Product> products) {
+		if (this.order.getProducts() == null || products == null) {
+			this.order.setProducts(products);
+			return;
+		}
+		List<Product> newProducts = this.order.getProducts().stream().filter(p -> !products.contains(p))
+				.collect(Collectors.toList());
+		newProducts.addAll(products);
+		this.order.setProducts((ArrayList<Product>) newProducts);
 	}
 
 	/**

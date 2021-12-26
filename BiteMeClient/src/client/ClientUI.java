@@ -633,5 +633,11 @@ public class ClientUI implements ClientIF {
 		serverResponse.setServerResponse(arr);
 		client.handleMessageFromClientUI(serverResponse);
 	}
+	
+	public void getRefunds(Customer cutsomer) {
+		ServerResponse serverResponse = new ServerResponse("getRefunds");
+		serverResponse.setServerResponse(cutsomer);
+		client.handleMessageFromClientUI(serverResponse);
+	}
 
 }

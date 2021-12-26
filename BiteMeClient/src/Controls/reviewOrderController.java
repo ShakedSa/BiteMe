@@ -133,14 +133,17 @@ public class reviewOrderController implements Initializable {
 				/** After server finished handling the request continue executing. */
 				if (ClientGUI.client.getLastResponse() != null
 						&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
-					router.setBagItems(null);
-					router.setOrder(new Order());
-					router.setDelivery(null);
-					router.setOrderDeliveryMethod(null);
 					/**
 					 * Platform.runLater allows to change the view in a not fx application thread.
 					 */
-					Platform.runLater(() -> changeToRateUs());
+					Platform.runLater(() -> {
+						root.setDisable(true);
+						router.setBagItems(null);
+						router.setOrder(new Order());
+						router.setDelivery(null);
+						router.setOrderDeliveryMethod(null);
+						changeToRateUs();
+					});
 				} else {
 					System.out.println("Failed to insert order");
 				}

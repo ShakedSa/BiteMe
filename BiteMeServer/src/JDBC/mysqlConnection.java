@@ -2,30 +2,20 @@ package JDBC;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
-
-import java.io.InputStream;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.sql.Timestamp;
-import java.sql.Time;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
-import com.itextpdf.text.pdf.codec.Base64.OutputStream;
-import com.sun.glass.ui.EventLoop.State;
+
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
@@ -56,7 +46,8 @@ import Enums.Status;
 import Enums.TypeOfOrder;
 import Enums.TypeOfProduct;
 import Enums.UserType;
-import jdk.internal.module.Checks;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  * MySQL Connection class. Using a single connector to the db.
@@ -159,7 +150,7 @@ public class mysqlConnection {
 					W4CCard w4cCard = getW4CCard(cusID);
 					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, w4cCard, refunds);
+							organization, branch, role, status, avatar, w4cCard, refunds, cusID);
 					stmt.close();
 					break;
 				case Supplier:
@@ -339,6 +330,14 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static ServerResponse getRefund(Customer customer) {
+		ServerResponse serverResponse = new ServerResponse("Refunds");
+		HashMap<String, Float> refunds = getRefund(customer.getCustomerID());
+		System.out.println(refunds);
+		serverResponse.setServerResponse(refunds);
+		return serverResponse;
 	}
 
 	/**
@@ -525,7 +524,7 @@ public class mysqlConnection {
 	 * 
 	 * @param String userName
 	 * 
-	 * @return ServerResponse 
+	 * @return ServerResponse
 	 */
 	public static ServerResponse logout(String userName) {
 		if (!updateIsLoggedIn(userName, 0)) {
@@ -1414,14 +1413,14 @@ public class mysqlConnection {
 	public static ServerResponse addItemToMenu(Product product) {
 		ServerResponse serverResponse = new ServerResponse("ArratList");
 		try {
-			//first check for duplicates:
+			// first check for duplicates:
 			String check = "SELECT DishName FROM bitemedb.products WHERE RestaurantName= ? AND DishName= ? ";
 			PreparedStatement checkStmt;
 			checkStmt = conn.prepareStatement(check);
 			checkStmt.setString(1, product.getRestaurantName());
 			checkStmt.setString(2, product.getDishName());
 			ResultSet rs = checkStmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				System.out.println("test2");
 				return null;
 			}
@@ -1433,7 +1432,7 @@ public class mysqlConnection {
 			return serverResponse;
 		}
 		try {
-			//if not duplicates, insert:
+			// if not duplicates, insert:
 			PreparedStatement stmt;
 			String query = "INSERT INTO bitemedb.products (RestaurantName, DishName, Type, Price, ProductDescription) VALUES(?,?,?,?,?)";
 			stmt = conn.prepareStatement(query);
@@ -1865,7 +1864,7 @@ public class mysqlConnection {
 		Order order = new Order();
 		PreparedStatement stmt;
 		try {
-			String query = "SELECT RestaurantName, OrderTime, OrderStatus FROM bitemedb.orders WHERE OrderNumber = ? AND CustomerReceived IS NULL";
+			String query = "SELECT RestaurantName, PlannedTime, OrderStatus FROM bitemedb.orders WHERE OrderNumber = ? AND (CustomerReceived IS NULL)";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, orderNumber);
 			ResultSet rs = stmt.executeQuery();
@@ -1897,15 +1896,104 @@ public class mysqlConnection {
 		try {
 			String query = "UPDATE bitemedb.orders SET CustomerReceived = ? WHERE OrderNumber = ?";
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, LocalDateTime.now().toString());
+			LocalDateTime dateTime = LocalDateTime.now();
+			stmt.setString(1, dateTime.toString());
 			stmt.setInt(2, order.getOrderNumber());
 			stmt.executeUpdate();
+			checkRefund(order, dateTime);
 			serverResponse.setMsg("Success");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 		return serverResponse;
+	}
+
+	private static void checkRefund(Order order, LocalDateTime dateTime) {
+		PreparedStatement stmt;
+		TypeOfOrder typeOfOrder = null;
+		String preorderTime = "";
+		String userName = "";
+		BooleanProperty flag = new SimpleBooleanProperty(false);
+		try {
+			String query = "SELECT DeliveryType, PreOrderTime, UserName FROM bitemedb.deliveries D INNER JOIN bitemedb.ordereddelivery O WHERE"
+					+ " D.DeliveryNumber = O.DeliveryNumber AND OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, order.getOrderNumber());
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				typeOfOrder = TypeOfOrder.getEnum(rs.getString(1));
+				preorderTime = rs.getString(2);
+				userName = rs.getString(3);
+			}
+			int arriveTime = dateTime.getHour() * 60 + dateTime.getMinute();
+			switch (typeOfOrder) {
+			case BasicDelivery:
+			case sharedDelivery:
+				int plannedTimeHour = Integer.parseInt((order.getDateTime().split(" "))[1].split(":")[0]);
+				int plannedTimeMinute = Integer.parseInt((order.getDateTime().split(" ")[1].split(":")[1]));
+				int plannedArrivedTime = plannedTimeHour * 60 + plannedTimeMinute;
+				if (arriveTime - plannedArrivedTime > 60) {
+//					Needs refund
+					flag.set(true);
+				}
+				break;
+			case preorderDelivery:
+				int plannedPreOrderHour = Integer.parseInt((preorderTime.split(" ")[1]).split(":")[0]);
+				int plannedPreOrderMinute = Integer.parseInt((preorderTime.split(" ")[1]).split(":")[1]);
+				int plannedPreOrderTime = plannedPreOrderHour * 60 + plannedPreOrderMinute;
+				if (arriveTime - plannedPreOrderTime > 20) {
+//					Needs refund.
+					flag.set(true);
+				}
+				break;
+			default:
+				break;
+			}
+			if (flag.get()) {
+				query = "UPDATE bitemedb.orders SET RefundAmount = ? WHERE OrderNumber = ?";
+				stmt = conn.prepareStatement(query);
+				stmt.setFloat(1, order.getOrderPrice() * (float) 0.5);
+				stmt.setInt(2, order.getOrderNumber());
+				stmt.executeUpdate();
+				int customerId = getCustomer(userName);
+				float refund;
+				if ((refund = checkIfRefundExsits(order.getRestaurantName(), customerId)) == 0) {
+					query = "INSERT INTO bitemedb.refunds (CustomerID, RestaurantName, Refund) VALUES(?,?,?)";
+					stmt = conn.prepareStatement(query);
+					stmt.setInt(1, customerId);
+					stmt.setString(2, order.getRestaurantName());
+					stmt.setFloat(3, order.getOrderPrice() * (float) 0.5);
+					stmt.executeUpdate();
+				} else {
+					query = "UPDATE bitemedb.refunds SET Refund = ? WHERE CustomerID = ? AND RestaurantName = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setFloat(1, refund + order.getOrderPrice() * (float) 0.5);
+					stmt.setInt(2, customerId);
+					stmt.setString(3, order.getRestaurantName());
+					stmt.executeUpdate();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	private static float checkIfRefundExsits(String restaurantName, int customerID) {
+		try {
+			PreparedStatement stmt = conn.prepareStatement(
+					"SELECT Refund FROM bitemedb.refunds WHERE CustomerID = ? AND RestaurantName = ?");
+			stmt.setInt(1, customerID);
+			stmt.setString(2, restaurantName);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return rs.getFloat(1);
+			}
+		} catch (SQLException e) {
+			return 0;
+		}
+		return 0;
 	}
 
 	/**
@@ -2036,7 +2124,8 @@ public class mysqlConnection {
 		Date date = null;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT Date FROM bitemedb.reports WHERE ReportType like '%Monthly%' order by Date desc");
+			rs = stmt.executeQuery(
+					"SELECT Date FROM bitemedb.reports WHERE ReportType like '%Monthly%' order by Date desc");
 			if (rs.next())
 				date = rs.getDate(1);
 		} catch (SQLException e) {
@@ -2103,8 +2192,10 @@ public class mysqlConnection {
 		}
 		return serverResponse;
 	}
-	
-	//SELECT AVG(Rating) FROM bitemedb.ratings where orderNumber IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName="Japanika" and month(OrderTime) = 12);
+
+	// SELECT AVG(Rating) FROM bitemedb.ratings where orderNumber IN (SELECT
+	// OrderNumber FROM bitemedb.orders Where RestaurantName="Japanika" and
+	// month(OrderTime) = 12);
 
 	/**
 	 * @param res
@@ -2120,7 +2211,7 @@ public class mysqlConnection {
 			stmt.setString(2, month);
 			stmt.setString(3, year);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next())
+			if (rs.next())
 				return rs.getInt(1);
 
 		} catch (SQLException e) {

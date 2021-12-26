@@ -182,6 +182,9 @@ public class myCartController implements Initializable {
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();
 			break;
+		default:
+			returnToHomePage(null);
+			break;
 		}
 	}
 
@@ -318,109 +321,5 @@ public class myCartController implements Initializable {
 			root.getChildren().addAll(cartTitle, orderDisplay, itemsTitle, totalPrice, removeItem);
 		}
 		scrollRoot.setContent(root);
-		displayOpenOrders();
 	}
-
-	/**
-	 * Private method to build the view table with all the customer's open orders.
-	 */
-	@SuppressWarnings("unchecked")
-	private void displayOpenOrders() {
-		orderTable = new TableView<>();
-		TableColumn<Order, String> orderNumCol = new TableColumn<Order, String>("Order Number");
-		orderNumCol.setCellValueFactory(new PropertyValueFactory<Order, String>("orderNumber"));
-		orderTable.getColumns().add(orderNumCol);
-		TableColumn<Order, String> restaurantCol = new TableColumn<Order, String>("Restaurant");
-		restaurantCol.setCellValueFactory(new PropertyValueFactory<Order, String>("restaurantName"));
-		orderTable.getColumns().add(restaurantCol);
-		TableColumn<Order, String> orderTimeCol = new TableColumn<Order, String>("Order Time");
-		orderTimeCol.setCellValueFactory(new PropertyValueFactory<Order, String>("dateTime"));
-		orderTable.getColumns().add(orderTimeCol);
-		TableColumn<Order, String> typeOfOrderCol = new TableColumn<Order, String>("Order Price");
-		typeOfOrderCol.setCellValueFactory(new PropertyValueFactory<Order, String>("orderPrice"));
-		orderTable.getColumns().add(typeOfOrderCol);
-		TableColumn<Order, String> orderAddressCol = new TableColumn<Order, String>("Status");
-		orderAddressCol.setCellValueFactory(new PropertyValueFactory<Order, String>("status"));
-		orderTable.getColumns().add(orderAddressCol);
-		orderTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		Thread t = new Thread(() -> {
-			synchronized (ClientGUI.monitor) {
-				ClientGUI.client.getCustomersOrder((Customer) (ClientGUI.client.getUser()).getServerResponse());
-				try {
-					ClientGUI.monitor.wait();
-				} catch (Exception e) {
-					e.printStackTrace();
-					return;
-				}
-			}
-		});
-		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		ArrayList<Order> orders = (ArrayList<Order>) (ClientGUI.client.getLastResponse().getServerResponse());
-		tableTitle = new Label("Orders:");
-		tableTitle.setFont(new Font("Berlin Sans FB", 16));
-		tableTitle.setLayoutX(140);
-		tableTitle.setLayoutY(300);
-		if (orders.size() == 0) {
-			tableTitle.setText("You dont have any open orders on your account!");
-			root.getChildren().add(tableTitle);
-			return;
-		} else {
-			ObservableList<Order> ordersObservable = FXCollections.observableArrayList(orders);
-			orderTable.setItems(ordersObservable);
-			orderTable.setLayoutX(120);
-			orderTable.setLayoutY(320);
-			orderTable.setMaxHeight(250);
-			orderTable.setPrefWidth(630);
-			Button updateOrder = new Button("Update Received Order");
-			errorMsg = new Label();
-			updateOrder.setOnAction(e -> {
-				Order order = orderTable.getSelectionModel().getSelectedItem();
-				errorMsg.setLayoutX(120);
-				errorMsg.setLayoutY(570);
-				errorMsg.setTextFill(Color.RED);
-				if (order == null) {
-					errorMsg.setText("Please select order to update.");
-					return;
-				}
-				if (order.getStatus() == null || !order.getStatus().equals("Ready")) {
-					errorMsg.setText("Selected order was not deliveried yet.");
-					return;
-				}
-				Thread th = new Thread(() -> {
-					synchronized (ClientGUI.monitor) {
-						ClientGUI.client.updateOrderReceived(order);
-						try {
-							ClientGUI.monitor.wait();
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							return;
-						}
-					}
-				});
-				th.start();
-				try {
-					th.join();
-				} catch (Exception ex) {
-					ex.printStackTrace();
-					return;
-				}
-				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
-					errorMsg.setText("Table Updated");
-					errorMsg.setTextFill(Color.GREEN);
-					ordersObservable.remove(orderTable.getSelectionModel().getSelectedItem());
-					orderTable.refresh();
-				}
-			});
-			updateOrder.setLayoutX(200);
-			updateOrder.setLayoutY(600);
-			root.getChildren().addAll(orderTable, tableTitle, errorMsg, updateOrder);
-		}
-	}
-
 }

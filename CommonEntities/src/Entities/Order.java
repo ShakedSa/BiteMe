@@ -164,6 +164,10 @@ public class Order implements Serializable {
 	}
 
 	public void calculateOrderPrice() {
+		if(products == null) {
+			setOrderPrice(0);
+			return;
+		}
 		float price = 0;
 		for (Product p : products) {
 			price += p.getPrice();

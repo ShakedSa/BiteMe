@@ -117,6 +117,9 @@ public class homePageController implements Initializable {
 
 	@FXML
 	private Rectangle arrowLeft;
+	
+	@FXML 
+	private Text myOrdersBtn;
 
 	/**
 	 * Moving the carousel 1 step backward.
@@ -173,6 +176,38 @@ public class homePageController implements Initializable {
 	void employerHRBtnClicked(MouseEvent event) {
 		router.returnToEmployerHRPanel(event);
 	}
+	
+	@FXML
+    void myOrdersClicked(MouseEvent event) {
+		if (router.getMyOrdersController() == null) {
+			AnchorPane mainContainer;
+			myOrdersController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+//				controller.setRestaurants();
+				controller.displayOpenOrders();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Orders");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyOrdersController().setItemsCounter();
+			router.getMyOrdersController().displayOpenOrders();
+			stage.setTitle("BiteMe - My Orders");
+			stage.setScene(router.getMyOrdersController().getScene());
+			stage.show();
+		}
+    }
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
@@ -319,10 +354,12 @@ public class homePageController implements Initializable {
 			supplierBtn.setVisible(val);
 			employerHRBtn.setVisible(val);
 			ceoBtn.setVisible(val);
+			myOrdersBtn.setVisible(val);
 		} else {
 			switch (user.getUserType()) {
 			case Customer:
 				restaurantBtn.setVisible(val);
+				myOrdersBtn.setVisible(val);
 				break;
 			case BranchManager:
 				managerBtn.setVisible(val);
@@ -335,6 +372,8 @@ public class homePageController implements Initializable {
 				break;
 			case EmployerHR:
 				employerHRBtn.setVisible(val);
+				break;
+			default:
 				break;
 			}
 		}
@@ -353,12 +392,10 @@ public class homePageController implements Initializable {
 		router = Router.getInstance();
 		router.setHomePageController(this);
 		setStage(router.getStage());
-		arrowLeft.setArcWidth(10);
-		arrowLeft.setArcHeight(10);
 		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
 		;
 		arrowLeft.setFill(pattern);
-		arrowLeft.setStyle("-fx-stroke: null;-fx-hand: cursor");
+		arrowLeft.setStyle("-fx-stroke: null;-fx-cursor: hand");
 		arrowLeft.setOnMouseClicked(e -> caruasalLeftClicked(e));
 		arrowLeft.setRotate(-90);
 		caruasalLeft.setVisible(false);
