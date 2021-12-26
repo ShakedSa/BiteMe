@@ -587,15 +587,14 @@ public class mysqlConnection {
 	 * @param orderNumber
 	 * @return ServerResponse
 	 */
-	public static ServerResponse searchOrder(String orderNumber) {
+	public static ServerResponse searchOrder(String orderNumber, String restaurantName) {
 		ServerResponse serverResponse = new ServerResponse("String");
 		try {
-			String query1 = "SELECT * FROM bitemedb.orders WHERE OrderNumber = " + orderNumber;
-			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
+			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ? AND RestaurantName = ? ";
 			PreparedStatement stmt = conn.prepareStatement(query);
 			stmt.setInt(1, Integer.parseInt(orderNumber));
-			ResultSet rs = stmt.executeQuery(query1);
-
+			stmt.setString(2, restaurantName);
+			ResultSet rs = stmt.executeQuery();
 			if (!rs.next()) {
 //				ResultSet rs1 = stmt.executeQuery(query);
 				serverResponse.setMsg("Order number doesn't exist");
@@ -1220,11 +1219,9 @@ public class mysqlConnection {
 			stmt.setString(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				System.out.println(rs.getString(10));
 				response = new ImportedUser(id, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
 						rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9),
 						BranchName.valueOf(rs.getString(10)), rs.getBlob(11));
-				System.out.println(response.getEmail());
 			} else {
 				response = null;
 			}
@@ -1256,11 +1253,9 @@ public class mysqlConnection {
 			stmt.setInt(1, 0);
 			ResultSet rs = stmt.executeQuery();
 
-			System.out.println("11111");
 			// save in response all employers that needs approval
 			while (rs.next()) {
 				response.add(new BusinessCustomer(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getString(4)));
-				System.out.println(response.get(0).getEmployeCompanyName());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1286,26 +1281,27 @@ public class mysqlConnection {
 	 * 
 	 * @return deliveryNumber
 	 */
-	public static ServerResponse updateOrderStatus(String receivedOrReady, String orderNumber, String time,
+	public static ServerResponse updateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber, String time,
 			String status) {
 		ServerResponse serverResponse = new ServerResponse("Integer");
-		System.out.println(receivedOrReady);
 		try {
 			if (receivedOrReady.equals("Order Received")) {
-				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ?";
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ? AND RestaurantName = ?";
 				// String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber
 				// = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
 				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
+				stmt.setString(4, restaurantName);
 				stmt.executeUpdate();
 			} else { // Order Is Ready
-				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, PlannedTime = ? WHERE OrderNumber = ?";
+				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, PlannedTime = ? WHERE OrderNumber = ? AND RestaurantName = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
 				stmt.setString(2, time);
 				stmt.setString(3, orderNumber);
+				stmt.setString(4, restaurantName);
 				stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
@@ -1345,14 +1341,15 @@ public class mysqlConnection {
 	 * @return array list that includes - restaurant name, received time, planned
 	 *         time and status
 	 */
-	public static ServerResponse getOrderInfo(String orderNumber) {
+	public static ServerResponse getOrderInfo(String orderNumber, String restaurantName) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<String> response = new ArrayList<>();
 		try {
 			PreparedStatement stmt;
-			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ?";
+			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ? AND RestaurantName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, Integer.parseInt(orderNumber));
+			stmt.setString(2, restaurantName);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				response.add(rs.getString(2)); // restaurant name
@@ -1422,12 +1419,10 @@ public class mysqlConnection {
 			checkStmt.setString(2, product.getDishName());
 			ResultSet rs = checkStmt.executeQuery();
 			if(rs.next()) {
-				System.out.println("test2");
 				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("test1");
 			serverResponse.setMsg(e.getMessage());
 			serverResponse.setServerResponse(null);
 			return serverResponse;
@@ -1486,7 +1481,6 @@ public class mysqlConnection {
 			PreparedStatement stmt;
 			String query = "UPDATE bitemedb.products SET Type = ?, Price = ?, ProductDescription = ? WHERE RestaurantName = ? AND DishName = ?";
 			stmt = conn.prepareStatement(query);
-			System.out.println(product);
 			stmt.setString(1, product.getType().toString());
 			stmt.setFloat(2, product.getPrice());
 			stmt.setString(3, product.getDescription());

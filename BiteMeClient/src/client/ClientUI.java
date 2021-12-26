@@ -225,11 +225,11 @@ public class ClientUI implements ClientIF {
 	 * @param orderNumber
 	 * 
 	 */
-	public void searchOrder(String orderNumber) {
+	public void searchOrder(String orderNumber, String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 //			arr.addAll(Arrays.asList("searchOrder", orderNumber));
-			arr.add(orderNumber);
+			arr.addAll(Arrays.asList(orderNumber, restaurantName));
 			ServerResponse serverResponse = new ServerResponse("searchOrder");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
@@ -348,10 +348,10 @@ public class ClientUI implements ClientIF {
 	 * @param time
 	 * @param status
 	 */
-	public void UpdateOrderStatus(String receivedOrReady, String orderNumber, String time, String status) {
+	public void UpdateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber, String time, String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList(receivedOrReady, orderNumber, time, status));
+			arr.addAll(Arrays.asList(restaurantName, receivedOrReady, orderNumber, time, status));
 			ServerResponse serverResponse = new ServerResponse("updateOrderStatus");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
@@ -366,10 +366,10 @@ public class ClientUI implements ClientIF {
 	 * 
 	 * @param orderNumber
 	 */
-	public void getOrderInfo(String orderNumber) {
+	public void getOrderInfo(String orderNumber, String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList(orderNumber));
+			arr.addAll(Arrays.asList(orderNumber, restaurantName));
 			ServerResponse serverResponse = new ServerResponse("getOrderInfo");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);

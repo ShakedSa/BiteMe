@@ -95,7 +95,7 @@ public class addNewItemController implements Initializable {
 	private ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
-	private ArrayList<Component> optionalComponents = new ArrayList<>();
+	private ArrayList<Component> optionalComponents;
 	private Product product;
 
 	/**
@@ -121,24 +121,24 @@ public class addNewItemController implements Initializable {
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
 		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
-			String size = sizeCheckBox.getText();
+			String size = "Size";
 			if (temp.equals("") == false) { // there are some free text components
 				temp = temp + "," + size;
 			} else
 				temp = temp + size;
 		}
 		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
-			String doneness = donenessCheckBox.getText();
+			String doneness = "Doneness";
 			if (temp.equals("") == false) { // there are some free text components or size
 				temp = temp + "," + doneness;
 			} else
 				temp = temp + doneness;
 		}
-		System.out.println(temp);
 		String description = descriptionTxtArea.getText();
 		float price = Float.parseFloat(priceTxtField.getText());
 		if (temp.equals("") == false) { // there are components
 			String[] components = temp.split(",");
+			optionalComponents = new ArrayList<>();
 			for (int i = 0; i < components.length; i++) {
 				optionalComponents.add(new Component(components[i]));
 			}
@@ -310,7 +310,6 @@ public class addNewItemController implements Initializable {
 		itemsNameTxtField.clear();
 		optionalComponentsTxtField.clear();
 		donenessCheckBox.setSelected(false);
-		//donenessCheckBox
 		sizeCheckBox.setSelected(false);
 		priceTxtField.clear();
 		descriptionTxtArea.clear();
