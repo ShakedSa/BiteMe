@@ -13,7 +13,7 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
-import ServerUtils.ReportsThread;
+import ServerUtils.DailyThread;
 import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
@@ -35,7 +35,7 @@ public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
 	private ServerGUIController controller;
-	private ReportsThread reportsThread;
+	private DailyThread dailyThread;
 	public static final int DEFAULT_PORT = 5555;
 
 	/**
@@ -219,8 +219,8 @@ public class Server extends AbstractServer {
 	 */
 	protected void serverStarted() {
 		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
-		reportsThread = new ReportsThread();
-		Thread t = new Thread(reportsThread);
+		dailyThread = new DailyThread();
+		Thread t = new Thread(dailyThread);
 		t.start();
 		int date[]=reportsHandler.getLastReportDate();
 		int year=date[0],month=date[1];

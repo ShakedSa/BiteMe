@@ -2128,4 +2128,28 @@ public class mysqlConnection {
 		}
 		return 0;
 	}
+
+	public static void resetDailyBalance() {
+		String query = "UPDATE bitemedb.w4ccards SET DailyBalance = DailyBudget;";
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void resetMonthlyBalance() {
+		String query = "UPDATE bitemedb.w4ccards SET balance = MonthlyBudget;";
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 }
