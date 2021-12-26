@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import Entities.Component;
 import Entities.Product;
 import Entities.User;
+import Enums.Doneness;
+import Enums.Size;
 import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
@@ -31,22 +33,22 @@ import javafx.stage.Stage;
 
 public class editMenuItemController implements Initializable {
 
-	public final UserType type = UserType.Supplier; 
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-	
+
 	@FXML
 	private CheckBox donenessCheckBox;
 
 	@FXML
 	private CheckBox sizeCheckBox;
-	
-    @FXML
-    private ImageView VImage;
-    
-    @FXML
-    private Text successMsg;
+
+	@FXML
+	private ImageView VImage;
+
+	@FXML
+	private Text successMsg;
 
 	@FXML
 	private ImageView infoIcon;
@@ -116,18 +118,21 @@ public class editMenuItemController implements Initializable {
 		if (!checkInputs()) {
 			return;
 		}
+
 		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
-		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
-			String size = sizeCheckBox.getText();
+
+		// update temp according the check boxes
+		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox)
+			String size = "Size";
 			if (temp.equals("") == false) { // there are some free text components
 				temp = temp + "," + size;
 			} else
 				temp = temp + size;
 		}
 		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
-			String doneness = donenessCheckBox.getText();
+			String doneness = "Doneness";
 			if (temp.equals("") == false) { // there are some free text components or size
 				temp = temp + "," + doneness;
 			} else
@@ -137,13 +142,14 @@ public class editMenuItemController implements Initializable {
 		float price = Float.parseFloat(priceTxtField.getText());
 		if (temp.equals("") == false) { // there are components
 			String[] components = temp.split(",");
+			optionalComponents = new ArrayList<>();
 			for (int i = 0; i < components.length; i++) {
 				optionalComponents.add(new Component(components[i]));
 			}
 			product = new Product(restaurant, typeOfProduct, itemName, optionalComponents, price, description);
 		} else // there aren't components
 			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
-		
+
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -224,15 +230,15 @@ public class editMenuItemController implements Initializable {
 		}
 	}
 
-    @FXML
-    void infoIconEnter(MouseEvent event) {
-    	infoTxtArea.setVisible(true);
-    }
+	@FXML
+	void infoIconEnter(MouseEvent event) {
+		infoTxtArea.setVisible(true);
+	}
 
-    @FXML
-    void infoIconExit(MouseEvent event) {
-    	infoTxtArea.setVisible(false);
-    }
+	@FXML
+	void infoIconExit(MouseEvent event) {
+		infoTxtArea.setVisible(false);
+	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -256,19 +262,20 @@ public class editMenuItemController implements Initializable {
 		clearPage();
 		router.returnToSupplierPanel(event);
 	}
-	
 
-    @FXML
-    void returnToUpdateMenu(MouseEvent event) {
-    	clearPage();
-    	router.getSupplierPanelController().updateMenuClicked(event);
-    }
-    
+	@FXML
+	void returnToUpdateMenu(MouseEvent event) {
+		clearPage();
+		router.getSupplierPanelController().updateMenuClicked(event);
+	}
+
 	private void clearPage() {
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();
 		itemsNameTxtField.clear();
 		optionalComponentsTxtField.clear();
+		donenessCheckBox.setSelected(false);
+		sizeCheckBox.setSelected(false);
 		priceTxtField.clear();
 		descriptionTxtArea.clear();
 		infoTxtArea.setVisible(false);
@@ -305,14 +312,25 @@ public class editMenuItemController implements Initializable {
 	}
 
 	public void setProduct(Product product) {
-		if(product!=null) {
+		if (product != null) {
 			selectTypeBox.setValue(product.getType());
 			itemsNameTxtField.setText(product.getDishName());
-			String components = product.getComponents().toString();
-			components = components.substring(1, components.length()-1);
-			optionalComponentsTxtField.setText(components);
-			priceTxtField.setText(((Float)product.getPrice()).toString());
-			descriptionTxtArea.setText(product.getDescription());	
+			priceTxtField.setText(((Float) product.getPrice()).toString());
+			descriptionTxtArea.setText(product.getDescription());
+			String components = "";
+			optionalComponents = product.getComponents();
+			for (int i = 0; i < optionalComponents.size(); i++) {
+				if (optionalComponents.get(i).equals(new Component(Size.Medium))) {
+					sizeCheckBox.setSelected(true);
+				} else if (optionalComponents.get(i).equals(new Component(Doneness.medium))) {
+					donenessCheckBox.setSelected(true);
+				} else // restrictions
+					components = optionalComponents.get(i).toString() + "," + components;
+			}
+			if (!components.equals("")) {
+				optionalComponentsTxtField.setText(components.substring(0, components.length() - 1));
+			}
+
 		}
 	}
 

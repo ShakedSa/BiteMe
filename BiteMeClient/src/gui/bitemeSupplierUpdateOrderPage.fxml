@@ -122,7 +122,7 @@
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
