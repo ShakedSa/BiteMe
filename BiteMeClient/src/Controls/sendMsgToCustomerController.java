@@ -55,6 +55,9 @@ public class sendMsgToCustomerController implements Initializable {
 	@FXML
 	private Text supplierPanelBtn;
 
+	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private String restaurantName = user.getOrganization();
+	
 	private String orderNumber;
 	private String status;
 	private Integer deliveryNumber;
@@ -84,7 +87,7 @@ public class sendMsgToCustomerController implements Initializable {
 			}
 		});
 		t.start();
-		ClientGUI.client.getOrderInfo(orderNumber);
+		ClientGUI.client.getOrderInfo(orderNumber, restaurantName);
 		try {
 			t.join();
 		} catch (Exception e) {
@@ -99,10 +102,8 @@ public class sendMsgToCustomerController implements Initializable {
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response1 = (ArrayList<String>) sr.getServerResponse();
 		if (response1 == null) {
-			System.out.println("test");
 			return null;
 		}
-		System.out.println(response1.toString());
 		statusTxt.setText("Your order status from " + response1.get(0) + ": " + response1.get(3));
 		if (status.equals("Order Received")) {
 			plannedTimeTxt.setText("Order received time: " + response1.get(1));
@@ -144,27 +145,13 @@ public class sendMsgToCustomerController implements Initializable {
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response2 = (ArrayList<String>) sr.getServerResponse();
 		if (response2 == null) {
-			System.out.println("test");
 			return null;
 		}
-		System.out.println(response2.toString());
 		customerNameTxt.setText("Dear " + response2.get(1) + ",");
 		phoneNumberTxt.setText("Phone number: " + response2.get(0));
 		
 		return response2;
 	}
-//	ArrayList<String> res1 = new ArrayList<String> (getOrderInfo());
-//	ArrayList<String> res2 = new ArrayList<String> (getCustomerInfo());
-	
-//	private void displayMsg(ArrayList<String> res1, ArrayList<String> res2) {
-//		statusTxt.setText("Your order status from " + res1.get(0) + " :" + res1.get(3));
-//		if (router.getSupplierUpdateOrderController().getStatus().equals("Order Received")) {
-//			plannedTimeTxt.setText("Order received time: " + res1.get(1));
-//		} else
-//			plannedTimeTxt.setText("Order planned time: " + res1.get(2));
-//		customerNameTxt.setText("Dear " + res2.get(1) + ",");
-//		phoneNumberTxt.setText("Phone number: " + res2.get(0));
-//	}
 
 	@FXML
 	void closeMsgBtnClicked(MouseEvent event) {

@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
+import Entities.User;
+import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
@@ -119,7 +121,9 @@ public class supplierUpdateOrderController implements Initializable {
 	
     @FXML
     private Text noUpdate;
-
+    
+	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private String restaurantName = user.getOrganization();
 	ObservableList<String> list;
 	String orderNumber;
 	String receivedOrReady;
@@ -205,9 +209,9 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 
 		if (receivedOrReady.equals("Order Received")) {
-			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, nowTime, statusReceived);
+			ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, nowTime, statusReceived);
 		} else { // Order Is Ready
-			ClientGUI.client.UpdateOrderStatus(receivedOrReady, orderNumber, plannedTime, statusReady);
+			ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, plannedTime, statusReady);
 		}
 		try {
 			t.join();
@@ -217,6 +221,11 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 
 		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+		
+		if(receivedOrReady.equals("Order Is Ready") && !includeDeliveryBtn.isSelected() && !notIncludeDeliveryBtn.isSelected()) {
+			errorMsg.setText("Please select YES if order includes delivery and NO else");
+			return;
+		}
 
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
@@ -270,7 +279,7 @@ public class supplierUpdateOrderController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.searchOrder(orderNumber);
+				ClientGUI.client.searchOrder(orderNumber, restaurantName);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -338,7 +347,7 @@ public class supplierUpdateOrderController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getOrderInfo(orderNumber);
+				ClientGUI.client.getOrderInfo(orderNumber, restaurantName);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -365,7 +374,6 @@ public class supplierUpdateOrderController implements Initializable {
 		@SuppressWarnings("unchecked")
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
 		if (response == null) {
-			System.out.println("test");
 			return;
 		}
 		orderStatusTxt.setVisible(true);
@@ -396,6 +404,7 @@ public class supplierUpdateOrderController implements Initializable {
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
+			errorMsg.setText("This order doesn't exist");
 			return false;
 		}
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {

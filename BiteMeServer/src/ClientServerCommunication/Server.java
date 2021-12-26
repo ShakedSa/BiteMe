@@ -13,7 +13,7 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
-import ServerUtils.ReportsThread;
+import ServerUtils.DailyThread;
 import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
@@ -35,7 +35,7 @@ public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
 	private ServerGUIController controller;
-	private ReportsThread reportsThread;
+	private DailyThread dailyThread;
 	public static final int DEFAULT_PORT = 5555;
 
 	/**
@@ -85,7 +85,7 @@ public class Server extends AbstractServer {
 			break;
 		case "searchOrder":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.searchOrder(m.get(0)), client);
+			this.sendToClient(mysqlConnection.searchOrder(m.get(0), m.get(1)), client);
 			break;
 		case "checkUser":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -120,11 +120,11 @@ public class Server extends AbstractServer {
 			break;
 		case "updateOrderStatus":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(0), m.get(1), m.get(2), m.get(3)), client);
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(0), m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
 		case "getOrderInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0)), client);
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0), m.get(1)), client);
 			break;
 		case "getCustomerInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -186,6 +186,7 @@ public class Server extends AbstractServer {
 			try {
 			InputStream is = new ByteArrayInputStream(((MyFile) message).getMybytearray());
 			mysqlConnection.updateFile(is, message.getDescription());
+			break;
 		} catch (Exception e) {
 			e.printStackTrace();
 			controller.setMessage("Error while handling files in Server");
@@ -222,8 +223,8 @@ public class Server extends AbstractServer {
 	 */
 	protected void serverStarted() {
 		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
-		reportsThread = new ReportsThread();
-		Thread t = new Thread(reportsThread);
+		dailyThread = new DailyThread();
+		Thread t = new Thread(dailyThread);
 		t.start();
 		int date[]=reportsHandler.getLastReportDate();
 		int year=date[0],month=date[1];
