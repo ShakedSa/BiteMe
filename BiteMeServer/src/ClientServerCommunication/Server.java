@@ -195,6 +195,10 @@ public class Server extends AbstractServer {
 		case "getRefunds":
 			this.sendToClient(mysqlConnection.getRefund((Customer)serverResponse.getServerResponse()), client);
 			break;
+		case "createQuarterlyRevenueReport":// arr= quarter,year,branch
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(reportsHandler.quarterlyRevenueReportPdf(m.get(2), m.get(0), m.get(1)),client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

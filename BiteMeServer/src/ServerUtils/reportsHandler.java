@@ -29,6 +29,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import Entities.ServerResponse;
 import JDBC.mysqlConnection;
 
 public class reportsHandler {
@@ -345,8 +346,14 @@ public class reportsHandler {
 	 * Creates quarterly revenue report for a given branch and quarter, and stores it in SQL
 	 * @param Branch
 	 * @param Month
-	 */ // 1,2,3 4,5,6 7,8,9 10,11,12
-	public static void quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
+	 */ 
+	public static ServerResponse quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
+		
+		// add check if report exists and return serverResponse with value.
+		if(mysqlConnection.checkReportExists(Branch, quarter, Year)) {
+			return new ServerResponse("exists");
+		}
+		
 	Document document = new Document();
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -425,7 +432,7 @@ public class reportsHandler {
 			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
-
+		return new ServerResponse("created");
 	}
 
 }

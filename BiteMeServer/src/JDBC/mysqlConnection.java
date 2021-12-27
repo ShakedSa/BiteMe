@@ -2237,4 +2237,22 @@ public class mysqlConnection {
 		}
 
 	}
+
+	public static boolean checkReportExists(String branch, String quarter, String year) {
+		try {
+			String query = "SELECT * FROM bitemedb.reports where ReportType like '%QuarterlyRevenue%'"
+					+ " and BranchName=? and YEAR(Date) = ? and MONTH(Date) = ?";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, branch);
+			stmt.setString(2, year);
+			stmt.setInt(3,Integer.parseInt(quarter)*3);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

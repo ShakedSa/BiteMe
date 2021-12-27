@@ -640,4 +640,20 @@ public class ClientUI implements ClientIF {
 		client.handleMessageFromClientUI(serverResponse);
 	}
 
+	/**
+	 * request from server to create quarterly revenue report for given:
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 */
+	public void createQuarterlyRevenueReport(String quarter, String year, String branch) {
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(quarter);
+		arr.add(year);
+		arr.add(branch); // arr= quarter,year,branch
+		ServerResponse serverResponse = new ServerResponse("createQuarterlyRevenueReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
 }
