@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.viewRevenueQuarterlyReportController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../BiteMeClient/src/images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../BiteMeClient/src/images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Revenue Quarterly Report">
+         <font>
+            <Font name="Berlin Sans FB" size="30.0" />
+         </font>
+      </Text>
+      <Text layoutX="88.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific quarter">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Branch">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text id="link" fx:id="profileBtn" layoutX="692.0" layoutY="46.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="367.0" layoutY="59.0" onMouseClicked="#returnToCEOPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text id="link" fx:id="homePageBtn" layoutX="287.0" layoutY="57.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="498.0" layoutY="512.0" onMouseClicked="#viewPDFReportClicked" prefHeight="25.0" prefWidth="310.0" text="View PDF Report">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <ComboBox fx:id="quarterBox" focusTraversable="false" layoutX="283.0" layoutY="320.0" onAction="#searchOndb" prefHeight="25.0" prefWidth="93.0" promptText="Quarter" />
+      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="283.0" layoutY="260.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Year" />
+      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="283.0" layoutY="200.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Branch" />
+      <Text fx:id="textMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="500.0" onMouseClicked="#returnToCEOPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+   </children>
+</AnchorPane>

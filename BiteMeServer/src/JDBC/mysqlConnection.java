@@ -984,7 +984,7 @@ public class mysqlConnection {
 	 * @param quarter
 	 * @param year
 	 * @param branch
-	 * @param Func    {"View","Check"}
+	 * 
 	 */
 	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch) {
 
@@ -1005,6 +1005,49 @@ public class mysqlConnection {
 				return serverResponse;
 			}
 
+			Blob blob = rs.getBlob(1);
+			MyFile file = new MyFile("Blob");
+			byte[] array = blob.getBytes(1, (int) blob.length());
+			file.initArray(array.length);
+			file.setMybytearray(array);
+			serverResponse.setServerResponse(file);
+			serverResponse.setMsg("Success");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
+	}
+	
+	/**
+	 * Query to get Revenue Quarterly Report OR to check if exists.
+	 * 
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 * 
+	 */
+	public static ServerResponse viewORcheckRevenueQuarterReport(String quarter, String year, String branch) {
+
+		ServerResponse serverResponse = new ServerResponse("MyFile");
+		try {
+
+			String query = "SELECT distinct Content FROM bitemedb.reports where date like ? and Title like ? and ReportType = 'QuarterlyRevenueReport' and BranchName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, year + "%");
+			stmt.setString(2, "%Quarter" + quarter + "%");
+			stmt.setString(3, branch);
+			ResultSet rs = stmt.executeQuery();
+
+			if (!rs.next()) {
+				serverResponse.setMsg("NotExists");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+			
 			Blob blob = rs.getBlob(1);
 			MyFile file = new MyFile("Blob");
 			byte[] array = blob.getBytes(1, (int) blob.length());

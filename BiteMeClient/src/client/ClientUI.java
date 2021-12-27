@@ -537,6 +537,19 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
+	
+	public void viewORcheckRevenueQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("viewRevenueQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	//function to CheckQuarterReport before enabling user to viewQuarterReport
 	public void CheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
