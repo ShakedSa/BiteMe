@@ -51,6 +51,7 @@ public class Router {
 	private updateUserInformationController UpdateUserInformationController;
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
+	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
 	private addNewItemController AddNewItemController;
 	private updateMenuController UpdateMenuController;
@@ -145,6 +146,20 @@ public class Router {
 	 */
 	public void setIdentifyController(identifyController identifyController) {
 		IdentifyController = identifyController;
+	}
+	/**
+	 * @return the uploadRevenueQuarterlyReportController
+	 */
+	public createRevenueQuarterlyReportController getCreateRevenueQuarterlyReportController() {
+		return CreateRevenueQuarterlyReportController;
+	}
+
+	/**
+	 * @param uploadRevenueQuarterlyReportController the uploadRevenueQuarterlyReportController to set
+	 */
+	public void setCreateRevenueQuarterlyReportController(
+			createRevenueQuarterlyReportController createRevenueQuarterlyReportController) {
+		CreateRevenueQuarterlyReportController = createRevenueQuarterlyReportController;
 	}
 
 	/**
@@ -615,6 +630,7 @@ public class Router {
 				ReviewOrderController = null;
 				OrderReceivedController = null;
 				SupplierPanelController = null;
+        CreateRevenueQuarterlyReportController=null;
 				order = null;
 				delivery = null;
 				orderDeliveryMethod = null;

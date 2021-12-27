@@ -71,6 +71,9 @@ public class managerPanelController implements Initializable {
 	@FXML
 	private Label viewMonthlyReports;
 
+    @FXML
+    private Label UploadRevenueQuarterlyReport;
+    
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
@@ -238,6 +241,35 @@ public class managerPanelController implements Initializable {
 			stage.show();
 		}
 	}
+	
+
+    @FXML
+    void UploadRevenueQuarterlyReportClicked(MouseEvent event) {
+		if (router.getCreateRevenueQuarterlyReportController() == null) {
+			AnchorPane mainContainer;
+			createRevenueQuarterlyReportController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeCreateRevenueQuarterlyReportPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Create Revenue Quarterly Report");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Create Revenue Quarterly Report");
+			stage.setScene(router.getUploadQuarterlyReportController().getScene());
+			stage.show();
+		}
+    }
 
 	@FXML
 	void viewMonthlyReportsClicked(MouseEvent event) {
@@ -266,6 +298,8 @@ public class managerPanelController implements Initializable {
 			stage.show();
 		}
 	}
+
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
