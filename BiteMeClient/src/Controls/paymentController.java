@@ -77,6 +77,9 @@ public class paymentController implements Initializable {
 
 	@FXML
 	private CheckBox refundCheck;
+	
+	@FXML
+    private Label refundText;
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -205,7 +208,7 @@ public class paymentController implements Initializable {
 			bothRadio.requestFocus();
 			businessRadio.setSelected(false);
 			errorMsg.setText(
-					"W4C Card budget is lower than order price.\nWould you like to pay with the card & private credit card?\nFor convenient 'both' option is automatically selected.");
+					"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
 		}
 	}
 
@@ -222,21 +225,15 @@ public class paymentController implements Initializable {
 		showTextField(false);
 	}
 
-	@FXML
-	void refundClicked(MouseEvent event) {
-//		if (refundCheck.isSelected()) {
-////			refundCheck.setSelected(false);
-//			refundCheck.selectedProperty().setValue(false);
-//		} else {
-////			refundCheck.setSelected(true);
-//			refundCheck.selectedProperty().setValue(true);
-//		}
-	}
-
 	private void showTextField(boolean val) {
 		employerCodeTextField.setVisible(val);
 		employerCodeTxt.setVisible(val);
 	}
+	
+	@FXML
+    void bothSelected(MouseEvent event) {
+		bothRadio.setSelected(true);
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -257,9 +254,6 @@ public class paymentController implements Initializable {
 		router.setPaymentController(this);
 		router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
-		/**
-		 * NEEDDDDDDDDDDDDDDDDDDDS CHANGES :) TO BE CONTINUED...
-		 */
 		checkRefunds();
 	}
 
@@ -268,10 +262,8 @@ public class paymentController implements Initializable {
 		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {
-				System.out.println("Calling refunds");
 				ClientGUI.client.getRefunds(user);
 				try {
-					System.out.println("Waiting for refunds");
 					ClientGUI.monitor.wait();
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -287,12 +279,11 @@ public class paymentController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		System.out.println("Done waiting for refunds");
 		user.setRefunds((HashMap<String, Float>) ClientGUI.client.getLastResponse().getServerResponse());
 		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
 			refundCheck.setVisible(true);
-			errorMsg.setText("You got a " + user.getRefunds().get(router.getOrder().getRestaurantName())
-					+ "\u20AA for this restaurant.\nCheck the check box if you would like to use it.");
+			refundText.setText("You got " + user.getRefunds().get(router.getOrder().getRestaurantName())
+					+ "\u20AA refund for this restaurant.\nCheck the check box if you would like to use it.");
 		}
 	}
 

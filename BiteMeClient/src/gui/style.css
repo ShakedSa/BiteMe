@@ -8,6 +8,21 @@
 	-fx-input-bg-color: #879bab;
 }
 
+.root{
+}
+
+.title{
+	-fx-font: 30px "Berlin Sans FB";
+}
+
+.subtitle{
+	-fx-font: 20px "Berlin Sans FB";
+}
+
+.fields{
+	-fx-font: 16px "Berlin Sans FB";
+}
+
 /*=========================== */
 /*Global Styling */
 /*=========================== */
@@ -27,7 +42,7 @@
 
 .tab-pane .tab:selected
 {
-    -fx-background-color: #3c3c3c;
+    -fx-background-color: #3c3c3c50;
 }
 
 .tab .tab-label { 
@@ -39,7 +54,7 @@
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-    -fx-text-fill: #96b946;
+    -fx-text-fill:-fx-secondary-text-color;
 }
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
@@ -370,8 +385,12 @@
 }
 
 /*=========================== */
-/* Components layout styling: */
+/* Menu styling: */
 /*=========================== */
+.menuTitle{
+	-fx-translate-x: 35;
+	-fx-translate-y: 140;
+}
 
 .overylayPriceLayout{
 	-fx-translate-x: 250.0;
@@ -488,7 +507,7 @@
 }
 
 /*=========================== */
-/* End Components Styling */
+/* End Menu Styling */
 /*=========================== */
 
 /*=========================== */
@@ -536,3 +555,42 @@
 /*=========================== */
 /* End call to action button styling*/
 /*=========================== */
+
+/*=========================== */
+/* Review order styling*/
+/*=========================== */
+
+.itemsTitle{
+	-fx-translate-x: 120;
+	-fx-translate-y: 193;	
+}
+
+.orderDisplayScroll{
+	-fx-pref-width: 676;
+	-fx-pref-height: 130;
+	-fx-translate-x: 100;
+	-fx-translate-y: 213;	
+}
+
+.deliveryTitle{
+	-fx-translate-x: 120;
+	-fx-translate-y: 360;
+}
+
+.deliveryInfo{
+	-fx-translate-x: 130;
+	-fx-translate-y: 390;
+}
+
+.totalPrice{
+	-fx-text-fill: #0a62a1;
+	-fx-translate-x: 600;
+	-fx-translate-y: 400;
+	-fx-font: 22px "Berlin Sans FB";	
+}
+
+/*=========================== */
+/* End review order styling*/
+/*=========================== */
+
+
