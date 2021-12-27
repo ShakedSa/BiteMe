@@ -63,6 +63,8 @@ public class restaurantMenuController implements Initializable {
 
 	private ArrayList<Product> productsInOrder;
 
+	Label menuTitle;
+
 	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
 
 	@FXML
@@ -185,6 +187,9 @@ public class restaurantMenuController implements Initializable {
 		router.setRestaurantMenuController(this);
 		setStage(router.getStage());
 		router.setArrow(leftArrowBtn, -90);
+		menuTitle = new Label();
+		menuTitle.getStyleClass().addAll("title", "menuTitle");
+		root.getChildren().add(menuTitle);
 	}
 
 	@FXML
@@ -221,6 +226,7 @@ public class restaurantMenuController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setMenu() {
+		menuTitle.setText(restaurantName + " Menu");
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -288,9 +294,9 @@ public class restaurantMenuController implements Initializable {
 		tabPane.getTabs().add(drinks);
 		root.getChildren().add(tabPane);
 		tabPane.setLayoutX(35);
-		tabPane.setLayoutY(149);
+		tabPane.setLayoutY(179);
 		tabPane.setPrefWidth(756);
-		tabPane.setPrefHeight(312);
+		tabPane.setPrefHeight(282);
 		setTabContent(entrees, entriesMenu);
 		setTabContent(mainDishes, mainsMenu);
 		setTabContent(desserts, dessertsMenu);

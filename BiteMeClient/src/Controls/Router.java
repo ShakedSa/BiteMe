@@ -615,6 +615,9 @@ public class Router {
 				ReviewOrderController = null;
 				OrderReceivedController = null;
 				SupplierPanelController = null;
+				order = null;
+				delivery = null;
+				orderDeliveryMethod = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -856,14 +859,15 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> products) {
-		if (this.order.getProducts() == null || products == null) {
-			this.order.setProducts(products);
+		if (order == null || order.getProducts() == null || products == null) {
+			order = new Order();
+			order.setProducts(products);
 			return;
 		}
-		List<Product> newProducts = this.order.getProducts().stream().filter(p -> !products.contains(p))
+		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
 				.collect(Collectors.toList());
 		newProducts.addAll(products);
-		this.order.setProducts((ArrayList<Product>) newProducts);
+		order.setProducts((ArrayList<Product>) newProducts);
 	}
 
 	/**
@@ -872,7 +876,7 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		if (order.getProducts() == null) {
+		if (order == null || order.getProducts() == null) {
 			return new ArrayList<>();
 		}
 		return order.getProducts();

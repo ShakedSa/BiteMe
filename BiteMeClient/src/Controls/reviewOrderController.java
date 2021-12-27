@@ -108,19 +108,6 @@ public class reviewOrderController implements Initializable {
 		default:
 			break;
 		}
-		// Before:
-//		Thread t = new Thread(() -> {
-//			synchronized (ClientGUI.monitor) {
-//				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
-//				try {
-//					ClientGUI.monitor.wait();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					return;
-//				}
-//			}
-//		});
-		// After
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {
 				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
@@ -150,12 +137,6 @@ public class reviewOrderController implements Initializable {
 			}
 		});
 		t.start();
-//		try {
-//			t.join();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
 	}
 
 	private void changeToRateUs() {
@@ -286,28 +267,16 @@ public class reviewOrderController implements Initializable {
 			i++;
 		}
 		itemsTitle = new Label("Products:");
-		itemsTitle.setFont(new Font("Berlin Sans FB", 14));
-		itemsTitle.setLayoutX(120);
-		itemsTitle.setLayoutY(193);
+		itemsTitle.getStyleClass().addAll("subtitle", "itemsTitle");
 		orderDisplay.setContent(orderDisplayContent);
-		orderDisplay.setPrefWidth(676);
-		orderDisplay.setPrefHeight(130);
-		orderDisplay.setLayoutX(100);
-		orderDisplay.setLayoutY(213);
+		orderDisplay.getStyleClass().add("orderDisplayScroll");
 		orderDisplay.setId("scrollPane");
 		deliveryTitle = new Label("Delivery information: ");
-		deliveryTitle.setFont(new Font("Berlin Sans FB", 14));
-		deliveryTitle.setLayoutX(120);
-		deliveryTitle.setLayoutY(360);
+		deliveryTitle.getStyleClass().addAll("subtitle", "deliveryTitle");
 		deliveryInformation = new Label(delivery.toString());
-		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
-		deliveryInformation.setLayoutX(100);
-		deliveryInformation.setLayoutY(380);
+		deliveryInformation.getStyleClass().addAll("fields", "deliveryInfo");
 		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "\u20AA");
-		totalPrice.setFont(new Font("Berlin Sans FB", 22));
-		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
-		totalPrice.setLayoutX(600);
-		totalPrice.setLayoutY(400);
+		totalPrice.getStyleClass().add("totalPrice");
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 			circle.toFront();

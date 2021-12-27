@@ -335,7 +335,6 @@ public class mysqlConnection {
 	public static ServerResponse getRefund(Customer customer) {
 		ServerResponse serverResponse = new ServerResponse("Refunds");
 		HashMap<String, Float> refunds = getRefund(customer.getCustomerID());
-		System.out.println(refunds);
 		serverResponse.setServerResponse(refunds);
 		return serverResponse;
 	}

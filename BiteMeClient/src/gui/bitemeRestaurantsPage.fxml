@@ -165,7 +165,7 @@
          </cursor>
       </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text layoutX="114.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text layoutX="114.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" styleClass="title">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
