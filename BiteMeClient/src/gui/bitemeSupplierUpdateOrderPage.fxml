@@ -19,12 +19,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="130.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Number">
@@ -81,14 +81,6 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="52.0" layoutX="57.0" layoutY="489.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="578.0" layoutY="501.0" onMouseClicked="#UpdateOrderClicked" prefHeight="25.0" prefWidth="228.0" text="Update Order">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
@@ -139,7 +131,7 @@
       </Text>
       <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="122.0" layoutY="428.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
       <ComboBox fx:id="updateDataComboBox" layoutX="403.0" layoutY="283.0" prefHeight="26.0" prefWidth="228.0" />
@@ -150,7 +142,7 @@
       </Text>
       <ImageView fx:id="newMsgImage" fitHeight="38.0" fitWidth="43.0" layoutX="498.0" layoutY="31.0" onMouseClicked="#newMsgClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/newMsg.png" />
+            <Image url="@../images/newMsg.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -181,5 +173,6 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Text>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="57.0" layoutY="490.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

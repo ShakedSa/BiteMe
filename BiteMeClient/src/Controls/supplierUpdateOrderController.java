@@ -84,7 +84,7 @@ public class supplierUpdateOrderController implements Initializable {
 	private Text includeDeliveryTxt;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -592,6 +592,7 @@ public class supplierUpdateOrderController implements Initializable {
 		router = Router.getInstance();
 		router.setSupplierUpdateOrderController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 		setStartPage();
 		OrderNumberTxtField.clear();
 		//setUpdateComboBox();

@@ -43,7 +43,7 @@ public class loginController implements Initializable {
 	private Scene scene;
 
 	@FXML
-	private ImageView back;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Label errorMsg;
@@ -222,6 +222,7 @@ public class loginController implements Initializable {
 		router = Router.getInstance();
 		router.setLogincontroller(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

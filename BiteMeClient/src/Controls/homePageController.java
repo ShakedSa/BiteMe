@@ -116,7 +116,10 @@ public class homePageController implements Initializable {
 	private AnchorPane root;
 
 	@FXML
-	private Rectangle arrowLeft;
+    private Rectangle arrowLeft;
+
+    @FXML
+    private Rectangle arrowRight;
 	
 	@FXML 
 	private Text myOrdersBtn;
@@ -392,13 +395,8 @@ public class homePageController implements Initializable {
 		router = Router.getInstance();
 		router.setHomePageController(this);
 		setStage(router.getStage());
-		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
-		;
-		arrowLeft.setFill(pattern);
-		arrowLeft.setStyle("-fx-stroke: null;-fx-cursor: hand");
-		arrowLeft.setOnMouseClicked(e -> caruasalLeftClicked(e));
-		arrowLeft.setRotate(-90);
-		caruasalLeft.setVisible(false);
+		router.setArrow(arrowLeft, -90);
+		router.setArrow(arrowRight, 90);
 	}
 
 	public void setScene(Scene scene) {

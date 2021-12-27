@@ -81,7 +81,7 @@ public class restaurantMenuController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -184,6 +184,7 @@ public class restaurantMenuController implements Initializable {
 		router = Router.getInstance();
 		router.setRestaurantMenuController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	@FXML
@@ -328,7 +329,7 @@ public class restaurantMenuController implements Initializable {
 				pane.setLayoutX(65);
 			}
 			/**
-			 * Setting onclicked event, when user clicks on a certain product, it will
+			 * Setting on clicked event, when user clicks on a certain product, it will
 			 * display a "choose components" screen for the user to specifiy his requests.
 			 * Also the user will be able to decide how many items of the same product
 			 * should be in the order.

@@ -46,7 +46,7 @@ public class paymentController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -255,6 +255,7 @@ public class paymentController implements Initializable {
 		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
+		router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
 		/**
 		 * NEEDDDDDDDDDDDDDDDDDDDS CHANGES :) TO BE CONTINUED...

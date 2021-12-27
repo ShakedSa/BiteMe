@@ -50,7 +50,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -262,6 +262,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		router = Router.getInstance();
 		router.setViewPDFQuarterlyReportController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 		setBranchComboBox();
 		setMonthComboBox();
 		setYearComboBox();

@@ -75,7 +75,7 @@ public class editMenuItemController implements Initializable {
 	private TextField itemsNameTxtField;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -297,6 +297,7 @@ public class editMenuItemController implements Initializable {
 		setStage(router.getStage());
 		setTypeComboBox();
 		clearPage();
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

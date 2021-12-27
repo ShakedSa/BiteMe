@@ -90,7 +90,7 @@ public class openNewAccountController implements Initializable{
     private TextField lastNameTxtField;
 
     @FXML
-    private ImageView leftArrowBtn;
+    private Rectangle leftArrowBtn;
 
     @FXML
     private Text logoutBtn;
@@ -272,6 +272,7 @@ public class openNewAccountController implements Initializable{
 		router = Router.getInstance();
 		router.setOpenNewAccountController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
     

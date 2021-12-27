@@ -60,7 +60,7 @@ public class managerPanelController implements Initializable {
 	private Text managerPanelBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -272,6 +272,7 @@ public class managerPanelController implements Initializable {
 		router = Router.getInstance();
 		router.setManagerPanelController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

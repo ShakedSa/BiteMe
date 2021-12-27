@@ -19,12 +19,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text fx:id="editItemTxt" layoutX="181.0" layoutY="460.0" onMouseClicked="#editItemClicked" onMouseEntered="#explainHowEdit" onMouseExited="#closeExplainEdit" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Item">
@@ -54,7 +54,7 @@
       </Text>
       <ImageView fx:id="editItemImage" fitHeight="46.0" fitWidth="34.0" layoutX="147.0" layoutY="435.0" onMouseClicked="#editItemClicked" onMouseEntered="#explainHowEdit" onMouseExited="#closeExplainEdit" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/edit-icon.gif" />
+            <Image url="@../images/edit-icon.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -93,14 +93,6 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="487.0" onMouseClicked="#returnToSupplierPanel" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Text fx:id="menuUpdatedSuccessfullyTxt" fill="#62d019" layoutX="271.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
@@ -108,7 +100,7 @@
       </Text>
       <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="227.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
       <Line endX="-82.0" layoutX="445.0" layoutY="453.0" startX="-100.0" strokeWidth="3.0" />
@@ -150,5 +142,6 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </TextArea>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="488.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

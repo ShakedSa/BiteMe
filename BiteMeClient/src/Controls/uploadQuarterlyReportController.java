@@ -64,7 +64,7 @@ public class uploadQuarterlyReportController implements Initializable{
     private Text homePageBtn;
 
     @FXML
-    private ImageView leftArrowBtn;
+    private Rectangle leftArrowBtn;
 
     @FXML
     private Text logoutBtn;
@@ -149,6 +149,7 @@ public class uploadQuarterlyReportController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setUploadQuarterlyReportController(this);
+		router.setArrow(leftArrowBtn, -90);
 		String[] tempQuarter= {"1", "2", "3", "4"};
 		yearBox.getItems().addAll(generateYears());
 		monthBox.getItems().addAll(tempQuarter);

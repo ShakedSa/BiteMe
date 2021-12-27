@@ -50,7 +50,7 @@ public class pickDateAndTimeController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -216,6 +216,7 @@ public class pickDateAndTimeController implements Initializable {
 		router = Router.getInstance();
 		router.setPickDateAndTimeController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 		/** Setting the time and date to now. */
 		datePicker.setValue(LocalDate.now());
 		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));

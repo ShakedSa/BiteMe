@@ -56,7 +56,7 @@ public class reviewOrderController implements Initializable {
 	private Text returnToHome;
 
 	@FXML
-	private ImageView returnToPaymentMethod;
+	private Rectangle returnToPaymentMethod;
 
 	@FXML
 	private Text returnToRestaurants;
@@ -238,7 +238,7 @@ public class reviewOrderController implements Initializable {
 		router.setReviewOrderController(this);
 		setStage(router.getStage());
 		router.setAvatar(avatar);
-
+		router.setArrow(returnToPaymentMethod, -90);
 	}
 
 	public void setScene(Scene scene) {

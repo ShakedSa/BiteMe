@@ -47,7 +47,7 @@ public class supplierPanelController implements Initializable {
     private Text homePageBtn;
 
     @FXML
-    private ImageView leftArrowBtn;
+    private Rectangle leftArrowBtn;
     
     @FXML
     private Text loadingTxt;
@@ -190,6 +190,7 @@ public class supplierPanelController implements Initializable {
 		router = Router.getInstance();
 		router.setSupplierPanelController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
     

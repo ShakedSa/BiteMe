@@ -38,7 +38,7 @@ public class myCartController implements Initializable {
 
 	private Scene scene;
 	@FXML
-	private ImageView backButton;
+	private Rectangle leftArrowBtn;
 
 	ScrollPane orderDisplay;
 	Text cartTitle = new Text("My Cart");
@@ -111,6 +111,7 @@ public class myCartController implements Initializable {
 		router = Router.getInstance();
 		router.setMyCartController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	@FXML
@@ -232,12 +233,12 @@ public class myCartController implements Initializable {
 	 */
 	public void displayOrder() {
 		setItemsCounter();
-		backButton.setLayoutX(52);
-		backButton.setLayoutY(570);
-		backButton.setOnMouseClicked(e -> returnToLastPage(e));
-		backButton.setCursor(Cursor.HAND);
+		leftArrowBtn.setLayoutX(52);
+		leftArrowBtn.setLayoutY(570);
+		leftArrowBtn.setOnMouseClicked(e -> returnToLastPage(e));
+		leftArrowBtn.setCursor(Cursor.HAND);
 		root = new AnchorPane();
-		root.getChildren().add(backButton);
+		root.getChildren().add(leftArrowBtn);
 		cartTitle.setFont(new Font("Berlin Sans FB", 30));
 		cartTitle.setLayoutX(51);
 		cartTitle.setLayoutY(41);

@@ -20,12 +20,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
@@ -103,14 +103,6 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <ImageView fx:id="leftArrowBtn" fitHeight="52.0" fitWidth="50.0" layoutX="63.0" layoutY="500.0" onMouseClicked="#returnToUpdateMenu" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Label id="btn" fx:id="addItemToMenuBtn" alignment="CENTER" layoutX="577.0" layoutY="514.0" onMouseClicked="#addItemToMenuClicked" prefHeight="25.0" prefWidth="230.0" text="Add item to menu">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
@@ -132,7 +124,7 @@
       </Text>
       <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="555.0" layoutY="273.0" onMouseEntered="#infoIconEnter" onMouseExited="#infoIconExit" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/info-icon.png" />
+            <Image url="@../images/info-icon.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -150,7 +142,7 @@
       </Text>
       <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="128.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
       <CheckBox fx:id="sizeCheckBox" graphicTextGap="3.0" layoutX="384.0" layoutY="314.0" mnemonicParsing="false" text="Size">
@@ -163,5 +155,6 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </CheckBox>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="501.0" onMouseClicked="#returnToUpdateMenu" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

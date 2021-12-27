@@ -63,7 +63,7 @@ public class restaurantSelectionController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -147,7 +147,7 @@ public class restaurantSelectionController implements Initializable {
 	private Text restaurantsBtn;
 
 	@FXML
-	private ImageView rightArrowBtn;
+	private Rectangle rightArrowBtn;
 
 	@FXML
 	private TextField searchRestaurantFieldTxt;
@@ -449,6 +449,8 @@ public class restaurantSelectionController implements Initializable {
 		router = Router.getInstance();
 		router.setRestaurantselectionController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
+		router.setArrow(rightArrowBtn, 90);
 	}
 
 	public void setScene(Scene scene) {

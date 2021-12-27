@@ -75,7 +75,7 @@ public class addNewSupplierController implements Initializable {
     private Text Error;
     
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -448,6 +448,7 @@ public class addNewSupplierController implements Initializable {
 		setStage(router.getStage());
 		setMonthlyCommissionComboBox();
 		setRestaurantTypeComboBox();
+		router.setArrow(leftArrowBtn, -90);
 		
 	}
 

@@ -11,7 +11,6 @@ import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -69,9 +68,6 @@ public class addNewItemController implements Initializable {
 	private TextField itemsNameTxtField;
 
 	@FXML
-	private ImageView leftArrowBtn;
-
-	@FXML
 	private Text logoutBtn;
 
 	@FXML
@@ -91,6 +87,9 @@ public class addNewItemController implements Initializable {
 
 	@FXML
 	private Text errorMsg;
+	
+	@FXML
+    private Rectangle leftArrowBtn;
 
 	private ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
@@ -332,6 +331,7 @@ public class addNewItemController implements Initializable {
 		setStage(router.getStage());
 		setTypeComboBox();
 		clearPage();
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

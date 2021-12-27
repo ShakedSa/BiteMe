@@ -83,14 +83,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToRestaurants" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
@@ -118,5 +110,6 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Label>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="76.0" layoutY="479.0" onMouseClicked="#returnToRestaurants" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

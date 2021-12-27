@@ -67,14 +67,6 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fx:id="returnToPaymentMethod" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToPaymentMethod" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
@@ -98,5 +90,6 @@
       </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Circle fx:id="circle" fill="#1f93ff00" layoutX="415.0" layoutY="292.5" radius="100.0" stroke="BLACK" strokeDashOffset="10.0" strokeType="OUTSIDE" strokeWidth="2.0" style="-fx-stroke-dash-array: 10;" visible="false" />
+      <Rectangle fx:id="returnToPaymentMethod" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="74.0" layoutY="480.0" onMouseClicked="#returnToPaymentMethod" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

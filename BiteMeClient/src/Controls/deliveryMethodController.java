@@ -57,7 +57,7 @@ public class deliveryMethodController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -467,6 +467,7 @@ public class deliveryMethodController implements Initializable {
 		router = Router.getInstance();
 		router.setDeliveryMethodController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

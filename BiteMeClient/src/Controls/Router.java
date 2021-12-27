@@ -669,6 +669,13 @@ public class Router {
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
 	}
+	
+	public void setArrow(Rectangle arrow, int rotationDegree) {
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
+		arrow.setFill(pattern);
+		arrow.setStyle("-fx-stroke: null;-fx-cursor: hand");
+		arrow.setRotate(rotationDegree);
+	}
 
 	void returnToSupplierPanel(MouseEvent event) {
 		if (router.getSupplierPanelController() == null) {

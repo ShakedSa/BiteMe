@@ -70,7 +70,7 @@ public class profileController implements Initializable {
 	private Text lastNameTxt;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -134,6 +134,7 @@ public class profileController implements Initializable {
 		router = Router.getInstance();
 		router.setProfileController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

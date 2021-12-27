@@ -63,7 +63,7 @@ public class confirmBusinessAccountController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -184,7 +184,7 @@ public class confirmBusinessAccountController implements Initializable {
 		initTable();
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
-
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {
