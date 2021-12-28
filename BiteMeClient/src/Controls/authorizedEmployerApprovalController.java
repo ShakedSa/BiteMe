@@ -163,6 +163,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 		approvalTable.setEditable(true);
 	}
 	
+	
 	//change arrayList to ObservableList
 	private ObservableList<BusinessCustomer> getCustomer(ArrayList<BusinessCustomer> list) {
 		ObservableList<BusinessCustomer> customers = FXCollections.observableArrayList();

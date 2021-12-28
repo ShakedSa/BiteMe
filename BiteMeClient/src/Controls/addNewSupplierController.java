@@ -171,7 +171,7 @@ public class addNewSupplierController implements Initializable {
 		if(!checkValues()) {
     		return;
     	}
-		ClientGUI.client.checkUserName(userNameTxtField.getText());
+		ClientGUI.client.checkUserNameForSupplier(userNameTxtField.getText());
 		//wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -222,7 +222,10 @@ public class addNewSupplierController implements Initializable {
 
 	
 	
-	//hides or shows certain components
+	
+	/**hides or shows certain componets
+	 * @param val
+	 */
 	public void enableEdit(boolean val) {
 		restaurantName.setVisible(val);
 		restaurantNameTxtField.setVisible(val);
@@ -244,16 +247,16 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	private boolean checkValues() {
-    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
-    		userNameError.setVisible(true);
-    		enableEdit(false);
-    		userNameError.setText("No special characters!");
-    		return false;
-    	}
-    	if(userNameTxtField.getText().length() == 0) {
+		if(userNameTxtField.getText().length() == 0) {
     		userNameError.setVisible(true);
     		enableEdit(false);
     		userNameError.setText("UserName must be filled!");
+    		return false;
+    	}
+		if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
+    		userNameError.setVisible(true);
+    		enableEdit(false);
+    		userNameError.setText("No special characters!");
     		return false;
     	}
     	return true;

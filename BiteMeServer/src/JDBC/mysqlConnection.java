@@ -25,6 +25,7 @@ import Entities.Customer;
 import Entities.Delivery;
 import Entities.EmployerHR;
 import Entities.ImportedUser;
+import Entities.NewAccountUser;
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.NewUser;
@@ -807,6 +808,71 @@ public class mysqlConnection {
 	}
 
 	/**
+	 * Check what accounts the user has
+	 * 
+	 * @param orderNumber
+	 * @return ServerResponse
+	 */
+	public static ServerResponse checkUserNameAccountType(String username) {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<String> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, username);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) { //check if the username exist
+				response.add(rs.getString(3));
+				response.add(rs.getString(4));
+				if (rs.getString(8).equals("User")) { //check what is current permissions
+					serverResponse.setMsg("both"); //we can open for him private and business account
+					return serverResponse;
+					
+				} else if(rs.getString(8).equals("Customer") && !rs.getString(13).equals("Deleted")){
+					query = "SELECT * FROM bitemedb.customers WHERE UserName = ?";
+					stmt = conn.prepareStatement(query);
+					stmt.setString(1, username);
+					ResultSet rs1 = stmt.executeQuery();
+					if(rs1.next()) {
+						//if the user has private and business accounts
+						if(rs1.getInt(3) == 1 && rs1.getInt(4) == 1) {
+							serverResponse.setMsg("has both");
+							serverResponse.setServerResponse(response);
+							return serverResponse;
+						}else if (rs1.getInt(3) == 1) {
+							serverResponse.setServerResponse(response);
+							serverResponse.setMsg("is private");
+							return serverResponse;
+						}else if(rs1.getInt(4) == 1) {
+							serverResponse.setServerResponse(response);
+							serverResponse.setMsg("is businss");
+							return serverResponse;
+						}		
+					}
+			}
+			else {
+					serverResponse.setMsg("not client");
+					serverResponse.setServerResponse(response);
+					return serverResponse;
+			}
+		} else {
+			serverResponse.setMsg("Error");
+			return serverResponse;
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("doesnt have");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+	
+	
+	/**
 	 * Check if a user name number is exist and has no type
 	 * 
 	 * @param orderNumber
@@ -1547,7 +1613,39 @@ public class mysqlConnection {
 		serverResponse.setMsg("Success");
 		return getMenuToOrder(product.getRestaurantName());
 	}
+	
+	
+	
+	/**get newly imported users from the db
+	 * @return
+	 */
+	public static ServerResponse getImportedUsers() {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<NewAccountUser> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserType = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, "User");
+			ResultSet rs = stmt.executeQuery();
+			// save in response all newly imported users
+			while (rs.next()) {
+				response.add(new NewAccountUser(rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
 
+	
+	
 	/**
 	 * imports users from import simulation table to users table.
 	 */

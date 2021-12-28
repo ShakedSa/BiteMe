@@ -51,6 +51,7 @@ public class Router {
 	private updateUserInformationController UpdateUserInformationController;
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
+	private openNewAccountFinalController OpenNewAccountFinalController;
 	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
 	private addNewItemController AddNewItemController;
@@ -932,6 +933,21 @@ public class Router {
 	 */
 	public void setOrderDeliveryMethod(OrderDeliveryMethod orderDeliveryMethod) {
 		this.orderDeliveryMethod = orderDeliveryMethod;
+	}
+	
+
+	/**
+	 * @return the openNewAccountFinalController
+	 */
+	public openNewAccountFinalController getOpenNewAccountFinalController() {
+		return OpenNewAccountFinalController;
+	}
+
+	/**
+	 * @param openNewAccountFinalController the openNewAccountFinalController to set
+	 */
+	public void setOpenNewAccountFinalController(openNewAccountFinalController openNewAccountFinalController) {
+		OpenNewAccountFinalController = openNewAccountFinalController;
 	}
 
 	/**

@@ -95,6 +95,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
+		case "checkUserNameAccountType":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkUserNameAccountType(m.get(0)), client);
+			break;
 		case "checkuserNameIsClient":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameIsClient(m.get(0)), client);
@@ -198,6 +202,9 @@ public class Server extends AbstractServer {
 		case "createQuarterlyRevenueReport":// arr= quarter,year,branch
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(reportsHandler.quarterlyRevenueReportPdf(m.get(2), m.get(0), m.get(1)),client);
+			break;
+		case "importedUsers":
+			this.sendToClient(mysqlConnection.getImportedUsers(), client);
 			break;
 		default:
 			sendToClient("default", client);
