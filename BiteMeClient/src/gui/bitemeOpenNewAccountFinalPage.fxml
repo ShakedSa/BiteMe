@@ -41,7 +41,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employersNameTxtField" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField fx:id="employersNameTxtField" editable="false" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
       <ImageView fx:id="approvalBtn1" fitHeight="50.0" fitWidth="46.0" layoutX="548.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/sendIcon.gif" />
@@ -110,7 +110,7 @@
       <Text fx:id="m6" fill="RED" layoutX="203.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fx:id="m7" fill="RED" layoutX="189.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fx:id="m8" fill="RED" layoutX="587.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <ComboBox fx:id="accountCombo" layoutX="218.0" layoutY="239.0" onAction="#openTheFields" onContextMenuRequested="#openTheFields" prefHeight="26.0" prefWidth="131.0" />
+      <ComboBox fx:id="accountCombo" layoutX="222.0" layoutY="248.0" onAction="#openTheFields" prefHeight="26.0" prefWidth="173.0" />
       <TextField fx:id="monthlyBudTxtField" layoutX="602.0" layoutY="290.0" prefHeight="26.0" prefWidth="99.0" />
       <Text fx:id="dailyBud" layoutX="465.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Budget">
          <font>
@@ -144,5 +144,10 @@
          </image>
       </ImageView>
       <Label fx:id="infoMsg" layoutX="90.0" layoutY="152.0" />
+      <Text fx:id="inputErrorTxt" fill="RED" layoutX="219.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input !">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

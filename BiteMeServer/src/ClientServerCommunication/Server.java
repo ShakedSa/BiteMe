@@ -213,6 +213,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkCustomerStatus(m.get(0)), client);
 			break;
+		case "openNewAccount":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.openNewAccount(m), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

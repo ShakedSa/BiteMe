@@ -2,14 +2,13 @@ package Controls;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import Entities.ServerResponse;
 import Enums.UserType;
+import Util.InputValidation;
 import client.ClientGUI;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -28,7 +27,6 @@ public class openNewAccountFinalController implements Initializable{
 	private Stage stage;
 	private Scene scene,prevScene;
 	private String userType;
-    private String id = "", username = "", fName = "", lName = "";
     @FXML
     private Text EmpName;
 
@@ -108,7 +106,14 @@ public class openNewAccountFinalController implements Initializable{
     private Text updateSucess;
 
     @FXML
+    private Text inputErrorTxt;
+
+    @FXML
     private ImageView updateSucess1;
+    
+	private String fname;
+	private String lname;
+	private String username;
 
 
     @FXML
@@ -116,12 +121,28 @@ public class openNewAccountFinalController implements Initializable{
     	router.logOut();
     }
 
-    @FXML
-    void openTheFields(MouseEvent event) {
-    	System.out.println("test");
-    	employersNameTxtField.setText(fName);
+    @FXML 
+    void openTheFields(ActionEvent event) {
+    	employersNameTxtField.setText(fname + " " + lname);
+    	if(accountCombo.getValue()==null) return;
+    	switch(accountCombo.getValue()) {
+    	case "Private Account":
+    		setEmployerDataVisibility(false);
+    		setPrivateDataVisibility(true);
+    		break;
+    	case "Business Account":
+    		setEmployerDataVisibility(true);
+    		setPrivateDataVisibility(false);
+    		break;
+    	case "Business & Private Account" : 
+    		setEmployerDataVisibility(true);
+			setPrivateDataVisibility(true);
+			break;
+		default:
+			break;
+    	}
     }
-
+    
     @FXML
     void profileBtnClicked(MouseEvent event) {
     	router.showProfile();
@@ -151,14 +172,66 @@ public class openNewAccountFinalController implements Initializable{
 			stage.show();
     	}
     }
-    
+
     @FXML
     void approvalClicked(MouseEvent event) {
+    	ArrayList<String> values = new ArrayList<String>();
+		if(illegalInput())
+		{
+			inputErrorTxt.setVisible(true);
+			return;
+		}
+		else
+			inputErrorTxt.setVisible(false);
+	
+
+    	switch(accountCombo.getValue()) {
     	
+    	case "Private Account":
+    		values.add("Private");
+    		values.add(username);
+    		values.add("");
+    		values.add("");
+    		values.add(creditCardNumberTxtField.getText());
+
+    	case "Business Account":
+    		values.add("Business");
+    		values.add(username);
+    		values.add(monthlyBudTxtField.getText());
+    		values.add(dailyBudTxtField.getText());
+    		values.add("");
+
+    	case "Business & Private Account" : 
+    		values.add("Both");
+    		values.add(username);
+    		values.add(monthlyBudTxtField.getText());
+    		values.add(dailyBudTxtField.getText());
+    		values.add(creditCardNumberTxtField.getText());
+		default:
+			break;
+    	}
+		//values = userType,username,monthly bud,daily budget,credit card number.
+    	//modify user status, add customer table, add w4c:
+    	ClientGUI.client.openNewAccount(values);
     }
     
     
     /**
+     * @return true if data is illegal in text boxes.
+     */
+    private boolean illegalInput() {
+    	if(accountCombo.getValue().equals("Private Account") && creditCardNumberTxtField.getText().equals(""))
+    		return true;
+    	if(accountCombo.getValue().equals("Business Account") && monthlyBudTxtField.getText().equals(""))
+    		return true;
+    	if(accountCombo.getValue().equals("Business & Private Account") && (creditCardNumberTxtField.getText().equals("") ||monthlyBudTxtField.getText().equals("") ))
+    		return true;
+		return InputValidation.CheckIntegerInput(monthlyBudTxtField.getText()) ||
+				InputValidation.CheckIntegerInput(creditCardNumberTxtField.getText())||
+				InputValidation.CheckIntegerInput(dailyBudTxtField.getText());
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
@@ -186,16 +259,19 @@ public class openNewAccountFinalController implements Initializable{
 	}
 	
 	public void initScene(String id, String username , String fname, String lname ) {
-		this.id=id;
+		this.fname=fname;
+		this.lname=lname;
 		this.username=username;
-		this.lName=lname;
-		this.fName=fname;
+		inputErrorTxt.setVisible(false);
 		updateSucess.setVisible(false);
 		updateSucess1.setVisible(false);
 		creditCardNumberTxtField.clear();
 		dailyBudTxtField.clear();
 		employersNameTxtField.clear();
 		monthlyBudTxtField.clear();
+		// hide all fields:
+		setEmployerDataVisibility(false);
+		setPrivateDataVisibility(false);
 		//get user type p.customer/b.customer/user with query and set visibility accordingly
 
 		ClientGUI.client.checkCustomerStatus(username);
@@ -246,6 +322,8 @@ public class openNewAccountFinalController implements Initializable{
 		dailyBud.setVisible(val);
 		shekel.setVisible(val);
 		shekel1.setVisible(val);
+		m7.setVisible(val);
+		m8.setVisible(val);
 	}
 
 	/**
@@ -255,6 +333,7 @@ public class openNewAccountFinalController implements Initializable{
 	public void setPrivateDataVisibility(boolean val) {
 		creditCardNumberTxtField.setVisible(val);
 		cardNumber.setVisible(val);
+		m6.setVisible(val);
 	}
 	
 
@@ -262,6 +341,7 @@ public class openNewAccountFinalController implements Initializable{
  	 * @param accountType
  	 */
  	private void setAccountTypeComboBox(String accountType) {
+ 		String[] all = {"Private Account", "Business Account", "Business & Private Account"};
  		ArrayList<String> type = new ArrayList<String>();
  		switch(accountType) {
  		case "isPrivate":
@@ -270,14 +350,16 @@ public class openNewAccountFinalController implements Initializable{
  		case "isBusiness":
 			type.add("Private Account");
 			break;
- 		case "User":
+ 		case "isUser":
 		type.add("Private Account");
 		type.add("Business Account");
 		type.add("Business & Private Account");
 		break;
  		}
- 		ObservableList<String> list = FXCollections.observableArrayList(type);
- 		accountCombo.setItems(list);
+
+ 		String[] stringArray = type.toArray(new String[0]);
+ 		accountCombo.getItems().removeAll(all);
+ 		accountCombo.getItems().addAll(stringArray);
  	}
  	
  	

@@ -689,4 +689,15 @@ public class ClientUI implements ClientIF {
 		client.handleMessageFromClientUI(serverResponse);
 	}
 
+	/**
+	 * request from server to create new account with the following information:
+	 * @param values = UserType,username,monthly bud,daily budget,credit card number.
+	 */
+	public void openNewAccount(ArrayList<String> values) {
+		
+		ServerResponse serverResponse = new ServerResponse("openNewAccount");
+		serverResponse.setServerResponse(values);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
 }

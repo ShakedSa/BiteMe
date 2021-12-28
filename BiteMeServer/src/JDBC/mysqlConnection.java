@@ -2416,7 +2416,7 @@ public class mysqlConnection {
 				}
 					//return new ServerResponse("isBusiness");
 			} else { // if not in customer table, it is user
-				response.setDataType("User");
+				response.setDataType("isUser");
 				return response;
 				//return new ServerResponse("User");
 			}
@@ -2427,4 +2427,75 @@ public class mysqlConnection {
 		response.setDataType("bug");
 		return response;
 	}
+
+	/**
+	 * creates a new customer for existing account in database,
+	 * modifies: user status, adds him to customer table, and adds w4c values
+	 * @param Values = userType,username,monthly bud,daily budget,credit card number.
+	 * @return true if success, false if not
+	 */
+	public static ServerResponse openNewAccount(ArrayList<String> values) {
+		//query 1: set new userType value on users table:
+		//userType: Private/Business/Both.
+		String[] keys = { "CustomerID" };
+		int customerId=0;
+		PreparedStatement stmt;
+		String query;
+		try {
+			query = "UPDATE bitemedb.users SET UserType = ? WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, "Customer");
+			stmt.setString(2, values.get(1));
+			stmt.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}//end of first query
+		
+		//query 2 : insert info in Customers table:
+		try {
+			query = "INSERT INTO bitemedb.customers (UserName, IsBusiness, isPrivate) values (?, ?, ?)";
+			stmt = conn.prepareStatement(query,keys);
+			stmt.setString(1, values.get(1));
+			switch(values.get(0)) {
+				case "Private":
+					stmt.setInt(2, 0);
+					stmt.setInt(3, 1);
+					break;
+				case "Business":
+					stmt.setInt(2, 1);
+					stmt.setInt(3, 0);
+					break;
+				case "Both":
+					stmt.setInt(2, 1);
+					stmt.setInt(3, 1);
+					break;
+				default:
+					stmt.setInt(2, 0);
+					stmt.setInt(3, 0);
+					break;
+			}
+			stmt.execute();
+			ResultSet rs = stmt.getGeneratedKeys();
+			if(rs.next()) {
+				customerId=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}//end of 2nd query
+		//query 3 : insert info in w4c:  TBD
+		/*
+		try {
+			query = "INSERT INTO bitemedb.w4ccards (UserName, IsBusiness, isPrivate) values (?, ?, ?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, values.get(1));
+			stmt.execute();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}*/
+	return null;
+
+	}
 }
+
