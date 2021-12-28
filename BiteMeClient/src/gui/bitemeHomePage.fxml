@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.homePageController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.homePageController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-8.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Text id="link" fx:id="loginBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#displayLoginScreen" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" underline="true">
@@ -57,30 +26,14 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <ImageView fx:id="caruasalRight" fitHeight="52.0" fitWidth="50.0" layoutX="634.0" layoutY="429.0" onMouseClicked="#caruasalRight" style="-fx-rotate: 90;">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView fx:id="caruasalLeft" fitHeight="52.0" fitWidth="50.0" layoutX="149.0" layoutY="429.0" onMouseClicked="#caruasalLeftClicked" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <Text layoutX="357.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I'm craving for...">
+      <Text layoutX="357.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I'm craving for..." visible="false">
          <font>
             <Font name="Arial Italic" size="17.0" />
          </font>
       </Text>
-      <ImageView id="japanika" fx:id="res1" fitHeight="73.0" fitWidth="78.0" layoutX="233.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
-      <ImageView id="burgerim" fx:id="res2" fitHeight="73.0" fitWidth="78.0" layoutX="378.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;" />
-      <ImageView id="vong" fx:id="res3" fitHeight="73.0" fitWidth="78.0" layoutX="524.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
+      <ImageView id="japanika" fx:id="res1" fitHeight="73.0" fitWidth="78.0" layoutX="225.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
+      <ImageView id="burgerim" fx:id="res2" fitHeight="73.0" fitWidth="78.0" layoutX="370.0" layoutY="467.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0); -fx-scale-x: 1.5; -fx-scale-y: 1.5;" />
+      <ImageView id="vong" fx:id="res3" fitHeight="73.0" fitWidth="78.0" layoutX="516.0" layoutY="441.0" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8),5,0,0,0);" />
       <ImageView fx:id="bagImg" fitHeight="36.0" fitWidth="34.0" layoutX="556.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
             <Image url="@../images/bag-icon.gif" />
@@ -153,11 +106,6 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="restaurantBtn" layoutX="368.0" layoutY="54.0" onMouseClicked="#restaurantBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
       <Text id="link" fx:id="profileBtn" layoutX="690.0" layoutY="48.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" visible="false">
          <font>
             <Font size="14.0" />
@@ -190,5 +138,17 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
+      <Text id="link" fx:id="myOrdersBtn" layoutX="369.0" layoutY="53.0" nodeOrientation="RIGHT_TO_LEFT" onMouseClicked="#myOrdersClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="My Orders" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Button id="cta" fx:id="restaurantBtn" layoutX="363.0" layoutY="386.0" mnemonicParsing="false" onAction="#restaurantBtnClicked" text="Order Now">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Button>
+      <Rectangle fx:id="arrowLeft" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="140.0" layoutY="430.0" onMouseClicked="#caruasalLeftClicked" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="arrowRight" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="625.0" layoutY="430.0" onMouseClicked="#caruasalRight" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

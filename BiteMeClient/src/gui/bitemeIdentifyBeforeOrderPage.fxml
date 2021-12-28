@@ -69,9 +69,9 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering">
+      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering" styleClass="title">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
       <TextField fx:id="w4cCodeFieldTxt" focusTraversable="false" layoutX="82.0" layoutY="272.0" promptText="W4C Code" />
@@ -83,18 +83,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToRestaurants" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
+      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:" styleClass="subtitle">
       </Text>
       <Circle fill="DODGERBLUE" layoutX="230.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="253.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
@@ -118,5 +107,6 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Label>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="76.0" layoutY="479.0" onMouseClicked="#returnToRestaurants" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

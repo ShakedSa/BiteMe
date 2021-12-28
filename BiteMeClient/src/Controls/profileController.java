@@ -25,8 +25,9 @@ public class profileController implements Initializable {
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-
-    @FXML
+	private Scene lastScene;
+	
+	@FXML
     private ImageView bagImg;
 
     @FXML
@@ -69,7 +70,7 @@ public class profileController implements Initializable {
 	private Text lastNameTxt;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -88,6 +89,7 @@ public class profileController implements Initializable {
 
 	@FXML
 	private Text itemsCounter;
+	private String lastSceneTitle;
 
 	public void initProfile() {
 		setAvatar();
@@ -116,7 +118,8 @@ public class profileController implements Initializable {
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		router.changeSceneToHomePage();
+		stage.setScene(lastScene);
+		stage.setTitle(lastSceneTitle);
 	}
 
 	/**
@@ -131,6 +134,7 @@ public class profileController implements Initializable {
 		router = Router.getInstance();
 		router.setProfileController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {
@@ -181,6 +185,9 @@ public class profileController implements Initializable {
 		homePageBtn.setStyle("-fx-cursor: hand;");
 	}
 
+	/**
+	 *  sets disable to all buttons
+	 */
 	private void hideAllBtns() {
 		restaurantBtn.setVisible(false);
 		managerBtn.setVisible(false);
@@ -220,8 +227,27 @@ public class profileController implements Initializable {
     	router.returnToSupplierPanel(event);
     }
 
+	/**
+	 *  sets item counter to relevant value.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
+	}
+
+    /**
+	 * @return the lastScene
+	 */
+	public Scene getLastScene() {
+		return lastScene;
+	}
+
+	/**
+	 * @param lastScene the lastScene to set
+	 * @param Title 
+	 */
+	public void setLastScene(Scene lastScene, String title) {
+		this.lastScene = lastScene;
+		this.lastSceneTitle = title;
 	}
 
 }

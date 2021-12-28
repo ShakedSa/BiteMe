@@ -18,12 +18,12 @@
       <Line endX="708.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="57.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open New Account">
@@ -32,6 +32,7 @@
          </font>
       </Text>
       <Label id="btn" fx:id="next" alignment="TOP_LEFT" layoutX="689.0" layoutY="522.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="126.0" text="Next">
+
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -39,14 +40,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ImageView fx:id="leftArrowBtn" fitHeight="67.0" fitWidth="52.0" layoutX="57.0" layoutY="509.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
          <font>

@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.authorizedEmployerApprovalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.authorizedEmployerApprovalController">
    <children>
       <Label id="btn" fx:id="approvalBtn" alignment="CENTER" layoutX="620.0" layoutY="525.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="168.0" text="Approval">
          <font>
@@ -26,12 +26,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="220.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
@@ -39,14 +39,6 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="65.0" layoutX="73.0" layoutY="495.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
-         <image>
-            <Image url="@../../../scene%20builder/images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
          <font>
@@ -92,7 +84,7 @@
       </Text>
       <ImageView fx:id="approvalSuccsess" fitHeight="50.0" fitWidth="34.0" layoutX="197.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
       <TableView fx:id="approvalTable" layoutX="172.0" layoutY="263.0" onMousePressed="#copyTableData" prefHeight="194.0" prefWidth="497.0">
@@ -111,6 +103,7 @@
             <Font name="Berlin Sans FB" size="17.0" />
          </font>
       </Text>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="80.0" layoutY="511.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

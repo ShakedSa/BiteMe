@@ -70,14 +70,6 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToDeliveryMethod" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-         <image>
-            <Image url="@../images/arrow.gif" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="263.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="314.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
@@ -89,19 +81,19 @@
       <Circle fill="#2197ff" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select payment method:">
+      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Please select payment method">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <RadioButton fx:id="businessRadio" layoutX="105.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#selectBusiness" prefHeight="18.0" prefWidth="119.0" text="Business Account">
+      <RadioButton fx:id="businessRadio" layoutX="105.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#selectBusiness" prefHeight="18.0" prefWidth="134.0" text="Business Account">
          <font>
-            <Font name="Berlin Sans FB" size="12.0" />
+            <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="privateRadio" layoutX="228.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#selectPrivate" prefHeight="18.0" prefWidth="119.0" selected="true" text="Private Account">
+      <RadioButton fx:id="privateRadio" layoutX="271.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#selectPrivate" prefHeight="18.0" prefWidth="134.0" selected="true" text="Private Account">
          <font>
-            <Font name="Berlin Sans FB" size="12.0" />
+            <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </RadioButton>
       <Label id="btn" fx:id="nextOrderStep" layoutX="685.0" layoutY="487.0" onMouseClicked="#nextOrderStep" text="Next">
@@ -115,21 +107,27 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
-      <RadioButton fx:id="bothRadio" layoutX="105.0" layoutY="275.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="119.0" text="Both" visible="false">
+      <RadioButton fx:id="bothRadio" layoutX="105.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#bothSelected" prefHeight="18.0" prefWidth="119.0" text="Both" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="12.0" />
+            <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </RadioButton>
-      <Text fx:id="employerCodeTxt" layoutX="238.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Code" visible="false">
+      <Text fx:id="employerCodeTxt" layoutX="279.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Employer's Code" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="employerCodeTextField" layoutX="358.0" layoutY="271.0" promptText="Employer's Code" visible="false" />
-      <CheckBox fx:id="refundCheck" layoutX="358.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#refundClicked" text="Use Refund" visible="false">
+      <TextField fx:id="employerCodeTextField" layoutX="399.0" layoutY="271.0" promptText="Employer's Code" visible="false" />
+      <CheckBox fx:id="refundCheck" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" text="Use Refund" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </CheckBox>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="74.0" layoutY="479.0" onMouseClicked="#returnToDeliveryMethod" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Label fx:id="refundText" layoutX="470.0" layoutY="364.0" textFill="LIME">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

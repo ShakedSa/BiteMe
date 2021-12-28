@@ -63,7 +63,7 @@ public class confirmBusinessAccountController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -139,27 +139,21 @@ public class confirmBusinessAccountController implements Initializable {
 			errorMsg.setText("No Customer is selected");
 		}
 	}
-
-	public void setTable() {
+	private void initTable() {
 		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
 		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		table_Role.setCellValueFactory(new PropertyValueFactory<>("role"));
 		table_Mbudget.setCellValueFactory(new PropertyValueFactory<>("monthlyBudget"));
 		table_Dbudget.setCellValueFactory(new PropertyValueFactory<>("dailyBudget"));
-		customerTable.setItems(getCustomer());
 		customerTable.setEditable(true);
 	}
+	public void setTable() {
+		customerTable.setItems(getCustomer());
+	}
 
-	private void setTable(ArrayList<Customer> list) {
-		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
-		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-		table_LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-		table_Role.setCellValueFactory(new PropertyValueFactory<>("role"));
-		table_Mbudget.setCellValueFactory(new PropertyValueFactory<>("monthlyBudget"));
-		table_Dbudget.setCellValueFactory(new PropertyValueFactory<>("dailyBudget"));
-		customerTable.setItems(getCustomer(list));
-		customerTable.setEditable(true);
+	private void setTable(ArrayList<Customer> list) {	
+		customerTable.setItems(getCustomer(list));	
 	}
 
 	@FXML
@@ -187,9 +181,10 @@ public class confirmBusinessAccountController implements Initializable {
 		router = Router.getInstance();
 		router.setConfirmBusinessAccountController(this);
 		setStage(router.getStage());
+		initTable();
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
-
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

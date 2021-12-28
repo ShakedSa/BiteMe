@@ -1,22 +1,18 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
-import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -41,7 +37,7 @@ public class registerEmployerAsLegacyController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -164,6 +160,7 @@ public class registerEmployerAsLegacyController implements Initializable {
 		router = Router.getInstance();
 		router.setRegisterEmployerAsLegacyController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
 		hrCompanyName.setText(((User) ClientGUI.client.getUser().getServerResponse()).getOrganization());

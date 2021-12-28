@@ -70,15 +70,7 @@
 				<Image url="@../images/bitme-slogan.gif" />
 			</image>
 		</ImageView>
-		<ImageView fx:id="leftArrowBtn" fitHeight="85.0" fitWidth="67.0" layoutX="68.0" layoutY="463.0" onMouseClicked="#returnToMenuOrderPage" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-			<image>
-				<Image url="@../images/arrow.gif" />
-			</image>
-			<cursor>
-				<Cursor fx:constant="HAND" />
-			</cursor>
-		</ImageView>
-		<Text fill="#a8a1a1" layoutX="105.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
+		<Text layoutX="105.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour" styleClass="fields">
 			<font>
 				<Font name="Berlin Sans FB" size="14.0" />
 			</font>
@@ -97,7 +89,7 @@
 		<Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
 		<Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
 		<Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-		<Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please state the time of the order:">
+		<Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please state the time of the order" styleClass="title">
 			<font>
 				<Font name="Berlin Sans FB" size="16.0" />
 			</font>
@@ -110,9 +102,9 @@
 				<Cursor fx:constant="HAND" />
 			</cursor>
 		</DatePicker>
-		<ComboBox fx:id="hourBox" editable="true" layoutX="102.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-		<ComboBox fx:id="minutesBox" editable="true" layoutX="173.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-		<Text fill="#a8a1a1" layoutX="177.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
+		<ComboBox fx:id="hourBox" layoutX="102.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+		<ComboBox fx:id="minutesBox" layoutX="173.0" layoutY="307.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+		<Text layoutX="177.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes" styleClass="fields">
 			<font>
 				<Font name="Berlin Sans FB" size="14.0" />
 			</font>
@@ -120,7 +112,7 @@
 				<Cursor fx:constant="HAND" />
 			</cursor>
 		</Text>
-		<Text fill="#a8a1a1" layoutX="104.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date">
+		<Text layoutX="104.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" styleClass="fields">
 			<font>
 				<Font name="Berlin Sans FB" size="14.0" />
 			</font>
@@ -139,5 +131,6 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Label>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="74.0" layoutY="479.0" onMouseClicked="#returnToMenuOrderPage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
 	</children>
 </AnchorPane>

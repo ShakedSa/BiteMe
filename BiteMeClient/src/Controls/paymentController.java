@@ -2,13 +2,14 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import Entities.Customer;
 import Entities.W4CCard;
 import Enums.PaymentMethod;
 import client.ClientGUI;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -45,7 +46,7 @@ public class paymentController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -76,6 +77,9 @@ public class paymentController implements Initializable {
 
 	@FXML
 	private CheckBox refundCheck;
+	
+	@FXML
+    private Label refundText;
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -84,7 +88,7 @@ public class paymentController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Payment");
 	}
 
 	@FXML
@@ -204,7 +208,7 @@ public class paymentController implements Initializable {
 			bothRadio.requestFocus();
 			businessRadio.setSelected(false);
 			errorMsg.setText(
-					"W4C Card budget is lower than order price.\nWould you like to pay with the card & private credit card?\nFor convenient 'both' option is automatically selected.");
+					"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
 		}
 	}
 
@@ -221,21 +225,15 @@ public class paymentController implements Initializable {
 		showTextField(false);
 	}
 
-	@FXML
-	void refundClicked(MouseEvent event) {
-//		if (refundCheck.isSelected()) {
-////			refundCheck.setSelected(false);
-//			refundCheck.selectedProperty().setValue(false);
-//		} else {
-////			refundCheck.setSelected(true);
-//			refundCheck.selectedProperty().setValue(true);
-//		}
-	}
-
 	private void showTextField(boolean val) {
 		employerCodeTextField.setVisible(val);
 		employerCodeTxt.setVisible(val);
 	}
+	
+	@FXML
+    void bothSelected(MouseEvent event) {
+		bothRadio.setSelected(true);
+    }
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -254,12 +252,39 @@ public class paymentController implements Initializable {
 		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
+		router.setArrow(leftArrowBtn, -90);
+		setStage(router.getStage());
+		checkRefunds();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void checkRefunds() {
+		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.monitor) {
+				ClientGUI.client.getRefunds(user);
+				try {
+					ClientGUI.monitor.wait();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					return;
+				}
+
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		user.setRefunds((HashMap<String, Float>) ClientGUI.client.getLastResponse().getServerResponse());
 		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
 			refundCheck.setVisible(true);
-			errorMsg.setText("You got a " + user.getRefunds().get(router.getOrder().getRestaurantName())
-					+ "\u20AA for this restaurant.\nCheck the check box if you would like to use it.");
+			refundText.setText("You got " + user.getRefunds().get(router.getOrder().getRestaurantName())
+					+ "\u20AA refund for this restaurant.\nCheck the check box if you would like to use it.");
 		}
-		setStage(router.getStage());
 	}
 
 	public void setScene(Scene scene) {

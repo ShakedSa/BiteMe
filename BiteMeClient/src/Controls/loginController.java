@@ -43,7 +43,7 @@ public class loginController implements Initializable {
 	private Scene scene;
 
 	@FXML
-	private ImageView back;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Label errorMsg;
@@ -133,6 +133,10 @@ public class loginController implements Initializable {
 		case "internal error":
 			errorMsg.setText("Server error, can't logged in");
 			return false;
+		case "frozen":
+			errorMsg.setText("User is Frozen for now");
+			return false;
+		
 		default:
 			usernameTxt.clear();
 			passwordTxt.clear();
@@ -218,6 +222,7 @@ public class loginController implements Initializable {
 		router = Router.getInstance();
 		router.setLogincontroller(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {

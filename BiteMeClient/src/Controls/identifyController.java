@@ -53,7 +53,7 @@ public class identifyController implements Initializable {
 	private Button identifyBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -83,13 +83,13 @@ public class identifyController implements Initializable {
 			errorMsg.setText("Failed to read QR code");
 			return;
 		} else {
-			readingMsg.setText("QR Reading...");
+			readingMsg.setText("Reading QR...");
 		}
 	}
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Identify");
 	}
 
 	/**
@@ -185,6 +185,7 @@ public class identifyController implements Initializable {
 		router = Router.getInstance();
 		router.setIdentifyController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
 	public void setScene(Scene scene) {
@@ -202,7 +203,6 @@ public class identifyController implements Initializable {
 	 */
 	public void setRestaurantToOrder(String restaurantName) {
 		this.restaurantsName = restaurantName;
-		router.getOrder().setRestaurantName(restaurantName);
 	}
 
 	/**

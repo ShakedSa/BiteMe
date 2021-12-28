@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.myCartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.myCartController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Text id="link" fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
@@ -64,10 +65,7 @@
          </image>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text layoutX="138.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My Cart">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
+      <ScrollPane fx:id="scrollRoot" layoutX="13.0" layoutY="93.0" maxHeight="482.0" prefHeight="482.0" prefWidth="807.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="11.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

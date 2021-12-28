@@ -2,8 +2,8 @@ package Controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import Entities.Delivery;
 import Entities.Order;
@@ -29,6 +29,7 @@ public class Router {
 	private loginController Logincontroller;
 	private enterGUIController Enterguicontroller;
 	private myCartController MyCartController;
+	private myOrdersController MyOrdersController;
 	private homePageController HomePageController;
 	private managerPanelController ManagerPanelController;
 	private supplierPanelController SupplierPanelController;
@@ -51,14 +52,13 @@ public class Router {
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
 	private openNewAccountFinalController OpenNewAccountFinalController;
+	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
-	private createMenuController CreateMenuController;
 	private addNewItemController AddNewItemController;
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
-	private addNewItemToNewMenuController AddNewItemToNewMenuController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -148,6 +148,20 @@ public class Router {
 	public void setIdentifyController(identifyController identifyController) {
 		IdentifyController = identifyController;
 	}
+	/**
+	 * @return the uploadRevenueQuarterlyReportController
+	 */
+	public createRevenueQuarterlyReportController getCreateRevenueQuarterlyReportController() {
+		return CreateRevenueQuarterlyReportController;
+	}
+
+	/**
+	 * @param uploadRevenueQuarterlyReportController the uploadRevenueQuarterlyReportController to set
+	 */
+	public void setCreateRevenueQuarterlyReportController(
+			createRevenueQuarterlyReportController createRevenueQuarterlyReportController) {
+		CreateRevenueQuarterlyReportController = createRevenueQuarterlyReportController;
+	}
 
 	/**
 	 * @param profileController the profileController to set
@@ -201,13 +215,6 @@ public class Router {
 	 */
 	public void setOpenNewAccountController(openNewAccountController openNewAccountController) {
 		OpenNewAccountController = openNewAccountController;
-	}
-
-	/**
-	 * @param createMenuController the createMenuController to set
-	 */
-	public void setCreateMenuController(createMenuController createMenuController) {
-		CreateMenuController = createMenuController;
 	}
 
 	/**
@@ -276,13 +283,6 @@ public class Router {
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
-	}
-	
-	/**
-	 * @param addNewItemToNewMenuController the addNewItemToNewMenuController to set
-	 */
-	public void setAddNewItemToNewMenuController(addNewItemToNewMenuController addNewItemToNewMenuController) {
-		AddNewItemToNewMenuController = addNewItemToNewMenuController;
 	}
 
 	/**
@@ -405,13 +405,6 @@ public class Router {
 	}
 
 	/**
-	 * @return the createMenuController
-	 */
-	public createMenuController getCreateMenuController() {
-		return CreateMenuController;
-	}
-
-	/**
 	 * @return the addNewItemController
 	 */
 	public addNewItemController getAddNewItemController() {
@@ -510,13 +503,6 @@ public class Router {
 	}
 
 	/**
-	 * @return the addNewItemToNewMenuController
-	 */
-	public addNewItemToNewMenuController getAddNewItemToNewMenuController() {
-		return AddNewItemToNewMenuController;
-	}
-
-	/**
 	 * @param reviewOrderController the reviewOrderController to set
 	 */
 	public void setReviewOrderController(reviewOrderController reviewOrderController) {
@@ -552,6 +538,20 @@ public class Router {
 	}
 
 	/**
+	 * @return the myOrdersController
+	 */
+	public myOrdersController getMyOrdersController() {
+		return MyOrdersController;
+	}
+
+	/**
+	 * @param myOrdersController the myOrdersController to set
+	 */
+	public void setMyOrdersController(myOrdersController myOrdersController) {
+		MyOrdersController = myOrdersController;
+	}
+
+	/**
 	 * @return the stage
 	 */
 	public Stage getStage() {
@@ -577,6 +577,7 @@ public class Router {
 				ProfileController.setAvatar();
 				ProfileController.initProfile();
 				ProfileController.setItemsCounter();
+				ProfileController.setLastScene(stage.getScene(), stage.getTitle());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				ProfileController.setScene(mainScene);
@@ -591,6 +592,7 @@ public class Router {
 		{
 			ProfileController.initProfile();
 			ProfileController.setItemsCounter();
+			ProfileController.setLastScene(stage.getScene(), stage.getTitle());
 			stage.setTitle("BiteMe - Profile");
 			stage.setScene(ProfileController.getScene());
 			stage.show();
@@ -609,7 +611,6 @@ public class Router {
 				AddNewItemController = null;
 				AddNewSupplierController = null;
 				AuthorizedEmployerApprovalController = null;
-				CreateMenuController = null;
 				EditMenuItemController = null;
 				OpenNewAccountController = null;
 				RegisterEmployerAsLegacyController = null;
@@ -620,6 +621,20 @@ public class Router {
 				UploadQuarterlyReportController = null;
 				ViewMonthlyReportsController = null;
 				ViewPDFQuarterlyReportController = null;
+				RestaurantMenuController = null;
+				RestaurantselectionController = null;
+				IdentifyController = null;
+				MyCartController = null;
+				PaymentController = null;
+				PickDateAndTimeController = null;
+				DeliveryMethodController = null;
+				ReviewOrderController = null;
+				OrderReceivedController = null;
+				SupplierPanelController = null;
+        CreateRevenueQuarterlyReportController=null;
+				order = null;
+				delivery = null;
+				orderDeliveryMethod = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -674,6 +689,13 @@ public class Router {
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
 	}
+	
+	public void setArrow(Rectangle arrow, int rotationDegree) {
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
+		arrow.setFill(pattern);
+		arrow.setStyle("-fx-stroke: null;-fx-cursor: hand");
+		arrow.setRotate(rotationDegree);
+	}
 
 	void returnToSupplierPanel(MouseEvent event) {
 		if (router.getSupplierPanelController() == null) {
@@ -685,6 +707,7 @@ public class Router {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.setImage();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -795,6 +818,7 @@ public class Router {
 				controller.setAvatar();
 				controller.setRestaurants();
 				controller.setItemsCounter();
+				controller.setButtons();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -807,13 +831,14 @@ public class Router {
 			}
 		} else {
 			router.getRestaurantselectionController().setItemsCounter();
+			router.getRestaurantselectionController().setButtons();
 			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(router.getRestaurantselectionController().getScene());
 			stage.show();
 		}
 	}
 
-	public void changeToMyCart() {
+	public void changeToMyCart(String lastPage) {
 		if (router.getMyCartController() == null) {
 			AnchorPane mainContainer;
 			myCartController controller;
@@ -823,8 +848,8 @@ public class Router {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setItemsCounter();
 				controller.displayOrder();
+				controller.setLastPage(lastPage);
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -836,9 +861,9 @@ public class Router {
 				return;
 			}
 		} else {
-			router.getMyCartController().setItemsCounter();
 			router.getMyCartController().setAvatar();
 			router.getMyCartController().displayOrder();
+			router.getMyCartController().setLastPage(lastPage);
 			stage.setTitle("BiteMe - My Cart");
 			stage.setScene(router.getMyCartController().getScene());
 			stage.show();
@@ -850,10 +875,16 @@ public class Router {
 	 * 
 	 * @param order
 	 */
-	public void setBagItems(ArrayList<Product> order) {
-		this.order.setProducts(order);
-		if (order != null)
-			this.order.calculateOrderPrice();
+	public void setBagItems(ArrayList<Product> products) {
+		if (order == null || order.getProducts() == null || products == null) {
+			order = new Order();
+			order.setProducts(products);
+			return;
+		}
+		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
+				.collect(Collectors.toList());
+		newProducts.addAll(products);
+		order.setProducts((ArrayList<Product>) newProducts);
 	}
 
 	/**
@@ -862,7 +893,7 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		if (order.getProducts() == null) {
+		if (order == null || order.getProducts() == null) {
 			return new ArrayList<>();
 		}
 		return order.getProducts();

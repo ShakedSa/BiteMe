@@ -31,7 +31,7 @@ public class updateUserInformationController implements Initializable{
 
 
 	@FXML
-    private ImageView leftArrowBtn;
+    private Rectangle leftArrowBtn;
 
     @FXML
     private Rectangle avatar;
@@ -320,6 +320,7 @@ public class updateUserInformationController implements Initializable{
 		router = Router.getInstance();
 		router.setUpdateUserInformationController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
     

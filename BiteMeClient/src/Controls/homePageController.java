@@ -13,15 +13,18 @@ import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -52,13 +55,12 @@ public class homePageController implements Initializable {
 	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
 	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 
+	@FXML
+	private ImageView bagImg;
 
-    @FXML
-    private ImageView bagImg;
+	@FXML
+	private Circle itemsCounterCircle;
 
-    @FXML
-    private Circle itemsCounterCircle;
-    
 	@FXML
 	private ImageView caruasalLeft;
 
@@ -78,7 +80,7 @@ public class homePageController implements Initializable {
 	private Text profileBtn;
 
 	@FXML
-	private Text restaurantBtn;
+	private Button restaurantBtn;
 
 	@FXML
 	private Text userFirstName;
@@ -109,6 +111,18 @@ public class homePageController implements Initializable {
 
 	@FXML
 	private Text itemsCounter;
+
+	@FXML
+	private AnchorPane root;
+
+	@FXML
+    private Rectangle arrowLeft;
+
+    @FXML
+    private Rectangle arrowRight;
+	
+	@FXML 
+	private Text myOrdersBtn;
 
 	/**
 	 * Moving the carousel 1 step backward.
@@ -165,6 +179,38 @@ public class homePageController implements Initializable {
 	void employerHRBtnClicked(MouseEvent event) {
 		router.returnToEmployerHRPanel(event);
 	}
+	
+	@FXML
+    void myOrdersClicked(MouseEvent event) {
+		if (router.getMyOrdersController() == null) {
+			AnchorPane mainContainer;
+			myOrdersController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+//				controller.setRestaurants();
+				controller.displayOpenOrders();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Orders");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyOrdersController().setItemsCounter();
+			router.getMyOrdersController().displayOpenOrders();
+			stage.setTitle("BiteMe - My Orders");
+			stage.setScene(router.getMyOrdersController().getScene());
+			stage.show();
+		}
+    }
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
@@ -177,8 +223,8 @@ public class homePageController implements Initializable {
 	 * @param MouseEvent event
 	 */
 	@FXML
-	void restaurantBtnClicked(MouseEvent event) {
-		router.returnToCustomerPanel(event);
+	void restaurantBtnClicked(ActionEvent event) {
+		router.returnToCustomerPanel(null);
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
 			restaurantSelectionController controller;
@@ -263,7 +309,7 @@ public class homePageController implements Initializable {
 				setBagVisibility(false);
 				userFirstName.setText("Guest");
 				setDefaults(null, false);
-			}		
+			}
 			logOutBtn.setStyle("-fx-cursor: hand;");
 			profileBtn.setStyle("-fx-cursor: hand;");
 			restaurantBtn.setStyle("-fx-cursor: hand;");
@@ -311,10 +357,12 @@ public class homePageController implements Initializable {
 			supplierBtn.setVisible(val);
 			employerHRBtn.setVisible(val);
 			ceoBtn.setVisible(val);
+			myOrdersBtn.setVisible(val);
 		} else {
 			switch (user.getUserType()) {
 			case Customer:
 				restaurantBtn.setVisible(val);
+				myOrdersBtn.setVisible(val);
 				break;
 			case BranchManager:
 				managerBtn.setVisible(val);
@@ -328,11 +376,13 @@ public class homePageController implements Initializable {
 			case EmployerHR:
 				employerHRBtn.setVisible(val);
 				break;
+			default:
+				break;
 			}
 		}
 
 	}
-  
+
 	/**
 	 * Setting the avatar image of the user.
 	 */
@@ -345,6 +395,8 @@ public class homePageController implements Initializable {
 		router = Router.getInstance();
 		router.setHomePageController(this);
 		setStage(router.getStage());
+		router.setArrow(arrowLeft, -90);
+		router.setArrow(arrowRight, 90);
 	}
 
 	public void setScene(Scene scene) {
@@ -354,10 +406,10 @@ public class homePageController implements Initializable {
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("HomePage");
 	}
 
 	/**
@@ -371,15 +423,15 @@ public class homePageController implements Initializable {
 			@Override
 			public void run() {
 				ClientGUI.client.favRestaurantsRequest();
-					synchronized (ClientGUI.monitor) {
-						try {
-							ClientGUI.monitor.wait();
-						} catch (Exception e) {
-							e.printStackTrace();
-							return;
-						}
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
 					}
 				}
+			}
 		});
 		t.start();
 		try {
@@ -388,8 +440,7 @@ public class homePageController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		
-		
+
 		favRestaurants = (HashMap<String, File>) ClientGUI.client.getLastResponse().getServerResponse();
 		Set<String> resSet = favRestaurants.keySet();
 		String[] res = new String[resSet.size()];
@@ -428,8 +479,7 @@ public class homePageController implements Initializable {
 	public void setContainer(AnchorPane mainContainer) {
 		this.mainContainer = mainContainer;
 	}
-	
-	
+
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
@@ -438,6 +488,6 @@ public class homePageController implements Initializable {
 		bagImg.setVisible(val);
 		itemsCounter.setVisible(val);
 		itemsCounterCircle.setVisible(val);
-		
+
 	}
 }

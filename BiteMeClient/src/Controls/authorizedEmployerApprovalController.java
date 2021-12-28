@@ -1,6 +1,5 @@
 package Controls;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -8,22 +7,16 @@ import java.util.ResourceBundle;
 import Entities.BusinessCustomer;
 import Entities.ServerResponse;
 import Enums.UserType;
-import Util.InputValidation;
 import client.ClientGUI;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -42,7 +35,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 	 private Label approvalBtn;
 
 	 @FXML
-	 private ImageView leftArrowBtn;
+	 private Rectangle leftArrowBtn;
 
 	 @FXML
 	 private Rectangle avatar;
@@ -231,6 +224,7 @@ public class authorizedEmployerApprovalController implements Initializable{
 		router = Router.getInstance();
 		router.setAuthorizedEmployerApprovalController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
 	}
 
     

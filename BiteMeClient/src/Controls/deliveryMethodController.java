@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import Entities.Customer;
 import Entities.Delivery;
@@ -26,8 +24,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -58,7 +56,7 @@ public class deliveryMethodController implements Initializable {
 	private Text itemsCounter;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -90,7 +88,7 @@ public class deliveryMethodController implements Initializable {
 	private Text amntStar;
 
 	@FXML
-	private TextField amountTextField;
+	private ComboBox<String> amountTextField;
 
 	@FXML
 	private Text firstNameText;
@@ -165,7 +163,8 @@ public class deliveryMethodController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		hideBaseOnSelection(null);
+		router.changeToMyCart("Delivery");
 	}
 
 	/**
@@ -228,7 +227,7 @@ public class deliveryMethodController implements Initializable {
 		if (!checkBasic()) {
 			return false;
 		}
-		String amount = amountTextField.getText();
+		String amount = amountTextField.getSelectionModel().getSelectedItem();
 		String businessCode = businessCodeTextField.getText();
 		if (!InputValidation.checkValidText(amount)) {
 			errorMsg.setText("Please fill amount of people in the order.");
@@ -303,12 +302,16 @@ public class deliveryMethodController implements Initializable {
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		/** Validating method selection. */
-		String selectedMethod = deliveryMethodBox.getSelectionModel().getSelectedItem();
+		SingleSelectionModel<String> selectedMethod = deliveryMethodBox.getSelectionModel();
 		if (selectedMethod == null) {
 			errorMsg.setText("Please select delivery method.");
 			return;
 		}
-		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod);
+		if (selectedMethod.getSelectedItem() == null || selectedMethod.getSelectedItem().equals("")) {
+			errorMsg.setText("Please select delivery method.");
+			return;
+		}
+		TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(selectedMethod.getSelectedItem());
 		Delivery newDelivery;
 		String address = addressTxtField.getText();
 		String firstName = firstNameTxtField.getText();
@@ -345,7 +348,7 @@ public class deliveryMethodController implements Initializable {
 			if (!checkShared(typeOfOrder)) {
 				return;
 			}
-			String amount = amountTextField.getText();
+			String amount = amountTextField.getSelectionModel().getSelectedItem();
 			String businessCode = businessCodeTextField.getText();
 			newDelivery = new SharedDelivery(address, firstName, lastName, phoneNumber, Delivery.DeliveryPrice, 0,
 					businessCode, Integer.parseInt(amount));
@@ -464,6 +467,16 @@ public class deliveryMethodController implements Initializable {
 		router = Router.getInstance();
 		router.setDeliveryMethodController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
+		initFields();
+	}
+
+	private void initFields() {
+		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		firstNameTxtField.setText(user.getFirstName());
+		lastNameTxtField.setText(user.getLastName());
+		prefixPhoneNumberBox.getSelectionModel().select(user.getPhoneNumber().substring(0, 2));
+		phoneNumberTxtField.setText(user.getPhoneNumber().substring(3));
 	}
 
 	public void setScene(Scene scene) {
@@ -495,6 +508,7 @@ public class deliveryMethodController implements Initializable {
 	 * value.
 	 */
 	public void createCombo() {
+		deliveryMethodBox.getItems().clear();
 		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
 		ObservableList<String> typeOfOrders;
@@ -513,6 +527,17 @@ public class deliveryMethodController implements Initializable {
 		 * choosen delivery method.
 		 */
 		deliveryMethodBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+			if (newVal == null) {
+				/**
+				 * When returning to this page the new value is null. if the old value is not
+				 * null select it.
+				 */
+				if (oldVal != null) {
+					deliveryMethodBox.getSelectionModel().select(oldVal);
+					return;
+				}
+				return;
+			}
 			TypeOfOrder typeOfOrder = TypeOfOrder.getEnum(newVal);
 			nextOrderStep.setDisable(false);
 			errorMsg.setText("");
@@ -531,6 +556,9 @@ public class deliveryMethodController implements Initializable {
 				.observableArrayList(Arrays.asList("050", "052", "053", "054", "055", "057", "058"));
 		prefixPhoneNumberBox.getItems().addAll(phonePrefix);
 		prefixPhoneNumberBox.getSelectionModel().select("050");
+		ObservableList<String> amount = FXCollections.observableArrayList(Arrays.asList(router.generator(9)));
+		amount.removeAll("0", "1");
+		amountTextField.getSelectionModel().select("2");
 	}
 
 	/**

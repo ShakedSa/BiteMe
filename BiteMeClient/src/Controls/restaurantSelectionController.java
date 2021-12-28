@@ -1,26 +1,28 @@
 package Controls;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import Entities.Order;
 import Entities.ServerResponse;
+import Entities.Supplier;
+import Enums.RestaurantType;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -51,7 +53,8 @@ public class restaurantSelectionController implements Initializable {
 
 	private List<Rectangle> borders;
 
-	private Set<String> restaurantsNames;
+	private ArrayList<Supplier> restaurants;
+	private IntegerProperty page = new SimpleIntegerProperty(0);
 
 	@FXML
 	private Rectangle avatar;
@@ -60,7 +63,7 @@ public class restaurantSelectionController implements Initializable {
 	private Text homePageBtn;
 
 	@FXML
-	private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
 
 	@FXML
 	private Text logoutBtn;
@@ -144,13 +147,16 @@ public class restaurantSelectionController implements Initializable {
 	private Text restaurantsBtn;
 
 	@FXML
-	private ImageView rightArrowBtn;
+	private Rectangle rightArrowBtn;
 
 	@FXML
 	private TextField searchRestaurantFieldTxt;
 
 	@FXML
 	private Text itemsCounter;
+
+	@FXML
+	private AnchorPane root;
 
 	/**
 	 * Search functionality, filtering the restaurants based on value in search
@@ -161,18 +167,19 @@ public class restaurantSelectionController implements Initializable {
 	@FXML
 	void filterRestaurants(KeyEvent event) {
 		String text = searchRestaurantFieldTxt.getText();
-		List<String> searchResults = restaurantsNames.stream().filter(r -> r.toLowerCase().contains(text.toLowerCase()))
+		List<Supplier> searchResults = restaurants.stream()
+				.filter(r -> r.getRestaurantName().toLowerCase().contains(text.toLowerCase()))
 				.collect(Collectors.toList());
-		HashMap<String, File> newRestaurants = new HashMap<>();
-		for (String name : searchResults) {
-			newRestaurants.put(name, null);
+		ArrayList<Supplier> newRestaurants = new ArrayList<>();
+		for (Supplier suplier : searchResults) {
+			newRestaurants.add(suplier);
 		}
 		createRestaurants(newRestaurants);
 	}
-	
+
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		router.changeToMyCart();
+		router.changeToMyCart("Restaurants");
 	}
 
 	@FXML
@@ -180,14 +187,40 @@ public class restaurantSelectionController implements Initializable {
 		router.logOut();
 	}
 
+	/**
+	 * Method to display the previous page of restaurants list.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void moveLeftClicked(MouseEvent event) {
-
+		ArrayList<Supplier> prevPage = new ArrayList<>();
+		if (page.get() == 0) {
+			return;
+		}
+		int counter = 0;
+		for (int i = (page.get() - 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
+			prevPage.add(restaurants.get(i));
+		}
+		page.set(page.get() - 1);
+		createRestaurants(prevPage);
 	}
 
+	/**
+	 * Method to display the next page of restaurants list.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void moveRightClicked(MouseEvent event) {
-
+		ArrayList<Supplier> nextPage = new ArrayList<>();
+		int counter = 0;
+		for (int i = (page.get() + 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
+			nextPage.add(restaurants.get(i));
+		}
+		page.set(page.get() + 1);
+		if (nextPage.size() != 0)
+			createRestaurants(nextPage);
 	}
 
 	@FXML
@@ -220,8 +253,8 @@ public class restaurantSelectionController implements Initializable {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ClientGUI.client.restaurantsRequest();
 					synchronized (ClientGUI.monitor) {
+						ClientGUI.client.restaurantsRequest();
 						try {
 							ClientGUI.monitor.wait();
 						} catch (Exception e) {
@@ -240,10 +273,15 @@ public class restaurantSelectionController implements Initializable {
 			}
 			resRestaurants = ClientGUI.client.getLastResponse();
 		}
-		restaurantsNames = ((HashMap<String, File>) resRestaurants.getServerResponse()).keySet();
-		createRestaurants((HashMap<String, File>) resRestaurants.getServerResponse());
+		restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
+		createRestaurants(restaurants);
 	}
 
+	/**
+	 * Displaying restaurants base on filtered list.
+	 * 
+	 * @param amountToHide
+	 */
 	private void hideRestaurants(int amountToHide) {
 		for (int i = 0; i < amountToHide; i++) {
 			resImages.get(resImages.size() - 1 - i).setVisible(false);
@@ -256,12 +294,50 @@ public class restaurantSelectionController implements Initializable {
 	}
 
 	/**
+	 * Private method filtering the restaurants by type.
+	 * 
+	 * @param type
+	 */
+	private void filterByType(RestaurantType type) {
+		List<Supplier> filteredList = restaurants.stream().filter(r -> r.getRestaurantType().equals(type))
+				.collect(Collectors.toList());
+		createRestaurants((ArrayList<Supplier>) filteredList);
+	}
+
+	/**
+	 * Setting buttons for restaurants filtering.
+	 */
+	public void setButtons() {
+		Button showAll = new Button("Show All");
+		showAll.setOnAction(e -> createRestaurants(restaurants));
+		showAll.setLayoutX(44);
+		showAll.setLayoutY(237);
+		Button type1 = new Button(RestaurantType.Asian.toString());
+		type1.setOnAction(e -> filterByType(RestaurantType.Asian));
+		type1.setLayoutX(44);
+		type1.setLayoutY(279);
+		Button type2 = new Button(RestaurantType.Fastfood.toString());
+		type2.setOnAction(e -> filterByType(RestaurantType.Fastfood));
+		type2.setLayoutX(44);
+		type2.setLayoutY(321);
+		Button type3 = new Button(RestaurantType.Italian.toString());
+		type3.setOnAction(e -> filterByType(RestaurantType.Italian));
+		type3.setLayoutX(44);
+		type3.setLayoutY(363);
+		Button type4 = new Button(RestaurantType.Other.toString());
+		type4.setOnAction(e -> filterByType(RestaurantType.Other));
+		type4.setLayoutX(44);
+		type4.setLayoutY(405);
+		root.getChildren().addAll(showAll, type1, type2, type3, type4);
+	}
+
+	/**
 	 * Creating restaurants options selection. Setting onclick event on every Order
 	 * Now label affiliate with the restaurant.
 	 * 
 	 * @param restaurants
 	 */
-	private void createRestaurants(HashMap<String, File> restaurants) {
+	private void createRestaurants(ArrayList<Supplier> restaurants) {
 		if (resImages == null) {
 			resImages = Arrays.asList(resImage1, resImage2, resImage3, resImage4, resImage5, resImage6);
 		}
@@ -282,9 +358,9 @@ public class restaurantSelectionController implements Initializable {
 				borders.get(i).setVisible(true);
 			}
 		}
-		List<String> resNames = new ArrayList<>();
-		resNames.addAll(restaurants.keySet());
-		int amount = resNames.size();
+//		List<Supplier> resNames = new ArrayList<>();
+//		resNames.addAll(restaurants.keySet());
+		int amount = restaurants.size();
 		switch (amount) {
 		case 0:
 			hideRestaurants(6);
@@ -305,8 +381,9 @@ public class restaurantSelectionController implements Initializable {
 			hideRestaurants(1);
 			break;
 		}
-		for (int i = 0; i < resNames.size() && i < 6; i++) {
-			String resName = resNames.get(i);
+		/** At all time display up to 6 restaurants */
+		for (int i = 0; i < restaurants.size() && i < 6; i++) {
+			String resName = restaurants.get(i).getRestaurantName();
 			resImages.get(i).setImage(
 					new Image(getClass().getResource("../images/" + resName.toLowerCase() + "-logo.jpg").toString()));
 			resNameTexts.get(i).setText(resName);
@@ -316,25 +393,26 @@ public class restaurantSelectionController implements Initializable {
 			 * restaurant.
 			 */
 			resOrder.setOnMouseClicked((MouseEvent e) -> {
-				if(router.getOrder().getRestaurantName() != null && !router.getOrder().getRestaurantName().equals(resName)) {
+				if (router.getOrder().getRestaurantName() != null
+						&& !router.getOrder().getRestaurantName().equals(resName)) {
 					Alert alert = new Alert(AlertType.CONFIRMATION);
 					alert.setTitle("Switch restaurants");
-					alert.setHeaderText("You got an order in restaurant " + router.getOrder().getRestaurantName() +
-							"\nChoosing a different restaurant will reset your last order.");
-			        alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
-			        	Order newOrder = new Order();
+					alert.setHeaderText("You got an order in restaurant " + router.getOrder().getRestaurantName()
+							+ "\nChoosing a different restaurant will reset your last order.");
+					alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
+						Order newOrder = new Order();
 						newOrder.setRestaurantName(resName);
-						router.setOrder(newOrder);
-			        	changeToIdentify(resName);
-			        });
-				}else {
+						router.setOrder(new Order());
+						changeToIdentify(resName);
+					});
+				} else {
 					changeToIdentify(resName);
 				}
-				
+
 			});
 		}
 	}
-	
+
 	private void changeToIdentify(String resName) {
 		if (router.getIdentifyController() == null) {
 			AnchorPane mainContainer;
@@ -346,6 +424,7 @@ public class restaurantSelectionController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurantToOrder(resName);
+				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -358,6 +437,7 @@ public class restaurantSelectionController implements Initializable {
 			}
 		} else {
 			router.getIdentifyController().setRestaurantToOrder(resName);
+			router.getIdentifyController().setItemsCounter();
 			stage.setTitle("BiteMe - Identification page");
 			stage.setScene(router.getIdentifyController().getScene());
 			stage.show();
@@ -369,6 +449,8 @@ public class restaurantSelectionController implements Initializable {
 		router = Router.getInstance();
 		router.setRestaurantselectionController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
+		router.setArrow(rightArrowBtn, 90);
 	}
 
 	public void setScene(Scene scene) {

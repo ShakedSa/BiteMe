@@ -3,15 +3,19 @@ package ClientServerCommunication;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
-
+import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.NewUser;
+import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
+import ServerUtils.DailyThread;
+import ServerUtils.pdfConfigs;
+import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -31,6 +35,7 @@ public class Server extends AbstractServer {
 
 	/** Server gui controller for message handling between gui and logic */
 	private ServerGUIController controller;
+	private DailyThread dailyThread;
 	public static final int DEFAULT_PORT = 5555;
 
 	/**
@@ -52,56 +57,7 @@ public class Server extends AbstractServer {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if (msg instanceof MyFile) // handle upload pdf file to sql
-		{
-			MyFile message = ((MyFile) msg);
-			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
-			try {
-				InputStream is = new ByteArrayInputStream(((MyFile) msg).getMybytearray());
-				mysqlConnection.updateFile(is, message.getFileName(), message.getDescription());
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Error while handling files in Server");
-			}
-			return;
-		}
-		
-// 		if(msg instanceof OrderDeliveryMethod) {
-// 			try {
-// 			mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)msg);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-		
-// 		if(msg instanceof NewUser) {
-// 			try {
-// 			NewSupplier supplier = ((NewUser)msg).getSupplier();
-// 			//add supplier to users table
-// 			mysqlConnection.addNewUser((NewUser)msg);
-// 			//add supplier to suppliers table
-// 			mysqlConnection.addNewSupplier(supplier);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 				System.out.println("Error while handling message in server");
-// 			}
-// 			return;
-// 		}
-// 		if(msg instanceof Product) {
-// 			try {
-// 				this.sendToClient(mysqlConnection.addItemToMenu((Product)msg), client);
-// 				//this.sendToClient(mysqlConnection.editItemInMenu((Product)msg), client);
-// 			}catch(Exception e) {
-// 				e.printStackTrace();
-// 			}
-// 			return;
-// 		}
-
 		controller.setMessage("Msg recieved:" + msg);
-//		@SuppressWarnings("unchecked")
-//		ArrayList<String> m = (ArrayList<String>) msg;
 		ServerResponse serverResponse = (ServerResponse) msg;
 		ArrayList<String> m;
 		switch (serverResponse.getDataType()) {
@@ -129,7 +85,7 @@ public class Server extends AbstractServer {
 			break;
 		case "searchOrder":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.searchOrder(m.get(0)), client);
+			this.sendToClient(mysqlConnection.searchOrder(m.get(0), m.get(1)), client);
 			break;
 		case "checkUser":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -168,11 +124,11 @@ public class Server extends AbstractServer {
 			break;
 		case "updateOrderStatus":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(0), m.get(1), m.get(2), m.get(3)), client);
+			this.sendToClient(mysqlConnection.updateOrderStatus(m.get(0), m.get(1), m.get(2), m.get(3), m.get(4)), client);
 			break;
 		case "getOrderInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0)), client);
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0), m.get(1)), client);
 			break;
 		case "getCustomerInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -187,16 +143,65 @@ public class Server extends AbstractServer {
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
 			break;
 		case "newSupplier":
-			mysqlConnection.addNewSupplier((NewSupplier)serverResponse.getServerResponse());
+			mysqlConnection.addNewSupplier((NewSupplier) serverResponse.getServerResponse());
 			break;
 		case "InsertOrder":
-			this.sendToClient(mysqlConnection.insertOrderDelivery((OrderDeliveryMethod)serverResponse.getServerResponse()), client);
+			this.sendToClient(
+					mysqlConnection.insertOrderDelivery((OrderDeliveryMethod) serverResponse.getServerResponse()),
+					client);
 			break;
 		case "addItem":
-			this.sendToClient(mysqlConnection.addItemToMenu((Product)serverResponse.getServerResponse()), client);
+			this.sendToClient(mysqlConnection.addItemToMenu((Product) serverResponse.getServerResponse()), client);
 			break;
 		case "editItemInMenu":
-			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
+			this.sendToClient(mysqlConnection.editItemInMenu((Product) serverResponse.getServerResponse()), client);
+			break;
+		case "customersOrders":
+			this.sendToClient(mysqlConnection.customersOrder((Customer)serverResponse.getServerResponse()), client);
+			break;
+		case "UpdateorderReceived":
+			this.sendToClient(mysqlConnection.updateOrderReceived((Order)serverResponse.getServerResponse()), client);
+			break;
+		case "deleteItemFromMenu":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.deleteItemFromMenu(m.get(0), m.get(1)), client);
+			break;
+		case "viewQuarterReport":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0), m.get(1), m.get(2)), client);
+			break;
+		/*
+		 * case "CheckQuarterReport": m = (ArrayList<String>)
+		 * serverResponse.getServerResponse();
+		 * this.sendToClient(mysqlConnection.CheckQuarterReport(m.get(0),m.get(1),m.get(
+		 * 2)), client); break;
+		 */
+		case "getReport":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getMonthlyReport(m),client);
+			break;
+		case "getSupplierImage":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.getSupplierImage(m.get(0)), client);
+			break;
+		case "uploadQuarterlyReport":
+			MyFile message = (MyFile) serverResponse.getServerResponse();
+			controller.setMessage("File message received: PDF Report " + message.getFileName() + " from " + client);
+			try {
+			InputStream is = new ByteArrayInputStream(((MyFile) message).getMybytearray());
+			mysqlConnection.updateFile(is, message.getDescription());
+			break;
+		} catch (Exception e) {
+			e.printStackTrace();
+			controller.setMessage("Error while handling files in Server");
+		}
+			break;
+		case "getRefunds":
+			this.sendToClient(mysqlConnection.getRefund((Customer)serverResponse.getServerResponse()), client);
+			break;
+		case "createQuarterlyRevenueReport":// arr= quarter,year,branch
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(reportsHandler.quarterlyRevenueReportPdf(m.get(2), m.get(0), m.get(1)),client);
 			break;
 		case "importedUsers":
 			this.sendToClient(mysqlConnection.getImportedUsers(), client);
@@ -228,8 +233,21 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
+		dailyThread = new DailyThread();
+		Thread t = new Thread(dailyThread);
+		t.start();
+		int date[]=reportsHandler.getLastReportDate();
+		int year=date[0],month=date[1];
+		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
+		{//report updates needed for last report month+1:
+		//(no need next ones since server was off and no other data was collected)
+			reportsHandler.createAllReports(month+1, year);
+
+		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
+
 	}
 
 	/**

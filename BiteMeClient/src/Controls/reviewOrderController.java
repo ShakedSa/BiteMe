@@ -11,7 +11,10 @@ import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.W4CCard;
+import Util.LoadingAnimation;
 import client.ClientGUI;
+import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,10 +25,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class reviewOrderController implements Initializable {
 
@@ -51,7 +56,7 @@ public class reviewOrderController implements Initializable {
 	private Text returnToHome;
 
 	@FXML
-	private ImageView returnToPaymentMethod;
+	private Rectangle returnToPaymentMethod;
 
 	@FXML
 	private Text returnToRestaurants;
@@ -69,10 +74,23 @@ public class reviewOrderController implements Initializable {
 	private Text showProfile;
 
 	@FXML
+	private Circle circle;
+
+	/**
+	 * Save order in the db, switch to rate us scene.
+	 */
+	@FXML
 	void SubmitOrder(MouseEvent event) {
-		/**
-		 * Save order in the db, switch to rate us scene.
-		 */
+		/** Creating loading animation to display while server processing the data. */
+		Thread animation = new Thread(() -> {
+			Platform.runLater(() -> {
+				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+				root.setDisable(true);
+			});
+			circle.setVisible(true);
+			LoadingAnimation.LoadStart(circle);
+		});
+		animation.start();
 		Order order = router.getOrder();
 		switch (order.getPaymentMethod()) {
 		case BusinessCode:
@@ -91,28 +109,34 @@ public class reviewOrderController implements Initializable {
 			break;
 		}
 		Thread t = new Thread(() -> {
-			synchronized(ClientGUI.monitor) {
+			synchronized (ClientGUI.monitor) {
 				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
 				try {
 					ClientGUI.monitor.wait();
-				}catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return;
+				}
+				/** After server finished handling the request continue executing. */
+				if (ClientGUI.client.getLastResponse() != null
+						&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
+					/**
+					 * Platform.runLater allows to change the view in a not fx application thread.
+					 */
+					Platform.runLater(() -> {
+						root.setDisable(true);
+						router.setBagItems(null);
+						router.setOrder(new Order());
+						router.setDelivery(null);
+						router.setOrderDeliveryMethod(null);
+						changeToRateUs();
+					});
+				} else {
+					System.out.println("Failed to insert order");
 				}
 			}
 		});
 		t.start();
-		try {
-			t.join();
-		}catch(Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		router.setBagItems(null);
-		router.setOrder(new Order());
-		router.setDelivery(null);
-		router.setOrderDeliveryMethod(null);
-		changeToRateUs();
 	}
 
 	private void changeToRateUs() {
@@ -150,7 +174,7 @@ public class reviewOrderController implements Initializable {
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
-		router.changeToMyCart();
+		router.changeToMyCart("Review");
 	}
 
 	@FXML
@@ -195,7 +219,7 @@ public class reviewOrderController implements Initializable {
 		router.setReviewOrderController(this);
 		setStage(router.getStage());
 		router.setAvatar(avatar);
-
+		router.setArrow(returnToPaymentMethod, -90);
 	}
 
 	public void setScene(Scene scene) {
@@ -243,30 +267,19 @@ public class reviewOrderController implements Initializable {
 			i++;
 		}
 		itemsTitle = new Label("Products:");
-		itemsTitle.setFont(new Font("Berlin Sans FB", 14));
-		itemsTitle.setLayoutX(120);
-		itemsTitle.setLayoutY(193);
+		itemsTitle.getStyleClass().addAll("subtitle", "itemsTitle");
 		orderDisplay.setContent(orderDisplayContent);
-		orderDisplay.setPrefWidth(676);
-		orderDisplay.setPrefHeight(130);
-		orderDisplay.setLayoutX(100);
-		orderDisplay.setLayoutY(213);
+		orderDisplay.getStyleClass().add("orderDisplayScroll");
 		orderDisplay.setId("scrollPane");
 		deliveryTitle = new Label("Delivery information: ");
-		deliveryTitle.setFont(new Font("Berlin Sans FB", 14));
-		deliveryTitle.setLayoutX(120);
-		deliveryTitle.setLayoutY(360);
+		deliveryTitle.getStyleClass().addAll("subtitle", "deliveryTitle");
 		deliveryInformation = new Label(delivery.toString());
-		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
-		deliveryInformation.setLayoutX(100);
-		deliveryInformation.setLayoutY(380);
+		deliveryInformation.getStyleClass().addAll("fields", "deliveryInfo");
 		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "\u20AA");
-		totalPrice.setFont(new Font("Berlin Sans FB", 22));
-		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
-		totalPrice.setLayoutX(600);
-		totalPrice.setLayoutY(400);
+		totalPrice.getStyleClass().add("totalPrice");
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+			circle.toFront();
 		}
 	}
 }
