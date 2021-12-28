@@ -122,6 +122,11 @@ public class editMenuItemController implements Initializable {
 		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
+		String regex = "^[u0400-u04FFa-zA-Z ]+(,[u0400-u04FFa-zA-Z ]+)*$";
+		if(!temp.equals("") && !temp.matches(regex)) {
+			errorMsg.setText("Please enter optional components according the explanation");
+			return;
+		}
 
 		// update temp according the check boxes
 		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox)

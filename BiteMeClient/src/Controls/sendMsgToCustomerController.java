@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Entities.Order;
 import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
@@ -12,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -57,61 +57,24 @@ public class sendMsgToCustomerController implements Initializable {
 
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
-	
-	private String orderNumber;
-	private String status;
 	private Integer deliveryNumber;
+	private Order order;
 	
-	public void setOrderInfo(String orderNumber, String status, int deliveryNumber) {
-		this.orderNumber = orderNumber;
-		this.status = status;
+	public void setOrderInfo(Order order, int deliveryNumber) {
+		System.out.println("Order: " + order);
+		System.out.println("delivery num: " + deliveryNumber);
+		this.order = order;
 		this.deliveryNumber = deliveryNumber;
-		getOrderInfo();
+		displayOrderInfo();
 		getCustomerInfo();
 	}
 
-	private ArrayList<String> getOrderInfo() {
-
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				//ClientGUI.client.getOrderInfo(orderNumber);
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		});
-		t.start();
-		ClientGUI.client.getOrderInfo(orderNumber, restaurantName);
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
-		if (sr == null) {
-			return null;
-		}
-		@SuppressWarnings("unchecked")
-		ArrayList<String> response1 = (ArrayList<String>) sr.getServerResponse();
-		if (response1 == null) {
-			return null;
-		}
-		statusTxt.setText("Your order status from " + response1.get(0) + ": " + response1.get(3));
-		if (status.equals("Order Received")) {
-			plannedTimeTxt.setText("Order received time: " + response1.get(1));
-		} else
-			plannedTimeTxt.setText("Order planned time: " + response1.get(2));
-		
-		return response1;
-
+	private void displayOrderInfo() {
+		statusTxt.setText("Your order status from " + restaurantName + ": " + order.getStatus());
+		if (order.getStatus().equals("Received")) {
+			plannedTimeTxt.setText("Order received time: " + order.getOrderRecieved());
+		} else // "Ready"
+			plannedTimeTxt.setText("Order planned time: " + order.getPlannedTime());
 	}
 
 	private ArrayList<String> getCustomerInfo() {
@@ -155,7 +118,7 @@ public class sendMsgToCustomerController implements Initializable {
 
 	@FXML
 	void closeMsgBtnClicked(MouseEvent event) {
-		router.getSupplierPanelController().updateOrederClicked(event);
+		router.getUpdateOrderTableController().updateOrderClicked(event);
 	}
 
 	@FXML
@@ -206,5 +169,40 @@ public class sendMsgToCustomerController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+	
+	
+	
+//	Thread t = new Thread(new Runnable() {
+//		@Override
+//		public void run() {
+//			//ClientGUI.client.getOrderInfo(orderNumber);
+//			synchronized (ClientGUI.monitor) {
+//				try {
+//					ClientGUI.monitor.wait();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//					return;
+//				}
+//			}
+//		}
+//	});
+//	t.start();
+//	ClientGUI.client.getOrderInfo(restaurantName);
+//	try {
+//		t.join();
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//		return null;
+//	}
+//	// handle server response
+//	ServerResponse sr = ClientGUI.client.getLastResponse();
+//	if (sr == null) {
+//		return null;
+//	}
+//	@SuppressWarnings("unchecked")
+//	ArrayList<String> response1 = (ArrayList<String>) sr.getServerResponse();
+//	if (response1 == null) {
+//		return null;
+//	}
 
 }

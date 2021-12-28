@@ -57,6 +57,7 @@ public class Router {
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
+	private updateOrderTableController UpdateOrderTableController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -267,6 +268,13 @@ public class Router {
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
+	}
+	
+	/**
+	 * @param updateOrderTableController the updateOrderTableController to set
+	 */
+	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
+		UpdateOrderTableController = updateOrderTableController;
 	}
 
 	/**
@@ -533,6 +541,13 @@ public class Router {
 	 */
 	public void setMyOrdersController(myOrdersController myOrdersController) {
 		MyOrdersController = myOrdersController;
+	}
+	
+	/**
+	 * @return the updateOrderTableController
+	 */
+	public updateOrderTableController getUpdateOrderTableController() {
+		return UpdateOrderTableController;
 	}
 
 	/**

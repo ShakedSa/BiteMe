@@ -47,9 +47,9 @@
             <TableColumn fx:id="table_Description" editable="false" prefWidth="159.3333740234375" text="Description" />
          </columns>
       </TableView>
-      <Text layoutX="308.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Menu">
+      <Text layoutX="293.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Menu">
          <font>
-            <Font name="Berlin Sans FB" size="36.0" />
+            <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
       <ImageView fx:id="editItemImage" fitHeight="46.0" fitWidth="34.0" layoutX="147.0" layoutY="435.0" onMouseClicked="#editItemClicked" onMouseEntered="#explainHowEdit" onMouseExited="#closeExplainEdit" pickOnBounds="true" preserveRatio="true">
@@ -93,12 +93,17 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text fx:id="menuUpdatedSuccessfullyTxt" fill="#62d019" layoutX="271.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="menuUpdatedSuccessfullyTxt" fill="#62d019" layoutX="175.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bgggggggggggg">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="227.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="520.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="131.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>

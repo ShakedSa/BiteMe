@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+import Entities.Component;
+import Entities.Order;
+import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.Doneness;
+import Enums.Size;
 import Enums.TypeOfProduct;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,16 +45,10 @@ public class supplierUpdateOrderController implements Initializable {
 	private Scene scene;
 
 	@FXML
-	private TextField OrderNumberTxtField;
-	
-    @FXML
-    private Text PendingTxt;
+	private Text PendingTxt;
 
-    @FXML
-    private Text ReadyTxt;
-
-    @FXML
-    private Text ReceivedTxt;
+	@FXML
+	private Text ReceivedTxt;
 
 	@FXML
 	private ImageView newMsgImage;
@@ -73,9 +73,12 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private Text hourTxt;
-	
-    @FXML
-    private Text orderStatusTxt;
+
+	@FXML
+	private Text orderNumberTxt;
+
+	@FXML
+	private Text orderStatusTxt;
 
 	@FXML
 	private RadioButton includeDeliveryBtn;
@@ -102,9 +105,6 @@ public class supplierUpdateOrderController implements Initializable {
 	private Text profileBtn;
 
 	@FXML
-	private Label searchBtn;
-
-	@FXML
 	private Text successMsg;
 
 	@FXML
@@ -118,47 +118,21 @@ public class supplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private Label updateOrderBtn;
-	
-    @FXML
-    private Text noUpdate;
-    
+
+	ObservableList<String> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
-	ObservableList<String> list;
-	String orderNumber;
-	String receivedOrReady;
-	Integer deliveryNumber = 0;
-	String status;
+	public String orderNumber, orderTime, orderRecieved, plannedTime, status;
+	public String receivedOrReady;
+	private int orderNumberInt;
+	public Integer deliveryNumber = 0;
+	private Order order;
 
-	/**
-	 * This method initialized this screen
-	 */
-	private void setStartPage() {
-		updateOrderBtn.setDisable(true);
-		updateDataTxt.setVisible(false);
-		updateDataComboBox.setVisible(false);
-		updateDataComboBox.getSelectionModel().clearSelection();
-		includeDeliveryTxt.setVisible(false);
-		includeDeliveryBtn.setSelected(false);
-		includeDeliveryBtn.setVisible(false);
-		notIncludeDeliveryBtn.setVisible(false);
-		notIncludeDeliveryBtn.setSelected(false);
-		enterPlannedTineTxt.setVisible(false);
-		hourBox.setVisible(false);
-		hourTxt.setVisible(false);
-		minutesBox.setVisible(false);
-		minutesTxt.setVisible(false);
-		VImage.setVisible(false);
-		successMsg.setVisible(false);
-		newMsgImage.setVisible(false);
-		errorMsg.setText("");
-		deliveryNumber = null;
-		noUpdate.setText("");
-		//hide status line:
-		orderStatusTxt.setVisible(false);
-		PendingTxt.setVisible(false);
-		ReceivedTxt.setVisible(false);
-		ReadyTxt.setVisible(false);
+	private void startUpdate() {
+		// order = new Order(orderNumberInt, orderTime, orderRecieved, plannedTime,
+		// status);
+		setStartPage();
+		checkStatusOrder(); // get currently order status
 	}
 
 	/**
@@ -168,7 +142,7 @@ public class supplierUpdateOrderController implements Initializable {
 	 */
 	@FXML
 	void UpdateOrderClicked(MouseEvent event) {
-		if (includeDeliveryBtn.isSelected() && !checkTime() && !CheckUserInput(orderNumber)) {
+		if (includeDeliveryBtn.isSelected() && !checkTime()) {
 			return;
 		}
 		if (updateDataComboBox.getValue() == null) {
@@ -177,7 +151,6 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 		errorMsg.setText("");
 		receivedOrReady = updateDataComboBox.getValue();
-		orderNumber = OrderNumberTxtField.getText();
 		LocalDate now = LocalDate.now();
 		// Order received
 		String statusReceived = "Received";
@@ -192,6 +165,17 @@ public class supplierUpdateOrderController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				if (receivedOrReady.equals("Order Received")) {
+					order.setStatus("Recieved");
+					order.setOrderRecieved(nowTime);
+					ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, nowTime,
+							statusReceived);
+				} else { // Order Is Ready
+					order.setStatus("Ready");
+					order.setPlannedTime(plannedTime);
+					ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, plannedTime,
+							statusReady);
+				}
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -203,16 +187,10 @@ public class supplierUpdateOrderController implements Initializable {
 			}
 		});
 		t.start();
-		
-		if(!checkServerResponse()) {
+		if (!checkServerResponse()) {
 			return;
 		}
 
-		if (receivedOrReady.equals("Order Received")) {
-			ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, nowTime, statusReceived);
-		} else { // Order Is Ready
-			ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, plannedTime, statusReady);
-		}
 		try {
 			t.join();
 		} catch (Exception e) {
@@ -221,8 +199,9 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 
 		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
-		
-		if(receivedOrReady.equals("Order Is Ready") && !includeDeliveryBtn.isSelected() && !notIncludeDeliveryBtn.isSelected()) {
+
+		if (receivedOrReady.equals("Order Is Ready") && !includeDeliveryBtn.isSelected()
+				&& !notIncludeDeliveryBtn.isSelected()) {
 			errorMsg.setText("Please select YES if order includes delivery and NO else");
 			return;
 		}
@@ -231,6 +210,7 @@ public class supplierUpdateOrderController implements Initializable {
 		successMsg.setVisible(true);
 		newMsgImage.setVisible(true); // new message send to customer
 		updateOrderBtn.setDisable(true);
+
 	}
 
 	/**
@@ -264,65 +244,85 @@ public class supplierUpdateOrderController implements Initializable {
 		return true;
 	}
 
+//	/**
+//	 * get the currently order status and display it on screen
+//	 */
+//	private void getStatusOrder() {
+////		orderNumber = OrderNumberTxtField.getText();
+//		if (!CheckUserInput(orderNumber)) {
+//			return;
+//		}
+//		Thread t = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				ClientGUI.client.getOrderInfo(orderNumber, restaurantName);
+//				synchronized (ClientGUI.monitor) {
+//					try {
+//						ClientGUI.monitor.wait();
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//						return;
+//					}
+//				}
+//			}
+//		});
+//		t.start();
+//		try {
+//			t.join();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return;
+//		}
+//
+//		// handle server response
+//		ServerResponse sr = ClientGUI.client.getLastResponse();
+//		if (sr == null) {
+//			return;
+//		}
+//		@SuppressWarnings("unchecked")
+//		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
+//		if (response == null) {
+//			return;
+//		}
+//		orderStatusTxt.setVisible(true);
+//		status = response.get(3);
+//		if (status.equals("Pending")) {
+//			PendingTxt.setVisible(true);
+//			ReceivedTxt.setVisible(false);
+//			updateOrderBtn.setDisable(false);
+//		} else { //(status.equals("Received"))
+//			PendingTxt.setVisible(false);
+//			ReceivedTxt.setVisible(true);
+//			updateOrderBtn.setDisable(false);
+//		}
+//	}
+
 	/**
-	 * This function check the order number that entered. if it correct, display the
-	 * comboBox to choose what need to update: "Order Received" or "Order Is Ready"
-	 * 
-	 * @param event
+	 * get the currently order status and display it on screen
 	 */
-	@FXML
-	void searchClicked(MouseEvent event) {
-		orderNumber = OrderNumberTxtField.getText();
-		if (!CheckUserInput(orderNumber)) {
-			return;
+	private void checkStatusOrder() {
+		orderStatusTxt.setVisible(true);
+		if (status.equals("Pending")) {
+			// set comboBox
+			ArrayList<String> type = new ArrayList<String>();
+			type.add("Order Received");
+			list = FXCollections.observableArrayList(type);
+			updateDataComboBox.setItems(list);
+			// display correct status
+			PendingTxt.setVisible(true);
+			ReceivedTxt.setVisible(false);
+			updateOrderBtn.setDisable(false);
+		} else { // (status.equals("Received"))
+			// set comboBox
+			ArrayList<String> type = new ArrayList<String>();
+			type.add("Order Is Ready");
+			list = FXCollections.observableArrayList(type);
+			updateDataComboBox.setItems(list);
+			// display correct status
+			PendingTxt.setVisible(false);
+			ReceivedTxt.setVisible(true);
+			updateOrderBtn.setDisable(false);
 		}
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ClientGUI.client.searchOrder(orderNumber, restaurantName);
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		});
-		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		if (!checkServerResponse()) { //order number doesn't exist
-			return;
-		}
-		setStartPage();
-		//OrderNumberTxtField.setDisable(true);
-		getStatusOrder(); //get currently order status
-		//set comboBox
-		   if(status.equals("Pending")) {
-			   ArrayList<String> type = new ArrayList<String>();
-				type.add("Order Received");
-				list = FXCollections.observableArrayList(type);
-				updateDataComboBox.setItems(list);
-		   }
-		   else if(status.equals("Received")) {
-			   ArrayList<String> type = new ArrayList<String>();
-				type.add("Order Is Ready"); 
-				list = FXCollections.observableArrayList(type);
-				updateDataComboBox.setItems(list);
-		   }
-		   else { //status.equals("Ready")) 
-			   noUpdate.setText("There is no available update for this order.");
-			   updateOrderBtn.setDisable(true);
-			   return;
-		   }
-		updateDataTxt.setVisible(true);
-		updateDataComboBox.setVisible(true);
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal == "Order Is Ready")
 				orderIsReady();
@@ -333,101 +333,19 @@ public class supplierUpdateOrderController implements Initializable {
 				notIncludeDelivery();
 			}
 		});
-		
 	}
 
-	/**
-	 * get the currently order status and display it on screen
-	 */
-	private void getStatusOrder() {
-		orderNumber = OrderNumberTxtField.getText();
-		if (!CheckUserInput(orderNumber)) {
-			return;
-		}
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ClientGUI.client.getOrderInfo(orderNumber, restaurantName);
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		});
-		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		
-		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
-		if (sr == null) {
-			return;
-		}
-		@SuppressWarnings("unchecked")
-		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
-		if (response == null) {
-			return;
-		}
-		orderStatusTxt.setVisible(true);
-		status = response.get(3);
-	   if(status.equals("Pending")) {
-		   PendingTxt.setVisible(true);
-		   ReceivedTxt.setVisible(false);
-		   ReadyTxt.setVisible(false);
-		   updateOrderBtn.setDisable(false);
-	   }
-	   else if(status.equals("Received")) {
-		   PendingTxt.setVisible(false);
-		   ReceivedTxt.setVisible(true);
-		   ReadyTxt.setVisible(false);
-		   updateOrderBtn.setDisable(false);
-	   }
-	   else { //status.equals("Ready")) 
-		   PendingTxt.setVisible(false);
-		   ReceivedTxt.setVisible(false);
-		   ReadyTxt.setVisible(true);
-		   noUpdate.setVisible(true);
-	   }
-	}
-	
 	/**
 	 * checks the order information received from Server. display relevant
 	 * information.
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
-			errorMsg.setText("This order doesn't exist");
+			errorMsg.setText("update order was failed");
 			return false;
 		}
 		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
-		case "order number doesn't exist":
-			errorMsg.setText("This order doesn't exist");
-			//hide status line:
-			orderStatusTxt.setVisible(false);
-			PendingTxt.setVisible(false);
-			ReceivedTxt.setVisible(false);
-			ReadyTxt.setVisible(false);
-			//hide combo
-			updateDataTxt.setVisible(false);
-			updateDataComboBox.setVisible(false);
-			//hide success feedback
-			successMsg.setVisible(false);
-			VImage.setVisible(false);
-			//hide the buttons of ready status
-			noUpdate.setVisible(false);
-			includeDeliveryTxt.setVisible(false);
-			includeDeliveryBtn.setVisible(false);
-			notIncludeDeliveryBtn.setVisible(false);
-			notIncludeDelivery();
-			updateOrderBtn.setDisable(true);
+		case "update order was failed":
 			return false;
 		case "success":
 			updateOrderBtn.setDisable(false);
@@ -437,22 +355,42 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 	}
 
-	private boolean CheckUserInput(String orderNumber) {
-		if (!InputValidation.checkValidText(orderNumber)) {
-			errorMsg.setText("Must fill order number");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(orderNumber)) {
-			errorMsg.setText("Special characters aren't allowed in order number");
-			return false;
-		}
-		if (InputValidation.checkContainCharacters(orderNumber)) {
-			errorMsg.setText("Characters aren't allowed in order number");
-			return false;
-		}
-		errorMsg.setText("");
-		return true;
-	}
+//	/**
+//	 * checks the order information received from Server. display relevant
+//	 * information.
+//	 */
+//	private boolean checkServerResponse() {
+//		if (ClientGUI.client.getLastResponse() == null) {
+//			errorMsg.setText("This order doesn't exist");
+//			return false;
+//		}
+//		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+//		case "order number doesn't exist":
+//			errorMsg.setText("This order doesn't exist");
+//			// hide status line:
+//			orderStatusTxt.setVisible(false);
+//			PendingTxt.setVisible(false);
+//			ReceivedTxt.setVisible(false);
+//			// hide combo
+//			updateDataTxt.setVisible(false);
+//			updateDataComboBox.setVisible(false);
+//			// hide success feedback
+//			successMsg.setVisible(false);
+//			VImage.setVisible(false);
+//			// hide the buttons of ready status
+//			includeDeliveryTxt.setVisible(false);
+//			includeDeliveryBtn.setVisible(false);
+//			notIncludeDeliveryBtn.setVisible(false);
+//			notIncludeDelivery();
+//			updateOrderBtn.setDisable(true);
+//			return false;
+//		case "success":
+//			updateOrderBtn.setDisable(false);
+//			return true;
+//		default:
+//			return false;
+//		}
+//	}
 
 	@FXML
 	void includeDeliveryBtnClicked(MouseEvent event) {
@@ -505,7 +443,7 @@ public class supplierUpdateOrderController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setOrderInfo(getOrderNumber(), getStatus(), getDeliveryNumber());
+				controller.setOrderInfo(getOrder(), getDeliveryNumber());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -517,7 +455,7 @@ public class supplierUpdateOrderController implements Initializable {
 			}
 		} else {
 			stage.setTitle("BiteMe - Message Simulation");
-			router.getSendMsgToCustomerController().setOrderInfo(getOrderNumber(), getStatus(), getDeliveryNumber());
+			router.getSendMsgToCustomerController().setOrderInfo(getOrder(), getDeliveryNumber());
 			stage.setScene(router.getSendMsgToCustomerController().getScene());
 		}
 		stage.show();
@@ -552,7 +490,7 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 		return res;
 	}
-	
+
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
@@ -562,23 +500,23 @@ public class supplierUpdateOrderController implements Initializable {
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 		deliveryNumber = null;
-		setStartPage();
-		OrderNumberTxtField.clear();
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
-		setStartPage();
-		OrderNumberTxtField.clear();
 	}
 
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
-		setStartPage();
-		OrderNumberTxtField.clear();
 	}
+	
+
+    @FXML
+    void returnToUpdateOrderTable(MouseEvent event) {
+    	router.getSupplierPanelController().updateOrederClicked(event);
+    }
 
 	/**
 	 * Setting the avatar image of the user.
@@ -593,9 +531,7 @@ public class supplierUpdateOrderController implements Initializable {
 		router.setSupplierUpdateOrderController(this);
 		setStage(router.getStage());
 		router.setArrow(leftArrowBtn, -90);
-		setStartPage();
-		OrderNumberTxtField.clear();
-		//setUpdateComboBox();
+		// setUpdateComboBox();
 		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
 		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
 
@@ -613,14 +549,8 @@ public class supplierUpdateOrderController implements Initializable {
 		this.stage = stage;
 	}
 
-	public String getOrderNumber() {
-		orderNumber = OrderNumberTxtField.getText();
-		return orderNumber;
-	}
-
-	public String getStatus() {
-		receivedOrReady = updateDataComboBox.getValue();
-		return receivedOrReady;
+	public Order getOrder() {
+		return order;
 	}
 
 	public int getDeliveryNumber() {
@@ -628,6 +558,46 @@ public class supplierUpdateOrderController implements Initializable {
 			deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
 		}
 		return deliveryNumber;
+	}
+
+	public void setOrder(Order order) {
+		if (order != null) {
+			this.order = order;
+			orderNumberInt = order.getOrderNumber();
+			orderNumber = orderNumberInt + "";
+			orderNumberTxt.setText("Order Number: " + orderNumber);
+			orderTime = order.getOrdeTime();
+			orderRecieved = order.getOrderRecieved();
+			plannedTime = order.getPlannedTime();
+			status = order.getStatus();
+			startUpdate();
+		}
+	}
+
+	/**
+	 * This method initialized this screen
+	 */
+	private void setStartPage() {
+		updateOrderBtn.setDisable(true);
+		updateDataComboBox.getSelectionModel().clearSelection();
+		includeDeliveryTxt.setVisible(false);
+		includeDeliveryBtn.setSelected(false);
+		includeDeliveryBtn.setVisible(false);
+		notIncludeDeliveryBtn.setVisible(false);
+		notIncludeDeliveryBtn.setSelected(false);
+		enterPlannedTineTxt.setVisible(false);
+		hourBox.setVisible(false);
+		hourTxt.setVisible(false);
+		minutesBox.setVisible(false);
+		minutesTxt.setVisible(false);
+		VImage.setVisible(false);
+		successMsg.setVisible(false);
+		newMsgImage.setVisible(false);
+		errorMsg.setText("");
+		deliveryNumber = null;
+		// hide status:
+		PendingTxt.setVisible(false);
+		ReceivedTxt.setVisible(false);
 	}
 
 }
