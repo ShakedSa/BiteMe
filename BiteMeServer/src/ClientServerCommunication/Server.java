@@ -139,6 +139,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
+		case "checkUserNameAccountType":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkUserNameAccountType(m.get(0)), client);
+			break;
 		case "checkuserNameIsClient":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameIsClient(m.get(0)), client);
@@ -193,6 +197,9 @@ public class Server extends AbstractServer {
 			break;
 		case "editItemInMenu":
 			this.sendToClient(mysqlConnection.editItemInMenu((Product)serverResponse.getServerResponse()), client);
+			break;
+		case "importedUsers":
+			this.sendToClient(mysqlConnection.getImportedUsers(), client);
 			break;
 		default:
 			sendToClient("default", client);

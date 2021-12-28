@@ -179,11 +179,25 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	
+	/**
+	 * Sending a query request from the server. check for imported users
+	 * 
+	 */
+	public void searchForNewUsers() {
+		try {
+			ServerResponse serverResponse = new ServerResponse("importedUsers");
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	/**
 	 * Sending a query request from the server. approve employer in the db
-	 * restaurant.
 	 * 
-	 * @param restaurantName
+	 * @param employerCode
 	 */
 	public void employerApproval(String employerCode) {
 		try {
@@ -509,7 +523,21 @@ public class ClientUI implements ClientIF {
 
 	}
 	
-	public void checkUserName(String userName) {
+	public void checkUserNameAccountType(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(userName));
+			ServerResponse serverResponse = new ServerResponse("checkUserNameAccountType");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	public void checkUserNameForSupplier(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList(userName));
@@ -520,9 +548,7 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-
 	}
-	
 	
 	public void checkUserNameIsClient(String userName) {
 		try {

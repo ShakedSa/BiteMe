@@ -107,7 +107,7 @@ public class updateUserInformationController implements Initializable{
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.checkUserName(userNameTxtField.getText());
+				ClientGUI.client.checkUserNameIsClient(userNameTxtField.getText());
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();

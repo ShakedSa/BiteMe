@@ -165,6 +165,7 @@ public class managerPanelController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
+				controller.initTable();
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Open New Account");
@@ -175,6 +176,7 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
+			router.getOpenNewAccountController().initTable();
 			stage.setTitle("BiteMe - Open New Account");
 			stage.setScene(router.getOpenNewAccountController().getScene());
 			stage.show();
