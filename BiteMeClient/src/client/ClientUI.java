@@ -183,7 +183,7 @@ public class ClientUI implements ClientIF {
 	 */
 	public void searchForNewUsers() {
 		try {
-			ServerResponse serverResponse = new ServerResponse("importedUsers");
+			ServerResponse serverResponse = new ServerResponse("getUsersCustomersInfo");
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -677,6 +677,14 @@ public class ClientUI implements ClientIF {
 		arr.add(year);
 		arr.add(branch); // arr= quarter,year,branch
 		ServerResponse serverResponse = new ServerResponse("createQuarterlyRevenueReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	public void checkCustomerStatus(String username) {
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(username);
+		ServerResponse serverResponse = new ServerResponse("checkCustomerStatus");
 		serverResponse.setServerResponse(arr);
 		client.handleMessageFromClientUI(serverResponse);
 	}

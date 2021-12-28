@@ -1,9 +1,15 @@
 package Controls;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import Entities.ServerResponse;
 import Enums.UserType;
+import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -17,11 +23,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class openNewAccountFinalController implements Initializable{
-	
-	public final UserType type = UserType.BranchManager;
+	public final UserType type= UserType.BranchManager;
 	private Router router;
 	private Stage stage;
-	private Scene scene;
+	private Scene scene,prevScene;
+	private String userType;
+    private String id = "", username = "", fName = "", lName = "";
     @FXML
     private Text EmpName;
 
@@ -31,6 +38,9 @@ public class openNewAccountFinalController implements Initializable{
     @FXML
     private TextField employersNameTxtField;
 
+    @FXML
+    private Label infoMsg;
+    
     @FXML
     private ImageView approvalBtn1;
 
@@ -74,7 +84,7 @@ public class openNewAccountFinalController implements Initializable{
     private Text m8;
 
     @FXML
-    private ComboBox<?> accountCombo;
+    private ComboBox<String> accountCombo;
 
     @FXML
     private TextField monthlyBudTxtField;
@@ -100,34 +110,51 @@ public class openNewAccountFinalController implements Initializable{
     @FXML
     private ImageView updateSucess1;
 
-    @FXML
-    void approvalClicked(MouseEvent event) {
-
-    }
 
     @FXML
     void logoutClicked(MouseEvent event) {
-
+    	router.logOut();
     }
 
     @FXML
-    void openTheFilelds(MouseEvent event) {
-
+    void openTheFields(MouseEvent event) {
+    	System.out.println("test");
+    	employersNameTxtField.setText(fName);
     }
 
     @FXML
     void profileBtnClicked(MouseEvent event) {
-
+    	router.showProfile();
     }
 
     @FXML
     void returnToHomePage(MouseEvent event) {
-
+    	router.changeSceneToHomePage();
     }
 
     @FXML
     void returnToManagerPanel(MouseEvent event) {
+    	router.returnToManagerPanel(event);
+    }
 
+    @FXML
+    void returnToPreviousScene(MouseEvent event) {
+    	// if edit completed go back to manager menu
+
+    	if(updateSucess.isVisible()) {
+    		router.returnToManagerPanel(event);
+    	}
+    	// if regret go previous screen.
+    	else {
+    		stage.setTitle("BiteMe - Open New Account");
+			stage.setScene(prevScene);
+			stage.show();
+    	}
+    }
+    
+    @FXML
+    void approvalClicked(MouseEvent event) {
+    	
     }
     
     
@@ -157,5 +184,102 @@ public class openNewAccountFinalController implements Initializable{
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
+	
+	public void initScene(String id, String username , String fname, String lname ) {
+		this.id=id;
+		this.username=username;
+		this.lName=lname;
+		this.fName=fname;
+		updateSucess.setVisible(false);
+		updateSucess1.setVisible(false);
+		creditCardNumberTxtField.clear();
+		dailyBudTxtField.clear();
+		employersNameTxtField.clear();
+		monthlyBudTxtField.clear();
+		//get user type p.customer/b.customer/user with query and set visibility accordingly
 
+		ClientGUI.client.checkCustomerStatus(username);
+  		Thread t = new Thread(new Runnable() {
+  			@Override
+  			public void run() {
+  				synchronized (ClientGUI.monitor) {
+  					try {
+  						ClientGUI.monitor.wait();
+  					} catch (Exception e) {
+  						e.printStackTrace();
+  						return;
+  					}
+  				}
+  			}
+  		});
+  		t.start();
+  		try {
+  			t.join();
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  			return;
+  		}
+  		//handle server response
+  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		userType = sr.getDataType();
+		//set relevant comboBox values:
+		setAccountTypeComboBox(userType);
+		infoMsg.setText("You are creating account for " + id + ", " + fname + " " + lname +
+				", with Username : " + username + " debug: " + userType);
+	}
+
+	public void setPrevScene(Scene prevScene) {
+		this.prevScene=prevScene;
+	}
+
+
+	/**
+	 * sets the visibility of business customer data 
+	 * @param val
+	 */
+	public void setEmployerDataVisibility(boolean val) {
+		dailyBudTxtField.setVisible(val);
+		employersNameTxtField.setVisible(val);
+		monthlyBudTxtField.setVisible(val);
+		EmpName.setVisible(val);
+		MonthlyBud.setVisible(val);
+		dailyBud.setVisible(val);
+		shekel.setVisible(val);
+		shekel1.setVisible(val);
+	}
+
+	/**
+	 * sets the visibility of private customer data 
+	 * @param val
+	 */
+	public void setPrivateDataVisibility(boolean val) {
+		creditCardNumberTxtField.setVisible(val);
+		cardNumber.setVisible(val);
+	}
+	
+
+ 	/**set the values of the account type combo box
+ 	 * @param accountType
+ 	 */
+ 	private void setAccountTypeComboBox(String accountType) {
+ 		ArrayList<String> type = new ArrayList<String>();
+ 		switch(accountType) {
+ 		case "isPrivate":
+ 			type.add("Business Account");
+ 			break;
+ 		case "isBusiness":
+			type.add("Private Account");
+			break;
+ 		case "User":
+		type.add("Private Account");
+		type.add("Business Account");
+		type.add("Business & Private Account");
+		break;
+ 		}
+ 		ObservableList<String> list = FXCollections.observableArrayList(type);
+ 		accountCombo.setItems(list);
+ 	}
+ 	
+ 	
+	
 }

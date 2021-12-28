@@ -106,9 +106,8 @@ public class openNewAccountController implements Initializable{
 	    private TableColumn<NewAccountUser, String> Phone;
 	    
 	    private String id = "";
-	    
+	    private String username = "";
 	    private String fName = "";
-	    
 	    private String lName = "";
 
     private ObservableList<String> list;
@@ -120,8 +119,9 @@ public class openNewAccountController implements Initializable{
     
   //show table with employers that are waiting for approval
   	public void initTable(){
-  		ClientGUI.client.searchForNewUsers();
+  		id="";
   		//wait for response
+	  		ClientGUI.client.searchForNewUsers();
   		Thread t = new Thread(new Runnable() {
   			@Override
   			public void run() {
@@ -193,8 +193,9 @@ public class openNewAccountController implements Initializable{
       void copyTableData(MouseEvent event) {
       	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
               id = (approvalTable.getSelectionModel().getSelectedItem().getId());
-              fName = (approvalTable.getSelectionModel().getSelectedItem().getId());
-              lName = (approvalTable.getSelectionModel().getSelectedItem().getId());
+              username = (approvalTable.getSelectionModel().getSelectedItem().getUserName());
+              fName = (approvalTable.getSelectionModel().getSelectedItem().getFirstName());
+              lName = (approvalTable.getSelectionModel().getSelectedItem().getLastName());
       	}
       }
       
@@ -214,6 +215,8 @@ public class openNewAccountController implements Initializable{
   				mainContainer = loader.load();
   				controller = loader.getController();
   				controller.setAvatar();
+  				controller.initScene(id,username,fName,lName);
+  				controller.setPrevScene(scene);
   				Scene mainScene = new Scene(mainContainer);
   				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
   				controller.setScene(mainScene);
@@ -225,6 +228,7 @@ public class openNewAccountController implements Initializable{
   				return;
   			}
   		} else {
+  			router.getOpenNewAccountFinalController().initScene(id,username,fName,lName);
   			stage.setTitle("BiteMe - Open New Account");
   			stage.setScene(router.getOpenNewAccountFinalController().getScene());
   			stage.show();
@@ -688,6 +692,7 @@ public class openNewAccountController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setOpenNewAccountController(this);
+	//	router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
 	}
 

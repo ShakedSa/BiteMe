@@ -1646,6 +1646,39 @@ public class mysqlConnection {
 
 	
 	
+	/**get newly imported users from the db
+	 * @return
+	 */
+	public static ServerResponse getAllUsersAndCustomers() {
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
+		ArrayList<NewAccountUser> response = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT * FROM bitemedb.users WHERE UserType = ? OR UserType = ?"
+					+ " and UserName not in (SELECT UserName FROM bitemedb.customers"
+					+ " where (IsBusiness=1 and IsPrivate=1))";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, "User");
+			stmt.setString(2, "Customer");
+			ResultSet rs = stmt.executeQuery();
+			// save in response all newly imported users
+			while (rs.next()) {
+				response.add(new NewAccountUser(rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg(e.getMessage());
+			serverResponse.setServerResponse(null);
+			return serverResponse;
+		}
+		serverResponse.setMsg("Success");
+		serverResponse.setServerResponse(response);
+		return serverResponse;
+	}
+
+	
+	
 	/**
 	 * imports users from import simulation table to users table.
 	 */
@@ -2351,5 +2384,47 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static ServerResponse checkCustomerStatus(String username) {
+		PreparedStatement stmt;
+		ServerResponse response = new ServerResponse();
+		try {
+			String query = "SELECT * FROM bitemedb.customers where username = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, username); // username
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				int isBusiness = rs.getInt(3);
+				int isPrivate =rs.getInt(5);
+				if(isPrivate == 1 && isBusiness==1)
+					{
+					response.setDataType("isBoth");
+					return response;
+					}
+					//return new ServerResponse("isBoth");
+				if(isPrivate==1)
+				{
+					response.setDataType("isPrivate");
+					return response;
+				}
+					//return new ServerResponse("isPrivate");
+				if(isBusiness==1)
+				{
+					response.setDataType("isBusiness");
+					return response;
+				}
+					//return new ServerResponse("isBusiness");
+			} else { // if not in customer table, it is user
+				response.setDataType("User");
+				return response;
+				//return new ServerResponse("User");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		response.setDataType("bug");
+		return response;
 	}
 }

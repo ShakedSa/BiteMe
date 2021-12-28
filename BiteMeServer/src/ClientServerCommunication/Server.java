@@ -206,6 +206,13 @@ public class Server extends AbstractServer {
 		case "importedUsers":
 			this.sendToClient(mysqlConnection.getImportedUsers(), client);
 			break;
+		case "getUsersCustomersInfo":
+			this.sendToClient(mysqlConnection.getAllUsersAndCustomers(), client);
+			break;
+		case "checkCustomerStatus":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkCustomerStatus(m.get(0)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;
