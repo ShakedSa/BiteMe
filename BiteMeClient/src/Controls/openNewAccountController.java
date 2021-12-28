@@ -689,7 +689,6 @@ public class openNewAccountController implements Initializable{
 		router = Router.getInstance();
 		router.setOpenNewAccountController(this);
 		setStage(router.getStage());
-		router.setArrow(leftArrowBtn, -90);
 	}
 
     
