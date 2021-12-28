@@ -401,6 +401,7 @@ public class restaurantSelectionController implements Initializable {
 							+ "\nChoosing a different restaurant will reset your last order.");
 					alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
 						Order newOrder = new Order();
+						System.out.println(resName);
 						newOrder.setRestaurantName(resName);
 						router.setOrder(new Order());
 						changeToIdentify(resName);

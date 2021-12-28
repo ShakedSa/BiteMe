@@ -144,13 +144,17 @@ public class mysqlConnection {
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
 					int cusID = 0;
+					boolean isPrivate = false, isBusiness = false, isApproved = false;
 					if (rs.next()) {
 						cusID = rs.getInt(1);
+						isPrivate = rs.getInt(5) == 0 ? false : true;
+						isBusiness = rs.getInt(3) == 0 ? false : true;
+						isApproved = rs.getInt(4) == 0 ? false : true;
 					}
 					W4CCard w4cCard = getW4CCard(cusID);
 					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, w4cCard, refunds, cusID);
+							organization, branch, role, status, avatar, w4cCard, refunds, cusID, isPrivate, isBusiness, isApproved);
 					stmt.close();
 					break;
 				case Supplier:

@@ -571,6 +571,7 @@ public class restaurantMenuController implements Initializable {
 						 */
 						if (firstAdd.get()) {
 							Order newOrder = new Order();
+							System.out.println(restaurantName);
 							newOrder.setRestaurantName(restaurantName);
 							router.setOrder(newOrder);
 							firstAdd.set(false);

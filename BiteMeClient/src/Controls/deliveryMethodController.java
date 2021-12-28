@@ -268,25 +268,18 @@ public class deliveryMethodController implements Initializable {
 			errorMsg.setText("Delivery time can't contain special characters");
 			return false;
 		}
-		int hour = Integer.parseInt(hours);
-		int minute = Integer.parseInt(minutes);
+		int selectedTime = Integer.parseInt(hours) * 60 + Integer.parseInt(minutes);
 		LocalTime now = LocalTime.now();
-		LocalTime orderTime = LocalTime.of(hour, minute);
-		/** If time selection is before now */
-		if (now.compareTo(orderTime) == 1) {
-			errorMsg.setText("Time of order must be greater or equals to now: " + now.toString());
+		int nowTime = now.getHour() * 60 + now.getMinute();
+		/** If selection time is not at least 30minutes ahead of now. */
+		if (selectedTime - nowTime < 30) {
+			errorMsg.setText("Time of order must be at least 30minutes before now: " + now.toString());
 			return false;
 		}
-		/** Preorder is up to 2 hours from the order time. */
-		if (hour - now.getHour() > 2) {
+		/** Pre order is up to 2 hours from the order time. */
+		if (selectedTime - nowTime > 120) {
 			errorMsg.setText("Preorder deliverys are up to 2 hours");
 			return false;
-		}
-		if (hour - now.getHour() == 2) {
-			if (minute > now.getMinute()) {
-				errorMsg.setText("Preorder deliverys are up to 2 hours");
-				return false;
-			}
 		}
 		return true;
 	}
@@ -389,6 +382,7 @@ public class deliveryMethodController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setItemsCounter();
+				controller.checkRefunds();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -402,6 +396,7 @@ public class deliveryMethodController implements Initializable {
 		} else {
 			router.getPaymentController().setAvatar();
 			router.getPaymentController().setItemsCounter();
+			router.getPaymentController().checkRefunds();
 			stage.setTitle("BiteMe - Select Payment Method");
 			stage.setScene(router.getPaymentController().getScene());
 			stage.show();

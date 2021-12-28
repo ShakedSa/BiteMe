@@ -145,6 +145,7 @@ public class myCartController implements Initializable {
 		case "Payment":
 			router.getPaymentController().setAvatar();
 			router.getPaymentController().setItemsCounter();
+			router.getPaymentController().checkRefunds();
 			stage.setTitle("BiteMe - Select Payment Method");
 			stage.setScene(router.getPaymentController().getScene());
 			stage.show();
