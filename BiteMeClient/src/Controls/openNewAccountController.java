@@ -108,15 +108,97 @@ public class openNewAccountController implements Initializable{
 	    private TableColumn<NewAccountUser, String> Phone;
 	    
 	    private String id = "";
-	    
+	    private String username = "";
 	    private String fName = "";
-	    
 	    private String lName = "";
 
     private ObservableList<String> list;
     
     private ObservableList<String> list1;
     
+    
+  //show table with employers that are waiting for approval
+  	public void initTable(){
+  		id="";
+  		//wait for response
+	  		ClientGUI.client.searchForNewUsers();
+  		Thread t = new Thread(new Runnable() {
+  			@Override
+  			public void run() {
+  				synchronized (ClientGUI.monitor) {
+  					try {
+  						ClientGUI.monitor.wait();
+  					} catch (Exception e) {
+  						e.printStackTrace();
+  						return;
+  					}
+  				}
+  			}
+  		});
+  		t.start();
+  		try {
+  			t.join();
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  			return;
+  		}
+  		//handle server response
+  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		@SuppressWarnings("unchecked")
+  		//get the server response- Business employers that needs approval
+  		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();
+  		//check if business customers are waiting for approval
+  		if(response.size() == 0)
+  		{
+  			msg.setText("Currently no accounts are needed");
+  			msg.setVisible(true);
+  			next.setVisible(false);
+  			next.setVisible(false);
+  			return;
+  		}
+  		setTable( response);
+  			msg.setText("Some employers are waiting for your approval");
+  			msg.setVisible(true);
+  			instructions.setVisible(true);		
+  	}
+  	
+  	
+  	//set table columns and values
+  	private void setTable(ArrayList<NewAccountUser> list) {
+  		UserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+  		FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+  		LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+  		ID.setCellValueFactory(new PropertyValueFactory<>("id"));
+  		Email.setCellValueFactory(new PropertyValueFactory<>("email"));
+  		Phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+  		approvalTable.setItems(getCustomer(list));
+  		approvalTable.setEditable(true);
+  	}
+  	
+  	
+	//change arrayList to ObservableList
+	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
+		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+		for (NewAccountUser customer : list2) {
+			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(),
+					customer.getFirstName(), customer.getLastName(), customer.getId(),
+					customer.getEmail(), customer.getPhone());
+			users.add(customerPlusBudget);
+		}
+		return users;
+	}
+  	
+  	
+      @FXML
+      void copyTableData(MouseEvent event) {
+      	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+              id = (approvalTable.getSelectionModel().getSelectedItem().getId());
+              username = (approvalTable.getSelectionModel().getSelectedItem().getUserName());
+              fName = (approvalTable.getSelectionModel().getSelectedItem().getFirstName());
+              lName = (approvalTable.getSelectionModel().getSelectedItem().getLastName());
+      	}
+      }
+
       
       @FXML
       void approvalClicked(MouseEvent event) {
@@ -134,6 +216,8 @@ public class openNewAccountController implements Initializable{
   				mainContainer = loader.load();
   				controller = loader.getController();
   				controller.setAvatar();
+  				controller.initScene(id,username,fName,lName);
+  				controller.setPrevScene(scene);
   				Scene mainScene = new Scene(mainContainer);
   				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
   				controller.setScene(mainScene);
@@ -145,6 +229,7 @@ public class openNewAccountController implements Initializable{
   				return;
   			}
   		} else {
+  			router.getOpenNewAccountFinalController().initScene(id,username,fName,lName);
   			stage.setTitle("BiteMe - Open New Account");
   			stage.setScene(router.getOpenNewAccountFinalController().getScene());
   			stage.show();
@@ -608,6 +693,7 @@ public class openNewAccountController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setOpenNewAccountController(this);
+	//	router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
 	}
 

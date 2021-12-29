@@ -183,7 +183,7 @@ public class ClientUI implements ClientIF {
 	 */
 	public void searchForNewUsers() {
 		try {
-			ServerResponse serverResponse = new ServerResponse("importedUsers");
+			ServerResponse serverResponse = new ServerResponse("getUsersCustomersInfo");
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -376,12 +376,12 @@ public class ClientUI implements ClientIF {
 	/**
 	 * get order details
 	 * 
-	 * @param orderNumber
+	 * @param restaurantName
 	 */
-	public void getOrderInfo(String orderNumber, String restaurantName) {
+	public void getOrderInfo(String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList(orderNumber, restaurantName));
+			arr.add(restaurantName);
 			ServerResponse serverResponse = new ServerResponse("getOrderInfo");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
@@ -678,6 +678,25 @@ public class ClientUI implements ClientIF {
 		arr.add(branch); // arr= quarter,year,branch
 		ServerResponse serverResponse = new ServerResponse("createQuarterlyRevenueReport");
 		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	public void checkCustomerStatus(String username) {
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(username);
+		ServerResponse serverResponse = new ServerResponse("checkCustomerStatus");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	/**
+	 * request from server to create new account with the following information:
+	 * @param values = userType,username,monthly bud,daily budget,credit card number,employer's name.
+	 */
+	public void openNewAccount(ArrayList<String> values) {
+		
+		ServerResponse serverResponse = new ServerResponse("openNewAccount");
+		serverResponse.setServerResponse(values);
 		client.handleMessageFromClientUI(serverResponse);
 	}
 

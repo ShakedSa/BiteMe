@@ -60,6 +60,7 @@ public class Router {
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
+	private updateOrderTableController UpdateOrderTableController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -284,6 +285,13 @@ public class Router {
 	 */
 	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
+	}
+	
+	/**
+	 * @param updateOrderTableController the updateOrderTableController to set
+	 */
+	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
+		UpdateOrderTableController = updateOrderTableController;
 	}
 
 	/**
@@ -551,6 +559,13 @@ public class Router {
 	public void setMyOrdersController(myOrdersController myOrdersController) {
 		MyOrdersController = myOrdersController;
 	}
+	
+	/**
+	 * @return the updateOrderTableController
+	 */
+	public updateOrderTableController getUpdateOrderTableController() {
+		return UpdateOrderTableController;
+	}
 
 	/**
 	 * @return the stage
@@ -633,7 +648,7 @@ public class Router {
 				OrderReceivedController = null;
 				SupplierPanelController = null;
         CreateRevenueQuarterlyReportController=null;
-				order = null;
+				order = new Order();
 				delivery = null;
 				orderDeliveryMethod = null;
 				ClientGUI.client.setUser(null);
@@ -877,8 +892,10 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> products) {
-		if (order == null || order.getProducts() == null || products == null) {
-			order = new Order();
+		if(order == null) {
+			return;
+		}
+		if (order.getProducts() == null || products == null) {
 			order.setProducts(products);
 			return;
 		}

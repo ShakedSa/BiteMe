@@ -1,5 +1,7 @@
 package Controls;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,6 +10,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
+import Entities.MyFile;
 import Entities.Order;
 import Entities.ServerResponse;
 import Entities.Supplier;
@@ -16,6 +21,7 @@ import Enums.UserType;
 import client.ClientGUI;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -274,7 +280,17 @@ public class restaurantSelectionController implements Initializable {
 			resRestaurants = ClientGUI.client.getLastResponse();
 		}
 		restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
-		createRestaurants(restaurants);
+		if (restaurants != null) {
+			createRestaurants(restaurants);
+		}else {
+			hideRestaurants(6);
+			Label errorMsg = new Label("Server Error\nCan't get restaurants from the server.");
+			root.getChildren().add(errorMsg);
+			errorMsg.setLayoutX(114);
+			errorMsg.setLayoutY(138);
+			errorMsg.getStyleClass().add("title");
+			return;
+		}
 	}
 
 	/**
@@ -358,8 +374,7 @@ public class restaurantSelectionController implements Initializable {
 				borders.get(i).setVisible(true);
 			}
 		}
-//		List<Supplier> resNames = new ArrayList<>();
-//		resNames.addAll(restaurants.keySet());
+
 		int amount = restaurants.size();
 		switch (amount) {
 		case 0:
@@ -383,9 +398,18 @@ public class restaurantSelectionController implements Initializable {
 		}
 		/** At all time display up to 6 restaurants */
 		for (int i = 0; i < restaurants.size() && i < 6; i++) {
+			MyFile file = restaurants.get(i).getRestaurantLogo();
+			byte[] imageArr = file.getMybytearray();
+			BufferedImage img;
+			try {
+				img = ImageIO.read(new ByteArrayInputStream(imageArr));
+				Image image = SwingFXUtils.toFXImage(img, null);
+				resImages.get(i).setImage(image);
+			}catch(IOException e) {
+				e.printStackTrace();
+				return;
+			}
 			String resName = restaurants.get(i).getRestaurantName();
-			resImages.get(i).setImage(
-					new Image(getClass().getResource("../images/" + resName.toLowerCase() + "-logo.jpg").toString()));
 			resNameTexts.get(i).setText(resName);
 			Label resOrder = resOrders.get(i);
 			/**
@@ -401,6 +425,7 @@ public class restaurantSelectionController implements Initializable {
 							+ "\nChoosing a different restaurant will reset your last order.");
 					alert.showAndWait().filter(ButtonType.OK::equals).ifPresent(b -> {
 						Order newOrder = new Order();
+						System.out.println(resName);
 						newOrder.setRestaurantName(resName);
 						router.setOrder(new Order());
 						changeToIdentify(resName);

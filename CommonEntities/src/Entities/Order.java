@@ -15,26 +15,37 @@ public class Order implements Serializable {
 	private String restaurantName;
 	private ArrayList<Product> products;
 	private PaymentMethod paymentMethod;
-	private String OrdeTime;
+	private String OrderTime;
 	private float orderPrice;
 	private String orderRecieved;
+	private String plannedTime;
 	private String dateTime;
 	private String status;
 
 	public Order(int orderNumber, String restaurantName, ArrayList<Product> products, PaymentMethod paymentMethod,
-			String ordeTime, float orderPrice, String orderRecieved, String dateTime) {
+			String orderTime, float orderPrice, String orderRecieved, String dateTime) {
 		super();
 		this.orderNumber = orderNumber;
 		this.restaurantName = restaurantName;
 		this.products = products;
 		this.paymentMethod = paymentMethod;
-		OrdeTime = ordeTime;
+		OrderTime = orderTime;
 		this.orderPrice = orderPrice;
 		this.orderRecieved = orderRecieved;
 		this.dateTime = dateTime;
 	}
 
+	public Order(int orderNumber, String orderTime, String orderRecieved, String plannedTime, String status) {
+		super();
+		this.orderNumber = orderNumber;
+		this.OrderTime = orderTime;
+		this.orderRecieved = orderRecieved;
+		this.plannedTime = plannedTime;
+		this.status = status;
+	}
+	
 	public Order() {
+		
 	}
 
 	/**
@@ -69,7 +80,7 @@ public class Order implements Serializable {
 	 * @return the ordeTime
 	 */
 	public String getOrdeTime() {
-		return OrdeTime;
+		return OrderTime;
 	}
 
 	/**
@@ -77,6 +88,20 @@ public class Order implements Serializable {
 	 */
 	public float getOrderPrice() {
 		return orderPrice;
+	}
+	
+	/**
+	 * @return the plannedTime
+	 */
+	public String getPlannedTime() {
+		return plannedTime;
+	}
+
+	/**
+	 * @param plannedTime the plannedTime to set
+	 */
+	public void setPlannedTime(String plannedTime) {
+		this.plannedTime = plannedTime;
 	}
 
 	/**
@@ -117,8 +142,8 @@ public class Order implements Serializable {
 	/**
 	 * @param ordeTime the ordeTime to set
 	 */
-	public void setOrdeTime(String ordeTime) {
-		OrdeTime = ordeTime;
+	public void setOrderTime(String ordeTime) {
+		OrderTime = ordeTime;
 	}
 
 	/**
@@ -177,9 +202,14 @@ public class Order implements Serializable {
 
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("Order from: " + restaurantName);
-		b.append("\nList of items: " + products);
-		b.append("\nOrder time: " + dateTime);
+		b.append("order number: " + orderNumber);
+		b.append("Order time: " + OrderTime);
+		b.append("Recieved time: " + orderRecieved);
+		b.append("Planned time: " + plannedTime);
+		b.append("Status: " + status);
+//		b.append("Order from: " + restaurantName);
+//		b.append("\nList of items: " + products);
+//		b.append("\nOrder time: " + dateTime);
 		return b.toString();
 	}
 

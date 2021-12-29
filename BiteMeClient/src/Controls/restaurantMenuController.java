@@ -65,7 +65,7 @@ public class restaurantMenuController implements Initializable {
 
 	Label menuTitle;
 
-	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
+//	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
 
 	@FXML
 	private Rectangle avatar;
@@ -569,12 +569,13 @@ public class restaurantMenuController implements Initializable {
 						 * if so create new order.<br>
 						 * else getting handled in the restaurant selection controller.
 						 */
-						if (firstAdd.get()) {
-							Order newOrder = new Order();
-							newOrder.setRestaurantName(restaurantName);
-							router.setOrder(newOrder);
-							firstAdd.set(false);
-						}
+//						if (firstAdd.get()) {
+//							Order newOrder = new Order();
+//							System.out.println(restaurantName);
+//							newOrder.setRestaurantName(restaurantName);
+//							router.setOrder(newOrder);
+//							firstAdd.set(false);
+//						}
 						/**
 						 * Setting global state for the router, adding <productsInOrder> to router
 						 * singleton.

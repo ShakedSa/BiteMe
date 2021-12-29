@@ -88,7 +88,7 @@ public class pickDateAndTimeController implements Initializable {
 		errorMsg.setText("");
 		changeToDelivery();
 	}
-	
+
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("DateTime");
@@ -160,8 +160,8 @@ public class pickDateAndTimeController implements Initializable {
 			return false;
 		}
 		/** Checking if the inputed time is valid. */
-		switch (InputValidation.checkTime(Integer.parseInt(hourToOrder), Integer.parseInt(minuteToOrder))) {
-		case -1:
+		LocalTime selectedTime = LocalTime.of(Integer.parseInt(hourToOrder), Integer.parseInt(minuteToOrder));
+		switch (LocalTime.now().compareTo(selectedTime)) {
 		case 1:
 			errorMsg.setText("Time of order must be greater or equals to now: " + LocalTime.now().toString());
 			return false;
@@ -220,7 +220,7 @@ public class pickDateAndTimeController implements Initializable {
 		/** Setting the time and date to now. */
 		datePicker.setValue(LocalDate.now());
 		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
-		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
+		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute() + 1));
 	}
 
 	public void setScene(Scene scene) {

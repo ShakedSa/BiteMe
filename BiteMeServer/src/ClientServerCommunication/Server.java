@@ -128,7 +128,7 @@ public class Server extends AbstractServer {
 			break;
 		case "getOrderInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0), m.get(1)), client);
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0)), client);
 			break;
 		case "getCustomerInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -205,6 +205,17 @@ public class Server extends AbstractServer {
 			break;
 		case "importedUsers":
 			this.sendToClient(mysqlConnection.getImportedUsers(), client);
+			break;
+		case "getUsersCustomersInfo":
+			this.sendToClient(mysqlConnection.getAllUsersAndCustomers(), client);
+			break;
+		case "checkCustomerStatus":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkCustomerStatus(m.get(0)), client);
+			break;
+		case "openNewAccount":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.openNewAccount(m), client);
 			break;
 		default:
 			sendToClient("default", client);

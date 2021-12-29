@@ -30,39 +30,42 @@
       </ImageView>
       <Text layoutX="130.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Text layoutX="130.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Text layoutX="130.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Optional Components">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Text layoutX="130.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Text layoutX="130.0" layoutY="405.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fill="RED" layoutX="196.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fill="RED" layoutX="184.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fill="RED" layoutX="183.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <TextField fx:id="itemsNameTxtField" layoutX="386.0" layoutY="231.0" promptText="Item's Name" />
-      <TextField fx:id="optionalComponentsTxtField" layoutX="385.0" layoutY="270.0" promptText="Item's Components" />
-      <TextArea fx:id="descriptionTxtArea" layoutX="377.0" layoutY="385.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description" />
-      <ComboBox fx:id="selectTypeBox" layoutX="386.0" layoutY="192.0" prefHeight="28.0" prefWidth="162.0" promptText="Select type" />
+      <Text fill="RED" layoutX="171.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="163.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="164.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <TextField fx:id="itemsNameTxtField" layoutX="294.0" layoutY="231.0" promptText="Item's Name" />
+      <TextField fx:id="optionalComponentsTxtField" layoutX="293.0" layoutY="270.0" promptText="Item's Components" />
+      <TextArea fx:id="descriptionTxtArea" layoutX="285.0" layoutY="385.0" prefHeight="114.0" prefWidth="162.0" promptText="Item's Description">
+         <font>
+            <Font name="Berlin Sans FB" size="12.0" />
+         </font></TextArea>
+      <ComboBox fx:id="selectTypeBox" layoutX="294.0" layoutY="192.0" prefHeight="28.0" prefWidth="162.0" promptText="Select type" />
       <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add new item to menu">
          <font>
-            <Font name="Berlin Sans FB" size="39.0" />
+            <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
       <Text fill="RED" layoutX="126.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* fields are required">
@@ -116,13 +119,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <TextField fx:id="priceTxtField" layoutX="385.0" layoutY="343.0" prefHeight="26.0" prefWidth="82.0" promptText="100.00" />
-      <Text layoutX="447.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+      <TextField fx:id="priceTxtField" layoutX="293.0" layoutY="343.0" prefHeight="26.0" prefWidth="82.0" promptText="100.00" />
+      <Text layoutX="355.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="555.0" layoutY="273.0" onMouseEntered="#infoIconEnter" onMouseExited="#infoIconExit" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="463.0" layoutY="273.0" onMouseEntered="#infoIconEnter" onMouseExited="#infoIconExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/info-icon.png" />
          </image>
@@ -130,14 +133,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TextArea fx:id="infoTxtArea" editable="false" layoutX="587.0" layoutY="215.0" prefHeight="185.0" prefWidth="230.0" text="Please separate different&#10;components with a comma.&#10;For example: &#10;no onion, no oil&#10;If the item includes different&#10;sizes, select: Size&#10;If the item includes different&#10;doneness, select: Doneness&#10;">
+      <TextArea fx:id="infoTxtArea" editable="false" layoutX="495.0" layoutY="215.0" prefHeight="185.0" prefWidth="230.0" text="Please separate different&#10;components with a comma.&#10;For example: &#10;no onion, no oil&#10;If the item includes different&#10;sizes, select: Size&#10;If the item includes different&#10;doneness, select: Doneness&#10;">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </TextArea>
       <Text fx:id="successMsg" fill="#62d019" layoutX="172.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The item was added successfully!">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="128.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
@@ -145,12 +148,12 @@
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <CheckBox fx:id="sizeCheckBox" graphicTextGap="3.0" layoutX="384.0" layoutY="314.0" mnemonicParsing="false" text="Size">
+      <CheckBox fx:id="sizeCheckBox" graphicTextGap="3.0" layoutX="292.0" layoutY="314.0" mnemonicParsing="false" text="Size">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="donenessCheckBox" graphicTextGap="3.0" layoutX="450.0" layoutY="314.0" mnemonicParsing="false" text="Doneness">
+      <CheckBox fx:id="donenessCheckBox" graphicTextGap="3.0" layoutX="358.0" layoutY="314.0" mnemonicParsing="false" text="Doneness">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>

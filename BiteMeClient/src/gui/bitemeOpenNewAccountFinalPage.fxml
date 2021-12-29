@@ -31,17 +31,17 @@
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="EmpName" layoutX="59.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Name">
+      <Text fx:id="EmpName" layoutX="57.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Name">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="MonthlyBud" layoutX="474.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Budget">
+      <Text fx:id="MonthlyBud" layoutX="465.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Budget">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employersNameTxtField" layoutX="216.0" layoutY="434.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField fx:id="employersNameTxtField" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
       <ImageView fx:id="approvalBtn1" fitHeight="50.0" fitWidth="46.0" layoutX="548.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/sendIcon.gif" />
@@ -55,7 +55,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ImageView fx:id="leftArrowBtn" fitHeight="67.0" fitWidth="52.0" layoutX="57.0" layoutY="509.0" onMouseClicked="#returnToManagerPanel" style="-fx-rotate: -90;">
+      <ImageView fx:id="leftArrowBtn" fitHeight="67.0" fitWidth="52.0" layoutX="57.0" layoutY="509.0" onMouseClicked="#returnToPreviousScene" style="-fx-rotate: -90;">
          <image>
             <Image url="@../../../scene%20builder/images/arrow.gif" />
          </image>
@@ -96,52 +96,63 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="wouldLikeToOpen" layoutX="48.0" layoutY="522.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to open:">
+      <Text fx:id="wouldLikeToOpen" layoutX="42.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to open:">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="cardNumber" layoutX="59.0" layoutY="487.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit Card Number">
+      <Text fx:id="cardNumber" layoutX="49.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit Card Number">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="creditCardNumberTxtField" layoutX="224.0" layoutY="469.0" prefHeight="26.0" prefWidth="178.0" />
-      <Text fx:id="m6" fill="RED" layoutX="213.0" layoutY="482.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fx:id="m7" fill="RED" layoutX="190.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fx:id="m8" fill="RED" layoutX="597.0" layoutY="449.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <ComboBox fx:id="accountCombo" layoutX="199.0" layoutY="503.0" onAction="#openTheFilelds" onMouseClicked="#openTheFilelds" prefHeight="26.0" prefWidth="131.0" />
-      <TextField fx:id="monthlyBudTxtField" layoutX="612.0" layoutY="435.0" prefHeight="26.0" prefWidth="99.0" />
-      <Text fx:id="dailyBud" layoutX="475.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Budget">
+      <TextField fx:id="creditCardNumberTxtField" layoutX="214.0" layoutY="339.0" prefHeight="26.0" prefWidth="178.0" />
+      <Text fx:id="m6" fill="RED" layoutX="203.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="m7" fill="RED" layoutX="189.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="m8" fill="RED" layoutX="587.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <ComboBox fx:id="accountCombo" layoutX="222.0" layoutY="248.0" onAction="#openTheFields" prefHeight="26.0" prefWidth="173.0" />
+      <TextField fx:id="monthlyBudTxtField" layoutX="602.0" layoutY="290.0" prefHeight="26.0" prefWidth="99.0" />
+      <Text fx:id="dailyBud" layoutX="465.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Budget">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="dailyBudTxtField" layoutX="612.0" layoutY="471.0" prefHeight="26.0" prefWidth="98.0" />
-      <Text fx:id="Error" fill="RED" layoutX="257.0" layoutY="409.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill all the fields">
+      <TextField fx:id="dailyBudTxtField" layoutX="602.0" layoutY="341.0" prefHeight="26.0" prefWidth="98.0" />
+      <Text fx:id="Error" fill="RED" layoutX="521.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Please fill all the fields">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="shekel" layoutX="693.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+      <Text fx:id="shekel" layoutX="683.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="shekel1" layoutX="693.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+      <Text fx:id="shekel1" layoutX="683.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="updateSucess" fill="#62d019" layoutX="224.0" layoutY="565.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!">
+      <Text fx:id="updateSucess" fill="#62d019" layoutX="219.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="178.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="175.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
+      <Label fx:id="infoMsg" layoutX="90.0" layoutY="152.0" />
+      <Text fx:id="inputErrorTxt" fill="RED" layoutX="219.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input !" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="srvErrorTxt" fill="RED" layoutX="211.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Error, cannot add user." visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

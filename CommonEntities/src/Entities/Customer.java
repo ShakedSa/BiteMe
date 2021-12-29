@@ -18,6 +18,9 @@ public class Customer extends User {
 	private W4CCard w4c;
 	private HashMap<String, Float> refunds;
 	private int customerID;
+	private boolean isBusiness;
+	private boolean isPrivate;
+	private boolean isApproved;
 
 	/**
 	 * @param userName
@@ -35,15 +38,20 @@ public class Customer extends User {
 	 * @param avatar
 	 * @param w4c
 	 * @param refundedBalance
+	 * @param customerID
 	 */
 	public Customer(String userName, String password, String firstName, String lastName, String id, String email,
 			String phoneNumber, UserType userType, String organization, BranchName mainBranch, String role,
-			Status status, File avatar, W4CCard w4c, HashMap<String, Float> refunds, int customerID) {
+			Status status, File avatar, W4CCard w4c, HashMap<String, Float> refunds, int customerID, boolean isPrivate,
+			boolean isBusiness, boolean isApproved) {
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role,
 				status, avatar);
 		this.w4c = w4c;
 		this.refunds = refunds;
 		this.customerID = customerID;
+		this.isPrivate = isPrivate;
+		this.isBusiness = isBusiness;
+		this.isApproved = isApproved;
 	}
 
 	public Customer() {
@@ -77,5 +85,49 @@ public class Customer extends User {
 	public int getCustomerID() {
 		return customerID;
 	}
+
+	/**
+	 * @return the isBusiness
+	 */
+	public boolean isBusiness() {
+		return isBusiness;
+	}
+
+	/**
+	 * @return the isPrivate
+	 */
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	/**
+	 * @param isBusiness the isBusiness to set
+	 */
+	public void setBusiness(boolean isBusiness) {
+		this.isBusiness = isBusiness;
+	}
+
+	/**
+	 * @param isPrivate the isPrivate to set
+	 */
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
+	/**
+	 * @return the isApproved
+	 */
+	public boolean isApproved() {
+		return isApproved;
+	}
+
+	/**
+	 * @param isApproved the isApproved to set
+	 */
+	public void setApproved(boolean isApproved) {
+		this.isApproved = isApproved;
+	}
+	
+	
 
 }

@@ -172,6 +172,10 @@ public class updateMenuController implements Initializable {
 	@FXML
 	void editItemClicked(MouseEvent event) {
 		clearPage();
+		if (product == null) {
+			errorMsg.setText("Please select a row to edit");
+			return;
+		}
 		if (router.getEditMenuItemController() == null) {
 			AnchorPane mainContainer;
 			editMenuItemController controller;
@@ -203,6 +207,7 @@ public class updateMenuController implements Initializable {
 	@FXML
 	void deleteItemTxtClicked(MouseEvent event) {
 		if (product == null) {
+			errorMsg.setText("Please select a row to delete");
 			return;
 		}
 		Thread t = new Thread(new Runnable() {
@@ -263,6 +268,7 @@ public class updateMenuController implements Initializable {
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
+			errorMsg.setText("Adding an item to menu was failed");
 			return false;
 		}
 
@@ -322,6 +328,7 @@ public class updateMenuController implements Initializable {
 		menuUpdatedSuccessfullyTxt.setText("");
 		deleteExplanation.setVisible(false);
 		editExplanation.setVisible(false);
+		errorMsg.setText("");
 	}
 
 	public void setScene(Scene scene) {
@@ -373,9 +380,6 @@ public class updateMenuController implements Initializable {
 	 */
 	@FXML
 	void getRowData(MouseEvent event) {
-		if (menuTable.getSelectionModel() == null) {
-			return;
-		}
 		product = menuTable.getSelectionModel().getSelectedItem();
 		if (product == null) {
 			return;

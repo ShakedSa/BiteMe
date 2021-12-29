@@ -139,16 +139,16 @@ public class supplierPanelController implements Initializable {
 
     @FXML
     void updateOrederClicked(MouseEvent event) {
-    	if (router.getSupplierUpdateOrderController() == null) {
+    	if (router.getUpdateOrderTableController() == null) {
 			AnchorPane mainContainer;
-			supplierUpdateOrderController controller;
+			updateOrderTableController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSupplierUpdateOrderPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeUpdateOrderTablePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
+				controller.setOrder();
 				controller.setAvatar();
-				controller.createCombos();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -160,9 +160,9 @@ public class supplierPanelController implements Initializable {
 				return;
 			}
 		} else {
-			router.getSupplierUpdateOrderController().createCombos();
+			router.getUpdateOrderTableController().setOrder();
 			stage.setTitle("BiteMe - Update Order");
-			stage.setScene(router.getSupplierUpdateOrderController().getScene());
+			stage.setScene(router.getUpdateOrderTableController().getScene());
 			stage.show();
 		}
     }
