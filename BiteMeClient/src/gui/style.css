@@ -12,15 +12,15 @@
 }
 
 .title{
-	-fx-font: 30px "Berlin Sans FB";
+	-fx-font: 30.0px "Berlin Sans FB";
 }
 
 .subtitle{
-	-fx-font: 20px "Berlin Sans FB";
+	-fx-font: 20.0px "Berlin Sans FB";
 }
 
 .fields{
-	-fx-font: 16px "Berlin Sans FB";
+	-fx-font: 16.0px "Berlin Sans FB";
 }
 
 /*=========================== */
@@ -125,71 +125,71 @@
 	-fx-border-width:0.0;
 }
 .date-picker .combo-box {
--fx-background-insets:0.0px ;
--fx-border-width: 0.0px;
-  }
-
+	-fx-background-insets:0.0px ;
+	-fx-border-width: 0.0px;
+}
+ 
 .date-picker .text-field{
--fx-background-radius:0.0px ;
--fx-border-color: transparent;
+	-fx-background-radius:0.0px ;
+	-fx-border-color: transparent;
 }
 
 .date-picker .arrow-button{
--fx-background-radius:0.0px ;
--fx-background-color: #eee;
+	-fx-background-radius:0.0px ;
+	-fx-background-color: #eee;
 }
 
 .date-picker .arrow-button .arrow{
--fx-background-radius:0.0px ;
--fx-background-color: black;
+	-fx-background-radius:0.0px ;
+	-fx-background-color: black;
 }
 
 .date-picker .arrow-button:hover .arrow{
--fx-background-radius:0.0px ;
--fx-background-color: -fx-secondary-text-color;
- }
+	-fx-background-radius:0.0px ;
+	-fx-background-color: -fx-secondary-text-color;
+}
 
  .date-picker .button {
 -fx-background-color: transparent;
--fx-border-color:transparent;
--fx-pref-height: 35.0px;
--fx-pref-width: 35.0px;
- }
+	-fx-border-color:transparent;
+	-fx-pref-height: 35.0px;
+	-fx-pref-width: 35.0px;
+}
 
  .date-picker .button:hover {
--fx-border-color:transparent;
--fx-pref-height: 35.0px;
--fx-pref-width: 35.0px;
- }
+	-fx-border-color:transparent;
+	-fx-pref-height: 35.0px;
+	-fx-pref-width: 35.0px;
+}
 
 .date-picker .button .arrow:pressed {
--fx-border-color:transparent;
--fx-pref-height: 35.0px;
--fx-pref-width: 35.0px;
- }
+	-fx-border-color:transparent;
+	-fx-pref-height: 35.0px;
+	-fx-pref-width: 35.0px;
+}
 
  .date-picker .cell {
--fx-background-color: white;
--fx-pref-width:20.0px ;
--fx-pref-height:25.0px ;
- }
+	-fx-background-color: white;
+	-fx-pref-width:20.0px ;
+	-fx-pref-height:25.0px ;
+}
 
 .date-picker .cell:hover {
--fx-background-color: -fx-secondary-text-color;
--fx-pref-width:20.0px ;
--fx-pref-height:25.0px ;
+	-fx-background-color: -fx-secondary-text-color;
+	-fx-pref-width:20.0px ;
+	-fx-pref-height:25.0px ;
 }
 
 .date-picker .cell:focused {
--fx-background-color:#11659e;
--fx-pref-width:20.0px ;
--fx-pref-height:25.0px ;
- }
+	-fx-background-color:#11659e;
+	-fx-pref-width:20.0px ;
+	-fx-pref-height:25.0px ;
+}
 
 .date-picker-popup  {
--fx-border-color: #1783CC;
--fx-background-color: black;
- }
+	-fx-border-color: #1783CC;
+	-fx-background-color: black;
+}
  
  /* End date picker styling */
  /*=========================== */
@@ -202,7 +202,7 @@
 }
 .combo-box .text-field:focused{
     -fx-background-color: -fx-secondary-text-color;
-    -fx-text-fill:#fff;
+    -fx-text-fill:-fx-primary-text-color;
 	-fx-border-width:0.0;
 	-fx-border-radius: 0.0;
 }
@@ -226,6 +226,10 @@
 .combo-box .list-cell:hover{
 	-fx-background-color: -fx-secondary-text-color;
 	-fx-fill-text: white;
+}
+
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background-color: -fx-secondary-text-color !important;
 }
 /* End combo box styling */
 /*=========================== */
@@ -388,8 +392,8 @@
 /* Menu styling: */
 /*=========================== */
 .menuTitle{
-	-fx-translate-x: 35;
-	-fx-translate-y: 140;
+	-fx-translate-x: 35.0;
+	-fx-translate-y: 140.0;
 }
 
 .overylayPriceLayout{
@@ -561,32 +565,32 @@
 /*=========================== */
 
 .itemsTitle{
-	-fx-translate-x: 120;
-	-fx-translate-y: 193;	
+	-fx-translate-x: 120.0;
+	-fx-translate-y: 193.0;	
 }
 
 .orderDisplayScroll{
-	-fx-pref-width: 676;
-	-fx-pref-height: 130;
-	-fx-translate-x: 100;
-	-fx-translate-y: 213;	
+	-fx-pref-width: 676.0;
+	-fx-pref-height: 130.0;
+	-fx-translate-x: 100.0;
+	-fx-translate-y: 213.0;	
 }
 
 .deliveryTitle{
-	-fx-translate-x: 120;
-	-fx-translate-y: 360;
+	-fx-translate-x: 120.0;
+	-fx-translate-y: 360.0;
 }
 
 .deliveryInfo{
-	-fx-translate-x: 130;
-	-fx-translate-y: 390;
+	-fx-translate-x: 130.0;
+	-fx-translate-y: 390.0;
 }
 
 .totalPrice{
 	-fx-text-fill: #0a62a1;
-	-fx-translate-x: 600;
-	-fx-translate-y: 400;
-	-fx-font: 22px "Berlin Sans FB";	
+	-fx-translate-x: 600.0;
+	-fx-translate-y: 400.0;
+	-fx-font: 22.0px "Berlin Sans FB";	
 }
 
 /*=========================== */

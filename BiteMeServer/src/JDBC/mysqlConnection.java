@@ -145,13 +145,17 @@ public class mysqlConnection {
 					stmt.setString(1, userName);
 					rs = stmt.executeQuery();
 					int cusID = 0;
+					boolean isPrivate = false, isBusiness = false, isApproved = false;
 					if (rs.next()) {
 						cusID = rs.getInt(1);
+						isPrivate = rs.getInt(5) == 0 ? false : true;
+						isBusiness = rs.getInt(3) == 0 ? false : true;
+						isApproved = rs.getInt(4) == 0 ? false : true;
 					}
 					W4CCard w4cCard = getW4CCard(cusID);
 					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
-							organization, branch, role, status, avatar, w4cCard, refunds, cusID);
+							organization, branch, role, status, avatar, w4cCard, refunds, cusID, isPrivate, isBusiness, isApproved);
 					stmt.close();
 					break;
 				case Supplier:
@@ -164,11 +168,13 @@ public class mysqlConnection {
 					String restaurantAddress = "";
 					Float monthlyComission = 12f;
 					ArrayList<Product> menu = null;
+					MyFile restaurantLogo = null;
 					if (rs.next()) {
 						restaurantName = rs.getString(1);
 						restaurantAddress = rs.getString(2); // added RestaurantAddress to supplier in DB - aviel
 						monthlyComission = rs.getFloat(4);
 						menu = getMenu(restaurantName);
+						restaurantLogo =new MyFile(restaurantName + " logo");
 					}
 					user = new Supplier(userName, password, firstName, lastName, id, email, phoneNumber, userType,
 							organization, branch, role, status, avatar, restaurantName, menu, monthlyComission,
@@ -227,11 +233,16 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		ArrayList<Supplier> restaurants = new ArrayList<>();
 		try {
-			String query = "SELECT RestaurantName, RestaurantType FROM bitemedb.suppliers ORDER BY RestaurantName";
+			String query = "SELECT RestaurantName, RestaurantType, Image FROM bitemedb.suppliers ORDER BY RestaurantName";
 			stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				restaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2))));
+				Blob image = rs.getBlob(3);
+				MyFile file = new MyFile(rs.getString(1) + " logo");
+				byte[] array = image.getBytes(1, (int) image.length());
+				file.initArray(array.length);
+				file.setMybytearray(array);
+				restaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2)), file));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

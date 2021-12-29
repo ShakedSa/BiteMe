@@ -199,6 +199,7 @@ public class reviewOrderController implements Initializable {
 		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.getPaymentController().setAvatar();
 		router.getPaymentController().setItemsCounter();
+		router.getPaymentController().checkRefunds();
 		stage.setTitle("BiteMe - Select Payment Method");
 		stage.setScene(router.getPaymentController().getScene());
 		stage.show();
