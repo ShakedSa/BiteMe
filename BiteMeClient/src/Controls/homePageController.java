@@ -2,15 +2,12 @@ package Controls;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -20,6 +17,7 @@ import Entities.Supplier;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +25,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -147,6 +144,7 @@ public class homePageController implements Initializable {
 	@FXML
 	void caruasalLeftClicked(MouseEvent event) {
 		loadingTxt3.setVisible(true);
+		loadingTxt3.toFront();
 		Supplier supplier = favListHidden.pollLast();
 		Supplier toHide = favListDisplayed.poll();
 		favListHidden.addFirst(toHide);
@@ -175,6 +173,7 @@ public class homePageController implements Initializable {
 	@FXML
 	void caruasalRight(MouseEvent event) {
 		loadingTxt1.setVisible(true);
+		loadingTxt1.toFront();
 		Supplier supplier = favListHidden.pollFirst();
 		Supplier toHide = favListDisplayed.pollLast();
 		favListHidden.addLast(toHide);
@@ -465,7 +464,7 @@ public class homePageController implements Initializable {
 						return;
 					}
 					favRestaurants = (ArrayList<Supplier>) ClientGUI.client.getLastResponse().getServerResponse();
-					setFavDisplayed(favRestaurants);
+					Platform.runLater(() -> setFavDisplayed(favRestaurants));
 				}
 			}
 		});

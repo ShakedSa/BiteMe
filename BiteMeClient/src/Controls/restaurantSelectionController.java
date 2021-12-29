@@ -19,6 +19,7 @@ import Entities.Supplier;
 import Enums.RestaurantType;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.embed.swing.SwingFXUtils;
@@ -290,7 +291,7 @@ public class restaurantSelectionController implements Initializable {
 						resRestaurants = ClientGUI.client.getLastResponse();
 						restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
 						if (restaurants != null) {
-							createRestaurants(restaurants);
+							Platform.runLater(() -> createRestaurants(restaurants));
 						} else {
 							hideRestaurants(6);
 							Label errorMsg = new Label("Server Error\nCan't get restaurants from the server.");
@@ -391,6 +392,7 @@ public class restaurantSelectionController implements Initializable {
 			resNameTexts.get(i).setVisible(true);
 			resOrders.get(i).setVisible(true);
 			loadingText.get(i).setVisible(true);
+			loadingText.get(i).toFront();
 			if (borders.get(i) != null) {
 				borders.get(i).setVisible(true);
 			}
