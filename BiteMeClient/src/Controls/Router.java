@@ -46,6 +46,7 @@ public class Router {
 	private orderReceivedController OrderReceivedController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
+	private addNewSupplierTableController AddNewSupplierTableController;
 	private viewMonthlyReportsController ViewMonthlyReportsController;
 	private uploadQuarterlyReportController UploadQuarterlyReportController;
 	private updateUserInformationController UpdateUserInformationController;
@@ -305,7 +306,7 @@ public class Router {
 	public restaurantSelectionController getRestaurantselectionController() {
 		return RestaurantselectionController;
 	}
-
+	
 	/**
 	 * @return the HomePageController
 	 */
@@ -948,6 +949,22 @@ public class Router {
 	 */
 	public void setOpenNewAccountFinalController(openNewAccountFinalController openNewAccountFinalController) {
 		OpenNewAccountFinalController = openNewAccountFinalController;
+	}
+	
+	
+
+	/**
+	 * @return the addNewSupplierTableController
+	 */
+	public addNewSupplierTableController getAddNewSupplierTableController() {
+		return AddNewSupplierTableController;
+	}
+
+	/**
+	 * @param addNewSupplierTableController the addNewSupplierTableController to set
+	 */
+	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
+		AddNewSupplierTableController = addNewSupplierTableController;
 	}
 
 	/**

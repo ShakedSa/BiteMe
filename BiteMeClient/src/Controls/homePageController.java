@@ -476,6 +476,7 @@ public class homePageController implements Initializable {
 		favListDisplayed.addLast(resName);
 	}
 
+	
 	public void setContainer(AnchorPane mainContainer) {
 		this.mainContainer = mainContainer;
 	}

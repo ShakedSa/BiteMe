@@ -94,17 +94,17 @@ public class managerPanelController implements Initializable {
 
 	@FXML
 	void AddNewSupplierClicked(MouseEvent event) {
-		if (router.getAddNewSupplierController() == null) {
+		if (router.getAddNewSupplierTableController() == null) {
 			AnchorPane mainContainer;
-			addNewSupplierController controller;
+			addNewSupplierTableController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeAddNewSupplierPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeAddNewSupplierTablePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.reSetTheScreen();
-				controller.removeAllMessages();
+				controller.resetInfo();
+				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -117,10 +117,10 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
-			router.getAddNewSupplierController().reSetTheScreen();
-			router.getAddNewSupplierController().removeAllMessages();
+			router.getAddNewSupplierTableController().resetInfo();
+			router.getAddNewSupplierTableController().initTable();
 			stage.setTitle("BiteMe - Add New Supplier");
-			stage.setScene(router.getAddNewSupplierController().getScene());
+			stage.setScene(router.getAddNewSupplierTableController().getScene());
 			stage.show();
 		}
 	}
@@ -168,7 +168,6 @@ public class managerPanelController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				controller.initTable();
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Open New Account");
@@ -179,7 +178,6 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
-			router.getOpenNewAccountController().initTable();
 			stage.setTitle("BiteMe - Open New Account");
 			stage.setScene(router.getOpenNewAccountController().getScene());
 			stage.show();

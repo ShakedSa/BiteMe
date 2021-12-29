@@ -59,6 +59,8 @@ public class openNewAccountController implements Initializable{
 
 	    @FXML
 	    private Label next;
+	    
+
 
 	    @FXML
 	    private ImageView leftArrowBtn;
@@ -115,88 +117,6 @@ public class openNewAccountController implements Initializable{
     
     private ObservableList<String> list1;
     
-    
-    
-    
-  //show table with employers that are waiting for approval
-  	public void initTable(){
-  		ClientGUI.client.searchForNewUsers();
-  		//wait for response
-  		Thread t = new Thread(new Runnable() {
-  			@Override
-  			public void run() {
-  				synchronized (ClientGUI.monitor) {
-  					try {
-  						ClientGUI.monitor.wait();
-  					} catch (Exception e) {
-  						e.printStackTrace();
-  						return;
-  					}
-  				}
-  			}
-  		});
-  		t.start();
-  		try {
-  			t.join();
-  		} catch (Exception e) {
-  			e.printStackTrace();
-  			return;
-  		}
-  		//handle server response
-  		ServerResponse sr = ClientGUI.client.getLastResponse();
-  		@SuppressWarnings("unchecked")
-  		//get the server response- Business employers that needs approval
-  		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();
-  		//check if business customers are waiting for approval
-  		if(response.size() == 0)
-  		{
-  			msg.setText("Currently no accounts are needed");
-  			msg.setVisible(true);
-  			next.setVisible(false);
-  			next.setVisible(false);
-  			return;
-  		}
-  		setTable( response);
-  			msg.setText("Some employers are waiting for your approval");
-  			msg.setVisible(true);
-  			instructions.setVisible(true);		
-  	}
-  	
-  	
-  	//set table columns and values
-  	private void setTable(ArrayList<NewAccountUser> list) {
-  		UserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
-  		FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-  		LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-  		ID.setCellValueFactory(new PropertyValueFactory<>("id"));
-  		Email.setCellValueFactory(new PropertyValueFactory<>("email"));
-  		Phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-  		approvalTable.setItems(getCustomer(list));
-  		approvalTable.setEditable(true);
-  	}
-  	
-  	
-	//change arrayList to ObservableList
-	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
-		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
-		for (NewAccountUser customer : list2) {
-			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(),
-					customer.getFirstName(), customer.getLastName(), customer.getId(),
-					customer.getEmail(), customer.getPhone());
-			users.add(customerPlusBudget);
-		}
-		return users;
-	}
-  	
-  	
-      @FXML
-      void copyTableData(MouseEvent event) {
-      	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
-              id = (approvalTable.getSelectionModel().getSelectedItem().getId());
-              fName = (approvalTable.getSelectionModel().getSelectedItem().getId());
-              lName = (approvalTable.getSelectionModel().getSelectedItem().getId());
-      	}
-      }
       
       @FXML
       void approvalClicked(MouseEvent event) {
