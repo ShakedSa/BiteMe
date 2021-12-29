@@ -7,6 +7,10 @@ import java.time.LocalTime;
 import JDBC.mysqlConnection;
 import jdk.vm.ci.meta.Local;
 
+/**
+ * @author Eden
+ * This method is a thread that runs and does required operations every 24hours.
+ */
 public class DailyThread extends Thread{
 	
 
@@ -20,16 +24,19 @@ public class DailyThread extends Thread{
         this.sleepTime = 24 * 60 * 60 * 1000; //24hours interval
     } // end constructor
 
-    // class methods
-    // force the thread to stop
+    /**
+     * force the thread to stop
+     */
     void stopRunning() {
         keepRunning = false;
 
         interrupt();
     } // end method stopRunning
 
-    // Runnable interface methods
-    // run 
+
+    /**
+     *   Runnable interface methods
+     */
     @Override
     public void run() {
     	int month=0,year=0;

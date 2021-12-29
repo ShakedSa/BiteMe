@@ -105,6 +105,11 @@ public class pdfConfigs {
 	    });
 	}
 
+	/**
+	 * @param titleTxt
+	 * @param font
+	 * @return a Paragraph with the given title and font.
+	 */
 	public static Paragraph createTitle(String titleTxt, Font font)
 	{
 		Chunk c = new Chunk(titleTxt);
@@ -117,6 +122,10 @@ public class pdfConfigs {
 	}
 	
 	
+	/**
+	 * @param vals
+	 * @return histogram with the given values.
+	 */
 	public static JFreeChart generateHist(ArrayList<Double> vals) {
 		if(vals.isEmpty())
 			return null;

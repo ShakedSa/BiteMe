@@ -18,6 +18,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+/**
+ * @author Eden
+ * This controller is in charge of the logics and scene setup for the report creation page as branch manager.
+ */
 public class createRevenueQuarterlyReportController implements Initializable{
 	
 
@@ -74,16 +78,20 @@ public class createRevenueQuarterlyReportController implements Initializable{
     	router.returnToManagerPanel(event);
     }
 
+    /**
+     * this method sends request to the client in order to upload the report into the server's database.
+     * @param event
+     */
     @FXML
     void uploadReportClicked(MouseEvent event) {
-    	if(checkLegality())
+    	if(checkLegality()) // check data legality, print error if illegal.
     	{
     		InvalidMsg.setVisible(true);
     		return;
     	}
 		InvalidMsg.setVisible(false);
 		User user = (User) ClientGUI.client.getUser().getServerResponse();
-    	//wait for response:
+    	//request server to create a report with the relevant info:
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {
 		    	ClientGUI.client.createQuarterlyRevenueReport(monthBox.getValue(), yearBox.getValue(), user.getMainBranch().toString());
