@@ -573,13 +573,22 @@ public class mysqlConnection {
 	public static ServerResponse favRestaurants() {
 		ServerResponse serverResponse = new ServerResponse("FavRestaurants");
 		Statement stmt;
-		HashMap<String, File> favRestaurants = new HashMap<>();
+		ArrayList<Supplier> favRestaurants = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
+			String query = "SELECT S.RestaurantName, S.RestaurantType, S.Image, SUM(R.Rating) as rates"
+					+ " FROM bitemedb.orders O inner join bitemedb.ratings R inner join bitemedb.suppliers S WHERE O.RestaurantName = S.RestaurantName AND O.OrderNumber = R.OrderNumber\r\n"
+					+ " GROUP BY S.RestaurantName"
+					+ " ORDER BY rates DESC"
+					+ " LIMIT 6;";
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				favRestaurants.put(rs.getString(1), null);
+				Blob image = rs.getBlob(3);
+				MyFile file = new MyFile(rs.getString(1));
+				byte[] array = image.getBytes(1, (int)image.length());
+				file.initArray(array.length);
+				file.setMybytearray(array);
+				favRestaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2)), file));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

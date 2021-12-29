@@ -22,7 +22,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text id="active" fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToRestaurants" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants">
+      <Text id="active" fx:id="restaurantsBtn" fill="#3180bc" layoutX="369.0" layoutY="54.0" onMouseClicked="#returnToMyOrders" strokeType="OUTSIDE" strokeWidth="0.0" text="My Orders">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -65,7 +65,7 @@
          </image>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ScrollPane fx:id="scrollRoot" layoutX="13.0" layoutY="93.0" maxHeight="482.0" prefHeight="482.0" prefWidth="807.0" />
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="11.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>
