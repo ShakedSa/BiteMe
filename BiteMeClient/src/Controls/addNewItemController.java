@@ -98,7 +98,7 @@ public class addNewItemController implements Initializable {
 	private Product product;
 
 	/**
-	 * creating list of Types
+	 * set values of possible dish types inside the comboBox
 	 */
 	private void setTypeComboBox() {
 		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();

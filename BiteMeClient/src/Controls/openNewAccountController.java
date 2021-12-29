@@ -59,6 +59,8 @@ public class openNewAccountController implements Initializable{
 
 	    @FXML
 	    private Label next;
+	    
+
 
 	    @FXML
 	    private ImageView leftArrowBtn;
@@ -113,8 +115,6 @@ public class openNewAccountController implements Initializable{
     private ObservableList<String> list;
     
     private ObservableList<String> list1;
-    
-    
     
     
   //show table with employers that are waiting for approval
@@ -198,6 +198,7 @@ public class openNewAccountController implements Initializable{
               lName = (approvalTable.getSelectionModel().getSelectedItem().getLastName());
       	}
       }
+
       
       @FXML
       void approvalClicked(MouseEvent event) {
