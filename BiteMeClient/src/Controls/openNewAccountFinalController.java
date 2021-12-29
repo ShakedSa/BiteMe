@@ -101,6 +101,9 @@ public class openNewAccountFinalController implements Initializable{
 
     @FXML
     private Text shekel1;
+    
+    @FXML
+    private Text srvErrorTxt;
 
     @FXML
     private Text updateSucess;
@@ -121,9 +124,13 @@ public class openNewAccountFinalController implements Initializable{
     	router.logOut();
     }
 
+    /**
+     * this method is activated once the user chose an item from comboBox.
+     * it will set up the visibility of the relevant objects on the scene.
+     * @param event
+     */
     @FXML 
     void openTheFields(ActionEvent event) {
-    	employersNameTxtField.setText(fname + " " + lname);
     	if(accountCombo.getValue()==null) return;
     	switch(accountCombo.getValue()) {
     	case "Private Account":
@@ -151,16 +158,25 @@ public class openNewAccountFinalController implements Initializable{
     	router.showProfile();
     }
 
+    /**
+     * changes scene to home page.
+     */
     @FXML
     void returnToHomePage(MouseEvent event) {
     	router.changeSceneToHomePage();
     }
-
+    
+    /**
+     * changes scene to manager panel.
+     */
     @FXML
     void returnToManagerPanel(MouseEvent event) {
     	router.returnToManagerPanel(event);
     }
 
+    /**
+     * changes scene to previous page.
+     */
     @FXML
     void returnToPreviousScene(MouseEvent event) {
     	// if edit completed go back to manager menu
@@ -176,9 +192,14 @@ public class openNewAccountFinalController implements Initializable{
     	}
     }
 
+    /**
+     * this methods sends information to the server in order to update the new customer's info.
+     * @param event
+     */
     @FXML
     void approvalClicked(MouseEvent event) {
     	ArrayList<String> values = new ArrayList<String>();
+    	// if input data is illegal show error message
 		if(illegalInput())
 		{
 			inputErrorTxt.setVisible(true);
@@ -187,7 +208,7 @@ public class openNewAccountFinalController implements Initializable{
 		else
 			inputErrorTxt.setVisible(false);
 	
-
+		//insert relevant info for each type to the array list
     	switch(accountCombo.getValue()) {
     	
     	case "Private Account":
@@ -220,6 +241,49 @@ public class openNewAccountFinalController implements Initializable{
 		//values = userType,username,monthly bud,daily budget,credit card number,employer's name.
     	//modify user status, add customer table, add w4c:
     	ClientGUI.client.openNewAccount(values);
+    	//wait for response:
+  		Thread t = new Thread(new Runnable() {
+  			@Override
+  			public void run() {
+  				synchronized (ClientGUI.monitor) {
+  					try {
+  						ClientGUI.monitor.wait();
+  					} catch (Exception e) {
+  						e.printStackTrace();
+  						return;
+  					}
+  				}
+  			}
+  		});
+  		t.start();
+  		try {
+  			t.join();
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  			return;
+  		}
+  		//handle server response
+  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		if(sr==null) //server error:
+  		{
+  			updateSucess.setVisible(false);
+  			updateSucess1.setVisible(false);
+  			srvErrorTxt.setVisible(true);
+  			return;
+  		}
+  		String ans = sr.getDataType();
+  		if (ans.equals("Success")) //succes
+  		{
+  			updateSucess.setVisible(true);
+  			updateSucess1.setVisible(true);
+  			srvErrorTxt.setVisible(false);
+  		}
+  		else { // error happend on server side.
+  			updateSucess.setVisible(false);
+  			updateSucess1.setVisible(false);
+  			srvErrorTxt.setVisible(true);
+  		}
+  		
     }
     
     
@@ -265,6 +329,13 @@ public class openNewAccountFinalController implements Initializable{
 		this.stage = stage;
 	}
 	
+	/**
+	 * setup the scene values on entry.
+	 * @param id
+	 * @param username
+	 * @param fname
+	 * @param lname
+	 */
 	public void initScene(String id, String username , String fname, String lname ) {
 		this.fname=fname;
 		this.lname=lname;
@@ -272,6 +343,7 @@ public class openNewAccountFinalController implements Initializable{
 		inputErrorTxt.setVisible(false);
 		updateSucess.setVisible(false);
 		updateSucess1.setVisible(false);
+		srvErrorTxt.setVisible(false);
 		creditCardNumberTxtField.clear();
 		dailyBudTxtField.clear();
 		employersNameTxtField.clear();
@@ -308,7 +380,7 @@ public class openNewAccountFinalController implements Initializable{
 		//set relevant comboBox values:
 		setAccountTypeComboBox(userType);
 		infoMsg.setText("You are creating account for " + id + ", " + fname + " " + lname +
-				", with Username : " + username + " debug: " + userType);
+				", with Username : " + username);
 	}
 
 	public void setPrevScene(Scene prevScene) {
@@ -368,7 +440,5 @@ public class openNewAccountFinalController implements Initializable{
  		accountCombo.getItems().removeAll(all);
  		accountCombo.getItems().addAll(stringArray);
  	}
- 	
- 	
 	
 }

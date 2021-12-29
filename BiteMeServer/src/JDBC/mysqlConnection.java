@@ -2435,15 +2435,36 @@ public class mysqlConnection {
 	 * @param values = userType, username, monthly bud, daily budget,credit card number,employer's name.
 	 * @return true if success, false if not
 	 */
+	@SuppressWarnings("resource")
 	public static ServerResponse openNewAccount(ArrayList<String> values) {
-		//query 1: set new userType value on users table:
 		//userType: Private/Business/Both.
 		String[] keys = { "CustomerID" };
 		int customerId=0;
 		PreparedStatement stmt;
 		String query;
+		
+		//first, get customer's code for query 3 (check first to avoid adding invalid customer):
+		String empCode="";
 		try {
-			query = "UPDATE bitemedb.users SET UserType = ? AND  WHERE UserName = ?";
+		query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName like ? AND IsApproved='1'";
+		stmt = conn.prepareStatement(query);
+		stmt.setString(1, "%"+values.get(5)+"%"); // customer's name
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next())
+			empCode=rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		if(!values.get(0).equals("Private")) // if business account:
+		{
+			if(empCode==null || empCode.equals(""))// cannot add new user.
+				return new ServerResponse("unApprovedEmployer");
+		}
+		
+		//query 1: set new userType value on users table:
+		try {
+			query = "UPDATE bitemedb.users SET UserType = ? WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "Customer");
 			stmt.setString(2, values.get(1));
@@ -2452,67 +2473,123 @@ public class mysqlConnection {
 			e.printStackTrace();
 		}//end of first query
 		
-		//query 2 : insert info in Customers table:
+		//query 2 : update/insert info in Customers table:
+		//first, check if need to update or to insert:
+		String temp=null;
+		int needUpdate=0;
 		try {
-			query = "INSERT INTO bitemedb.customers (UserName, IsBusiness, isPrivate) values (?, ?, ?)";
-			stmt = conn.prepareStatement(query,keys);
-			stmt.setString(1, values.get(1));
-			switch(values.get(0)) {
-				case "Private":
-					stmt.setInt(2, 0);
-					stmt.setInt(3, 1);
-					break;
-				case "Business":
-					stmt.setInt(2, 1);
-					stmt.setInt(3, 0);
-					break;
-				case "Both":
-					stmt.setInt(2, 1);
-					stmt.setInt(3, 1);
-					break;
-				default:
-					stmt.setInt(2, 0);
-					stmt.setInt(3, 0);
-					break;
-			}
-			stmt.execute();
-			ResultSet rs = stmt.getGeneratedKeys();
-			if(rs.next()) {
-				customerId=rs.getInt(1);
-			}
+		query = "SELECT UserName FROM bitemedb.customers where UserName= ?";
+		stmt = conn.prepareStatement(query);
+		stmt.setString(1, values.get(1)); // user name
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next())
+			temp=rs.getString(1);
+		if(temp!=null)
+			needUpdate=1;
+		stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
-		}//end of 2nd query
+		}
+		if(needUpdate==1) {
+			try {
+				switch(values.get(0)) {
+					case "Private":
+						query = "UPDATE bitemedb.customers SET isPrivate = ? WHERE UserName = ?";
+						stmt = conn.prepareStatement(query,keys);
+						stmt.setString(2, values.get(1)); //user name
+						stmt.setInt(1, 1);
+						break;
+					case "Business":
+						query = "UPDATE bitemedb.customers SET IsBusiness= ? WHERE UserName = ?";
+						stmt = conn.prepareStatement(query,keys);
+						stmt.setString(2, values.get(1)); //user name
+						stmt.setInt(1, 1);
+						break;
+					case "Both":
+						query = "UPDATE bitemedb.customers SET IsBusiness= ?, isPrivate = ? WHERE UserName = ?";
+						stmt = conn.prepareStatement(query,keys);
+						stmt.setInt(1, 1);
+						stmt.setInt(2, 1);
+						stmt.setString(3, values.get(1)); //user name
+						break;
+					default:
+						break;
+				}
+				stmt.execute();
+				ResultSet rs = stmt.getGeneratedKeys();
+				if(rs.next()) {
+					customerId=rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		//
+		else { // if need to insert
+			try {
+				query = "INSERT INTO bitemedb.customers (UserName, IsBusiness, isPrivate) values (?, ?, ?)";
+				stmt = conn.prepareStatement(query,keys);
+				stmt.setString(1, values.get(1));
+				switch(values.get(0)) {
+					case "Private":
+						stmt.setInt(2, 0);
+						stmt.setInt(3, 1);
+						break;
+					case "Business":
+						stmt.setInt(2, 1);
+						stmt.setInt(3, 0);
+						break;
+					case "Both":
+						stmt.setInt(2, 1);
+						stmt.setInt(3, 1);
+						break;
+					default:
+						stmt.setInt(2, 0);
+						stmt.setInt(3, 0);
+						break;
+				}
+				stmt.execute();
+				ResultSet rs = stmt.getGeneratedKeys();
+				if(rs.next()) {
+					customerId=rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}//end of 2nd query
+		}
+
 		//generate random qrcode:
 		Random rand = new Random();
 		String qrCode = Integer.toString(rand.nextInt(1999999999)) ;
 		//query 3 : insert info in w4c:  TBD
 		
 		try {
-			query = "INSERT INTO bitemedb.w4ccards (CustomerID, QRCode ,"
-					+ " CreditCardNumber, MonthlyBudget, DailyBudget, Balance, DailyBalance, EmployerCode) values (?, ?, ?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO bitemedb.w4ccards (CustomerID,EmployerCode, QRCode ,"
+					+ " CreditCardNumber, MonthlyBudget, DailyBudget, Balance, DailyBalance) values (?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query);
 			//Values = userType,username,monthly bud,daily budget,credit card number.
 			stmt.setInt(1, customerId);
-			stmt.setString(2, qrCode);
-			stmt.setString(3, values.get(4));// credit card number
-			stmt.setString(4, values.get(2)); // monthly budget
-			stmt.setString(5, values.get(3)); // daily budget
-			stmt.setString(6, values.get(2)); // monthly balance = budget
-			stmt.setString(7, values.get(3)); // daily balance=budget
+			stmt.setString(3, qrCode);
+			stmt.setString(4, values.get(4));// credit card number
+			stmt.setString(5, values.get(2)); // monthly budget
+			stmt.setString(6, values.get(3)); // daily budget
+			stmt.setString(7, values.get(2)); // monthly balance = budget
+			stmt.setString(8, values.get(3)); // daily balance=budget
 			switch(values.get(0)) {
 			case "Private":
-				stmt.setInt(8, 0);//no employer code
+				stmt.setString(2, null);//no employer code
 				break;
 			case "Business":
+				stmt.setString(2, empCode); // employers code
+				break;
 			case "Both": // has employer code:
-				stmt.setInt(2, 1);
-				stmt.setInt(3, 1);
+				stmt.setString(2, empCode); // employers code
 				break;
 			default:
-				stmt.setInt(2, 0);
-				stmt.setInt(3, 0);
+				stmt.setString(2, null);//no employer code
 				break;
 		}
 			stmt.execute();
@@ -2520,7 +2597,7 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
-	return null;
+	return new ServerResponse("Success");
 
 	}
 }
