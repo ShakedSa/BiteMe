@@ -691,7 +691,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * request from server to create new account with the following information:
-	 * @param values = UserType,username,monthly bud,daily budget,credit card number.
+	 * @param values = userType,username,monthly bud,daily budget,credit card number,employer's name.
 	 */
 	public void openNewAccount(ArrayList<String> values) {
 		

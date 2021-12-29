@@ -143,6 +143,9 @@ public class openNewAccountFinalController implements Initializable{
     	}
     }
     
+    /**
+     * changes scene to profile.
+     */
     @FXML
     void profileBtnClicked(MouseEvent event) {
     	router.showProfile();
@@ -193,6 +196,7 @@ public class openNewAccountFinalController implements Initializable{
     		values.add("");
     		values.add("");
     		values.add(creditCardNumberTxtField.getText());
+    		values.add("");
 
     	case "Business Account":
     		values.add("Business");
@@ -200,6 +204,8 @@ public class openNewAccountFinalController implements Initializable{
     		values.add(monthlyBudTxtField.getText());
     		values.add(dailyBudTxtField.getText());
     		values.add("");
+    		values.add(employersNameTxtField.getText());
+    		
 
     	case "Business & Private Account" : 
     		values.add("Both");
@@ -207,10 +213,11 @@ public class openNewAccountFinalController implements Initializable{
     		values.add(monthlyBudTxtField.getText());
     		values.add(dailyBudTxtField.getText());
     		values.add(creditCardNumberTxtField.getText());
+    		values.add(employersNameTxtField.getText());
 		default:
 			break;
     	}
-		//values = userType,username,monthly bud,daily budget,credit card number.
+		//values = userType,username,monthly bud,daily budget,credit card number,employer's name.
     	//modify user status, add customer table, add w4c:
     	ClientGUI.client.openNewAccount(values);
     }

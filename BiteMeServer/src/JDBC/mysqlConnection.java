@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import Config.ReadPropertyFile;
 import Entities.BranchManager;
@@ -2431,7 +2432,7 @@ public class mysqlConnection {
 	/**
 	 * creates a new customer for existing account in database,
 	 * modifies: user status, adds him to customer table, and adds w4c values
-	 * @param Values = userType,username,monthly bud,daily budget,credit card number.
+	 * @param values = userType, username, monthly bud, daily budget,credit card number,employer's name.
 	 * @return true if success, false if not
 	 */
 	public static ServerResponse openNewAccount(ArrayList<String> values) {
@@ -2442,7 +2443,7 @@ public class mysqlConnection {
 		PreparedStatement stmt;
 		String query;
 		try {
-			query = "UPDATE bitemedb.users SET UserType = ? WHERE UserName = ?";
+			query = "UPDATE bitemedb.users SET UserType = ? AND  WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "Customer");
 			stmt.setString(2, values.get(1));
@@ -2483,17 +2484,42 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}//end of 2nd query
+		//generate random qrcode:
+		Random rand = new Random();
+		String qrCode = Integer.toString(rand.nextInt(1999999999)) ;
 		//query 3 : insert info in w4c:  TBD
-		/*
+		
 		try {
-			query = "INSERT INTO bitemedb.w4ccards (UserName, IsBusiness, isPrivate) values (?, ?, ?)";
+			query = "INSERT INTO bitemedb.w4ccards (CustomerID, QRCode ,"
+					+ " CreditCardNumber, MonthlyBudget, DailyBudget, Balance, DailyBalance, EmployerCode) values (?, ?, ?, ?, ?, ?, ?, ?)";
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, values.get(1));
+			//Values = userType,username,monthly bud,daily budget,credit card number.
+			stmt.setInt(1, customerId);
+			stmt.setString(2, qrCode);
+			stmt.setString(3, values.get(4));// credit card number
+			stmt.setString(4, values.get(2)); // monthly budget
+			stmt.setString(5, values.get(3)); // daily budget
+			stmt.setString(6, values.get(2)); // monthly balance = budget
+			stmt.setString(7, values.get(3)); // daily balance=budget
+			switch(values.get(0)) {
+			case "Private":
+				stmt.setInt(8, 0);//no employer code
+				break;
+			case "Business":
+			case "Both": // has employer code:
+				stmt.setInt(2, 1);
+				stmt.setInt(3, 1);
+				break;
+			default:
+				stmt.setInt(2, 0);
+				stmt.setInt(3, 0);
+				break;
+		}
 			stmt.execute();
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return null;
-		}*/
+		}
 	return null;
 
 	}
