@@ -41,7 +41,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TextField fx:id="employersNameTxtField" editable="false" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField fx:id="employersNameTxtField" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
       <ImageView fx:id="approvalBtn1" fitHeight="50.0" fitWidth="46.0" layoutX="548.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../scene%20builder/images/sendIcon.gif" />
@@ -133,18 +133,23 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
-      <Text fx:id="updateSucess" fill="#62d019" layoutX="219.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!">
+      <Text fx:id="updateSucess" fill="#62d019" layoutX="219.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="175.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="175.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <Label fx:id="infoMsg" layoutX="90.0" layoutY="152.0" />
-      <Text fx:id="inputErrorTxt" fill="RED" layoutX="219.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input !">
+      <Text fx:id="inputErrorTxt" fill="RED" layoutX="219.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input !" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="srvErrorTxt" fill="RED" layoutX="211.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Error, cannot add user." visible="false">
          <font>
             <Font name="Berlin Sans FB" size="21.0" />
          </font>
