@@ -89,8 +89,8 @@ public class addNewSupplierTableController implements Initializable {
     
     
   
-  	/**shows a table with possible users that could be added
-  	 * 
+  	/**fill and show a table with users that could be added as suppliers
+  	 * modifies: approvalTable
   	 */
   	public void initTable(){
   		ClientGUI.client.searchForNewUsers();
@@ -134,8 +134,8 @@ public class addNewSupplierTableController implements Initializable {
   	}
   	
   	
-  	/**set table columns and values
-  	 * @param list
+  	/**set the table columns and values
+  	 * @param list = userName, firstName, lastName, id, email, phone
   	 */
   	private void setTable(ArrayList<NewAccountUser> list) {
   		UserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
@@ -151,11 +151,12 @@ public class addNewSupplierTableController implements Initializable {
   	
 	
 	/**convert  arrayList to ObservableList
-	 * @param list2
-	 * @return
+	 * @param list2 = = userName, firstName, lastName, id, email, phone
+	 * @return ObservableList of NewAccountUser 
 	 */
 	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
 		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+		//itarate through the arrayList
 		for (NewAccountUser customer : list2) {
 			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(),
 					customer.getFirstName(), customer.getLastName(), customer.getId(),
@@ -166,7 +167,11 @@ public class addNewSupplierTableController implements Initializable {
 	}
   	
   	
-      @FXML
+      /**after a row is double clicked, save the row values
+     * @param event
+     * modifies: id, fName, lName, userName
+     */
+    @FXML
       void copyTableData(MouseEvent event) {
       	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
               id = (approvalTable.getSelectionModel().getSelectedItem().getId());
@@ -176,7 +181,9 @@ public class addNewSupplierTableController implements Initializable {
       	}
       }
       
+    
     /**delete user info fields when leaving and stepping the page
+     * modifies: id, fName, lName, userName
      */
     public void resetInfo() {
     	id = "";
@@ -184,6 +191,10 @@ public class addNewSupplierTableController implements Initializable {
     	lName = "";
     }
     
+    
+    /**change the page into the final page of adding a new supplier
+     * @param event
+     */
     @FXML
     void approvalClicked(MouseEvent event) {
     	 if(id.equals("")) {

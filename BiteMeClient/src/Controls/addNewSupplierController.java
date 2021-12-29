@@ -34,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
+ * This controller is incharge of adding new suppliers logic
  * @author Michael
  *
  */
@@ -145,10 +146,6 @@ public class addNewSupplierController implements Initializable {
 	
 	private File imgToUpload;
 	
-	private ArrayList<String> info;
-	
-	private String branchName;
-	
 	private ObservableList<String> list;
 	
 	private String userName;
@@ -156,7 +153,7 @@ public class addNewSupplierController implements Initializable {
 
 	
 	/**set possible commissions inside the combo box
-	 * 
+	 * modifies: monthlyCommissionBox
 	 */
 	private void setMonthlyCommissionComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
@@ -172,7 +169,7 @@ public class addNewSupplierController implements Initializable {
 	
 	
 		/**set possible restuarant types inside the combo box
-		 * 
+		 * modifies: restaurantTypeComboBox
 		 */
 		private void setRestaurantTypeComboBox() {
 			ArrayList<String> type = new ArrayList<String>();
@@ -186,7 +183,7 @@ public class addNewSupplierController implements Initializable {
 
 		
 	/**hides or shows certain componets in the page
-	 * @param val
+	 * @param val = True / false
 	 */
 	public void enableEdit(boolean val) {
 		restaurantName.setVisible(val);
@@ -209,9 +206,9 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	
-	/**get user information from the prev page and shows it in a text field
-	 * @param fName
-	 * @param lName
+	/**gets user information from the prev page and shows it in a text field
+	 * @param fName = user first name
+	 * @param lName = user last name
 	 * @param userName
 	 */
 	public void setUserInfo(String fName, String lName, String userName) {
@@ -222,14 +219,16 @@ public class addNewSupplierController implements Initializable {
 	
 	
 	/**check user input in all possible fields
-	 * @return boolean
+	 * @return true if the fields are filled correctly
 	 */
 	private boolean checkInfoFields() {
+		//checks for special characters
     	if( InputValidation.checkSpecialCharacters(restaurantNameTxtField.getText())) {
     		Error.setVisible(true);
     		Error.setText("Name can't contain special characters!");
     		return false;
     	}
+    	//checks if the field is not empty
     	if(restaurantNameTxtField.getText().length() == 0) {
     		Error.setVisible(true);
     		Error.setText("Name must be filled!");
@@ -256,6 +255,7 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Please choose monthly commission");
     		return false;
     	}
+    	//checks that an image has been uploaded
     	if(imgToUpload == null) {
     		Error.setVisible(true);
     		Error.setText("Please upload an image");
@@ -271,17 +271,27 @@ public class addNewSupplierController implements Initializable {
     }
 	
 	
+	/**shows instructions label for correct address format 
+	 * @param event
+	 */
 	@FXML
 	void infoIconEnter(MouseEvent event) {
 		infoTxtArea.setVisible(true);
 	}
 	
+	
+	/**hides instructions label for correct address format
+	 * @param event
+	 */
 	@FXML
 	void infoIconExit(MouseEvent event) {
 		infoTxtArea.setVisible(false);
 	}
 
 	
+	/**send request to client UI in order to add a new supplier
+	 * @param event
+	 */
 	@FXML
 	void addSupplierClicked(MouseEvent event) {
 		if(!checkInfoFields()) { //check that all the fields are filled correctly
@@ -321,12 +331,17 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	
+	/**let's the user browse a file from his computer
+	 * @param event
+	 * modifies: imgToUpload (File)
+	 */
 	@FXML
     void uploadImageClicked(MouseEvent event) {
     	UploadMsgTxt.setVisible(false);
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");                               
     	imgToUpload = fc.showOpenDialog(router.getStage());
+    	//check that the file is an image
     	if(!checkImageFormat() ) {
     		UploadMsgTxt.setStyle("-fx-text-fill: green;");
     		UploadMsgTxt.setText("The image was uploaded successfully!");
@@ -340,7 +355,7 @@ public class addNewSupplierController implements Initializable {
     }
 	
 	
-	/**checks the the file format is suiable for image
+	/**checks that the file format is suitable for an image
 	 * @return true if it is
 	 */
 	private boolean checkImageFormat() {
@@ -351,7 +366,7 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	
-	/**delete user previous actions when entering and leaving the page
+	/**delete user previous actions when entering and exiting the page
 	 */
 	public void reSetTheScreen() {
 		restaurantTypeCombo.valueProperty().set(null);
@@ -394,7 +409,11 @@ public class addNewSupplierController implements Initializable {
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
-
+	
+	
+	/**
+	 *init controller information upon creation
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -417,5 +436,4 @@ public class addNewSupplierController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
 }
