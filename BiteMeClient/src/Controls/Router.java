@@ -632,7 +632,7 @@ public class Router {
 				OrderReceivedController = null;
 				SupplierPanelController = null;
         CreateRevenueQuarterlyReportController=null;
-				order = null;
+				order = new Order();
 				delivery = null;
 				orderDeliveryMethod = null;
 				ClientGUI.client.setUser(null);
@@ -876,8 +876,10 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> products) {
-		if (order == null || order.getProducts() == null || products == null) {
-			order = new Order();
+		if(order == null) {
+			return;
+		}
+		if (order.getProducts() == null || products == null) {
 			order.setProducts(products);
 			return;
 		}

@@ -33,6 +33,8 @@ public class paymentController implements Initializable {
 
 	private Scene scene;
 
+	Customer user;
+
 	@FXML
 	private Rectangle avatar;
 
@@ -77,9 +79,9 @@ public class paymentController implements Initializable {
 
 	@FXML
 	private CheckBox refundCheck;
-	
+
 	@FXML
-    private Label refundText;
+	private Label refundText;
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -192,26 +194,47 @@ public class paymentController implements Initializable {
 		businessRadio.requestFocus();
 		businessRadio.setFocusTraversable(true);
 		businessRadio.setSelected(true);
-		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
-		W4CCard w4cCard = customer.getW4c();
-		if (w4cCard.getDailyBalance() == 0) {
-			businessRadio.setSelected(false);
-			businessRadio.setDisable(true);
-			privateRadio.setSelected(true);
-			errorMsg.setText("Daily balance of business account is 0.\nPlease use your personal credit card.");
-			return;
-		}
-		showTextField(true);
-		if (router.getOrderDeliveryMethod().getFinalPrice() > w4cCard.getDailyBudget()) {
-			bothRadio.setVisible(true);
-			bothRadio.setSelected(true);
-			bothRadio.requestFocus();
-			businessRadio.setSelected(false);
-			errorMsg.setText(
-					"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
+		/** Check w4c card */
+		W4CCard w4cCard = user.getW4c();
+		if (w4cCard.getDailyBudget() == 0) {
+			if (w4cCard.getBalance() < router.getOrderDeliveryMethod().getFinalPrice()) {
+				if (user.isPrivate()) {
+					bothRadio.setVisible(true);
+					bothRadio.setSelected(true);
+					bothRadio.requestFocus();
+					businessRadio.setSelected(false);
+					errorMsg.setText(
+							"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
+					showTextField(true);
+				} else {
+					businessRadio.setSelected(false);
+					businessRadio.setDisable(true);
+					errorMsg.setText(
+							"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private before ordering.");
+					nextOrderStep.setDisable(true);
+				}
+			}
+		}else {
+			if(w4cCard.getDailyBalance() < router.getOrderDeliveryMethod().getFinalPrice()) {
+				if (user.isPrivate()) {
+					bothRadio.setVisible(true);
+					bothRadio.setSelected(true);
+					bothRadio.requestFocus();
+					businessRadio.setSelected(false);
+					showTextField(true);
+					errorMsg.setText(
+							"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
+				} else {
+					businessRadio.setSelected(false);
+					businessRadio.setDisable(true);
+					nextOrderStep.setDisable(true);
+					errorMsg.setText(
+							"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private.");
+				}
+			}
 		}
 	}
-
+	
 	@FXML
 	void selectPrivate(MouseEvent event) {
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
@@ -229,36 +252,38 @@ public class paymentController implements Initializable {
 		employerCodeTextField.setVisible(val);
 		employerCodeTxt.setVisible(val);
 	}
-	
+
 	@FXML
-    void bothSelected(MouseEvent event) {
+	void bothSelected(MouseEvent event) {
 		bothRadio.setSelected(true);
-    }
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		/**
-		 * On load disable for the user the option to select 'business account' if the
-		 * user is not an approved business account
-		 */
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
-		W4CCard w4c = user.getW4c();
-		if (w4c.getEmployerID() == null || w4c.getEmployerID().equals("")) {
-			businessRadio.setSelected(false);
-			businessRadio.setDisable(true);
-			privateRadio.setSelected(true);
-		}
-		businessRadio.setFocusTraversable(false);
-		privateRadio.setFocusTraversable(true);
 		router = Router.getInstance();
 		router.setPaymentController(this);
 		router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
-		checkRefunds();
+		/**
+		 * On load disable for the user the option to select 'business account' if the
+		 * user is not an approved business account
+		 */
+		user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		if ((user.isBusiness() && !user.isApproved()) || !user.isBusiness()) {
+			selectPrivate(null);
+			businessRadio.setDisable(true);
+			privateRadio.setFocusTraversable(true);
+		} else {
+			if (!user.isPrivate()) {
+				selectBusiness(null);
+				privateRadio.setDisable(true);
+				businessRadio.setFocusTraversable(true);
+			}
+		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void checkRefunds() {
+	public void checkRefunds() {
 		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {

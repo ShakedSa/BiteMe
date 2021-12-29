@@ -100,30 +100,4 @@ public class InputValidation {
 		return true;
 	}
 
-	/**
-	 * Method for validating time. checks if the inputed time is valid. The
-	 * method<br>
-	 * returns an integer representing the answer: <br>
-	 * negative number : input hour < localtime hour. <br>
-	 * positive number : input minute < localtime minute, and hour is equal to the
-	 * current hour.<br>
-	 * 0 if the hour is valid. is less or equal.
-	 * 
-	 * @param hour
-	 * @param minute
-	 * 
-	 * @return integer;
-	 */
-	public static int checkTime(int hour, int minute) {
-		LocalTime now = LocalTime.now();
-		if (hour < now.getHour()) {
-			return -1;
-		}
-		if (hour == now.getHour()) {
-			if (minute < now.getMinute()) {
-				return 1;
-			}
-		}
-		return 0;
-	}
 }
