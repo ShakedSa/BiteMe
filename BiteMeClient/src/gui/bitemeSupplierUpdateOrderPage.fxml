@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,25 +26,24 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="130.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Number">
+      <Text fx:id="orderNumberTxt" layoutX="130.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="Berlin Sans FB" size="26.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="includeDeliveryTxt" layoutX="130.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include Delivery?">
+      <Text fx:id="includeDeliveryTxt" layoutX="130.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include Delivery?">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="OrderNumberTxtField" layoutX="382.0" layoutY="185.0" promptText="Order Number" />
-      <Text layoutX="128.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Order">
+      <Text layoutX="128.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Order">
          <font>
-            <Font name="Berlin Sans FB" size="39.0" />
+            <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text fx:id="enterPlannedTineTxt" layoutX="130.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Planned Time">
+      <Text fx:id="enterPlannedTineTxt" layoutX="130.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Planned Time">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
@@ -86,7 +84,7 @@
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Label>
-      <Text fx:id="hourTxt" fill="#a8a1a1" layoutX="385.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
+      <Text fx:id="hourTxt" fill="#a8a1a1" layoutX="336.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -94,9 +92,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="382.0" layoutY="386.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="453.0" layoutY="386.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
-      <Text fx:id="minutesTxt" fill="#a8a1a1" layoutX="457.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
+      <ComboBox fx:id="hourBox" editable="true" focusTraversable="false" layoutX="333.0" layoutY="367.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <ComboBox fx:id="minutesBox" editable="true" focusTraversable="false" layoutX="404.0" layoutY="367.0" prefHeight="26.0" prefWidth="57.0" promptText="00" />
+      <Text fx:id="minutesTxt" fill="#a8a1a1" layoutX="408.0" layoutY="363.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
@@ -104,42 +102,53 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="378.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#includeDeliveryBtnClicked" text="Yes">
+      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="333.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#includeDeliveryBtnClicked" text="Yes">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="456.0" layoutY="333.0" mnemonicParsing="false" onMouseClicked="#notIncludeDeliveryBtnClicked" text="No">
+      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="402.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#notIncludeDeliveryBtnClicked" text="No">
          <font>
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="successMsg" fill="#62d019" layoutX="166.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order was updated successfully!">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="searchBtn" alignment="CENTER" layoutX="545.0" layoutY="179.0" onMouseClicked="#searchClicked" prefHeight="25.0" prefWidth="131.0" text="Search">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
-      <Text fx:id="successMsg" fill="#62d019" layoutX="166.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order was updated successfully!">
-         <font>
-            <Font name="Berlin Sans FB" size="20.0" />
-         </font>
-      </Text>
-      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="122.0" layoutY="428.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="VImage" fitHeight="33.0" fitWidth="30.0" layoutX="130.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <ComboBox fx:id="updateDataComboBox" layoutX="403.0" layoutY="283.0" prefHeight="26.0" prefWidth="228.0" />
-      <Text fx:id="updateDataTxt" layoutX="130.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to update that:">
+      <ComboBox fx:id="updateDataComboBox" editable="true" layoutX="333.0" layoutY="264.0" prefHeight="26.0" prefWidth="228.0" />
+      <Text fx:id="updateDataTxt" layoutX="130.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to update that:">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
+      <Text fx:id="orderStatusTxt" layoutX="130.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order status is: ">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="PendingTxt" fill="#ff5151" layoutX="233.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="ReceivedTxt" fill="#c6a429" layoutX="233.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Received">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="57.0" layoutY="490.0" onMouseClicked="#returnToUpdateOrderTable" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ImageView fx:id="newMsgImage" fitHeight="38.0" fitWidth="43.0" layoutX="498.0" layoutY="31.0" onMouseClicked="#newMsgClicked" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/newMsg.png" />
@@ -148,31 +157,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Text fx:id="orderStatusTxt" layoutX="130.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order status is: ">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="PendingTxt" fill="#ff5151" layoutX="270.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="ReceivedTxt" fill="#ffd015" layoutX="270.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Received">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="ReadyTxt" fill="#62d019" layoutX="270.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Text fx:id="noUpdate" layoutX="130.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="57.0" layoutY="490.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

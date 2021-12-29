@@ -376,12 +376,12 @@ public class ClientUI implements ClientIF {
 	/**
 	 * get order details
 	 * 
-	 * @param orderNumber
+	 * @param restaurantName
 	 */
-	public void getOrderInfo(String orderNumber, String restaurantName) {
+	public void getOrderInfo(String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList(orderNumber, restaurantName));
+			arr.add(restaurantName);
 			ServerResponse serverResponse = new ServerResponse("getOrderInfo");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);

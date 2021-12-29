@@ -344,7 +344,7 @@ public class mysqlConnection {
 			return null;
 		}
 	}
-	
+
 	public static ServerResponse getRefund(Customer customer) {
 		ServerResponse serverResponse = new ServerResponse("Refunds");
 		HashMap<String, Float> refunds = getRefund(customer.getCustomerID());
@@ -1357,14 +1357,12 @@ public class mysqlConnection {
 	 * 
 	 * @return deliveryNumber
 	 */
-	public static ServerResponse updateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber, String time,
-			String status) {
+	public static ServerResponse updateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber,
+			String time, String status) {
 		ServerResponse serverResponse = new ServerResponse("Integer");
 		try {
 			if (receivedOrReady.equals("Order Received")) {
 				String query = "UPDATE bitemedb.orders SET OrderStatus = ?, OrderReceived = ? WHERE OrderNumber = ? AND RestaurantName = ?";
-				// String query = "UPDATE bitemedb.orders SET OrderStatus = ? WHERE OrderNumber
-				// = ?";
 				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, status);
 				stmt.setString(2, time);
@@ -1417,23 +1415,18 @@ public class mysqlConnection {
 	 * @return array list that includes - restaurant name, received time, planned
 	 *         time and status
 	 */
-	public static ServerResponse getOrderInfo(String orderNumber, String restaurantName) {
+	public static ServerResponse getOrderInfo(String restaurantName) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
-		ArrayList<String> response = new ArrayList<>();
+		ArrayList<Order> response = new ArrayList<>();
 		try {
 			PreparedStatement stmt;
-			String query = "SELECT * FROM bitemedb.orders WHERE OrderNumber = ? AND RestaurantName = ?";
+			String query = "SELECT * FROM bitemedb.orders WHERE RestaurantName = ? AND (OrderStatus = 'Pending' OR OrderStatus = 'Received')";
 			stmt = conn.prepareStatement(query);
-			stmt.setInt(1, Integer.parseInt(orderNumber));
-			stmt.setString(2, restaurantName);
+			stmt.setString(1, restaurantName);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				response.add(rs.getString(2)); // restaurant name
-				response.add(rs.getString(4)); // received time
-				response.add(rs.getString(5)); // planned time
-				response.add(rs.getString(9)); // status
-			} else {
-				response.add("Error");
+			// save in response the orders
+			while (rs.next()) {
+				response.add(new Order(rs.getInt(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(9)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1445,6 +1438,7 @@ public class mysqlConnection {
 		serverResponse.setServerResponse(response);
 		return serverResponse;
 	}
+
 
 	/**
 	 * getting phone number and customer name for each deliveryNumber
@@ -1494,7 +1488,7 @@ public class mysqlConnection {
 			checkStmt.setString(1, product.getRestaurantName());
 			checkStmt.setString(2, product.getDishName());
 			ResultSet rs = checkStmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				return null;
 			}
 		} catch (SQLException e) {
@@ -2367,7 +2361,7 @@ public class mysqlConnection {
 		}
 
 	}
-	
+
 	public static void resetMonthlyBalance() {
 		String query = "UPDATE bitemedb.w4ccards SET balance = MonthlyBudget;";
 		Statement stmt;
