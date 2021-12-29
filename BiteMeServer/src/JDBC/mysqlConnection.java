@@ -575,9 +575,10 @@ public class mysqlConnection {
 		Statement stmt;
 		ArrayList<Supplier> favRestaurants = new ArrayList<>();
 		try {
-			String query = "SELECT RestaurantName, RestaurantType, Image"
-					+ " FROM bitemedb.suppliers"
-					+ " ORDER BY (SELECT COUNT(Rating) FROM bitemedb.orders O inner join bitemedb.ratings R inner join bitemedb.suppliers S WHERE O.RestaurantName = S.RestaurantName AND O.OrderNumber = R.OrderNumber) DESC"
+			String query = "SELECT S.RestaurantName, S.RestaurantType, S.Image, SUM(R.Rating) as rates"
+					+ " FROM bitemedb.orders O inner join bitemedb.ratings R inner join bitemedb.suppliers S WHERE O.RestaurantName = S.RestaurantName AND O.OrderNumber = R.OrderNumber\r\n"
+					+ " GROUP BY S.RestaurantName"
+					+ " ORDER BY rates DESC"
 					+ " LIMIT 6;";
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
