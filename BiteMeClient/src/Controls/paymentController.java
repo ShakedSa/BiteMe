@@ -9,7 +9,9 @@ import Entities.Customer;
 import Entities.W4CCard;
 import Enums.PaymentMethod;
 import client.ClientGUI;
-import javafx.application.Platform;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,8 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -81,7 +83,7 @@ public class paymentController implements Initializable {
 	private CheckBox refundCheck;
 
 	@FXML
-	private Label refundText;
+	private TextArea refundAmount;
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
@@ -96,25 +98,18 @@ public class paymentController implements Initializable {
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		errorMsg.setText("");
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
 		W4CCard w4c = user.getW4c();
-		/** Checking if the user got refund and selected to use it. */
-		if (refundCheck.isSelected()) {
-			float refund = user.getRefunds().get(router.getOrder().getRestaurantName());
-			/** Checking whether the refund is larger than the order final price. */
-			if (refund > router.getOrderDeliveryMethod().getFinalPrice()) {
-				user.getRefunds().put(router.getOrder().getRestaurantName(),
-						refund - router.getOrderDeliveryMethod().getFinalPrice());
-				router.getOrderDeliveryMethod().setFinalPrice(0);
-			} else {
-				router.getOrderDeliveryMethod().setFinalPrice(router.getOrderDeliveryMethod().getFinalPrice() - refund);
-				user.getRefunds().remove(router.getOrder().getRestaurantName());
-			}
-		}
+		router.getOrderDeliveryMethod().setFinalPrice(checkRefundSelected());
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
 			if (w4c.getBalance() == 0 || w4c.getDailyBalance() == 0) {
-				errorMsg.setText("Employer's balance is 0.\nPlease select different type of payment method.");
-				return;
+				if (user.isPrivate()) {
+					errorMsg.setText("Employer's balance is 0.\nPlease select a different type of payment method.");
+					return;
+				} else {
+					errorMsg.setText(
+							"Employer's balance is 0 and your account is not accepted as private.\nPlease reach to the branch manager for resolving this issue before ordering.");
+					nextOrderStep.setDisable(true);
+				}
 			}
 			if (!employerCodeTextField.getText().equals(w4c.getEmployerID())) {
 				errorMsg.setText("Incorrect employer's code.");
@@ -159,6 +154,37 @@ public class paymentController implements Initializable {
 	}
 
 	@FXML
+	void displayRefundAmount(MouseEvent event) {
+		refundAmount.setVisible(true);
+	}
+
+	@FXML
+	void hideRefundAmount(MouseEvent event) {
+		refundAmount.setVisible(false);
+	}
+
+	@FXML
+	void checkBalanceAfterRefund(ActionEvent event) {
+		if (refundCheck.isSelected()) {
+			final FloatProperty finalPrice = new SimpleFloatProperty(checkRefundSelected());
+			if (bothRadio.isSelected()) {
+				W4CCard w4c = user.getW4c();
+				if (w4c.getDailyBalance() == 0) {
+					checkW4CBudgetAndBalance(w4c, finalPrice.get(), true);
+				} else {
+					checkW4CBudgetAndBalance(w4c, finalPrice.get(), false);
+				}
+			}
+		} else {
+			if (privateRadio.isSelected()) {
+				selectPrivate(null);
+			} else {
+				selectBusiness(null);
+			}
+		}
+	}
+
+	@FXML
 	void openProfile(MouseEvent event) {
 		router.showProfile();
 	}
@@ -186,55 +212,88 @@ public class paymentController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Checks if the user selected to use his refund.<br>
+	 * And calculate the final price based on the user's refund amount..
+	 */
+	private float checkRefundSelected() {
+		final FloatProperty finalPrice = new SimpleFloatProperty(router.getOrderDeliveryMethod().getFinalPrice());
+		if (refundCheck.isSelected()) {
+			final FloatProperty refundAmount = new SimpleFloatProperty(
+					user.getRefunds().get(router.getOrder().getRestaurantName()));
+			if (refundAmount.get() >= finalPrice.get()) {
+				finalPrice.set(0);
+			} else {
+				finalPrice.set(finalPrice.get() - refundAmount.get());
+			}
+		}
+		return finalPrice.get();
+	}
+
+	/**
+	 * FXML method for selecting the business radio button.
+	 */
 	@FXML
 	void selectBusiness(MouseEvent event) {
+		final FloatProperty finalPrice = new SimpleFloatProperty(checkRefundSelected());
 		if (privateRadio.isSelected()) {
 			privateRadio.setSelected(false);
 		}
 		businessRadio.requestFocus();
 		businessRadio.setFocusTraversable(true);
 		businessRadio.setSelected(true);
+		showTextField(true);
+		if (finalPrice.get() == 0) {
+			return;
+		}
 		/** Check w4c card */
 		W4CCard w4cCard = user.getW4c();
 		if (w4cCard.getDailyBudget() == 0) {
-			if (w4cCard.getBalance() < router.getOrderDeliveryMethod().getFinalPrice()) {
-				if (user.isPrivate()) {
-					bothRadio.setVisible(true);
-					bothRadio.setSelected(true);
-					bothRadio.requestFocus();
-					businessRadio.setSelected(false);
-					errorMsg.setText(
-							"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
-					showTextField(true);
-				} else {
-					businessRadio.setSelected(false);
-					businessRadio.setDisable(true);
-					errorMsg.setText(
-							"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private before ordering.");
-					nextOrderStep.setDisable(true);
-				}
-			}
-		}else {
-			if(w4cCard.getDailyBalance() < router.getOrderDeliveryMethod().getFinalPrice()) {
-				if (user.isPrivate()) {
-					bothRadio.setVisible(true);
-					bothRadio.setSelected(true);
-					bothRadio.requestFocus();
-					businessRadio.setSelected(false);
-					showTextField(true);
-					errorMsg.setText(
-							"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
-				} else {
-					businessRadio.setSelected(false);
-					businessRadio.setDisable(true);
-					nextOrderStep.setDisable(true);
-					errorMsg.setText(
-							"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private.");
-				}
-			}
+			checkW4CBudgetAndBalance(w4cCard, finalPrice.get(), true);
+		} else {
+			checkW4CBudgetAndBalance(w4cCard, finalPrice.get(), false);
 		}
 	}
-	
+
+	/**
+	 * Method to check if the user's balance is good for the order's price. The
+	 * method checks for daily balance and monthly balance, depend on the account's
+	 * preferences(set in advanced).
+	 * 
+	 * @param w4c
+	 * @param finalPrice
+	 * @param val
+	 */
+	private void checkW4CBudgetAndBalance(W4CCard w4c, float finalPrice, boolean val) {
+		float balance = val ? w4c.getBalance() : w4c.getDailyBalance();
+		if (balance < finalPrice) {
+			if (user.isPrivate()) {
+				bothRadio.setVisible(true);
+				bothRadio.setSelected(true);
+				bothRadio.requestFocus();
+				businessRadio.setSelected(false);
+				errorMsg.setText(
+						"W4C Card budget is lower than order price.\nWould you like to pay with the business card & private credit card?\nFor convenient 'both' option is automatically selected.");
+				showTextField(true);
+			} else {
+				businessRadio.setSelected(false);
+				businessRadio.setDisable(true);
+				errorMsg.setText(
+						"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private before ordering.");
+				nextOrderStep.setDisable(true);
+			}
+		} else {
+			bothRadio.setVisible(false);
+			businessRadio.setSelected(true);
+			businessRadio.requestFocus();
+			errorMsg.setText("");
+			showTextField(true);
+		}
+	}
+
+	/**
+	 * FXML method for selecting the private radio button.
+	 */
 	@FXML
 	void selectPrivate(MouseEvent event) {
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
@@ -248,11 +307,20 @@ public class paymentController implements Initializable {
 		showTextField(false);
 	}
 
+	/**
+	 * Display or hide the employer's fields(Controlling the state of the user's
+	 * view).
+	 * 
+	 * @param val
+	 */
 	private void showTextField(boolean val) {
 		employerCodeTextField.setVisible(val);
 		employerCodeTxt.setVisible(val);
 	}
 
+	/**
+	 * FXML method for selecting the business radio button.
+	 */
 	@FXML
 	void bothSelected(MouseEvent event) {
 		bothRadio.setSelected(true);
@@ -307,8 +375,8 @@ public class paymentController implements Initializable {
 		user.setRefunds((HashMap<String, Float>) ClientGUI.client.getLastResponse().getServerResponse());
 		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
 			refundCheck.setVisible(true);
-			refundText.setText("You got " + user.getRefunds().get(router.getOrder().getRestaurantName())
-					+ "\u20AA refund for this restaurant.\nCheck the check box if you would like to use it.");
+			refundAmount.setText("You got " + user.getRefunds().get(router.getOrder().getRestaurantName())
+					+ "\u20AA refund for this restaurant.");
 		}
 	}
 

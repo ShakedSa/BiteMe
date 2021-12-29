@@ -1,36 +1,39 @@
 package Controls;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+
+import Entities.MyFile;
 import Entities.ServerResponse;
+import Entities.Supplier;
 import Entities.User;
 import Enums.UserType;
-import Util.LoadingAnimation;
 import client.ClientGUI;
-import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -55,8 +58,8 @@ public class homePageController implements Initializable {
 	private Scene scene = null;
 
 	private AnchorPane mainContainer;
-	private Deque<String> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
-	private Deque<String> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
+	private Deque<Supplier> favListDisplayed = new LinkedList<>(); // Displayed 3 fav restaurants
+	private Deque<Supplier> favListHidden = new LinkedList<>(); // 3 hidden fav restaurants
 
 	@FXML
 	private ImageView bagImg;
@@ -111,6 +114,15 @@ public class homePageController implements Initializable {
 
 	@FXML
 	private ImageView res3;
+	
+	@FXML
+    private Text loadingTxt1;
+
+    @FXML
+    private Text loadingTxt2;
+
+    @FXML
+    private Text loadingTxt3;
 
 	@FXML
 	private Text itemsCounter;
@@ -134,15 +146,25 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void caruasalLeftClicked(MouseEvent event) {
-		String resName = favListHidden.pollLast().toLowerCase();
-		favListHidden.addFirst(res1.getId());
-		favListDisplayed.addLast(resName);
+		loadingTxt3.setVisible(true);
+		Supplier supplier = favListHidden.pollLast();
+		Supplier toHide = favListDisplayed.poll();
+		favListHidden.addFirst(toHide);
+		favListDisplayed.addLast(supplier);
 		res1.setImage(res2.getImage());
-		res1.setId(res2.getId());
 		res2.setImage(res3.getImage());
-		res2.setId(res3.getId());
-		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
-		res3.setId(resName);
+		MyFile file = supplier.getRestaurantLogo();
+		byte[] imageArr = file.getMybytearray();
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(imageArr));
+			Image image = SwingFXUtils.toFXImage(img, null);
+			loadingTxt3.setVisible(false);
+			res3.setImage(image);
+		}catch(IOException e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	/**
@@ -152,15 +174,25 @@ public class homePageController implements Initializable {
 	 */
 	@FXML
 	void caruasalRight(MouseEvent event) {
-		String resName = favListHidden.pollFirst().toLowerCase();
-		favListHidden.addLast(res3.getId());
-		favListDisplayed.addFirst(resName);
+		loadingTxt1.setVisible(true);
+		Supplier supplier = favListHidden.pollFirst();
+		Supplier toHide = favListDisplayed.pollLast();
+		favListHidden.addLast(toHide);
+		favListDisplayed.addFirst(supplier);
 		res3.setImage(res2.getImage());
-		res3.setId(res2.getId());
 		res2.setImage(res1.getImage());
-		res2.setId(res1.getId());
-		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
-		res1.setId(resName);
+		MyFile file = supplier.getRestaurantLogo();
+		byte[] imageArr = file.getMybytearray();
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(imageArr));
+			Image image = SwingFXUtils.toFXImage(img, null);
+			loadingTxt1.setVisible(false);
+			res1.setImage(image);
+		}catch(IOException e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@FXML
@@ -194,7 +226,6 @@ public class homePageController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-//				controller.setRestaurants();
 				controller.displayOpenOrders();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -421,8 +452,8 @@ public class homePageController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setFavRestaurants() {
-		HashMap<String, File> favRestaurants;
 		Thread t = new Thread(new Runnable() {
+			ArrayList<Supplier> favRestaurants;
 			@Override
 			public void run() {
 				ClientGUI.client.favRestaurantsRequest();
@@ -433,26 +464,12 @@ public class homePageController implements Initializable {
 						e.printStackTrace();
 						return;
 					}
+					favRestaurants = (ArrayList<Supplier>) ClientGUI.client.getLastResponse().getServerResponse();
+					setFavDisplayed(favRestaurants);
 				}
 			}
 		});
 		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-
-		favRestaurants = (HashMap<String, File>) ClientGUI.client.getLastResponse().getServerResponse();
-		Set<String> resSet = favRestaurants.keySet();
-		String[] res = new String[resSet.size()];
-		int j = 0;
-		for (String s : resSet) {
-			res[j] = s;
-			j++;
-		}
-		setFavDisplayed(res);
 	}
 
 	/**
@@ -460,23 +477,36 @@ public class homePageController implements Initializable {
 	 * 
 	 * @param String[] res
 	 */
-	private void setFavDisplayed(String[] res) {
-		for (int i = 0; i < 3; i++) {
-			favListDisplayed.addLast(res[i]);
-			favListHidden.addLast(res[i + 3]);
+	private void setFavDisplayed(ArrayList<Supplier> favRestaurants) {
+		for(int i =0 ; i< 3; i++) {
+			Supplier supplier = favRestaurants.get(i);
+			favListDisplayed.addLast(supplier);
+			favListHidden.addLast(favRestaurants.get(i+3));
+			MyFile file = supplier.getRestaurantLogo();
+			byte[] imageArr = file.getMybytearray();
+			BufferedImage img;
+			try {
+				img = ImageIO.read(new ByteArrayInputStream(imageArr));
+				Image image = SwingFXUtils.toFXImage(img, null);
+				switch(i) {
+				case 0:
+					loadingTxt1.setVisible(false);
+					res1.setImage(image);
+					break;
+				case 1:
+					loadingTxt2.setVisible(false);
+					res2.setImage(image);
+					break;
+				case 2:
+					loadingTxt3.setVisible(false);
+					res3.setImage(image);
+					break;
+				}
+			}catch(IOException e) {
+				e.printStackTrace();
+				return;
+			}
 		}
-		String resName = favListDisplayed.pollFirst().toLowerCase();
-		res1.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
-		res1.setId(resName);
-		favListDisplayed.addLast(resName);
-		resName = favListDisplayed.pollFirst().toLowerCase();
-		res2.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
-		res2.setId(resName);
-		favListDisplayed.addLast(resName);
-		resName = favListDisplayed.pollFirst().toLowerCase();
-		res3.setImage(new Image(getClass().getResource("../images/" + resName + "-logo.jpg").toString()));
-		res3.setId(resName);
-		favListDisplayed.addLast(resName);
 	}
 
 	public void setContainer(AnchorPane mainContainer) {

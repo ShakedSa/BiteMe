@@ -74,7 +74,7 @@ public class myOrdersController implements Initializable {
 	@FXML
 	void changeToCart(MouseEvent event) {
 		clearScreen();
-		router.changeToMyCart(null);
+		router.changeToMyCart("MyOrders");
 	}
 
 	@FXML

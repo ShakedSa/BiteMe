@@ -1,5 +1,6 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -11,6 +12,7 @@ import client.ClientGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -79,31 +81,52 @@ public class myCartController implements Initializable {
 	private void clearScreen() {
 		root.getChildren().clear();
 		scrollRoot.setContent(null);
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, totalPrice, removeItem, orderTable, tableTitle);
 	}
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
-		clearScreen();
 		router.logOut();
 	}
 
 	@FXML
 	void openProfile(MouseEvent event) {
-		clearScreen();
 		router.showProfile();
 	}
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		clearScreen();
 		router.changeSceneToHomePage();
 	}
 
 	@FXML
-	void returnToRestaurants(MouseEvent event) {
-		clearScreen();
-		router.returnToCustomerPanel(event);
+	void returnToMyOrders(MouseEvent event) {
+		if (router.getMyOrdersController() == null) {
+			AnchorPane mainContainer;
+			myOrdersController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.displayOpenOrders();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Orders");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyOrdersController().setItemsCounter();
+			router.getMyOrdersController().displayOpenOrders();
+			stage.setTitle("BiteMe - My Orders");
+			stage.setScene(router.getMyOrdersController().getScene());
+			stage.show();
+		}
 	}
 
 	@Override
@@ -126,14 +149,14 @@ public class myCartController implements Initializable {
 				router.getRestaurantMenuController().setItemsCounter();
 				stage.show();
 			} else {
-				returnToRestaurants(null);
+				router.returnToCustomerPanel(event);
 			}
 			break;
 		case "Restaurants":
-			returnToRestaurants(null);
+			router.returnToCustomerPanel(event);
 			break;
 		case "Identify":
-			returnToRestaurants(null);
+			router.returnToCustomerPanel(event);
 			break;
 		case "Review":
 			router.getReviewOrderController().setItemsCounter();
@@ -143,6 +166,7 @@ public class myCartController implements Initializable {
 			router.getReviewOrderController().displayOrder();
 			break;
 		case "Payment":
+			router.getOrderDeliveryMethod().calculateFinalPrice();
 			router.getPaymentController().setAvatar();
 			router.getPaymentController().setItemsCounter();
 			router.getPaymentController().checkRefunds();
@@ -182,6 +206,13 @@ public class myCartController implements Initializable {
 			router.getOrderReceivedController().setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
+			stage.show();
+			break;
+		case "MyOrders":
+			router.getMyOrdersController().setItemsCounter();
+			router.getMyOrdersController().displayOpenOrders();
+			stage.setTitle("BiteMe - My Orders");
+			stage.setScene(router.getMyOrdersController().getScene());
 			stage.show();
 			break;
 		default:
@@ -233,9 +264,10 @@ public class myCartController implements Initializable {
 	 * If the customer doesn't have an order yet, notify accordingly.
 	 */
 	public void displayOrder() {
+		clearScreen();
 		setItemsCounter();
-		leftArrowBtn.setLayoutX(52);
-		leftArrowBtn.setLayoutY(570);
+		leftArrowBtn.setLayoutX(30);
+		leftArrowBtn.setLayoutY(405);
 		leftArrowBtn.setOnMouseClicked(e -> returnToLastPage(e));
 		leftArrowBtn.setCursor(Cursor.HAND);
 		root = new AnchorPane();
