@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -118,16 +119,12 @@
          </font>
       </Text>
       <TextField fx:id="employerCodeTextField" layoutX="399.0" layoutY="271.0" promptText="Employer's Code" visible="false" />
-      <CheckBox fx:id="refundCheck" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" text="Use Refund" visible="false">
+      <CheckBox fx:id="refundCheck" layoutX="412.0" layoutY="232.0" mnemonicParsing="false" onAction="#checkBalanceAfterRefund" onMouseEntered="#displayRefundAmount" onMouseExited="#hideRefundAmount" text="Use Refund" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </CheckBox>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="74.0" layoutY="479.0" onMouseClicked="#returnToDeliveryMethod" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label fx:id="refundText" layoutX="470.0" layoutY="364.0" textFill="LIME">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-      </Label>
+      <TextArea fx:id="refundAmount" layoutX="526.0" layoutY="217.0" prefHeight="67.0" prefWidth="203.0" visible="false" wrapText="true" />
    </children>
 </AnchorPane>

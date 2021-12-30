@@ -19,6 +19,7 @@ import Entities.Supplier;
 import Enums.RestaurantType;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.embed.swing.SwingFXUtils;
@@ -56,6 +57,8 @@ public class restaurantSelectionController implements Initializable {
 	private List<Text> resNameTexts;
 
 	private List<Label> resOrders;
+
+	private List<Text> loadingText;
 
 	private List<Rectangle> borders;
 
@@ -112,6 +115,24 @@ public class restaurantSelectionController implements Initializable {
 
 	@FXML
 	private Text resText6;
+
+	@FXML
+	private Text loadingTxt1;
+
+	@FXML
+	private Text loadingTxt2;
+
+	@FXML
+	private Text loadingTxt3;
+
+	@FXML
+	private Text loadingTxt4;
+
+	@FXML
+	private Text loadingTxt5;
+
+	@FXML
+	private Text loadingTxt6;
 
 	@FXML
 	private Label resOrder1;
@@ -267,29 +288,25 @@ public class restaurantSelectionController implements Initializable {
 							e.printStackTrace();
 							return;
 						}
+						resRestaurants = ClientGUI.client.getLastResponse();
+						restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
+						if (restaurants != null) {
+							Platform.runLater(() -> createRestaurants(restaurants));
+						} else {
+							hideRestaurants(6);
+							Label errorMsg = new Label("Server Error\nCan't get restaurants from the server.");
+							root.getChildren().add(errorMsg);
+							errorMsg.setLayoutX(114);
+							errorMsg.setLayoutY(138);
+							errorMsg.getStyleClass().add("title");
+							return;
+						}
 					}
 				}
 			});
 			t.start();
-			try {
-				t.join();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-			resRestaurants = ClientGUI.client.getLastResponse();
-		}
-		restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
-		if (restaurants != null) {
-			createRestaurants(restaurants);
-		}else {
-			hideRestaurants(6);
-			Label errorMsg = new Label("Server Error\nCan't get restaurants from the server.");
-			root.getChildren().add(errorMsg);
-			errorMsg.setLayoutX(114);
-			errorMsg.setLayoutY(138);
-			errorMsg.getStyleClass().add("title");
-			return;
+		} else {
+			createRestaurants((ArrayList<Supplier>) resRestaurants.getServerResponse());
 		}
 	}
 
@@ -303,6 +320,7 @@ public class restaurantSelectionController implements Initializable {
 			resImages.get(resImages.size() - 1 - i).setVisible(false);
 			resNameTexts.get(resNameTexts.size() - 1 - i).setVisible(false);
 			resOrders.get(resOrders.size() - 1 - i).setVisible(false);
+			loadingText.get(loadingText.size() - 1 - i).setVisible(false);
 			if (borders.get(borders.size() - 1 - i) != null) {
 				borders.get(borders.size() - 1 - i).setVisible(false);
 			}
@@ -366,10 +384,15 @@ public class restaurantSelectionController implements Initializable {
 		if (borders == null) {
 			borders = Arrays.asList(border1, border2, border3, border4, border5, border6);
 		}
+		if (loadingText == null) {
+			loadingText = Arrays.asList(loadingTxt1, loadingTxt2, loadingTxt3, loadingTxt4, loadingTxt5, loadingTxt6);
+		}
 		for (int i = 0; i < 6; i++) {
 			resImages.get(i).setVisible(true);
 			resNameTexts.get(i).setVisible(true);
 			resOrders.get(i).setVisible(true);
+			loadingText.get(i).setVisible(true);
+			loadingText.get(i).toFront();
 			if (borders.get(i) != null) {
 				borders.get(i).setVisible(true);
 			}
@@ -404,8 +427,9 @@ public class restaurantSelectionController implements Initializable {
 			try {
 				img = ImageIO.read(new ByteArrayInputStream(imageArr));
 				Image image = SwingFXUtils.toFXImage(img, null);
+				loadingText.get(i).setVisible(false);
 				resImages.get(i).setImage(image);
-			}catch(IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}

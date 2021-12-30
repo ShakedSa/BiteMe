@@ -165,12 +165,42 @@
          </cursor>
       </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text layoutX="114.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" styleClass="title">
+      <Text layoutX="114.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Restaurants">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="145.0" layoutY="493.0" onMouseClicked="#moveLeftClicked" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="rightArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="719.0" layoutY="493.0" onMouseClicked="#moveRightClicked" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Text fx:id="loadingTxt1" fill="#3180bc" layoutX="234.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt2" fill="#3180bc" layoutX="409.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt3" fill="#3180bc" layoutX="578.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt4" fill="#3180bc" layoutX="234.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt5" fill="#3180bc" layoutX="409.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt6" fill="#3180bc" layoutX="577.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

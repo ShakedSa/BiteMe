@@ -173,13 +173,13 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeToMyCart("Review");
 	}
 
 	@FXML
 	void returnToHome(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeSceneToHomePage();
 	}
 
@@ -190,13 +190,14 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void showProfile(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.showProfile();
 	}
 
 	@FXML
 	void returnToPaymentMethod(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+		router.getOrderDeliveryMethod().calculateFinalPrice();
 		router.getPaymentController().setAvatar();
 		router.getPaymentController().setItemsCounter();
 		router.getPaymentController().checkRefunds();
@@ -207,7 +208,7 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
@@ -240,6 +241,7 @@ public class reviewOrderController implements Initializable {
 	}
 
 	public void displayOrder() {
+		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		OrderDeliveryMethod fullOrder = router.getOrderDeliveryMethod();
 		Order order = fullOrder.getOrder();
 		ArrayList<Product> products = order.getProducts();

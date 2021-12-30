@@ -13,7 +13,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.profileController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <ImageView fx:id="bagImg" fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0">
+      <ImageView fx:id="bagImg" fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
             <Image url="@../../../scene%20builder/images/bag-icon.gif" />
          </image>
@@ -116,7 +116,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="profileBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+      <Text fx:id="profileBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true" id="active">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -144,7 +144,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text id="link" fx:id="restaurantBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#restaurantBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Restaurants" visible="false">
+      <Text id="link" fx:id="restaurantBtn" layoutX="369.0" layoutY="57.0" onMouseClicked="#restaurantBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="My Orders" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

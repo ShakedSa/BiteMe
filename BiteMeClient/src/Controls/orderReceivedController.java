@@ -74,6 +74,11 @@ public class orderReceivedController implements Initializable {
 	void returnToHome(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
+	
+	@FXML
+    void returnToHomePage(ActionEvent event) {
+		returnToHome(null);
+    }
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {

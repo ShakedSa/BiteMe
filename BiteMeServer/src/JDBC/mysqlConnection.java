@@ -573,13 +573,22 @@ public class mysqlConnection {
 	public static ServerResponse favRestaurants() {
 		ServerResponse serverResponse = new ServerResponse("FavRestaurants");
 		Statement stmt;
-		HashMap<String, File> favRestaurants = new HashMap<>();
+		ArrayList<Supplier> favRestaurants = new ArrayList<>();
 		try {
-			String query = "SELECT * FROM bitemedb.suppliers ORDER BY RestaurantName";
+			String query = "SELECT S.RestaurantName, S.RestaurantType, S.Image, SUM(R.Rating) as rates"
+					+ " FROM bitemedb.orders O inner join bitemedb.ratings R inner join bitemedb.suppliers S WHERE O.RestaurantName = S.RestaurantName AND O.OrderNumber = R.OrderNumber\r\n"
+					+ " GROUP BY S.RestaurantName"
+					+ " ORDER BY rates DESC"
+					+ " LIMIT 6;";
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				favRestaurants.put(rs.getString(1), null);
+				Blob image = rs.getBlob(3);
+				MyFile file = new MyFile(rs.getString(1));
+				byte[] array = image.getBytes(1, (int)image.length());
+				file.initArray(array.length);
+				file.setMybytearray(array);
+				favRestaurants.add(new Supplier(rs.getString(1), RestaurantType.valueOf(rs.getString(2)), file));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2604,6 +2613,32 @@ public class mysqlConnection {
 		}
 	return new ServerResponse("Success");
 
+	}
+
+	/**
+	 * @param restaurant
+	 * @param month
+	 * @param year
+	 * @return avg preparation time of orders for the restaurant in that month.
+	 */
+	public static int getAvgPrepTime(String restaurant, String month, String year) {
+		try {
+			String query = "SELECT AVG(60*Hour(timediff(CustomerReceived, OrderReceived))+"
+					+ "MINUTE(timediff(CustomerReceived, OrderReceived))) FROM bitemedb.orders WHERE OrderNumber "
+					+ "IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName=?"
+					+ "and month(OrderTime) = ? and year(OrderTime) = ?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurant);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }
 
