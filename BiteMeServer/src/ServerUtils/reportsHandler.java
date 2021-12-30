@@ -45,8 +45,10 @@ public class reportsHandler {
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
 	int numOfOrders, totalEarnings, highestEarning=0;
-	int netIncome=0;
+	int netIncome=0,refunds=0,totalRefunds=0,highestRefunds=0;
 	String profitableRestaurant="";
+	String mostRefundsRestaurant="";
+	
 	document.addTitle("Monthly Report");
 	
 		try {
@@ -60,22 +62,31 @@ public class reportsHandler {
 			document.add(reportDetails);
 			// handling sql data:
 			// table: name,total orders, total income.
-				PdfPTable table = new PdfPTable(3);
-				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income");
+				PdfPTable table = new PdfPTable(4);
+				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income","Total Refunds");
 				for(String res: Restaurants) { // for each restaurant in branch:
+						refunds=mysqlConnection.getTotalRefunds(res,Month,Year);
 						numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
 						totalEarnings=mysqlConnection.getEarnings(res,Month,Year);
 						netIncome+=totalEarnings;
-						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
+						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings,refunds);
 						if(totalEarnings>=highestEarning) {
 							highestEarning=totalEarnings;
 							profitableRestaurant=res;
 						}
+						if(refunds>=highestRefunds) {
+							highestRefunds=refunds;
+							mostRefundsRestaurant=res;
+						}
+						totalRefunds+=refunds;
 				}
 				document.add(table);
-				font.setSize(25);
+				font.setSize(20);
 				document.add(new Paragraph("\nMost profitable restaurant: " + profitableRestaurant 
-						+ " that earned "+ highestEarning +" NIS"+"\n Total NET Income: "+netIncome,font));
+						+ " that earned "+ highestEarning +" NIS"+"\n Total NET Income: "+netIncome+"\n",font));
+
+				document.add(new Paragraph("\nTotal refunds on branch : " + totalRefunds+ "\n",font));
+				document.add(new Paragraph("\nRestaurant with most Refunds: " + mostRefundsRestaurant + " with total refunds: " + highestRefunds,font));
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();

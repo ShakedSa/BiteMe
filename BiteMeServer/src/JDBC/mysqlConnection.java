@@ -2640,5 +2640,27 @@ public class mysqlConnection {
 		}
 		return 0;
 	}
+
+	public static int getTotalRefunds(String restaurantName, String month, String year) {
+		PreparedStatement stmt;
+		String query;
+		int num = 0;
+		ResultSet rs;
+		// SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		try {
+			query = "SELECT SUM(RefundAmount) FROM bitemedb.orders WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				num = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
 }
 
