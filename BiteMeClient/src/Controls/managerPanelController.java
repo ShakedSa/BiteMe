@@ -268,7 +268,7 @@ public class managerPanelController implements Initializable {
 			}
 		} else {
 			stage.setTitle("BiteMe - Create Revenue Quarterly Report");
-			stage.setScene(router.getUploadQuarterlyReportController().getScene());
+			stage.setScene(router.getCreateRevenueQuarterlyReportController().getScene());
 			stage.show();
 		}
     }

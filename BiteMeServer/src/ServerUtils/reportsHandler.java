@@ -75,7 +75,7 @@ public class reportsHandler {
 				document.add(table);
 				font.setSize(25);
 				document.add(new Paragraph("\nMost profitable restaurant: " + profitableRestaurant 
-						+ " that earned "+ highestEarning +" NIS"+"\n total NET Income: "+netIncome,font));
+						+ " that earned "+ highestEarning +" NIS"+"\n Total NET Income: "+netIncome,font));
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,10 +96,9 @@ public class reportsHandler {
 			if(is!=null)
 				is.close();
 			//delete temp file from server.
-			File f = new File(Branch + "TempRevenueReport.pdf");
-			f.delete();
+			//File f = new File(Branch + "TempRevenueReport.pdf");
+			//f.delete();
 		} catch (Exception e) {e.printStackTrace();}
-		
 
 	}
 	/**
@@ -112,7 +111,7 @@ public class reportsHandler {
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
 	ArrayList<String> OrderedDishes;
-	int numOfOrders,i=1,ordersSum=0,mostOrderedAmount=0;
+	int numOfOrders,i=1,ordersSum=0,mostOrderedAmount=0,RestaurantOrdersSum=0;
 	String mostOrderedDish="none";
 	document.addTitle("Monthly Report");
 	/*
@@ -132,6 +131,7 @@ public class reportsHandler {
 			document.add(reportDetails);
 			//table for restaurant x:
 			for(String res: Restaurants) {
+				RestaurantOrdersSum=0;
 				i=1;
 				//get dishes list:
 				OrderedDishes= mysqlConnection.getDishesList(res,Month,Year);
@@ -150,6 +150,7 @@ public class reportsHandler {
 					numOfOrders = mysqlConnection.getNumOfOrderedDishes(res,Month,Year,dish);
 					pdfConfigs.addRows(table,i,dish,numOfOrders);
 					ordersSum+=numOfOrders;
+					RestaurantOrdersSum+=numOfOrders;
 					i++;
 					if(numOfOrders>mostOrderedAmount){
 						mostOrderedAmount=numOfOrders;
@@ -157,6 +158,7 @@ public class reportsHandler {
 					}
 				}
 				document.add(table);
+				document.add(new Paragraph("Total Number of orders on the restaurant: "+ RestaurantOrdersSum));
 			}//add some general information before closing the pdf file.
 			document.add(new Paragraph("Most Ordered Dish: "+mostOrderedDish + " with "+mostOrderedAmount+
 					" orders\nTotal Dish ordered on branch: "+ ordersSum));
@@ -180,8 +182,8 @@ public class reportsHandler {
 			if(is!=null)
 				is.close();
 			//delete temp file from server.
-			File f = new File(Branch + "TempOrdersReport.pdf");
-			f.delete();
+		//	File f = new File(Branch + "TempOrdersReport.pdf");
+		//	f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
 
@@ -198,7 +200,7 @@ public class reportsHandler {
 		Document document = new Document();
 		LocalDate currentDate=LocalDate.now();
 		ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-		int numOfOrders, delayedOrders, totalDelayedOrders=0,totalOrders=0;
+		int numOfOrders, delayedOrders, totalDelayedOrders=0,totalOrders=0,prepTime=0;
 		float delayedPercentage=0,totalDelayedPercentage=0;
 		document.addTitle("Monthly Report");
 		
@@ -212,18 +214,19 @@ public class reportsHandler {
 				document.add(reportDetails);
 				// handling sql data:
 				// table: restaurant name,total orders,# delayed orders, %delayed orders 
-					PdfPTable table = new PdfPTable(4);
-					pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Delayed orders","% of orders delayed");
+					PdfPTable table = new PdfPTable(5);
+					pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Delayed orders","% of orders delayed","Avg Preparing time(Minutes)");
 					for(String res: Restaurants) { // for each restaurant in branch:
+							prepTime=mysqlConnection.getAvgPrepTime(res,Month,Year);
 							numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
 							delayedOrders=mysqlConnection.getDelayedOrders(res,Month,Year);
-							int ratingAvg = mysqlConnection.getAvgRating(res,Month,Year);
-							ratingAverages.add((double) ratingAvg);
+							//int ratingAvg = mysqlConnection.getAvgRating(res,Month,Year);
+						//	ratingAverages.add((double) ratingAvg);
 							if(numOfOrders!=0)
 								delayedPercentage=(float)100*delayedOrders/numOfOrders;
 							else
 								delayedPercentage=0;
-							pdfConfigs.addRows(table,res,numOfOrders,delayedOrders,delayedPercentage);
+							pdfConfigs.addRows(table,res,numOfOrders,delayedOrders,delayedPercentage,prepTime);
 							totalDelayedOrders+=delayedOrders;
 							totalOrders+=numOfOrders;
 					}
@@ -234,27 +237,6 @@ public class reportsHandler {
 					else
 						totalDelayedPercentage=0;
 					document.add(new Paragraph("\n total Orders: "+totalOrders + "\nTotal Delayed :" + totalDelayedPercentage+"%\n\n",font));
-					
-					//add ratings histogram : ratingAverages
-					PdfContentByte contentByte = writer.getDirectContent();
-					PdfTemplate template = contentByte.createTemplate(350, 350);
-					Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
-					Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
-				//	JFreeChart chart =pdfConfigs.generateHist(ratingAverages);
-					
-					if(!ratingAverages.isEmpty())
-					{
-						double[] values = ratingAverages.stream().mapToDouble(Double::doubleValue).toArray();
-				        HistogramDataset dataset = new HistogramDataset();
-				        dataset.addSeries("key", values, 5);
-
-				        JFreeChart chart = ChartFactory.createHistogram("Average Ratings in restaurants",
-				                   "Rating Average this month", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
-				        chart.draw(graphics2d, rectangle2d);
-						
-					}
-				graphics2d.dispose();
-				contentByte.addTemplate(template, 0, 0);
 				document.close();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -333,6 +315,12 @@ public class reportsHandler {
 	}
 	
 	
+	/**
+	 * Creates quarterly revenue reports for the specific year and quarter for the entire branches.
+	 * @param month
+	 * @param year
+	 * @param Branches
+	 */
 	public static void createQuarterlyReports(int month, int year, String[] Branches) {
 		int currentMonth= LocalDate.now().getMonthValue();
 		if(month%3==0 || (currentMonth-1)%3==0 ) {//quarter ended, create new quarter revenue report.
@@ -347,6 +335,30 @@ public class reportsHandler {
 	 * @param Branch
 	 * @param Month
 	 */ 
+	
+	//NEED TO ADD HISTOGRAM FOR RATINGS:
+	/*
+	 * 					//add ratings histogram : ratingAverages
+					PdfContentByte contentByte = writer.getDirectContent();
+					PdfTemplate template = contentByte.createTemplate(350, 350);
+					Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
+					Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
+				//	JFreeChart chart =pdfConfigs.generateHist(ratingAverages);
+					
+					if(!ratingAverages.isEmpty())
+					{
+						double[] values = ratingAverages.stream().mapToDouble(Double::doubleValue).toArray();
+				        HistogramDataset dataset = new HistogramDataset();
+				        dataset.addSeries("key", values, 5);
+
+				        JFreeChart chart = ChartFactory.createHistogram("Average Ratings in restaurants",
+				                   "Rating Average this month", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
+				        chart.draw(graphics2d, rectangle2d);
+						
+					}
+				graphics2d.dispose();
+				contentByte.addTemplate(template, 0, 0);
+	 */
 	public static ServerResponse quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
 		
 		// add check if report exists and return serverResponse with value.
