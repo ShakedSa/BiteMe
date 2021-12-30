@@ -244,7 +244,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
+		reportsHandler.createAllReports(12, 2021);
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();

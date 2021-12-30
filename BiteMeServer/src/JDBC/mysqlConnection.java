@@ -2614,5 +2614,31 @@ public class mysqlConnection {
 	return new ServerResponse("Success");
 
 	}
+
+	/**
+	 * @param restaurant
+	 * @param month
+	 * @param year
+	 * @return avg preparation time of orders for the restaurant in that month.
+	 */
+	public static int getAvgPrepTime(String restaurant, String month, String year) {
+		try {
+			String query = "SELECT AVG(60*Hour(timediff(CustomerReceived, OrderReceived))+"
+					+ "MINUTE(timediff(CustomerReceived, OrderReceived))) FROM bitemedb.orders WHERE OrderNumber "
+					+ "IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName=?"
+					+ "and month(OrderTime) = ? and year(OrderTime) = ?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurant);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
 
