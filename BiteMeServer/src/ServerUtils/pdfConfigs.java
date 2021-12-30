@@ -53,6 +53,18 @@ public class pdfConfigs {
 	    table.addCell(Integer.toString(col3));
 
 	}
+	/**
+	 * @param table
+	 * creates a row in the given table
+	 */
+	public static void addRows(PdfPTable table, String res, int numOfOrders, int delayedOrders,
+			int refunds) {
+		// TODO Auto-generated method stub
+	    table.addCell(res);
+	    table.addCell(Integer.toString(numOfOrders));
+	    table.addCell(Integer.toString(delayedOrders));
+	    table.addCell(Float.toString(refunds));
+	}
 	
 	/**
 	 * @param table
@@ -65,6 +77,20 @@ public class pdfConfigs {
 	    table.addCell(Integer.toString(numOfOrders));
 	    table.addCell(Integer.toString(delayedOrders));
 	    table.addCell(Float.toString(delayedPercentage)+"%");
+	}
+	//Avg Preparing time
+	/**
+	 * @param table
+	 * creates a row in the given table
+	 */
+	public static void addRows(PdfPTable table, String res, int numOfOrders, int delayedOrders,
+			float delayedPercentage, int preparingTime) {
+		// TODO Auto-generated method stub
+	    table.addCell(res);
+	    table.addCell(Integer.toString(numOfOrders));
+	    table.addCell(Integer.toString(delayedOrders));
+	    table.addCell(Float.toString(delayedPercentage)+"%");
+	    table.addCell(Integer.toString(preparingTime));
 	}
 	
 	
@@ -105,6 +131,31 @@ public class pdfConfigs {
 	    });
 	}
 
+	
+	/**
+	 * Creates a table header with the given column names
+	 * @param table
+	 * @param col1
+	 * @param col2
+	 * @param col3
+	 * @param col4
+	 * @param col5
+	 */
+	public static void addTableHeader(PdfPTable table, String col1, String col2, String col3, String col4, String col5) {
+	    Stream.of(col1,col2,col3,col4,col5)
+	      .forEach(columnTitle -> {
+	        PdfPCell header = new PdfPCell();
+	        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+	        header.setBorderWidth(2);
+	        header.setPhrase(new Phrase(columnTitle));
+	        table.addCell(header);
+	    });
+	}
+	/**
+	 * @param titleTxt
+	 * @param font
+	 * @return a Paragraph with the given title and font.
+	 */
 	public static Paragraph createTitle(String titleTxt, Font font)
 	{
 		Chunk c = new Chunk(titleTxt);
@@ -117,6 +168,10 @@ public class pdfConfigs {
 	}
 	
 	
+	/**
+	 * @param vals
+	 * @return histogram with the given values.
+	 */
 	public static JFreeChart generateHist(ArrayList<Double> vals) {
 		if(vals.isEmpty())
 			return null;

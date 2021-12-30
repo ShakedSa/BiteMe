@@ -176,12 +176,24 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
+	
+	/**
+	 * Sending a query request from the server. check for imported users
+	 * 
+	 */
+	public void searchForNewUsers() {
+		try {
+			ServerResponse serverResponse = new ServerResponse("getUsersCustomersInfo");
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 	/**
 	 * Sending a query request from the server. approve employer in the db
-	 * restaurant.
 	 * 
-	 * @param restaurantName
+	 * @param employerCode
 	 */
 	public void employerApproval(String employerCode) {
 		try {
@@ -364,12 +376,12 @@ public class ClientUI implements ClientIF {
 	/**
 	 * get order details
 	 * 
-	 * @param orderNumber
+	 * @param restaurantName
 	 */
-	public void getOrderInfo(String orderNumber, String restaurantName) {
+	public void getOrderInfo(String restaurantName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			arr.addAll(Arrays.asList(orderNumber, restaurantName));
+			arr.add(restaurantName);
 			ServerResponse serverResponse = new ServerResponse("getOrderInfo");
 			serverResponse.setServerResponse(arr);
 			client.handleMessageFromClientUI(serverResponse);
@@ -581,7 +593,21 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	public void checkUserName(String userName) {
+	public void checkUserNameAccountType(String userName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+			arr.addAll(Arrays.asList(userName));
+			ServerResponse serverResponse = new ServerResponse("checkUserNameAccountType");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
+	
+	public void checkUserNameForSupplier(String userName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList(userName));
@@ -592,7 +618,6 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-
 	}
 	
 	public void checkUserNameIsClient(String userName) {
@@ -669,6 +694,41 @@ public class ClientUI implements ClientIF {
 	public void getRefunds(Customer cutsomer) {
 		ServerResponse serverResponse = new ServerResponse("getRefunds");
 		serverResponse.setServerResponse(cutsomer);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	/**
+	 * request from server to create quarterly revenue report for given:
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 */
+	public void createQuarterlyRevenueReport(String quarter, String year, String branch) {
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(quarter);
+		arr.add(year);
+		arr.add(branch); // arr= quarter,year,branch
+		ServerResponse serverResponse = new ServerResponse("createQuarterlyRevenueReport");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	public void checkCustomerStatus(String username) {
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(username);
+		ServerResponse serverResponse = new ServerResponse("checkCustomerStatus");
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
+	/**
+	 * request from server to create new account with the following information:
+	 * @param values = userType,username,monthly bud,daily budget,credit card number,employer's name.
+	 */
+	public void openNewAccount(ArrayList<String> values) {
+		
+		ServerResponse serverResponse = new ServerResponse("openNewAccount");
+		serverResponse.setServerResponse(values);
 		client.handleMessageFromClientUI(serverResponse);
 	}
 

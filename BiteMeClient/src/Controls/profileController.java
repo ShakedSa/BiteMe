@@ -1,5 +1,6 @@
 package Controls;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Entities.ServerResponse;
@@ -7,12 +8,14 @@ import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -121,6 +124,7 @@ public class profileController implements Initializable {
 		stage.setScene(lastScene);
 		stage.setTitle(lastSceneTitle);
 	}
+	
 
 	/**
 	 * Setting the avatar image of the user.
@@ -217,14 +221,44 @@ public class profileController implements Initializable {
 
     @FXML
     void restaurantBtnClicked(MouseEvent event) {
-    	//router.getHomePageController().restaurantBtnClicked(event);
-    	router.returnToCustomerPanel(event);
+    	if (router.getMyOrdersController() == null) {
+			AnchorPane mainContainer;
+			myOrdersController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.displayOpenOrders();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Orders");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyOrdersController().setItemsCounter();
+			router.getMyOrdersController().displayOpenOrders();
+			stage.setTitle("BiteMe - My Orders");
+			stage.setScene(router.getMyOrdersController().getScene());
+			stage.show();
+		}
     }
 
     @FXML
     void supplierBtnClicked(MouseEvent event) {
     	//router.getHomePageController().supplierBtnClicked(event);
     	router.returnToSupplierPanel(event);
+    }
+    
+    @FXML
+    void changeToCart(MouseEvent event) {
+		router.changeToMyCart("Profile");
     }
 
 	/**

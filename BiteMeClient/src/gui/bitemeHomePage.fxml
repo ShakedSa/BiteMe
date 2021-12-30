@@ -150,5 +150,20 @@
       </Button>
       <Rectangle fx:id="arrowLeft" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="140.0" layoutY="430.0" onMouseClicked="#caruasalLeftClicked" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Rectangle fx:id="arrowRight" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="625.0" layoutY="430.0" onMouseClicked="#caruasalRight" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Text fx:id="loadingTxt1" fill="#3180bc" layoutX="227.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="13.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt2" fill="#3180bc" layoutX="369.0" layoutY="508.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="13.0" />
+         </font>
+      </Text>
+      <Text fx:id="loadingTxt3" fill="#3180bc" layoutX="518.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
+         <font>
+            <Font name="Berlin Sans FB" size="13.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

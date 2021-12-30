@@ -46,17 +46,21 @@ public class Router {
 	private orderReceivedController OrderReceivedController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
+	private addNewSupplierTableController AddNewSupplierTableController;
 	private viewMonthlyReportsController ViewMonthlyReportsController;
 	private uploadQuarterlyReportController UploadQuarterlyReportController;
 	private updateUserInformationController UpdateUserInformationController;
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
 	private openNewAccountController OpenNewAccountController;
+	private openNewAccountFinalController OpenNewAccountFinalController;
+	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
 	private addNewItemController AddNewItemController;
 	private updateMenuController UpdateMenuController;
 	private editMenuItemController EditMenuItemController;
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
+	private updateOrderTableController UpdateOrderTableController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -147,6 +151,20 @@ public class Router {
 	 */
 	public void setIdentifyController(identifyController identifyController) {
 		IdentifyController = identifyController;
+	}
+	/**
+	 * @return the uploadRevenueQuarterlyReportController
+	 */
+	public createRevenueQuarterlyReportController getCreateRevenueQuarterlyReportController() {
+		return CreateRevenueQuarterlyReportController;
+	}
+
+	/**
+	 * @param uploadRevenueQuarterlyReportController the uploadRevenueQuarterlyReportController to set
+	 */
+	public void setCreateRevenueQuarterlyReportController(
+			createRevenueQuarterlyReportController createRevenueQuarterlyReportController) {
+		CreateRevenueQuarterlyReportController = createRevenueQuarterlyReportController;
 	}
 
 	/**
@@ -272,6 +290,7 @@ public class Router {
 	}
 	
 	/**
+
 	 * @param viewRevenueQuarterlyReportController the viewRevenueQuarterlyReportController to set
 	 */
 	public void setViewRevenueQuarterlyReportController(
@@ -286,6 +305,11 @@ public class Router {
 		return ViewRevenueQuarterlyReportController;
 	}
 	
+	 * @param updateOrderTableController the updateOrderTableController to set
+	 */
+	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
+		UpdateOrderTableController = updateOrderTableController;
+
 
 	/**
 	 * @return the Logincontroller
@@ -307,7 +331,7 @@ public class Router {
 	public restaurantSelectionController getRestaurantselectionController() {
 		return RestaurantselectionController;
 	}
-
+	
 	/**
 	 * @return the HomePageController
 	 */
@@ -552,6 +576,13 @@ public class Router {
 	public void setMyOrdersController(myOrdersController myOrdersController) {
 		MyOrdersController = myOrdersController;
 	}
+	
+	/**
+	 * @return the updateOrderTableController
+	 */
+	public updateOrderTableController getUpdateOrderTableController() {
+		return UpdateOrderTableController;
+	}
 
 	/**
 	 * @return the stage
@@ -633,6 +664,10 @@ public class Router {
 				ReviewOrderController = null;
 				OrderReceivedController = null;
 				SupplierPanelController = null;
+        CreateRevenueQuarterlyReportController=null;
+				order = new Order();
+				delivery = null;
+				orderDeliveryMethod = null;
 				ClientGUI.client.setUser(null);
 			}
 		}
@@ -874,14 +909,17 @@ public class Router {
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> products) {
-		if (this.order.getProducts() == null || products == null) {
-			this.order.setProducts(products);
+		if(order == null) {
 			return;
 		}
-		List<Product> newProducts = this.order.getProducts().stream().filter(p -> !products.contains(p))
+		if (order.getProducts() == null || products == null) {
+			order.setProducts(products);
+			return;
+		}
+		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
 				.collect(Collectors.toList());
 		newProducts.addAll(products);
-		this.order.setProducts((ArrayList<Product>) newProducts);
+		order.setProducts((ArrayList<Product>) newProducts);
 	}
 
 	/**
@@ -890,7 +928,7 @@ public class Router {
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
-		if (order.getProducts() == null) {
+		if (order == null || order.getProducts() == null) {
 			return new ArrayList<>();
 		}
 		return order.getProducts();
@@ -930,6 +968,37 @@ public class Router {
 	 */
 	public void setOrderDeliveryMethod(OrderDeliveryMethod orderDeliveryMethod) {
 		this.orderDeliveryMethod = orderDeliveryMethod;
+	}
+	
+
+	/**
+	 * @return the openNewAccountFinalController
+	 */
+	public openNewAccountFinalController getOpenNewAccountFinalController() {
+		return OpenNewAccountFinalController;
+	}
+
+	/**
+	 * @param openNewAccountFinalController the openNewAccountFinalController to set
+	 */
+	public void setOpenNewAccountFinalController(openNewAccountFinalController openNewAccountFinalController) {
+		OpenNewAccountFinalController = openNewAccountFinalController;
+	}
+	
+	
+
+	/**
+	 * @return the addNewSupplierTableController
+	 */
+	public addNewSupplierTableController getAddNewSupplierTableController() {
+		return AddNewSupplierTableController;
+	}
+
+	/**
+	 * @param addNewSupplierTableController the addNewSupplierTableController to set
+	 */
+	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
+		AddNewSupplierTableController = addNewSupplierTableController;
 	}
 
 	/**

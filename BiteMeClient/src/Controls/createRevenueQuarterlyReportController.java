@@ -1,10 +1,12 @@
 package Controls;
 
-import java.io.File;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
+import Entities.ServerResponse;
+import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.fxml.FXML;
@@ -12,17 +14,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 
 /**
  * @author Eden
- * This controller is in charge of the logics and scene for the upload quarterly report page.
+ * This controller is in charge of the logics and scene setup for the report creation page as branch manager.
  */
-public class uploadQuarterlyReportController implements Initializable{
+public class createRevenueQuarterlyReportController implements Initializable{
 	
 
 	public final UserType type= UserType.BranchManager;
@@ -31,12 +31,6 @@ public class uploadQuarterlyReportController implements Initializable{
 	
     @FXML
     private Text UploadMsgTxt;
-
-    @FXML
-    private ImageView UploadMsgImg;
-    
-    @FXML
-    private ImageView ImportImage;
 
     @FXML
     private Rectangle avatar;
@@ -67,26 +61,6 @@ public class uploadQuarterlyReportController implements Initializable{
     
     @FXML
     private Text InvalidMsg;
-    
-    private File pdfToUpload;
-
-    /**
-     * this method let's the manager choose a file from his file system in order to upload it to the server
-     * @param event
-     */
-    @FXML
-    void ImportImageClicked(MouseEvent event) {
-    	UploadMsgImg.setVisible(false);
-    	UploadMsgTxt.setVisible(false); // set upload success msg after importing new file.
-    	FileChooser fc = new FileChooser();
-    	fc.setTitle("Open Folder");
-    	pdfToUpload = fc.showOpenDialog(router.getStage());
-    	
-    	if(pdfToUpload == null || !pdfToUpload.toString().contains("pdf"))
-    		InvalidMsg.setVisible(true);
-    	else
-    		InvalidMsg.setVisible(false);
-    }
  
     @FXML
     void logoutClicked(MouseEvent event) {
@@ -105,22 +79,59 @@ public class uploadQuarterlyReportController implements Initializable{
     }
 
     /**
-     * sends an upload file request to the Client in order to upload the file as a quarterly report
+     * this method sends request to the client in order to upload the report into the server's database.
      * @param event
      */
     @FXML
     void uploadReportClicked(MouseEvent event) {
-    	if(monthBox.getValue() == null || yearBox.getValue() == null )
+    	if(checkLegality()) // check data legality, print error if illegal.
     	{
     		InvalidMsg.setVisible(true);
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload,monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
-    	UploadMsgImg.setVisible(true);
-    	UploadMsgTxt.setVisible(true);
+		User user = (User) ClientGUI.client.getUser().getServerResponse();
+    	//request server to create a report with the relevant info:
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.monitor) {
+		    	ClientGUI.client.createQuarterlyRevenueReport(monthBox.getValue(), yearBox.getValue(), user.getMainBranch().toString());
+				try {
+					ClientGUI.monitor.wait();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+    	//server response: "exists" if order exists, "created" if created succesfully.
+		ServerResponse response = ClientGUI.client.getLastResponse();
+    	if(response!=null && response.getDataType().equals("exists")) {
+    		UploadMsgTxt.setVisible(false);
+    		InvalidMsg.setVisible(true);
+    	}
+    	else {
+    		UploadMsgTxt.setVisible(true);
+    		InvalidMsg.setVisible(false);
+    	}
     }
     
+	/**
+	 * @return true if month and year values are illegal, false if they are fine.
+	 */
+	private boolean checkLegality() { // if month/year ==null or quarter isn't ended yet, return true
+		return monthBox.getValue() == null ||
+				yearBox.getValue() == null || 
+				(Integer.parseInt(monthBox.getValue())*3) >= LocalDate.now().getMonthValue();
+	}
+
+
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
@@ -137,7 +148,7 @@ public class uploadQuarterlyReportController implements Initializable{
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
-		router.setUploadQuarterlyReportController(this);
+		router.setCreateRevenueQuarterlyReportController(this);
 		router.setArrow(leftArrowBtn, -90);
 		String[] tempQuarter= {"1", "2", "3", "4"};
 		yearBox.getItems().addAll(generateYears());
@@ -165,6 +176,6 @@ public class uploadQuarterlyReportController implements Initializable{
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 }
 

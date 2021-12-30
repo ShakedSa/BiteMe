@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.uploadQuarterlyReportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.createRevenueQuarterlyReportController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -25,7 +25,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Quarterly  Report">
+      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Revenue Quarterly  Report">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -68,7 +68,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Label id="btn" fx:id="uploadReportBtn" alignment="CENTER" layoutX="538.0" layoutY="511.0" onMouseClicked="#uploadReportClicked" prefHeight="25.0" prefWidth="235.0" text="Upload Report">
+      <Label id="btn" fx:id="uploadReportBtn" alignment="CENTER" layoutX="538.0" layoutY="511.0" onMouseClicked="#uploadReportClicked" prefHeight="25.0" prefWidth="235.0" text="Create Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -83,33 +83,12 @@
       </Text>
       <ComboBox fx:id="monthBox" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="119.0" promptText="Quarter" />
       <ComboBox fx:id="yearBox" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
-      <Text layoutX="134.0" layoutY="340.0" onMouseClicked="#ImportImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <ImageView fx:id="ImportImage" fitHeight="50.0" fitWidth="39.0" layoutX="85.0" layoutY="309.0" onMouseClicked="#ImportImageClicked" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/upload.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <Text fx:id="UploadMsgTxt" fill="#62d019" layoutX="134.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The report was uploaded successfully!" visible="false">
+      <Text fx:id="UploadMsgTxt" fill="#62d019" layoutX="134.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The report was created successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
       </Text>
-      <ImageView fx:id="UploadMsgImg" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../images/greenVLogo.gif" />
-         </image>
-      </ImageView>
-      <Text fx:id="InvalidMsg" fill="#cf1b1b" layoutX="144.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid Path or file name !" visible="false">
+      <Text fx:id="InvalidMsg" fill="#cf1b1b" layoutX="144.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report already exists !" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>

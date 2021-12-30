@@ -119,8 +119,8 @@ public class Delivery implements Serializable {
 		if (orderAddress != null) {
 			b.append("Address: " + orderAddress + "\n");
 		}
-		b.append("Delivery Price: " + deliveryPrice + "¤\n");
-		b.append("Discount on your order: " + discount + "¤");
+		b.append("Delivery Price: " + deliveryPrice + "\u20AA\n");
+		b.append("Discount on your order: " + discount + "\u20AA");
 		return b.toString();
 	}
 

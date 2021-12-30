@@ -98,7 +98,7 @@ public class addNewItemController implements Initializable {
 	private Product product;
 
 	/**
-	 * creating list of Types
+	 * set values of possible dish types inside the comboBox
 	 */
 	private void setTypeComboBox() {
 		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
@@ -119,6 +119,11 @@ public class addNewItemController implements Initializable {
 		TypeOfProduct typeOfProduct = selectTypeBox.getValue();
 		String itemName = itemsNameTxtField.getText();
 		String temp = optionalComponentsTxtField.getText();
+		String regex = "^[u0400-u04FFa-zA-Z ]+(,[u0400-u04FFa-zA-Z ]+)*$";
+		if(!temp.equals("") && !temp.matches(regex)) {
+			errorMsg.setText("Please enter optional components according the explanation");
+			return;
+		}
 		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
 			String size = "Size";
 			if (temp.equals("") == false) { // there are some free text components

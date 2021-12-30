@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.deliveryMethodController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.deliveryMethodController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Text fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
@@ -86,12 +86,12 @@
       <Circle fill="#1f93ff00" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select delivery method:">
+      <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Please select delivery method">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ComboBox fx:id="deliveryMethodBox" editable="true" layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Delivery Method" />
+      <ComboBox fx:id="deliveryMethodBox" layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Delivery Method" />
       <Label fx:id="errorMsg" layoutX="551.0" layoutY="416.0" textFill="RED">
          <rotationAxis>
             <Point3D />
@@ -106,75 +106,81 @@
          </font>
       </Label>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text fx:id="addressText" layoutX="105.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address / Workplace" visible="false">
+      <Text fx:id="addressText" layoutX="105.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Address / Workplace" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="firstNameText" layoutX="103.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" visible="false">
+      <Text fx:id="firstNameText" layoutX="103.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="First Name" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="phoneNumberText" layoutX="105.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" visible="false">
+      <Text fx:id="phoneNumberText" layoutX="105.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Phone Number" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="lastNameText" layoutX="104.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" visible="false">
+      <Text fx:id="lastNameText" layoutX="104.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Last Name" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="addressTxtField" layoutX="242.0" layoutY="275.0" promptText="Address / Workplace" visible="false" />
-      <TextField fx:id="firstNameTxtField" layoutX="242.0" layoutY="311.0" promptText="First Name" visible="false" />
-      <TextField fx:id="lastNameTxtField" layoutX="243.0" layoutY="349.0" promptText="Last Name" visible="false" />
-      <TextField fx:id="phoneNumberTxtField" layoutX="321.0" layoutY="388.0" prefHeight="26.0" prefWidth="72.0" promptText="1234567" visible="false" />
-      <ComboBox fx:id="prefixPhoneNumberBox" layoutX="243.0" layoutY="388.0" prefHeight="27.0" prefWidth="72.0" promptText="050" visible="false" />
-      <Text fx:id="includeFee" fill="#3180bc" layoutX="104.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This delivery method includes extra pay" visible="false" />
-      <Text fx:id="requires" fill="RED" layoutX="105.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" visible="false" />
-      <Text fx:id="addStar" fill="RED" layoutX="224.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <Text fx:id="fnameStar" fill="RED" layoutX="168.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <Text fx:id="lnameStar" fill="RED" layoutX="168.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <Text fx:id="pnumberStar" fill="RED" layoutX="195.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <Text fx:id="amoutOfPeopleText" layoutX="498.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Amount of people" visible="false">
+      <TextField fx:id="addressTxtField" layoutX="250.0" layoutY="279.0" promptText="Address / Workplace" visible="false" />
+      <TextField fx:id="firstNameTxtField" layoutX="250.0" layoutY="315.0" promptText="First Name" visible="false" />
+      <TextField fx:id="lastNameTxtField" layoutX="251.0" layoutY="353.0" promptText="Last Name" visible="false" />
+      <TextField fx:id="phoneNumberTxtField" layoutX="329.0" layoutY="393.0" prefHeight="26.0" prefWidth="72.0" promptText="1234567" visible="false" />
+      <ComboBox fx:id="prefixPhoneNumberBox" layoutX="251.0" layoutY="393.0" prefHeight="27.0" prefWidth="72.0" promptText="050" visible="false" />
+      <Text fx:id="includeFee" fill="#3180bc" layoutX="104.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This delivery method includes extra pay" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
+         </font></Text>
+      <Text fx:id="requires" fill="RED" layoutX="105.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Fields are required" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font></Text>
+      <Text fx:id="addStar" fill="RED" layoutX="239.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="fnameStar" fill="RED" layoutX="175.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="lnameStar" fill="RED" layoutX="175.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="pnumberStar" fill="RED" layoutX="208.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="amoutOfPeopleText" layoutX="498.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Amount of people" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="amntStar" fill="RED" layoutX="605.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <TextField fx:id="amountTextField" layoutX="615.0" layoutY="275.0" visible="false" />
-      <Text fx:id="hoursText" fill="#a8a1a1" layoutX="510.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hour" visible="false">
+      <Text fx:id="amntStar" fill="RED" layoutX="616.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="hoursText" fill="#a8a1a1" layoutX="510.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Hour" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <ComboBox fx:id="hourBox" editable="true" layoutX="507.0" layoutY="330.0" prefHeight="26.0" prefWidth="57.0" promptText="00" visible="false" />
-      <ComboBox fx:id="minutesBox" editable="true" layoutX="578.0" layoutY="330.0" prefHeight="26.0" prefWidth="57.0" promptText="00" visible="false" />
-      <Text fx:id="minutesText" fill="#a8a1a1" layoutX="582.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minutes" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Text fx:id="pickTimeTxt" layoutX="498.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pick time for delivery" visible="false">
+      <ComboBox fx:id="hourBox" layoutX="507.0" layoutY="330.0" prefHeight="26.0" prefWidth="57.0" promptText="00" visible="false" />
+      <ComboBox fx:id="minutesBox" layoutX="578.0" layoutY="330.0" prefHeight="26.0" prefWidth="57.0" promptText="00" visible="false" />
+      <Text fx:id="minutesText" fill="#a8a1a1" layoutX="582.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Minutes" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text fx:id="pickTimeTxt" layoutX="498.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Pick time for delivery" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="pickStar" fill="RED" layoutX="623.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <Text fx:id="businessCodeText" layoutX="499.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business Code" visible="false">
+      <Text fx:id="pickStar" fill="RED" layoutX="639.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <Text fx:id="businessCodeText" layoutX="499.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="fields" text="Business Code" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="14.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="businessStar" fill="RED" layoutX="579.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
-      <TextField fx:id="businessCodeTextField" layoutX="615.0" layoutY="324.0" visible="false" />
+      <Text fx:id="businessStar" fill="RED" layoutX="591.0" layoutY="337.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+      <TextField fx:id="businessCodeTextField" layoutX="630.0" layoutY="322.0" visible="false" />
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="76.0" layoutY="479.0" onMouseClicked="#returnToPickDateAndTime" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <ComboBox fx:id="amountTextField" layoutX="630.0" layoutY="275.0" prefHeight="27.0" prefWidth="57.0" promptText="2" visible="false" />
    </children>
 </AnchorPane>

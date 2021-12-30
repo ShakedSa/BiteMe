@@ -108,19 +108,6 @@ public class reviewOrderController implements Initializable {
 		default:
 			break;
 		}
-		// Before:
-//		Thread t = new Thread(() -> {
-//			synchronized (ClientGUI.monitor) {
-//				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
-//				try {
-//					ClientGUI.monitor.wait();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					return;
-//				}
-//			}
-//		});
-		// After
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.monitor) {
 				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
@@ -150,12 +137,6 @@ public class reviewOrderController implements Initializable {
 			}
 		});
 		t.start();
-//		try {
-//			t.join();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return;
-//		}
 	}
 
 	private void changeToRateUs() {
@@ -192,13 +173,13 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeToMyCart("Review");
 	}
 
 	@FXML
 	void returnToHome(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeSceneToHomePage();
 	}
 
@@ -209,15 +190,17 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void showProfile(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.showProfile();
 	}
 
 	@FXML
 	void returnToPaymentMethod(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+		router.getOrderDeliveryMethod().calculateFinalPrice();
 		router.getPaymentController().setAvatar();
 		router.getPaymentController().setItemsCounter();
+		router.getPaymentController().checkRefunds();
 		stage.setTitle("BiteMe - Select Payment Method");
 		stage.setScene(router.getPaymentController().getScene());
 		stage.show();
@@ -225,7 +208,7 @@ public class reviewOrderController implements Initializable {
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
@@ -258,6 +241,7 @@ public class reviewOrderController implements Initializable {
 	}
 
 	public void displayOrder() {
+		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		OrderDeliveryMethod fullOrder = router.getOrderDeliveryMethod();
 		Order order = fullOrder.getOrder();
 		ArrayList<Product> products = order.getProducts();
@@ -286,28 +270,16 @@ public class reviewOrderController implements Initializable {
 			i++;
 		}
 		itemsTitle = new Label("Products:");
-		itemsTitle.setFont(new Font("Berlin Sans FB", 14));
-		itemsTitle.setLayoutX(120);
-		itemsTitle.setLayoutY(193);
+		itemsTitle.getStyleClass().addAll("subtitle", "itemsTitle");
 		orderDisplay.setContent(orderDisplayContent);
-		orderDisplay.setPrefWidth(676);
-		orderDisplay.setPrefHeight(130);
-		orderDisplay.setLayoutX(100);
-		orderDisplay.setLayoutY(213);
+		orderDisplay.getStyleClass().add("orderDisplayScroll");
 		orderDisplay.setId("scrollPane");
 		deliveryTitle = new Label("Delivery information: ");
-		deliveryTitle.setFont(new Font("Berlin Sans FB", 14));
-		deliveryTitle.setLayoutX(120);
-		deliveryTitle.setLayoutY(360);
+		deliveryTitle.getStyleClass().addAll("subtitle", "deliveryTitle");
 		deliveryInformation = new Label(delivery.toString());
-		deliveryInformation.setFont(new Font("Berlin Sans FB", 13));
-		deliveryInformation.setLayoutX(100);
-		deliveryInformation.setLayoutY(380);
+		deliveryInformation.getStyleClass().addAll("fields", "deliveryInfo");
 		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "\u20AA");
-		totalPrice.setFont(new Font("Berlin Sans FB", 22));
-		totalPrice.setStyle("-fx-text-fill: #0a62a1;");
-		totalPrice.setLayoutX(600);
-		totalPrice.setLayoutY(400);
+		totalPrice.getStyleClass().add("totalPrice");
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 			circle.toFront();

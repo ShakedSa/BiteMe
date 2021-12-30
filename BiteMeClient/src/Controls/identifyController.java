@@ -122,6 +122,7 @@ public class identifyController implements Initializable {
 			w4cCodeFieldTxt.clear();
 			readingMsg.setText("");
 		});
+		router.getOrder().setRestaurantName(restaurantsName);
 		if (router.getRestaurantMenuController() == null) {
 			AnchorPane mainContainer;
 			restaurantMenuController controller;

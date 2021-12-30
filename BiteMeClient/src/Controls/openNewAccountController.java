@@ -1,281 +1,250 @@
 package Controls;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import Entities.NewAccountUser;
 import Entities.ServerResponse;
-import Entities.User;
-import Enums.BranchName;
-import Enums.Status;
 import Enums.UserType;
-import Util.InputValidation;
 import client.ClientGUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class openNewAccountController implements Initializable{
+public class openNewAccountController implements Initializable {
 
-	public final UserType type= UserType.BranchManager;
+	public final UserType type = UserType.BranchManager;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 
-    @FXML
-    private Text managerPanelBtn;
-    
-    @FXML
-    private Text userName;
-    
-    @FXML
-    private TextField userNameTxtField;
-    
-    @FXML
-    private TextField PhoneNumberTxtField;
+	@FXML
+	private ImageView approvalBtn1;
 
-    @FXML
-    private Label approvalBtn;
+	@FXML
+	private Label next;
 
-    @FXML
-    private Rectangle avatar;
-    
-    @FXML
-	private Label errorMsg;
+	@FXML
+	private Rectangle leftArrowBtn;
 
-    @FXML
-    private RadioButton businessAccountBtn;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private TextField creditCardNumberTxtField;
+	@FXML
+	private Text managerPanelBtn;
 
-    @FXML
-    private TextField emailTxtField;
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    private TextField employersCodeTxtField;
+	@FXML
+	private Text logoutBtn;
 
-    @FXML
-    private TextField employersNameTxtField;
+	@FXML
+	private Text profileBtn;
 
-    @FXML
-    private TextField firstNameTxtField;
+	@FXML
+	private Text msg;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private Text instructions;
 
-    @FXML
-    private TextField idTxtField;
+	@FXML
+	private TableView<NewAccountUser> approvalTable;
 
-    @FXML
-    private TextField lastNameTxtField;
+	@FXML
+	private TableColumn<NewAccountUser, String> UserName;
 
-    @FXML
-    private Rectangle leftArrowBtn;
+	@FXML
+	private TableColumn<NewAccountUser, String> FirstName;
 
-    @FXML
-    private Text logoutBtn;
-    
-    @FXML
-    private Text EmpDetails;
-    
-    @FXML
-    private Text EmpName;
+	@FXML
+	private TableColumn<NewAccountUser, String> LastName;
 
-    @FXML
-    private Text EmpCode;
-    
-    @FXML
-    private Text MonthlyDeb;
-    
-    @FXML
-    private Text star1;
-    
-    @FXML
-    private Text star2;
-    
-    @FXML
-    private Text star3;
-    
-    @FXML
-    private Spinner<?> monthlyDebitSpinner;
+	@FXML
+	private TableColumn<NewAccountUser, String> ID;
 
-    @FXML
-    private ComboBox<?> prefixPhoneNumberBox;
+	@FXML
+	private TableColumn<NewAccountUser, String> Email;
 
-    @FXML
-    private RadioButton privateAccountBtn;
+	@FXML
+	private TableColumn<NewAccountUser, String> Phone;
 
-    @FXML
-    private Text profileBtn;
-    
-    
-    @FXML
-    void approvalClicked(MouseEvent event) {
-    	if(!CheckUserInput())
-    		return;
-    	
-    	/*User newUser = new User(userNameTxtField.getText(), passwordTxtField.getText(),
-    			firstNameTxtField.getText(), lastNameTxtField.getText(), idTxtField.getText(),
-    			emailTxtField.getText(),PhoneNumberTxtField.getText(), userType,
-    			employersNameTxtField.getText(), mainBranch, roll, status,avatar);*/
-    	
-    	
-    }
+	private String id = "";
+	
+	private String username = "";
+	
+	private String fName = "";
+	
+	private String lName = "";
 
-    @FXML
-    void businessAccountClicked(MouseEvent event) {
-    	if(privateAccountBtn.isSelected())
-    		privateAccountBtn.setSelected(false);
-    	businessAccountFieldsVisabilaty(true);
-    	
-    }
-    
-    private void businessAccountFieldsVisabilaty(boolean val) {
-    	EmpDetails.setVisible(val);
-    	EmpCode.setVisible(val);
-    	EmpName.setVisible(val);
-    	MonthlyDeb.setVisible(val);
-    	employersNameTxtField.setVisible(val);
-    	employersCodeTxtField.setVisible(val);
-    	monthlyDebitSpinner.setVisible(val);
-    	star1.setVisible(val);
-    	star2.setVisible(val);
-    	star3.setVisible(val);
-    }
-
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
-    
-    private boolean CheckUserInput() {
-		if (!InputValidation.checkValidText(userNameTxtField.getText())) {
-			errorMsg.setText("Must fill username");
-			return false;
+	
+	
+	// show table with employers that are waiting for approval
+	public void initTable() {
+		id = "";
+		// wait for response
+		ClientGUI.client.searchForNewUsers();
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (ClientGUI.monitor) {
+					try {
+						ClientGUI.monitor.wait();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
+			}
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
 		}
-		if (InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in username");
-			return false;
+		// handle server response
+		ServerResponse sr = ClientGUI.client.getLastResponse();
+		@SuppressWarnings("unchecked")
+		// get the server response- Business employers that needs approval
+		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();
+		// check if business customers are waiting for approval
+		if (response.size() == 0) {
+			msg.setText("Currently no accounts are needed");
+			msg.setVisible(true);
+			next.setVisible(false);
+			next.setVisible(false);
+			return;
 		}
-		if (!InputValidation.checkValidText(firstNameTxtField.getText())) {
-			errorMsg.setText("Must fill first name");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(firstNameTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in name");
-			return false;
-		}
-		if (!InputValidation.checkValidText(lastNameTxtField.getText())) {
-			errorMsg.setText("Must fill in last name");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(lastNameTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in last name");
-			return false;
-		}
-		if (!InputValidation.checkValidText(idTxtField.getText())) {
-			errorMsg.setText("Must fill an id");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(idTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in id");
-			return false;
-		}
-		if (!InputValidation.checkValidText(PhoneNumberTxtField.getText())) {
-			errorMsg.setText("Must fill a phone number");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(PhoneNumberTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in phone number");
-			return false;
-		}
-		if (!InputValidation.checkValidText(emailTxtField.getText())) {
-			errorMsg.setText("Must fill in an email");
-			return false;
-		}
-		if (!checkEmail(emailTxtField.getText())) {
-			errorMsg.setText("Email must contain '@'");
-			return false;
-		}
-		if (!InputValidation.checkValidText(creditCardNumberTxtField.getText())) {
-			errorMsg.setText("Must fill credit card number");
-			return false;
-		}
-		if (InputValidation.checkSpecialCharacters(creditCardNumberTxtField.getText())) {
-			errorMsg.setText("Special characters aren't allowed in credit card number");
-			return false;
-		}
-		
-		
-		
-		errorMsg.setText("");
-		return true;
+		setTable(response);
+		msg.setText("Some employers are waiting for your approval");
+		msg.setVisible(true);
+		instructions.setVisible(true);
 	}
-    
-    boolean checkEmail(String email) {
-    	return email.contains("@");
-    }
-    
 
-    @FXML
-    void privateAccountClicked(MouseEvent event) {
-    	if(businessAccountBtn.isSelected())
-    		businessAccountBtn.setSelected(false);
-    	businessAccountFieldsVisabilaty(false);
-    }
-    
+	// set table columns and values
+	private void setTable(ArrayList<NewAccountUser> list) {
+		UserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+		FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+		LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+		ID.setCellValueFactory(new PropertyValueFactory<>("id"));
+		Email.setCellValueFactory(new PropertyValueFactory<>("email"));
+		Phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+		approvalTable.setItems(getCustomer(list));
+		approvalTable.setEditable(true);
+	}
+
+	// change arrayList to ObservableList
+	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
+		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+		for (NewAccountUser customer : list2) {
+			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(), customer.getFirstName(),
+					customer.getLastName(), customer.getId(), customer.getEmail(), customer.getPhone());
+			users.add(customerPlusBudget);
+		}
+		return users;
+	}
+
+	@FXML
+	void copyTableData(MouseEvent event) {
+		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+			id = (approvalTable.getSelectionModel().getSelectedItem().getId());
+			username = (approvalTable.getSelectionModel().getSelectedItem().getUserName());
+			fName = (approvalTable.getSelectionModel().getSelectedItem().getFirstName());
+			lName = (approvalTable.getSelectionModel().getSelectedItem().getLastName());
+		}
+	}
+
+	@FXML
+	void approvalClicked(MouseEvent event) {
+		if (id.equals("")) {
+			msg.setVisible(true);
+			msg.setText("Please double click on a user!");
+			return;
+		}
+		if (router.getOpenNewAccountFinalController() == null) {
+			AnchorPane mainContainer;
+			openNewAccountFinalController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeOpenNewAccountFinalPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.initScene(id, username, fName, lName);
+				controller.setPrevScene(scene);
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Open New Account");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getOpenNewAccountFinalController().initScene(id, username, fName, lName);
+			stage.setTitle("BiteMe - Open New Account");
+			stage.setScene(router.getOpenNewAccountFinalController().getScene());
+			stage.show();
+		}
+
+	}
+
+
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
+
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
 
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
-    
-    @FXML
-    void returnToManagerPanel(MouseEvent event) {
-    	router.returnToManagerPanel(event);
-    }
-    
-    /**
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
+
+	@FXML
+	void returnToManagerPanel(MouseEvent event) {
+		router.returnToManagerPanel(event);
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
 
-    
-    @Override
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setOpenNewAccountController(this);
-		setStage(router.getStage());
 		router.setArrow(leftArrowBtn, -90);
+		setStage(router.getStage());
 	}
 
-    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -285,8 +254,7 @@ public class openNewAccountController implements Initializable{
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
 	}
 
 }
-

@@ -11,6 +11,7 @@ import Entities.ImportedUser;
 import Entities.MyFile;
 import Entities.NewSupplier;
 import Entities.ServerResponse;
+import Entities.User;
 import Enums.BranchName;
 import Enums.UserType;
 import Util.InputValidation;
@@ -23,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,6 +33,11 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * This controller is incharge of adding new suppliers logic
+ * @author Michael
+ *
+ */
 public class addNewSupplierController implements Initializable {
 
 	public final UserType type = UserType.BranchManager;
@@ -48,10 +55,19 @@ public class addNewSupplierController implements Initializable {
 	private Rectangle avatar;
 	
 	@FXML
+	private ImageView infoIcon;
+
+	@FXML
+	private TextArea infoTxtArea;
+	
+	@FXML
     private Text InvalidMsg;
 	
 	@FXML
 	private Text restaurantName;
+	
+	@FXML
+    private Text userInfo;
 
     @FXML
 	private Text restaurantAddress;
@@ -85,6 +101,9 @@ public class addNewSupplierController implements Initializable {
 
 	@FXML
 	private Text updateSucess;
+	
+	@FXML
+	private Text required;
 
 	@FXML
 	private ImageView updateSucess1;
@@ -125,22 +144,17 @@ public class addNewSupplierController implements Initializable {
     @FXML
     private ComboBox<String> restaurantTypeCombo;
 	
-	private String validUserName;
-	
-	private String validResttuarantName;
-	
-	private ImportedUser personInfo; // will hold the the person information from the db
-	
 	private File imgToUpload;
-	
-	private ArrayList<String> info;
-	
-	private String branchName;
 	
 	private ObservableList<String> list;
 	
+	private String userName;
+	
 
-	// creating list of Commission
+	
+	/**set possible commissions inside the combo box
+	 * modifies: monthlyCommissionBox
+	 */
 	private void setMonthlyCommissionComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
 		type.add("7%");
@@ -153,7 +167,10 @@ public class addNewSupplierController implements Initializable {
 		monthlyCommissionBox.setItems(list);
 	}
 	
-	// creating list of Commission
+	
+		/**set possible restuarant types inside the combo box
+		 * modifies: restaurantTypeComboBox
+		 */
 		private void setRestaurantTypeComboBox() {
 			ArrayList<String> type = new ArrayList<String>();
 			type.add("Italian");
@@ -163,66 +180,11 @@ public class addNewSupplierController implements Initializable {
 			list = FXCollections.observableArrayList(type);
 			restaurantTypeCombo.setItems(list);
 		}
-	
-	//search for the given username in the database
-	//checks that this user is'nt alreay defind
-	@FXML
-    void searchClicked(MouseEvent event) {
-		if(!checkValues()) {
-    		return;
-    	}
-		ClientGUI.client.checkUserName(userNameTxtField.getText());
-		//wait for response
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		});
-		t.start();
-		try {
-			t.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		//handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
-		@SuppressWarnings("unchecked")
-		//get the server response- Business employers that needs approval
-		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
-		//check if UserName is in the database
-		if(sr.getMsg().equals("Error"))
-		{
-			userNameError.setText("Unable to locate UserName");
-			userNameError.setVisible(true);
-			enableEdit(false);
-			return;
-		}
-		//check if UserName already has a permission 
-		else if(sr.getMsg().equals("already has type")){
-			userNameError.setText("This user already has a type");
-			userNameError.setVisible(true);
-			enableEdit(false);
-			return;
-		}
-		enableEdit(true);
-		userNameError.setVisible(true);
-		userNameError.setText("Name: " + response.get(0) +" " + response.get(1));
-		validUserName = userNameTxtField.getText();
-		branchName = response.get(2);
-    }
 
-	
-	
-	//hides or shows certain components
+		
+	/**hides or shows certain componets in the page
+	 * @param val = True / false
+	 */
 	public void enableEdit(boolean val) {
 		restaurantName.setVisible(val);
 		restaurantNameTxtField.setVisible(val);
@@ -243,48 +205,30 @@ public class addNewSupplierController implements Initializable {
 		}
 	}
 	
-	private boolean checkValues() {
-    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
-    		userNameError.setVisible(true);
-    		enableEdit(false);
-    		userNameError.setText("No special characters!");
-    		return false;
-    	}
-    	if(userNameTxtField.getText().length() == 0) {
-    		userNameError.setVisible(true);
-    		enableEdit(false);
-    		userNameError.setText("UserName must be filled!");
-    		return false;
-    	}
-    	return true;
-    }
 	
-	public void removeAllMessages() {
-		UploadMsgTxt.setVisible(false);
-		Error.setVisible(false);
-		userNameError.setVisible(false);
-		userNameTxtField.clear();
-	}
+	/**gets user information from the prev page and shows it in a text field
+	 * @param fName = user first name
+	 * @param lName = user last name
+	 * @param userName
+	 */
+	public void setUserInfo(String fName, String lName, String userName) {
+    	userInfo.setText(userName + " (" + fName + " " + lName+ ")");
+    	this.userName = userName;
+    }
 
 	
+	
+	/**check user input in all possible fields
+	 * @return true if the fields are filled correctly
+	 */
 	private boolean checkInfoFields() {
-    	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
-    		Error.setVisible(true);
-    		enableEdit(false);
-    		Error.setText("ID can't contain special characters!");
-    		return false;
-    	}
-    	if(userNameTxtField.getText().length() == 0) {
-    		Error.setVisible(true);
-    		enableEdit(false);
-    		Error.setText("ID must be filled!");
-    		return false;
-    	}
+		//checks for special characters
     	if( InputValidation.checkSpecialCharacters(restaurantNameTxtField.getText())) {
     		Error.setVisible(true);
     		Error.setText("Name can't contain special characters!");
     		return false;
     	}
+    	//checks if the field is not empty
     	if(restaurantNameTxtField.getText().length() == 0) {
     		Error.setVisible(true);
     		Error.setText("Name must be filled!");
@@ -295,9 +239,10 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Address must be filled!");
     		return false;
     	}
-    	if(!restaurantAddressTxtField.getText().contains(",")) {
+    	//check that the address is in valid format
+    	if(!restaurantAddressTxtField.getText().matches("[a-zA-Z]+ \\d,( [a-zA-Z]+)+")) {
     		Error.setVisible(true);
-    		Error.setText("Address is not valid");
+    		Error.setText("Address is not in the format");
     		return false;
     	}
     	if(restaurantTypeCombo.getSelectionModel().isEmpty()) {
@@ -310,6 +255,7 @@ public class addNewSupplierController implements Initializable {
     		Error.setText("Please choose monthly commission");
     		return false;
     	}
+    	//checks that an image has been uploaded
     	if(imgToUpload == null) {
     		Error.setVisible(true);
     		Error.setText("Please upload an image");
@@ -318,23 +264,37 @@ public class addNewSupplierController implements Initializable {
     	if(checkImageFormat()) {
     		Error.setVisible(true);
     		Error.setText("File foramt must be: jpj, gif or png");
+    		UploadMsgTxt.setVisible(false);
     		return false;
     	}
     	return true;
     }
+	
+	
+	/**shows instructions label for correct address format 
+	 * @param event
+	 */
+	@FXML
+	void infoIconEnter(MouseEvent event) {
+		infoTxtArea.setVisible(true);
+	}
+	
+	
+	/**hides instructions label for correct address format
+	 * @param event
+	 */
+	@FXML
+	void infoIconExit(MouseEvent event) {
+		infoTxtArea.setVisible(false);
+	}
 
 	
+	/**send request to client UI in order to add a new supplier
+	 * @param event
+	 */
 	@FXML
 	void addSupplierClicked(MouseEvent event) {
-		//check that the userName text field has'nt changed since it was checked
-		if(!userNameTxtField.getText().equals(validUserName) ) {
-			userNameError.setVisible(true);
-			userNameError.setText("Unable to locate UserName");
-			Error.setVisible(false);
-    		return;
-    	}
-		
-		if(!checkInfoFields()) { //check that all the fields are filled and correct
+		if(!checkInfoFields()) { //check that all the fields are filled correctly
 			Error.setVisible(true);
     		return;
 		}
@@ -350,15 +310,15 @@ public class addNewSupplierController implements Initializable {
 			image.setSize(mybytearray.length);
 			bis.read(image.getMybytearray(), 0, mybytearray.length);
 			//prepare fields for table bitemedb.suppliers
-			NewSupplier newSupplier = new NewSupplier(userNameTxtField.getText(),
+			User user = (User) ClientGUI.client.getUser().getServerResponse();
+			NewSupplier newSupplier = new NewSupplier(userName,
 					restaurantTypeCombo.getValue(),restaurantNameTxtField.getText(),
 					restaurantAddressTxtField.getText(),image,
-					monthlyCommissionBox.getValue(), BranchName.valueOf(branchName));
-			
-			ClientGUI.client.addNewSupplier(newSupplier);//send to clientUI
+					monthlyCommissionBox.getValue(), user.getMainBranch());
+			//send to clientUI
+			ClientGUI.client.addNewSupplier(newSupplier);
 			fis.close();
 			bis.close();
-			userNameError.setVisible(false);
 			Error.setVisible(false);
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);
@@ -371,12 +331,17 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	
+	/**let's the user browse a file from his computer
+	 * @param event
+	 * modifies: imgToUpload (File)
+	 */
 	@FXML
     void uploadImageClicked(MouseEvent event) {
     	UploadMsgTxt.setVisible(false);
     	FileChooser fc = new FileChooser();
     	fc.setTitle("Open Folder");                               
     	imgToUpload = fc.showOpenDialog(router.getStage());
+    	//check that the file is an image
     	if(!checkImageFormat() ) {
     		UploadMsgTxt.setStyle("-fx-text-fill: green;");
     		UploadMsgTxt.setText("The image was uploaded successfully!");
@@ -390,8 +355,8 @@ public class addNewSupplierController implements Initializable {
     }
 	
 	
-	/**
-	 * @return true if the file format is suitable for image
+	/**checks that the file format is suitable for an image
+	 * @return true if it is
 	 */
 	private boolean checkImageFormat() {
 		return imgToUpload == null || 
@@ -400,18 +365,22 @@ public class addNewSupplierController implements Initializable {
     			(imgToUpload.toString().toLowerCase().contains("gif")) );
 	}
 	
+	
+	/**delete user previous actions when entering and exiting the page
+	 */
 	public void reSetTheScreen() {
-		enableEdit(false);
-		userNameError.setVisible(false);
-		Error.setVisible(false);
-		userNameTxtField.clear();
 		restaurantTypeCombo.valueProperty().set(null);
 		monthlyCommissionBox.valueProperty().set(null);
 		restaurantAddressTxtField.clear();
 		restaurantNameTxtField.clear();
 		UploadMsgTxt.setVisible(false);
+		updateSucess1.setVisible(false);
+		updateSucess.setVisible(false);
 		imgToUpload = null;
+		infoTxtArea.setVisible(false);
+		Error.setVisible(false);
 	}
+	
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
@@ -440,7 +409,11 @@ public class addNewSupplierController implements Initializable {
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
-
+	
+	
+	/**
+	 *init controller information upon creation
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -449,7 +422,6 @@ public class addNewSupplierController implements Initializable {
 		setMonthlyCommissionComboBox();
 		setRestaurantTypeComboBox();
 		router.setArrow(leftArrowBtn, -90);
-		
 	}
 
 	public void setScene(Scene scene) {
@@ -463,5 +435,4 @@ public class addNewSupplierController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
 }

@@ -95,6 +95,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
+		case "checkUserNameAccountType":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkUserNameAccountType(m.get(0)), client);
+			break;
 		case "checkuserNameIsClient":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUserNameIsClient(m.get(0)), client);
@@ -124,7 +128,7 @@ public class Server extends AbstractServer {
 			break;
 		case "getOrderInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0), m.get(1)), client);
+			this.sendToClient(mysqlConnection.getOrderInfo(m.get(0)), client);
 			break;
 		case "getCustomerInfo":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
@@ -199,6 +203,24 @@ public class Server extends AbstractServer {
 		case "getRefunds":
 			this.sendToClient(mysqlConnection.getRefund((Customer)serverResponse.getServerResponse()), client);
 			break;
+		case "createQuarterlyRevenueReport":// arr= quarter,year,branch
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(reportsHandler.quarterlyRevenueReportPdf(m.get(2), m.get(0), m.get(1)),client);
+			break;
+		case "importedUsers":
+			this.sendToClient(mysqlConnection.getImportedUsers(), client);
+			break;
+		case "getUsersCustomersInfo":
+			this.sendToClient(mysqlConnection.getAllUsersAndCustomers(), client);
+			break;
+		case "checkCustomerStatus":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.checkCustomerStatus(m.get(0)), client);
+			break;
+		case "openNewAccount":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.openNewAccount(m), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;
@@ -226,7 +248,6 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();
@@ -236,7 +257,7 @@ public class Server extends AbstractServer {
 		{//report updates needed for last report month+1:
 		//(no need next ones since server was off and no other data was collected)
 			reportsHandler.createAllReports(month+1, year);
-
+			controller.setMessage("Monthly reports were created.");
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());

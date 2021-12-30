@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerGUIController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ServerGUIController">
    <children>
       <Label layoutX="98.0" layoutY="34.0" text="Server Configuration">
          <font>
@@ -52,7 +52,7 @@
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font></TextField>
-      <PasswordField fx:id="txtDbPass" layoutX="203.0" layoutY="286.0" prefHeight="8.0" prefWidth="118.0" text="88888888">
+      <PasswordField fx:id="txtDbPass" layoutX="203.0" layoutY="286.0" prefHeight="8.0" prefWidth="118.0" text="1231233">
          <font>
             <Font name="Berlin Sans FB" size="14.0" />
          </font></PasswordField>

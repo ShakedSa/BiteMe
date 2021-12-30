@@ -69,9 +69,9 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering">
+      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering" styleClass="title">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
       <TextField fx:id="w4cCodeFieldTxt" focusTraversable="false" layoutX="82.0" layoutY="272.0" promptText="W4C Code" />
@@ -83,10 +83,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:">
-         <font>
-            <Font name="Berlin Sans FB" size="14.0" />
-         </font>
+      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:" styleClass="subtitle">
       </Text>
       <Circle fill="DODGERBLUE" layoutX="230.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="253.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />

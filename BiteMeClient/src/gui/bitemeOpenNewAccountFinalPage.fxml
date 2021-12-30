@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="871.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.openNewAccountFinalController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
+      <Line endX="708.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+         </image>
+      </ImageView>
+      <Text layoutX="57.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open New Account">
+         <font>
+            <Font name="Berlin Sans FB" size="30.0" />
+         </font>
+      </Text>
+      <Text fx:id="EmpName" layoutX="57.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Employer's Name">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="MonthlyBud" layoutX="465.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monthly Budget">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="employersNameTxtField" layoutX="214.0" layoutY="290.0" prefHeight="26.0" prefWidth="178.0" />
+      <ImageView fx:id="approvalBtn1" fitHeight="50.0" fitWidth="46.0" layoutX="548.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../scene%20builder/images/sendIcon.gif" />
+         </image>
+      </ImageView>
+      <Label id="btn" fx:id="approvalBtn" alignment="TOP_LEFT" layoutX="599.0" layoutY="522.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="251.0" text="Send For Approval">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Label>
+      <ImageView fx:id="leftArrowBtn" fitHeight="67.0" fitWidth="52.0" layoutX="57.0" layoutY="509.0" onMouseClicked="#returnToPreviousScene" style="-fx-rotate: -90;">
+         <image>
+            <Image url="@../../../scene%20builder/images/arrow.gif" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Text id="active" fx:id="managerPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToManagerPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Manager Panel">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text id="link" fx:id="homePageBtn" layoutX="287.0" layoutY="57.0" onMouseClicked="#returnToHomePage" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <Text fx:id="logoutBtn" layoutX="746.0" layoutY="45.0" onMouseClicked="#logoutClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="profileBtn" layoutX="692.0" layoutY="45.0" onMouseClicked="#profileBtnClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="wouldLikeToOpen" layoutX="42.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I would like to open:">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="cardNumber" layoutX="49.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit Card Number">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="creditCardNumberTxtField" layoutX="214.0" layoutY="339.0" prefHeight="26.0" prefWidth="178.0" />
+      <Text fx:id="m6" fill="RED" layoutX="203.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="m7" fill="RED" layoutX="189.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fx:id="m8" fill="RED" layoutX="587.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <ComboBox fx:id="accountCombo" layoutX="222.0" layoutY="248.0" onAction="#openTheFields" prefHeight="26.0" prefWidth="173.0" />
+      <TextField fx:id="monthlyBudTxtField" layoutX="602.0" layoutY="290.0" prefHeight="26.0" prefWidth="99.0" />
+      <Text fx:id="dailyBud" layoutX="465.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Daily Budget">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="dailyBudTxtField" layoutX="602.0" layoutY="341.0" prefHeight="26.0" prefWidth="98.0" />
+      <Text fx:id="Error" fill="RED" layoutX="521.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Please fill all the fields">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="shekel" layoutX="683.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="shekel1" layoutX="683.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="₪">
+         <font>
+            <Font name="Berlin Sans FB" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="updateSucess" fill="#62d019" layoutX="219.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="175.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+         </image>
+      </ImageView>
+      <Label fx:id="infoMsg" layoutX="90.0" layoutY="152.0" />
+      <Text fx:id="inputErrorTxt" fill="RED" layoutX="219.0" layoutY="460.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input !" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="srvErrorTxt" fill="RED" layoutX="211.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Error, cannot add user." visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="21.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

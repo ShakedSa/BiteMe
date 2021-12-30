@@ -56,6 +56,9 @@ public class orderReceivedController implements Initializable {
 	@FXML
 	private Text rateTxt;
 	
+	@FXML 
+	private Text displayedText;
+	
 	private int orderNumber;
 	@FXML
 	void changeToCart(MouseEvent event) {
@@ -71,6 +74,11 @@ public class orderReceivedController implements Initializable {
 	void returnToHome(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
+	
+	@FXML
+    void returnToHomePage(ActionEvent event) {
+		returnToHome(null);
+    }
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
@@ -144,6 +152,7 @@ public class orderReceivedController implements Initializable {
 
 	public void setRates(int orderNumber) {
 		this.orderNumber = orderNumber;
+		displayedText.setText("Order #" + orderNumber + " was recieved,");
 		rates.put(veryBadRate, 1);
 		rates.put(badRate, 2);
 		rates.put(okRate, 3);

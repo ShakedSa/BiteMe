@@ -75,7 +75,7 @@
       <Circle fill="#2197ff" layoutX="535.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="557.0" layoutY="114.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#2197ff" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
-      <Text layoutX="251.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your order was recieved,">
+      <Text fx:id="displayedText" layoutX="242.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order #100 was received,">
          <font>
             <Font name="Berlin Sans FB" size="32.0" />
          </font>
@@ -142,5 +142,6 @@
             <Font name="Berlin Sans FB" size="14.0" />
          </font>
       </Text>
+      <Button id="cta" layoutX="337.0" layoutY="496.0" mnemonicParsing="false" onAction="#returnToHomePage" text="Go Back Home" />
    </children>
 </AnchorPane>

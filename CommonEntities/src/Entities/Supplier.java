@@ -22,12 +22,12 @@ public class Supplier extends User{
 	Float monthlyComissionPercent;
 	//BranchName relatedBranch;
 	String restaurantAddress; // change line 22 - aviel
-	RestaurantType restaurantType; 
+	RestaurantType restaurantType;
+	MyFile restaurantLogo;
 
 	public Supplier(String userName, String password, String firstName, String lastName, String id, String email,
 					String phoneNumber, UserType userType, String organization,
 					BranchName mainBranch, String role, Status status,File avatar,
-					//String restaurantName, ArrayList<Product> Menu, int monthlyComissionPercent,BranchName relatedBranch) change: relatedBranch to String type - aviel
 					String restaurantName, ArrayList<Product> Menu, Float monthlyComissionPercent,String relatedBranch) 
 	{
 		super(userName, password, firstName, lastName, id, email, phoneNumber, userType, organization, mainBranch, role, status,
@@ -39,10 +39,11 @@ public class Supplier extends User{
 		this.monthlyComissionPercent=monthlyComissionPercent;
 	}
 	
-	public Supplier(String restaurantName, RestaurantType restaurantType) {
+	public Supplier(String restaurantName, RestaurantType restaurantType, MyFile restaurantLogo) {
 		super();
 		this.restaurantName=restaurantName;
 		this.restaurantType = restaurantType;
+		this.restaurantLogo = restaurantLogo;
 	}
 
 	/**
@@ -130,6 +131,20 @@ public class Supplier extends User{
 	 */
 	public void setRestaurantType(RestaurantType restaurantType) {
 		this.restaurantType = restaurantType;
+	}
+
+	/**
+	 * @return the restaurantLogo
+	 */
+	public MyFile getRestaurantLogo() {
+		return restaurantLogo;
+	}
+
+	/**
+	 * @param restaurantLogo the restaurantLogo to set
+	 */
+	public void setRestaurantLogo(MyFile restaurantLogo) {
+		this.restaurantLogo = restaurantLogo;
 	}
 
 	@Override
