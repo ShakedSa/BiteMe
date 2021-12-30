@@ -67,17 +67,12 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="416.0" layoutY="230.0" onMouseClicked="#viewPDFReportBtnClicked" prefHeight="25.0" prefWidth="405.0" text="View PDF Quarterly Report">
+      <Label id="btn" fx:id="viewPDFReportBtn" alignment="CENTER" layoutX="416.0" layoutY="260.0" onMouseClicked="#viewPDFReportBtnClicked" prefHeight="25.0" prefWidth="400.0" text="View PDF Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="viewRevenueReportBtn" alignment="CENTER" layoutX="416.0" layoutY="301.0" onMouseClicked="#viewRevenueReportBtnClicked" prefHeight="25.0" prefWidth="414.0" text="View Revenue Quarterly Report">
-         <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Label>
-      <Label id="btn" fx:id="viewAllReportBtn" alignment="CENTER" layoutX="416.0" layoutY="373.0" onMouseClicked="#viewAllReportBtnClicked" prefHeight="25.0" prefWidth="405.0" text="View All Reports">
+      <Label id="btn" fx:id="viewRevenueReportBtn" alignment="CENTER" layoutX="416.0" layoutY="330.0" onMouseClicked="#viewRevenueReportBtnClicked" prefHeight="25.0" prefWidth="400.0" text="View Revenue Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>

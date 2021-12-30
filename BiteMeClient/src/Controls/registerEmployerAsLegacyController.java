@@ -64,13 +64,21 @@ public class registerEmployerAsLegacyController implements Initializable {
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
-
+	
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 	
+	/**
+	 * creating new employer/company as business customer 
+	 * @param event
+	 */
 	@FXML
 	void registerBtnClicked(MouseEvent event) {
 		VImage.setVisible(false);
@@ -125,7 +133,11 @@ public class registerEmployerAsLegacyController implements Initializable {
 		// (preventing a DB span abuse by clients)
 
 	}
-
+	
+	/**
+	 * checking that employer/company code is set by HR
+	 * @return
+	 */
 	private boolean checkInput() {
 		String employerCode = employerCodeTxtField.getText().trim();
 		if (employerCode.isEmpty()) {
@@ -135,13 +147,21 @@ public class registerEmployerAsLegacyController implements Initializable {
 		errorMsg.setText("");
 		return true;
 	}
-
+	
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToEmployerHRPanel(MouseEvent event) {
 		clearPage();
 		router.returnToEmployerHRPanel(event);
 	}
 
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
@@ -179,6 +199,9 @@ public class registerEmployerAsLegacyController implements Initializable {
 		this.stage = stage;
 	}
 	
+	/**
+	 * clearing the page 
+	 */
 	private void clearPage() {
 		employerCodeTxtField.clear();
 		VImage.setVisible(false);

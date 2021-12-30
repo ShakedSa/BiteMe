@@ -67,6 +67,8 @@ public class Router {
 	private confirmBusinessAccountController ConfirmBusinessAccountController;
 	// CEO Panel pages:
 	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
+	private viewRevenueQuarterlyReportController ViewRevenueQuarterlyReportController;
+
 
 	/** State of the order application: */
 	/***************************************/
@@ -108,10 +110,10 @@ public class Router {
 	public void setHomePageController(homePageController homePageController) {
 		HomePageController = homePageController;
 	}
-
 	/**
 	 * @param managerPanelController the managerPanelController to set
 	 */
+	
 	public void setManagerPanelController(managerPanelController managerPanelController) {
 		ManagerPanelController = managerPanelController;
 	}
@@ -288,11 +290,26 @@ public class Router {
 	}
 	
 	/**
+
+	 * @param viewRevenueQuarterlyReportController the viewRevenueQuarterlyReportController to set
+	 */
+	public void setViewRevenueQuarterlyReportController(
+			viewRevenueQuarterlyReportController viewRevenueQuarterlyReportController) {
+		ViewRevenueQuarterlyReportController = viewRevenueQuarterlyReportController;
+	}
+	
+	/**
+	 * @return the viewRevenueQuarterlyReportController
+	 */
+	public viewRevenueQuarterlyReportController getViewRevenueQuarterlyReportController() {
+		return ViewRevenueQuarterlyReportController;
+	}
+	
 	 * @param updateOrderTableController the updateOrderTableController to set
 	 */
 	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
 		UpdateOrderTableController = updateOrderTableController;
-	}
+
 
 	/**
 	 * @return the Logincontroller
