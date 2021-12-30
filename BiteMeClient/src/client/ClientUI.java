@@ -240,9 +240,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a creatNewBusinessCustomer request.
-	 *
-	 * @param orderNumber
+	 * Sending the server a createNewBusinessCustomer (employer/company) request.
+	 * 
+	 * @param String hrUserName, String employerCode, String employerCompanyName
 	 * 
 	 */
 	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
@@ -259,9 +259,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 * Sending the server a request to select all the relevant CustomerAndbudget for HR approval.
 	 *
-	 * @param hrUserName,employerCompanyName
+	 * @param employerCompanyName
 	 * 
 	 */
 	public void selectCustomerAndbudget(String employerCompanyName) {
@@ -525,7 +525,14 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-
+	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter pdf report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void viewORcheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -538,6 +545,13 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter revenue report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void viewORcheckRevenueQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -550,7 +564,12 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
-	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	/**
+	 * function to CheckQuarterReport before enabling user to viewQuarterReport
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void CheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {

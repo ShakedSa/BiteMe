@@ -69,8 +69,12 @@ public class viewPDFQuarterlyReportController implements Initializable {
 
 	@FXML
 	private ComboBox<String> yearBox;
-
-	// creating list of branches
+	
+	
+	
+	/** 
+	 * creating list of branches 
+	 */
 	private void setBranchComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
 		type.add("North");
@@ -82,7 +86,9 @@ public class viewPDFQuarterlyReportController implements Initializable {
 
 	}
 
-	// creating list of months
+	/**
+	 * creating list of months
+	 */ 
 	private void setQuarterComboBox() {
 		ArrayList<String> quarter = new ArrayList<String>();
 
@@ -93,8 +99,9 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		quarterBox.setItems(FXCollections.observableArrayList(quarter));
 		quarterBox.setPromptText("Quarter");
 	}
-
-	// creating list of years
+	/**
+	 * creating list of years
+	 */
 	private void setYearComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
 		type.add("2021");
@@ -107,39 +114,63 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		yearBox.setPromptText("Year");
 	}
 	
+	/**
+	 * set all the boxes of this page
+	 */
 	public void setQuarterBoxes() {
 		setBranchComboBox();
 		setQuarterComboBox();
 		setYearComboBox();
 
 	}
-
+	
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
-
+	
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearSelections();
 		clearMsg();
 		router.showProfile();
 	}
-
+	
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page 
+	 * @param event
+	 */
 	@FXML
 	void returnToCEOPanel(MouseEvent event) {
 		clearSelections();
 		clearMsg();
 		router.returnToCEOPanel(event);
 	}
-
+	
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearSelections();
 		clearMsg();
 		router.changeSceneToHomePage();
 	}
-
+	
+	
+	/**
+	 * searching relevant report on database, if exists enabling    
+	 * "viewPDFReport" button
+	 * @param event
+	 */
 	@FXML
 	private void searchOndb(ActionEvent event) {
 		if (!checkInputs())
@@ -185,7 +216,12 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		});
 		t.start();
 	}
-
+	
+	/**
+	 * downloading the report and opening quarterly report pdf, 
+	 * clearing the page boxes after
+	 * @param event
+	 */
 	@FXML
 	void viewPDFReportClicked(MouseEvent event) {
 		textMsg.setFill(Color.BLACK);
@@ -231,7 +267,11 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		});
 
 	}
-
+	
+	/**
+	 * checking that all the boxes are selected
+	 * @return
+	 */
 	private boolean checkInputs() {
 		String branch = BranchBox.getValue();
 		String month = quarterBox.getValue();
@@ -288,6 +328,9 @@ public class viewPDFQuarterlyReportController implements Initializable {
 
 	}
 
+	/**
+	 * clearing the selections 
+	 */
 	private void clearSelections() {
 		quarterBox.getSelectionModel().clearSelection();
 		BranchBox.getSelectionModel().clearSelection();

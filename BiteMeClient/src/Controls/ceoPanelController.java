@@ -56,6 +56,10 @@ public class ceoPanelController implements Initializable{
     @FXML
     private Label viewRevenueReportBtn;
     
+    /**
+     * set the viewPDFReport scene 
+     * @param event
+     */
     @FXML
     void viewPDFReportBtnClicked(MouseEvent event) {
     	if (router.getViewPDFQuarterlyReportController() == null) {
@@ -84,7 +88,11 @@ public class ceoPanelController implements Initializable{
     	stage.setTitle("BiteMe - View PDF Quarterly Report");
     	stage.show();
     }
-
+    
+    /**
+     * set the viewPDFRevnueReport scene 
+     * @param event
+     */
     @FXML
     void viewRevenueReportBtnClicked(MouseEvent event) {
     	if (router.getViewRevenueQuarterlyReportController() == null) {
