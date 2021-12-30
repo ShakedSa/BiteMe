@@ -422,7 +422,6 @@ public class addNewSupplierController implements Initializable {
 		setMonthlyCommissionComboBox();
 		setRestaurantTypeComboBox();
 		router.setArrow(leftArrowBtn, -90);
-		
 	}
 
 	public void setScene(Scene scene) {

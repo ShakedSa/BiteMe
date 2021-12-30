@@ -96,5 +96,6 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </TableView>
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="72.0" layoutY="511.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>
