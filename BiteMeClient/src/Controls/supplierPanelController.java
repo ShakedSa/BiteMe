@@ -27,53 +27,61 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali 
+ * This class describes the supplier panel
+ */
 public class supplierPanelController implements Initializable {
 
-	public final UserType type= UserType.Supplier;
+	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-	
-    @FXML
-    private ImageView supplierImage;
-	
-    @FXML
-    private Rectangle avatar;
 
-    @FXML
-    private Label createMenuBtn;
+	@FXML
+	private ImageView supplierImage;
 
-    @FXML
-    private Text homePageBtn;
+	@FXML
+	private Rectangle avatar;
 
-    @FXML
-    private Rectangle leftArrowBtn;
-    
-    @FXML
-    private Text loadingTxt;
+	@FXML
+	private Label createMenuBtn;
 
-    @FXML
-    private Text logoutBtn;
+	@FXML
+	private Text homePageBtn;
 
-    @FXML
-    private Text profileBtn;
+	@FXML
+	private Rectangle leftArrowBtn;
 
-    @FXML
-    private Text supplierPanelBtn;
+	@FXML
+	private Text loadingTxt;
 
-    @FXML
-    private Label updateMenuBtn;
+	@FXML
+	private Text logoutBtn;
 
-    @FXML
-    private Label updateOrderBtn;
-    
-    @FXML
-    private Text errorMsg;
-    
+	@FXML
+	private Text profileBtn;
+
+	@FXML
+	private Text supplierPanelBtn;
+
+	@FXML
+	private Label updateMenuBtn;
+
+	@FXML
+	private Label updateOrderBtn;
+
+	@FXML
+	private Text errorMsg;
+
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
-    
-    public void setImage() {
+
+	/**
+	 * This method approached to the DB and display the LOGO of the supplier -
+	 * restaurant in his panel
+	 */
+	public void setImage() {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -88,28 +96,28 @@ public class supplierPanelController implements Initializable {
 				}
 				ServerResponse sr = ClientGUI.client.getLastResponse();
 				MyFile myFile = (MyFile) sr.getServerResponse();
-				byte[] imageArr = myFile.getMybytearray(); 
+				byte[] imageArr = myFile.getMybytearray();
 				BufferedImage img;
 				try {
 					img = ImageIO.read(new ByteArrayInputStream(imageArr));
 					Image image = SwingFXUtils.toFXImage(img, null);
-					loadingTxt.setVisible(false);// hide loading text
+					loadingTxt.setVisible(false); // hide loading text
 					supplierImage.setImage(image);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return;
-				
 			}
 		});
 		t.start();
+	}
 
-    }
-    
-    @FXML
-    void updateMenuClicked(MouseEvent event) {
-    	if (router.getUpdateMenuController() == null) {
+	/**
+	 * This method initialize the next controller - updateMenuController
+	 */
+	@FXML
+	void updateMenuClicked(MouseEvent event) {
+		if (router.getUpdateMenuController() == null) {
 			AnchorPane mainContainer;
 			updateMenuController controller;
 			try {
@@ -117,7 +125,7 @@ public class supplierPanelController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeUpdateMenuPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setMenu();
+				controller.setMenu(); // set the last version of menu according DB
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -127,7 +135,7 @@ public class supplierPanelController implements Initializable {
 				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
-				return; 
+				return;
 			}
 		} else {
 			router.getUpdateMenuController().setMenu();
@@ -135,11 +143,14 @@ public class supplierPanelController implements Initializable {
 			stage.setScene(router.getUpdateMenuController().getScene());
 			stage.show();
 		}
-    }
+	}
 
-    @FXML
-    void updateOrederClicked(MouseEvent event) {
-    	if (router.getUpdateOrderTableController() == null) {
+	/**
+	 * This method initialize the next controller - updateOrderTableController
+	 */
+	@FXML
+	void updateOrederClicked(MouseEvent event) {
+		if (router.getUpdateOrderTableController() == null) {
 			AnchorPane mainContainer;
 			updateOrderTableController controller;
 			try {
@@ -147,7 +158,7 @@ public class supplierPanelController implements Initializable {
 				loader.setLocation(getClass().getResource("../gui/bitemeUpdateOrderTablePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
-				controller.setOrder();
+				controller.setOrder(); // set update table with list of relevant orders
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
@@ -165,27 +176,32 @@ public class supplierPanelController implements Initializable {
 			stage.setScene(router.getUpdateOrderTableController().getScene());
 			stage.show();
 		}
-    }
-    
-    @FXML
-    void logoutClicked(MouseEvent event) {
-    	router.logOut();
-    }
-    
-    @FXML
-    void returnToHomePage(MouseEvent event) {
-    	router.changeSceneToHomePage();
-    }
-    
+	}
 
-    /**
+	/**
+	 * Logout and change scene to home page
+	 */
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
+
+	/**
+	 * Changes scene to home page
+	 */
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
+
+	/**
 	 * Setting the avatar image of the user.
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
-    
-    @Override
+
+	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setSupplierPanelController(this);
@@ -193,7 +209,6 @@ public class supplierPanelController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 	}
 
-    
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -203,12 +218,11 @@ public class supplierPanelController implements Initializable {
 	}
 
 	public void setStage(Stage stage) {
-		this.stage=stage;
+		this.stage = stage;
 	}
+
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
-
 }
-

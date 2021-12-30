@@ -148,6 +148,11 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
+      <Text fx:id="ReadyTxt" fill="#62d019" layoutX="233.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="57.0" layoutY="490.0" onMouseClicked="#returnToUpdateOrderTable" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ImageView fx:id="newMsgImage" fitHeight="38.0" fitWidth="43.0" layoutX="498.0" layoutY="31.0" onMouseClicked="#newMsgClicked" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -157,5 +162,10 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Text fx:id="noUpdateTxt" layoutX="130.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There is no update for this order." visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

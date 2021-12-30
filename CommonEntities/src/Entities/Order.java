@@ -77,9 +77,9 @@ public class Order implements Serializable {
 	}
 
 	/**
-	 * @return the ordeTime
+	 * @return the orderTime
 	 */
-	public String getOrdeTime() {
+	public String getOrderTime() {
 		return OrderTime;
 	}
 

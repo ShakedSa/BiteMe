@@ -22,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -31,6 +30,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali
+ *	This class is edit an item in menu by supplier
+ */
 public class editMenuItemController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
@@ -95,13 +98,15 @@ public class editMenuItemController implements Initializable {
 	@FXML
 	private Text supplierPanelBtn;
 
-	ObservableList<TypeOfProduct> list;
+	private ObservableList<TypeOfProduct> list;
 	private User user = (User) ClientGUI.client.getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents = new ArrayList<>();
 	private Product product;
 
-	// creating list of Types
+	/**
+	 * set values of possible dish types inside the comboBox
+	 */
 	private void setTypeComboBox() {
 		ArrayList<TypeOfProduct> type = new ArrayList<TypeOfProduct>();
 		type.add(TypeOfProduct.mainDish);
@@ -113,6 +118,9 @@ public class editMenuItemController implements Initializable {
 		selectTypeBox.setItems(list);
 	}
 
+	/**
+	 * This method gets the new item's details from supplier and update it in DB 
+	 */
 	@FXML
 	void updateItemBtnClicked(MouseEvent event) {
 		if (!checkInputs()) {
@@ -127,18 +135,19 @@ public class editMenuItemController implements Initializable {
 			errorMsg.setText("Please enter optional components according the explanation");
 			return;
 		}
-
 		// update temp according the check boxes
-		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox)
+		if (sizeCheckBox.isSelected()) { 
 			String size = "Size";
-			if (temp.equals("") == false) { // there are some free text components
+			// there are some free text components
+			if (temp.equals("") == false) {
 				temp = temp + "," + size;
 			} else
 				temp = temp + size;
 		}
-		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
+		if (donenessCheckBox.isSelected()) { 
 			String doneness = "Doneness";
-			if (temp.equals("") == false) { // there are some free text components or size
+			// there are some free text components or size
+			if (temp.equals("") == false) { 
 				temp = temp + "," + doneness;
 			} else
 				temp = temp + doneness;
@@ -172,6 +181,7 @@ public class editMenuItemController implements Initializable {
 				}
 				Platform.runLater(() -> {
 					clearPage();
+					// item was updated successfully
 					VImage.setVisible(true);
 					successMsg.setVisible(true);
 				});
@@ -180,6 +190,11 @@ public class editMenuItemController implements Initializable {
 		t.start();
 	}
 
+	/**
+	 * This method checking if supplier input is valid
+	 * return false if there is an error
+	 * return true if the input is valid
+	 */
 	private boolean checkInputs() {
 		String itemName = itemsNameTxtField.getText();
 		String price = priceTxtField.getText();
@@ -215,8 +230,8 @@ public class editMenuItemController implements Initializable {
 	}
 
 	/**
-	 * checks the user information received from Server. display relevant
-	 * information.
+	 * Checks server response and display relevant information.
+	 * return true if the update was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.client.getLastResponse() == null) {
@@ -235,45 +250,69 @@ public class editMenuItemController implements Initializable {
 		}
 	}
 
+	/**
+	 * display the explanation of how supplier suppose to write a component
+	 */
 	@FXML
 	void infoIconEnter(MouseEvent event) {
 		infoTxtArea.setVisible(true);
 	}
 
+	/**
+	 * close the explanation of how supplier suppose to write a component
+	 */
 	@FXML
 	void infoIconExit(MouseEvent event) {
 		infoTxtArea.setVisible(false);
 	}
 
+	/**
+	 * Logout and change scene to home page
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 
+	/**
+	 * Changes scene to home page
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Changes scene to supplier panel
+	 */
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		clearPage();
 		router.returnToSupplierPanel(event);
 	}
 
+	/**
+	 * Change scene to the previous page
+	 */
 	@FXML
 	void returnToUpdateMenu(MouseEvent event) {
 		clearPage();
 		router.getSupplierPanelController().updateMenuClicked(event);
 	}
 
+	/**
+	 * This method clear page, set visibility of buttons and text
+	 */
 	private void clearPage() {
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();
@@ -317,6 +356,10 @@ public class editMenuItemController implements Initializable {
 		this.stage = stage;
 	}
 
+	/**
+	 * This method set product according the selected row from the table 
+	 * @param product
+	 */
 	public void setProduct(Product product) {
 		if (product != null) {
 			selectTypeBox.setValue(product.getType());
