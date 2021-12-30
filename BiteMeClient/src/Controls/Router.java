@@ -304,11 +304,12 @@ public class Router {
 	public viewRevenueQuarterlyReportController getViewRevenueQuarterlyReportController() {
 		return ViewRevenueQuarterlyReportController;
 	}
-	
+	/**
 	 * @param updateOrderTableController the updateOrderTableController to set
 	 */
 	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
 		UpdateOrderTableController = updateOrderTableController;
+	}
 
 
 	/**
