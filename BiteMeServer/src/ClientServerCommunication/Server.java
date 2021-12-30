@@ -244,7 +244,6 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		reportsHandler.createAllReports(12, 2021);
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();
@@ -254,7 +253,7 @@ public class Server extends AbstractServer {
 		{//report updates needed for last report month+1:
 		//(no need next ones since server was off and no other data was collected)
 			reportsHandler.createAllReports(month+1, year);
-
+			controller.setMessage("Monthly reports were created.");
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());
