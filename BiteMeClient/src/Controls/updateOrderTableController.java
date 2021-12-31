@@ -109,7 +109,7 @@ public class updateOrderTableController implements Initializable {
 				@SuppressWarnings("unchecked")
 				// get the server response- list of orders
 				ArrayList<Order> response = (ArrayList<Order>) sr.getServerResponse();
-				setTable(response);
+				setOrder(response);
 				return;
 			}
 		});
@@ -248,7 +248,7 @@ public class updateOrderTableController implements Initializable {
 	 */
 	private void initTable() {
 		table_OrderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
-		table_OrderTime.setCellValueFactory(new PropertyValueFactory<>("OrdeTime"));
+		table_OrderTime.setCellValueFactory(new PropertyValueFactory<>("OrderTime"));
 		table_ReceivedTime.setCellValueFactory(new PropertyValueFactory<>("orderRecieved"));
 		table_OrderStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 	}
@@ -269,6 +269,7 @@ public class updateOrderTableController implements Initializable {
 	private ObservableList<Order> getOrder(ArrayList<Order> list) {
 		ObservableList<Order> orders = FXCollections.observableArrayList();
 		list.forEach(p -> {
+			
 			if (p.getOrderTime() == null || p.getOrderTime().equals("")) {
 				p.setOrderTime("");
 			}
