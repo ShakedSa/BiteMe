@@ -17,6 +17,7 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.BranchName;
 
 /**
  * Logic of the client GUI.
@@ -32,13 +33,14 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user=null, lastResponse=null;
+	ServerResponse user = null, lastResponse = null;
 	/** Storing response from the server. */
 	Object res;
 
 	/**
 	 * Constructor. Creating a new client, on creation failed close the application
 	 * and notify the user.
+	 * 
 	 * @param host
 	 * @param port
 	 */
@@ -53,6 +55,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a login request.
+	 * 
 	 * @param userName
 	 * @param password
 	 * 
@@ -72,6 +75,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a logout request.
+	 * 
 	 * @param userName
 	 */
 	public void logout(String userName) {
@@ -94,7 +98,7 @@ public class ClientUI implements ClientIF {
 	public void restaurantsRequest() {
 		try {
 			ServerResponse serverResponse = new ServerResponse("Restaurants");
-			serverResponse.setServerResponse((User)ClientGUI.getClient().getUser().getServerResponse());
+			serverResponse.setServerResponse((User) ClientGUI.getClient().getUser().getServerResponse());
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,6 +123,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending a query request from the server. adds a new supplier to the db
+	 * 
 	 * @param restaurantName
 	 */
 	public void addNewSupplier(NewSupplier supplier) {
@@ -135,6 +140,7 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
+	 * 
 	 * @param restaurantName
 	 */
 	public void getRestaurantMenu(String restaurantName) {
@@ -152,7 +158,8 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending a query request from the server. get data of employers thats need an approvals.
+	 * Sending a query request from the server. get data of employers thats need an
+	 * approvals.
 	 * 
 	 * @param restaurantName
 	 */
@@ -165,10 +172,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
-	 * Sending a query request from the server.
-	 * get the data of the newly imported users
+	 * Sending a query request from the server. get the data of the newly imported
+	 * users
 	 */
 	public void searchForNewUsers() {
 		try {
@@ -179,10 +186,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
-	 * Sending a query request from the server.
-	 * get the data of users that are in need of a new account
+	 * Sending a query request from the server. get the data of users that are in
+	 * need of a new account
 	 */
 	public void findUsersInNeedOfAccount() {
 		try {
@@ -193,10 +200,11 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
-	 * Sending a query request from the server.
-	 * approve the employer with the given employer code
+	 * Sending a query request from the server. approve the employer with the given
+	 * employer code
+	 * 
 	 * @param employerCode
 	 */
 	public void employerApproval(String employerCode) {
@@ -215,6 +223,7 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending a query request from the server, Getting the optional components for
 	 * a certain product.
+	 * 
 	 * @param restaurantName
 	 * @param productName
 	 */
@@ -234,9 +243,10 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a creatNewBusinessCustomer request.
+	 * 
 	 * @param orderNumber
-
-	 * Sending the server a search order request.
+	 * 
+	 *                    Sending the server a search order request.
 	 * 
 	 * @param orderNumber
 	 * 
@@ -256,9 +266,10 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-
-	 * Sending the server a "creatNewBusinessCustomer" request.
-	 * Updates the businessCustomers table
+	 * 
+	 * Sending the server a "creatNewBusinessCustomer" request. Updates the
+	 * businessCustomers table
+	 * 
 	 * @param orderNumber
 	 */
 	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
@@ -275,7 +286,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a request to select all the relevant CustomerAndbudget for HR approval.
+	 * Sending the server a request to select all the relevant CustomerAndbudget for
+	 * HR approval.
+	 * 
 	 * @param employerCompanyName
 	 * 
 	 */
@@ -294,6 +307,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 * 
 	 * @param hrUserName,employerCompanyName
 	 */
 	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
@@ -309,7 +323,6 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	
 	public void setRate(int orderNumber, int rate) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -323,10 +336,10 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	
 	/**
 	 * Sending the server a request to check if the business customer has already
-	 *  been created.
+	 * been created.
+	 * 
 	 * @param orderNumber
 	 */
 	public void checkIfBusinessCustomerExist(String hrUserName) {
@@ -342,8 +355,6 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	
-	
 	public void insertOrder(OrderDeliveryMethod orderToInsert) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("InsertOrder");
@@ -357,12 +368,14 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * update order status and time (received & planned time)
+	 * 
 	 * @param receivedOrReady
 	 * @param orderNumber
 	 * @param time
 	 * @param status
 	 */
-	public void UpdateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber, String time, String status) {
+	public void UpdateOrderStatus(String restaurantName, String receivedOrReady, String orderNumber, String time,
+			String status) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
 			arr.addAll(Arrays.asList(restaurantName, receivedOrReady, orderNumber, time, status));
@@ -377,6 +390,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * gets order details from orders table
+	 * 
 	 * @param restaurantName
 	 */
 	public void getOrderInfo(String restaurantName) {
@@ -393,8 +407,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * send a query request to the server.
-	 * get customer details - name and phone number
+	 * send a query request to the server. get customer details - name and phone
+	 * number
+	 * 
 	 * @param deliveryNumber
 	 */
 	public void getCustomerInfo(String deliveryNumber) {
@@ -411,8 +426,8 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * * send a query request to the server.
-	 * adding a new item to the menu
+	 * * send a query request to the server. adding a new item to the menu
+	 * 
 	 * @param product
 	 */
 	public void addItemToMenu(Product product) {
@@ -428,6 +443,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * sending a query request - update some details of specific item in menu
+	 * 
 	 * @param product
 	 */
 	public void editItemInMenu(Product product) {
@@ -441,9 +457,9 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-	
 	/**
 	 * sending a query request to delete an item from a restaurant menu
+	 * 
 	 * @param restaurant
 	 * @param dishName
 	 */
@@ -459,9 +475,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
+
 	/**
-	 *sending a query request to get a restaurant LOGO from the DB
+	 * sending a query request to get a restaurant LOGO from the DB
+	 * 
 	 * @param restaurant
 	 */
 	public void getSupplierImage(String restaurant) {
@@ -474,18 +491,28 @@ public class ClientUI implements ClientIF {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}																											   		
+	}
+
+	public void changeBranch(BranchName newBranch) {
+		ServerResponse serverResponse = new ServerResponse("ChangeBranch");
+		ArrayList<String> arr = new ArrayList<>();
+		arr.add(((User)user.getServerResponse()).getUserName());
+		arr.add(newBranch.toString());
+		serverResponse.setServerResponse(arr);
+		client.handleMessageFromClientUI(serverResponse);
+	}
 
 	/**
 	 * A must implemented method from ChatIF interface.
+	 * 
 	 * @param message
 	 */
 	public void display(String message) {
 	}
 
-	
 	/**
 	 * Setting the message from the server to res.
+	 * 
 	 * @param message
 	 */
 	public void getResultFromServer(Object message) {
@@ -494,6 +521,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Setting the user associated with this client.
+	 * 
 	 * @param User user
 	 */
 	public void setUser(ServerResponse user) {
@@ -510,11 +538,12 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 ** sends a PDF quarterly report from manager's file system to SQL
+	 * 
 	 * @param pdfToUpload
 	 * @param Month
 	 * @param Year
 	 * @param ReportType
-	 */ 
+	 */
 	public void sendReport(File pdfToUpload, String Month, String Year, String ReportType) {
 		ServerResponse serverResponse = new ServerResponse("uploadQuarterlyReport");
 		MyFile msg = new MyFile(Month + " " + Year);
@@ -525,7 +554,7 @@ public class ClientUI implements ClientIF {
 		msg.getDescription().add(Year);
 		msg.getDescription().add(user.getMainBranch().toString());
 		try {
-			//convert the file into a blob
+			// convert the file into a blob
 			byte[] mybytearray = new byte[(int) pdfToUpload.length()];
 			FileInputStream fis = new FileInputStream(pdfToUpload);
 			BufferedInputStream bis = new BufferedInputStream(fis);
@@ -543,10 +572,11 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-	
+
 	/**
-	 * sending a view request (is exists - therefore also used as a checker)
-	 * to the relevant quarter pdf report 
+	 * sending a view request (is exists - therefore also used as a checker) to the
+	 * relevant quarter pdf report
+	 * 
 	 * @param quarter
 	 * @param Year
 	 * @param branch
@@ -562,10 +592,11 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * sending a view request (is exists - therefore also used as a checker)
-	 * to the relevant quarter revenue report 
+	 * sending a view request (is exists - therefore also used as a checker) to the
+	 * relevant quarter revenue report
+	 * 
 	 * @param quarter
 	 * @param Year
 	 * @param branch
@@ -581,9 +612,10 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * function to CheckQuarterReport before enabling user to viewQuarterReport
+	 * 
 	 * @param quarter
 	 * @param Year
 	 * @param branch
@@ -599,10 +631,10 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
 	 * send query request to get a username account type(private/business/both)
+	 * 
 	 * @param userName
 	 */
 	public void checkUserNameAccountType(String userName) {
@@ -617,11 +649,10 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
-	
+
 	/**
-	 * send a query request to the server
-	 * check the usertype of the username 
+	 * send a query request to the server check the usertype of the username
+	 * 
 	 * @param userName
 	 */
 	public void checkUserNameIsClient(String userName) {
@@ -636,10 +667,11 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
-	
+
 	/**
-	 * send a query request to change the permmisons of a client(Active/Froze/Deleted)
+	 * send a query request to change the permmisons of a
+	 * client(Active/Froze/Deleted)
+	 * 
 	 * @param userName
 	 * @param newStatus
 	 */
@@ -652,13 +684,13 @@ public class ClientUI implements ClientIF {
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return; 
+			return;
 		}
 	}
 
-	
 	/**
 	 * send a query request to server - get the order of the given customer
+	 * 
 	 * @param customer
 	 */
 	public void getCustomersOrder(Customer customer) {
@@ -666,15 +698,15 @@ public class ClientUI implements ClientIF {
 			ServerResponse serverResponse = new ServerResponse("customersOrders");
 			serverResponse.setServerResponse(customer);
 			client.handleMessageFromClientUI(serverResponse);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
-	
+
 	/**
 	 * send query request to the server - update order status to received
+	 * 
 	 * @param order
 	 */
 	public void updateOrderReceived(Order order) {
@@ -682,7 +714,7 @@ public class ClientUI implements ClientIF {
 			ServerResponse serverResponse = new ServerResponse("UpdateorderReceived");
 			serverResponse.setServerResponse(order);
 			client.handleMessageFromClientUI(serverResponse);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
@@ -700,6 +732,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * sends a report data request to server SQL
+	 * 
 	 * @param arr order : reportType,month,year,branch
 	 */
 	public void getReport(ArrayList<String> arr) {
@@ -707,10 +740,10 @@ public class ClientUI implements ClientIF {
 		serverResponse.setServerResponse(arr);
 		client.handleMessageFromClientUI(serverResponse);
 	}
-	
-	
+
 	/**
 	 * send a request to the server to get all the client's refunds fro, the DB
+	 * 
 	 * @param cutsomer
 	 */
 	public void getRefunds(Customer cutsomer) {
@@ -721,6 +754,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * request from server to create quarterly revenue report for given:
+	 * 
 	 * @param quarter
 	 * @param year
 	 * @param branch
@@ -737,6 +771,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * request from the server to check the given customer's status
+	 * 
 	 * @param username
 	 */
 	public void checkCustomerStatus(String username) {
@@ -749,10 +784,12 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * request from server to create new account with the following information:
-	 * @param values = userType,username,monthly bud,daily budget,credit card number,employer's name.
+	 * 
+	 * @param values = userType,username,monthly bud,daily budget,credit card
+	 *               number,employer's name.
 	 */
 	public void openNewAccount(ArrayList<String> values) {
-		
+
 		ServerResponse serverResponse = new ServerResponse("openNewAccount");
 		serverResponse.setServerResponse(values);
 		client.handleMessageFromClientUI(serverResponse);

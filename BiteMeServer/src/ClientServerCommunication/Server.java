@@ -217,6 +217,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection. getSupplierReceipt(m), client);
 			break;
+		case "ChangeBranch":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.changeBranch(m.get(0), m.get(1)), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;

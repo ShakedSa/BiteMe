@@ -2,22 +2,26 @@ package Controls;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.BranchName;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -29,13 +33,13 @@ public class profileController implements Initializable {
 	private Stage stage;
 	private Scene scene;
 	private Scene lastScene;
-	
-	@FXML
-    private ImageView bagImg;
 
-    @FXML
-    private Circle itemsCounterCircle;
-    
+	@FXML
+	private ImageView bagImg;
+
+	@FXML
+	private Circle itemsCounterCircle;
+
 	@FXML
 	private Text restaurantBtn;
 
@@ -79,7 +83,7 @@ public class profileController implements Initializable {
 	private Text logoutBtn;
 
 	@FXML
-	private Text mainBranchTxt;
+	private ComboBox<BranchName> mainBranchCombo;
 
 	@FXML
 	private Text phoneNumberTxt;
@@ -104,7 +108,9 @@ public class profileController implements Initializable {
 		idTxt.setText(user.getId());
 		phoneNumberTxt.setText(user.getPhoneNumber());
 		emailTxt.setText(user.getEmail());
-		mainBranchTxt.setText(user.getMainBranch().toString());
+		ObservableList<BranchName> branches = FXCollections.observableArrayList(Arrays.asList(BranchName.values()));
+		mainBranchCombo.setItems(branches);
+		mainBranchCombo.getSelectionModel().select(user.getMainBranch());
 		statusTxt.setText(user.getStatus().toString());
 	}
 
@@ -124,7 +130,6 @@ public class profileController implements Initializable {
 		stage.setScene(lastScene);
 		stage.setTitle(lastSceneTitle);
 	}
-	
 
 	/**
 	 * Setting the avatar image of the user.
@@ -190,7 +195,7 @@ public class profileController implements Initializable {
 	}
 
 	/**
-	 *  sets disable to all buttons
+	 * sets disable to all buttons
 	 */
 	private void hideAllBtns() {
 		restaurantBtn.setVisible(false);
@@ -201,27 +206,27 @@ public class profileController implements Initializable {
 
 	}
 
-    @FXML
-    void ceoBtnClicked(MouseEvent event) {
-    	//router.getHomePageController().ceoBtnClicked(event);
-    	router.returnToCEOPanel(event);
-    }
+	@FXML
+	void ceoBtnClicked(MouseEvent event) {
+		// router.getHomePageController().ceoBtnClicked(event);
+		router.returnToCEOPanel(event);
+	}
 
-    @FXML
-    void employerHRBtnClicked(MouseEvent event) {
-    	//router.getHomePageController().employerHRBtnClicked(event);
-    	router.returnToEmployerHRPanel(event);
-    }
+	@FXML
+	void employerHRBtnClicked(MouseEvent event) {
+		// router.getHomePageController().employerHRBtnClicked(event);
+		router.returnToEmployerHRPanel(event);
+	}
 
-    @FXML
-    void managerBtnClicked(MouseEvent event) {
-    	//router.getHomePageController().managerBtnClicked(event);
-    	router.returnToManagerPanel(event);
-    }
+	@FXML
+	void managerBtnClicked(MouseEvent event) {
+		// router.getHomePageController().managerBtnClicked(event);
+		router.returnToManagerPanel(event);
+	}
 
-    @FXML
-    void restaurantBtnClicked(MouseEvent event) {
-    	if (router.getMyOrdersController() == null) {
+	@FXML
+	void restaurantBtnClicked(MouseEvent event) {
+		if (router.getMyOrdersController() == null) {
 			AnchorPane mainContainer;
 			myOrdersController controller;
 			try {
@@ -248,27 +253,27 @@ public class profileController implements Initializable {
 			stage.setScene(router.getMyOrdersController().getScene());
 			stage.show();
 		}
-    }
+	}
 
-    @FXML
-    void supplierBtnClicked(MouseEvent event) {
-    	//router.getHomePageController().supplierBtnClicked(event);
-    	router.returnToSupplierPanel(event);
-    }
-    
-    @FXML
-    void changeToCart(MouseEvent event) {
+	@FXML
+	void supplierBtnClicked(MouseEvent event) {
+		// router.getHomePageController().supplierBtnClicked(event);
+		router.returnToSupplierPanel(event);
+	}
+
+	@FXML
+	void changeToCart(MouseEvent event) {
 		router.changeToMyCart("Profile");
-    }
+	}
 
 	/**
-	 *  sets item counter to relevant value.
+	 * sets item counter to relevant value.
 	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
-    /**
+	/**
 	 * @return the lastScene
 	 */
 	public Scene getLastScene() {
@@ -277,11 +282,38 @@ public class profileController implements Initializable {
 
 	/**
 	 * @param lastScene the lastScene to set
-	 * @param Title 
+	 * @param Title
 	 */
 	public void setLastScene(Scene lastScene, String title) {
 		this.lastScene = lastScene;
 		this.lastSceneTitle = title;
+	}
+	
+	@FXML
+	void updateProfile(ActionEvent event) {
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.getMonitor()) {
+				BranchName newVal = mainBranchCombo.getSelectionModel().getSelectedItem();
+				ClientGUI.getClient().changeBranch(newVal);
+				try {
+					ClientGUI.getMonitor().wait();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return;
+				}
+				if (ClientGUI.getClient().getLastResponse().getMsg() == "Failed") {
+					Platform.runLater(() -> {							
+						mainBranchCombo.getSelectionModel().select(((User)ClientGUI.getClient().getUser().getServerResponse()).getMainBranch());						
+					});
+				}else {
+					Platform.runLater(() -> {							
+						mainBranchCombo.getSelectionModel().select(newVal);						
+						((User)ClientGUI.getClient().getUser().getServerResponse()).setMainBranch(newVal);
+					});
+				}
+			}
+		});
+		t.start();
 	}
 
 }

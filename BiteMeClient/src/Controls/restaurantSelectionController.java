@@ -17,6 +17,7 @@ import Entities.MyFile;
 import Entities.Order;
 import Entities.ServerResponse;
 import Entities.Supplier;
+import Entities.User;
 import Enums.RestaurantType;
 import Enums.UserType;
 import client.ClientGUI;
@@ -278,7 +279,8 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-		if (resRestaurants == null) {
+		User user = (User)ClientGUI.getClient().getUser().getServerResponse();
+		if (resRestaurants == null || ((ArrayList<Supplier>)resRestaurants.getServerResponse()).get(0).getMainBranch() != user.getMainBranch()) {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {

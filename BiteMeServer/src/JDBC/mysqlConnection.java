@@ -225,7 +225,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Query to get all the restaurants in the db.
+	 * Query to get restaurants based on the user's branch.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
@@ -254,6 +254,23 @@ public class mysqlConnection {
 		}
 		serverResponse.setMsg("Success");
 		serverResponse.setServerResponse(restaurants);
+		return serverResponse;
+	}
+	
+	public static ServerResponse changeBranch(String userName, String branchName) {
+		ServerResponse serverResponse = new ServerResponse("ChangeBranch");
+		PreparedStatement stmt;
+		try {
+			String query = "UPDATE bitemedb.users SET MainBranch = ? WHERE UserName = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, branchName);
+			stmt.setString(2, userName);
+			stmt.executeUpdate();
+			serverResponse.setMsg("Success");
+		}catch(SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed");
+		}
 		return serverResponse;
 	}
 
