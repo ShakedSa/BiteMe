@@ -46,19 +46,23 @@ public class DailyThread extends Thread{
         	year=0;
         	//reset daily balance on w4c cards:
         	mysqlConnection.resetDailyBalance();
+        	
         	if(date.getDayOfMonth()==1){//new month !
         		//reset monthly w4c balance:
             	mysqlConnection.resetMonthlyBalance();
         		month= date.getMonthValue();
         		year=date.getYear();
-        		if(month==1) // if new year, make report for 12,year-1;
+        		if(month==1) // if new year, previous month is 12,year-1;
         		{
         			month=12;
         			year--;
             		reportsHandler.createAllReports(month,year);
+            		mysqlConnection.createMonthlySuppliersReceipt(month,year);
         		}
-        		else
+        		else {
         			reportsHandler.createAllReports(month-1,year);
+        			mysqlConnection.createMonthlySuppliersReceipt(month,year);
+        		}
         		
         	}
             try {

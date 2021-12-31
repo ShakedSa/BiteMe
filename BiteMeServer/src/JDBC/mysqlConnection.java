@@ -2578,6 +2578,12 @@ public class mysqlConnection {
 		return 0;
 	}
 
+	/**
+	 * @param restaurantName
+	 * @param month
+	 * @param year
+	 * @return total refunds for the restaurant on the given time.
+	 */
 	public static int getTotalRefunds(String restaurantName, String month, String year) {
 		PreparedStatement stmt;
 		String query;
@@ -2599,5 +2605,86 @@ public class mysqlConnection {
 		}
 		return num;
 	}
+
+	public static void createMonthlySuppliersReceipt(int month, int year) {
+		ArrayList<String> resNames = new ArrayList<String>();
+		int totalEarned=0;
+		float comission=0;
+		for(BranchName branch:BranchName.values())
+			resNames.addAll(mysqlConnection.getRestaurantList(branch.toString()));
+		//resNames stores all restaurant names now.
+		//query 1: get comission and income for each restaurant, and store it in the table:
+		for(String res:resNames) {
+			totalEarned=mysqlConnection.getEarnings(res, Integer.toString(month), Integer.toString(year));
+			comission=mysqlConnection.getComission(res);
+			//insert to table query:
+			try {
+				String query = "INSERT INTO bitemedb.supplierpayments (`SupplierName`, `Comission`, `TotalIncome`, `PaymentDate`) VALUES (?, ?, ?, ?)";
+	
+				PreparedStatement stmt = conn.prepareStatement(query);
+				stmt.setString(1,res);
+				stmt.setFloat(2, comission);
+				stmt.setInt(3, totalEarned);
+				stmt.setDate(4, Date.valueOf("" + year + "-" +month + "-02"));
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			//end query
+		}
+		
+	}
+
+	private static float getComission(String restaurantName) {
+		PreparedStatement stmt;
+		String query;
+		int num = 0;
+		ResultSet rs;
+		try {
+			query ="SELECT MonthlyComission FROM bitemedb.suppliers where RestaurantName=?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				num = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
+	}
+	
+	/**
+	 * returns receipt information for supplier in the chosen time.
+	 * @param values = restaurant name, month, year.
+	 * @return arraylist inside the server response with: [total income, comission %]
+	 */
+	public static ServerResponse getSupplierReceipt(ArrayList<String> values) {
+		PreparedStatement stmt;
+		String query;
+		String restaurantName=values.get(0),  month=values.get(1),  year=values.get(2);
+		ArrayList<String> output = new ArrayList<String>();
+		int num = 0;
+		ResultSet rs;
+		try {
+			query ="SELECT * FROM bitemedb.supplierpayments where SupplierName=? and month(PaymentDate) = ? and year(PaymentDate)=?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setString(2, month);
+			stmt.setString(2, year);
+			rs = stmt.executeQuery();
+			if (rs.next()) {
+				output.add(rs.getString(3));
+				output.add(Float.toString(rs.getFloat(2)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		ServerResponse response=new ServerResponse("ArrayList");
+		response.setServerResponse(output);
+		return response;
+	}
+
 }
 

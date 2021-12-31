@@ -216,6 +216,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.openNewAccount(m), client);
 			break;
+		case "getSupplierReceipt":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection. getSupplierReceipt(m), client);
+			break;
 		default:
 			sendToClient("default", client);
 			break;
@@ -243,6 +247,7 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		mysqlConnection.createMonthlySuppliersReceipt(12, 2021);
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();

@@ -32,7 +32,7 @@ public class ClientUI implements ClientIF {
 
 	/** A client logic for client-server communication */
 	Client client;
-	ServerResponse user, lastResponse;
+	ServerResponse user=null, lastResponse=null;
 	/** Storing response from the server. */
 	Object res;
 
