@@ -92,10 +92,12 @@ public class addNewSupplierTableController implements Initializable {
     
     
   
-  	/**fill and show a table with users that could be added as suppliers
+  	/**
+  	 * fill and show a table with the users that could be added as suppliers
   	 * modifies: approvalTable
   	 */
   	public void initTable(){
+  		//send a request to clienUI to get all the new users data
   		ClientGUI.client.searchForNewUsers();
   		//wait for response
   		Thread t = new Thread(new Runnable() {

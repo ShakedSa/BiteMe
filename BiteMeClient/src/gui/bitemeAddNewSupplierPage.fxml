@@ -121,7 +121,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="importImage1" layoutX="88.0" layoutY="441.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
+      <Text fx:id="importImage1" layoutX="123.0" layoutY="441.0" onMouseClicked="#uploadImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -129,7 +129,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fx:id="importImage" fitHeight="50.0" fitWidth="39.0" layoutX="86.0" layoutY="396.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="importImage" fitHeight="50.0" fitWidth="39.0" layoutX="-23.0" layoutY="414.0" onMouseClicked="#uploadImageClicked" pickOnBounds="true" preserveRatio="true" x="100.0">
          <image>
             <Image url="@../images/upload.png" />
          </image>
@@ -163,7 +163,7 @@
       <Text fill="RED" layoutX="232.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fill="RED" layoutX="212.0" layoutY="346.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <Text fill="RED" layoutX="240.0" layoutY="392.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Text fill="RED" layoutX="227.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
+      <Text fill="RED" layoutX="262.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
       <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="495.0" layoutY="286.0" onMouseEntered="#infoIconEnter" onMouseExited="#infoIconExit" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/info-icon.png" />
@@ -172,7 +172,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <TextArea fx:id="infoTxtArea" editable="false" layoutX="527.0" layoutY="228.0" prefHeight="141.0" prefWidth="246.0" text="Address must be in the following&#10;format: ( _ means space)&#10;Street_ Number,_City&#10;&#10;For example:&#10;Kalanit 18, Haifa&#10;">
+      <TextArea fx:id="infoTxtArea" editable="false" layoutX="527.0" layoutY="228.0" prefHeight="141.0" prefWidth="245.0" text="Address must be in the following&#10;format: ( _ means space)&#10;Street_ Number,_City&#10;&#10;For example:&#10;Kalanit 18, Haifa&#10;">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>

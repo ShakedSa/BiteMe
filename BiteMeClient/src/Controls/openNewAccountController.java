@@ -94,11 +94,13 @@ public class openNewAccountController implements Initializable {
 	private String lName = "";
 
 	
-	
-	// show table with employers that are waiting for approval
+	/**
+	 * init the table with information of users thats needs a private/business account 
+	 * modifies: approvalTable
+	 */
 	public void initTable() {
 		id = "";
-		// wait for response
+		//send a request to clientUI - get users from the db 
 		ClientGUI.client.searchForNewUsers();
 		Thread t = new Thread(new Runnable() {
 			@Override
@@ -123,9 +125,9 @@ public class openNewAccountController implements Initializable {
 		// handle server response
 		ServerResponse sr = ClientGUI.client.getLastResponse();
 		@SuppressWarnings("unchecked")
-		// get the server response- Business employers that needs approval
+		// get the server response- users that are in need of an account
 		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();
-		// check if business customers are waiting for approval
+		// check if there are any such users
 		if (response.size() == 0) {
 			msg.setText("Currently no accounts are needed");
 			msg.setVisible(true);
@@ -134,12 +136,16 @@ public class openNewAccountController implements Initializable {
 			return;
 		}
 		setTable(response);
-		msg.setText("Some employers are waiting for your approval");
+		msg.setText("Some users are in need of an account");
 		msg.setVisible(true);
 		instructions.setVisible(true);
 	}
 
-	// set table columns and values
+	
+	/**
+	 * set the table rows and columns
+	 * @param list = userName, firstName, lastName, id, email, phone
+	 */
 	private void setTable(ArrayList<NewAccountUser> list) {
 		UserName.setCellValueFactory(new PropertyValueFactory<>("userName"));
 		FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -152,6 +158,11 @@ public class openNewAccountController implements Initializable {
 	}
 
 	// change arrayList to ObservableList
+	/**
+	 * converts an ArrayList to an ObservableList
+	 * @param list2
+	 * @return ObservableList of the Class: NewAccountUser
+	 */
 	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
 		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
 		for (NewAccountUser customer : list2) {
@@ -162,6 +173,11 @@ public class openNewAccountController implements Initializable {
 		return users;
 	}
 
+	/**
+	 * when a table row is double clicked- save the row data
+	 * modifies: id, username, fName, lName
+	 * @param event
+	 */
 	@FXML
 	void copyTableData(MouseEvent event) {
 		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
@@ -172,6 +188,11 @@ public class openNewAccountController implements Initializable {
 		}
 	}
 
+	
+	/**
+	 * after a user was double clicked, changes to page into the next step
+	 * @param event
+	 */
 	@FXML
 	void approvalClicked(MouseEvent event) {
 		if (id.equals("")) {
