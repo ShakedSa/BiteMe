@@ -177,6 +177,37 @@ public class supplierPanelController implements Initializable {
 			stage.show();
 		}
 	}
+	
+	/**
+	 * This method initialize the next controller - viewIncomeReceiptController
+	 */
+    @FXML
+    void viewIncomeReceiptClicked(MouseEvent event) {
+		if (router.getViewIncomeReceiptController() == null) {
+			AnchorPane mainContainer;
+			viewIncomeReceiptController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeViewIncomeReceiptPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - View Income Receipt");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - View Income Receipt");
+			stage.setScene(router.getViewIncomeReceiptController().getScene());
+			stage.show();
+		}
+    }
 
 	/**
 	 * Logout and change scene to home page
@@ -221,6 +252,9 @@ public class supplierPanelController implements Initializable {
 		this.stage = stage;
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();

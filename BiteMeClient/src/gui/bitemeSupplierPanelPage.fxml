@@ -58,12 +58,12 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="488.0" layoutY="265.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="250.0" text="Update Menu">
+      <Label id="btn" fx:id="updateMenuBtn" alignment="CENTER" layoutX="488.0" layoutY="216.0" onMouseClicked="#updateMenuClicked" prefHeight="25.0" prefWidth="290.0" text="Update Menu">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="488.0" layoutY="337.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="250.0" text="Update Orders">
+      <Label id="btn" fx:id="updateOrderBtn" alignment="CENTER" layoutX="488.0" layoutY="288.0" onMouseClicked="#updateOrederClicked" prefHeight="25.0" prefWidth="290.0" text="Update Orders">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -79,5 +79,10 @@
          </font>
       </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="488.0" onMouseClicked="#returnToHomePage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Label id="btn" fx:id="viewIncomeReceiptBtn" alignment="CENTER" layoutX="488.0" layoutY="360.0" onMouseClicked="#viewIncomeReceiptClicked" prefHeight="25.0" prefWidth="290.0" text="View Income Receipt">
+         <font>
+            <Font name="Berlin Sans FB" size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

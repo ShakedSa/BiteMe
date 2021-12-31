@@ -61,6 +61,7 @@ public class Router {
 	private supplierUpdateOrderController SupplierUpdateOrderController;
 	private sendMsgToCustomerController SendMsgToCustomerController;
 	private updateOrderTableController UpdateOrderTableController;
+	private viewIncomeReceiptController ViewIncomeReceiptController;
 	// Employer HR Panel pages:
 	private employerHRPanelController EmployerHRPanelController;
 	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
@@ -907,6 +908,13 @@ public class Router {
 	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
 		return ViewPDFQuarterlyReportController;
 	}
+	
+	/**
+	 * @return the viewIncomeReceiptController
+	 */
+	public viewIncomeReceiptController getViewIncomeReceiptController() {
+		return ViewIncomeReceiptController;
+	}
 
 	/**
 	 * @param reviewOrderController the reviewOrderController to set
@@ -1012,6 +1020,13 @@ public class Router {
 	 */
 	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
 		AddNewSupplierTableController = addNewSupplierTableController;
+	}
+	
+	/**
+	 * @param viewIncomeReceiptController the viewIncomeReceiptController to set
+	 */
+	public void setViewIncomeReceiptController(viewIncomeReceiptController viewIncomeReceiptController) {
+		ViewIncomeReceiptController = viewIncomeReceiptController;
 	}
 
 }
