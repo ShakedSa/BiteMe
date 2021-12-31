@@ -18,6 +18,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
+/**
+ * @author Eden
+ * This controller is in charge of the logics and scene for the upload quarterly report page.
+ */
 public class uploadQuarterlyReportController implements Initializable{
 	
 
@@ -66,6 +70,10 @@ public class uploadQuarterlyReportController implements Initializable{
     
     private File pdfToUpload;
 
+    /**
+     * this method let's the manager choose a file from his file system in order to upload it to the server
+     * @param event
+     */
     @FXML
     void ImportImageClicked(MouseEvent event) {
     	UploadMsgImg.setVisible(false);
@@ -96,6 +104,10 @@ public class uploadQuarterlyReportController implements Initializable{
     	router.returnToManagerPanel(event);
     }
 
+    /**
+     * sends an upload file request to the Client in order to upload the file as a quarterly report
+     * @param event
+     */
     @FXML
     void uploadReportClicked(MouseEvent event) {
     	if(monthBox.getValue() == null || yearBox.getValue() == null )
@@ -104,7 +116,7 @@ public class uploadQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-    	ClientGUI.client.sendReport(pdfToUpload,monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
+    	ClientGUI.getClient().sendReport(pdfToUpload,monthBox.getValue(), yearBox.getValue(), "Quarterly Report");
     	UploadMsgImg.setVisible(true);
     	UploadMsgTxt.setVisible(true);
     }

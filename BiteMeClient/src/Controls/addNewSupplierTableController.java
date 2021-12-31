@@ -97,15 +97,16 @@ public class addNewSupplierTableController implements Initializable {
   	 * modifies: approvalTable
   	 */
   	public void initTable(){
+
   		//send a request to clienUI to get all the new users data
-  		ClientGUI.client.searchForNewUsers();
+  		ClientGUI.getClient().searchForNewUsers();
   		//wait for response
   		Thread t = new Thread(new Runnable() {
   			@Override
   			public void run() {
-  				synchronized (ClientGUI.monitor) {
+  				synchronized (ClientGUI.getMonitor()) {
   					try {
-  						ClientGUI.monitor.wait();
+  						ClientGUI.getMonitor().wait();
   					} catch (Exception e) {
   						e.printStackTrace();
   						return;
@@ -121,7 +122,7 @@ public class addNewSupplierTableController implements Initializable {
   			return;
   		}
   		//handle server response
-  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		ServerResponse sr = ClientGUI.getClient().getLastResponse();
   		@SuppressWarnings("unchecked")
   		//get the server response- users without any permmisions yet
   		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();

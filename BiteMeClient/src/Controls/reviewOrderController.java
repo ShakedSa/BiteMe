@@ -95,7 +95,7 @@ public class reviewOrderController implements Initializable {
 		switch (order.getPaymentMethod()) {
 		case BusinessCode:
 		case Both:
-			Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
+			Customer customer = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 			W4CCard w4cCard = customer.getW4c();
 			if (router.getOrderDeliveryMethod().getFinalPrice() > w4cCard.getDailyBudget()) {
 				w4cCard.setBalance(w4cCard.getBalance() - w4cCard.getDailyBudget());
@@ -109,17 +109,17 @@ public class reviewOrderController implements Initializable {
 			break;
 		}
 		Thread t = new Thread(() -> {
-			synchronized (ClientGUI.monitor) {
-				ClientGUI.client.insertOrder(router.getOrderDeliveryMethod());
+			synchronized (ClientGUI.getMonitor()) {
+				ClientGUI.getClient().insertOrder(router.getOrderDeliveryMethod());
 				try {
-					ClientGUI.monitor.wait();
+					ClientGUI.getMonitor().wait();
 				} catch (Exception e) {
 					e.printStackTrace();
 					return;
 				}
 				/** After server finished handling the request continue executing. */
-				if (ClientGUI.client.getLastResponse() != null
-						&& ClientGUI.client.getLastResponse().getServerResponse() instanceof Integer) {
+				if (ClientGUI.getClient().getLastResponse() != null
+						&& ClientGUI.getClient().getLastResponse().getServerResponse() instanceof Integer) {
 					/**
 					 * Platform.runLater allows to change the view in a not fx application thread.
 					 */
@@ -150,7 +150,7 @@ public class reviewOrderController implements Initializable {
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setItemsCounter();
-				controller.setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
+				controller.setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -164,7 +164,7 @@ public class reviewOrderController implements Initializable {
 		} else {
 			router.getOrderReceivedController().setAvatar();
 			router.getOrderReceivedController().setItemsCounter();
-			router.getOrderReceivedController().setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
+			router.getOrderReceivedController().setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();

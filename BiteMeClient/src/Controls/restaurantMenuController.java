@@ -230,10 +230,10 @@ public class restaurantMenuController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (ClientGUI.monitor) {
-					ClientGUI.client.getRestaurantMenu(restaurantName);
+				synchronized (ClientGUI.getMonitor()) {
+					ClientGUI.getClient().getRestaurantMenu(restaurantName);
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -248,8 +248,8 @@ public class restaurantMenuController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		if (ClientGUI.client.getLastResponse() != null) {
-			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.client.getLastResponse().getServerResponse();
+		if (ClientGUI.getClient().getLastResponse() != null) {
+			ArrayList<Product> menu = (ArrayList<Product>) ClientGUI.getClient().getLastResponse().getServerResponse();
 			if (menu == null) {
 				System.out.println("Menu is not set yet for " + restaurantName);
 			} else {
@@ -353,7 +353,7 @@ public class restaurantMenuController implements Initializable {
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
-					ClientGUI.client.setLastResponse(null);
+					ClientGUI.getClient().setLastResponse(null);
 				});
 				/** Title for the overlay screen, showing the product name. */
 				Label title = new Label(nameLabel.getText());

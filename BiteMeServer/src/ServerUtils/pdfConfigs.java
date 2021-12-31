@@ -53,6 +53,18 @@ public class pdfConfigs {
 	    table.addCell(Integer.toString(col3));
 
 	}
+	/**
+	 * @param table
+	 * creates a row in the given table
+	 */
+	public static void addRows(PdfPTable table, String res, int numOfOrders, int delayedOrders,
+			int refunds) {
+		// TODO Auto-generated method stub
+	    table.addCell(res);
+	    table.addCell(Integer.toString(numOfOrders));
+	    table.addCell(Integer.toString(delayedOrders));
+	    table.addCell(Float.toString(refunds));
+	}
 	
 	/**
 	 * @param table

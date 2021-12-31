@@ -78,7 +78,7 @@ public class identifyController implements Initializable {
 
 	@FXML
 	void QRClicked(MouseEvent event) {
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		if (!QRReader.ReadQRCode(user)) {
 			errorMsg.setText("Failed to read QR code");
 			return;
@@ -108,7 +108,7 @@ public class identifyController implements Initializable {
 			errorMsg.setText("W4C code must be only numbers.");
 			return;
 		}
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		if (user.getW4c().getW4CID() != Integer.parseInt(w4cCode) && !user.getW4c().getQRCode().equals(w4cCode)) {
 			errorMsg.setText("W4C code is incorrect.\nPlease try again or use the QR identification option.");
 			return;

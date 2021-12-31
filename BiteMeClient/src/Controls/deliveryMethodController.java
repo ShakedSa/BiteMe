@@ -353,7 +353,7 @@ public class deliveryMethodController implements Initializable {
 		 * Setting the delivery in the delivery state of the application.
 		 */
 		router.setDelivery(newDelivery);
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		/**
 		 * Setting the connector class of delivery order and user.
 		 */
@@ -467,7 +467,7 @@ public class deliveryMethodController implements Initializable {
 	}
 
 	private void initFields() {
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		firstNameTxtField.setText(user.getFirstName());
 		lastNameTxtField.setText(user.getLastName());
 		prefixPhoneNumberBox.getSelectionModel().select(user.getPhoneNumber().substring(0, 2));
@@ -504,7 +504,7 @@ public class deliveryMethodController implements Initializable {
 	 */
 	public void createCombo() {
 		deliveryMethodBox.getItems().clear();
-		Customer customer = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer customer = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
 		ObservableList<String> typeOfOrders;
 		if (w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals("")) {

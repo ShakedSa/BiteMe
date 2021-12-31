@@ -28,8 +28,8 @@ import javafx.stage.WindowEvent;
 public class ClientGUI extends Application {
 
 	/** Client logic of server-client communication. */
-	public static ClientUI client;
-	public static Object monitor = new Object();
+	private static ClientUI client;
+	private static Object monitor = new Object();
 	private Router router;
 
 	/**
@@ -88,4 +88,33 @@ public class ClientGUI extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	/**
+	 * @return the client
+	 */
+	public static ClientUI getClient() {
+		return client;
+	}
+	/**
+	 * @return the monitor
+	 */
+	public static Object getMonitor() {
+		return monitor;
+	}
+
+	/**
+	 * @param client the client to set
+	 */
+	public static void setClient(ClientUI client) {
+		ClientGUI.client = client;
+	}
+
+	/**
+	 * @param monitor the monitor to set
+	 */
+	public static void setMonitor(Object monitor) {
+		ClientGUI.monitor = monitor;
+	}
+	
+	
+
 }

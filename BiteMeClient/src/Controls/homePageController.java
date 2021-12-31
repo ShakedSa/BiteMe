@@ -331,7 +331,7 @@ public class homePageController implements Initializable {
 	 * Setting homePage buttons to match user's permissions.
 	 */
 	public void setProfile(boolean val) {
-		ServerResponse resUser = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.getClient().getUser();
 		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
@@ -455,15 +455,15 @@ public class homePageController implements Initializable {
 			ArrayList<Supplier> favRestaurants;
 			@Override
 			public void run() {
-				ClientGUI.client.favRestaurantsRequest();
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().favRestaurantsRequest();
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
-					favRestaurants = (ArrayList<Supplier>) ClientGUI.client.getLastResponse().getServerResponse();
+					favRestaurants = (ArrayList<Supplier>) ClientGUI.getClient().getLastResponse().getServerResponse();
 					Platform.runLater(() -> setFavDisplayed(favRestaurants));
 				}
 			}

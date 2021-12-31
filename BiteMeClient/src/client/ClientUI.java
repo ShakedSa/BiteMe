@@ -39,7 +39,6 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Constructor. Creating a new client, on creation failed close the application
 	 * and notify the user.
-	 * 
 	 * @param host
 	 * @param port
 	 */
@@ -54,7 +53,6 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a login request.
-	 * 
 	 * @param userName
 	 * @param password
 	 * 
@@ -74,7 +72,6 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a logout request.
-	 * 
 	 * @param userName
 	 */
 	public void logout(String userName) {
@@ -92,7 +89,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a restaurants request. Getting all the restaurants from
-	 * the db.
+	 * the DB.
 	 */
 	public void restaurantsRequest() {
 		try {
@@ -107,8 +104,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Getting 6 favorite restaurants in the db to display on home page.
-	 * 
+	 * Getting 6 favorite restaurants in the DB to display on home page.
 	 */
 	public void favRestaurantsRequest() {
 		try {
@@ -122,10 +118,8 @@ public class ClientUI implements ClientIF {
 		}
 	}
 
-
 	/**
 	 * Sending a query request from the server. adds a new supplier to the db
-	 * 
 	 * @param restaurantName
 	 */
 	public void addNewSupplier(NewSupplier supplier) {
@@ -142,7 +136,6 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending a query request from the server. Getting the menu of a certain
 	 * restaurant.
-	 * 
 	 * @param restaurantName
 	 */
 	public void getRestaurantMenu(String restaurantName) {
@@ -177,6 +170,7 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending a query request from the server.
 	 * get the data of the newly imported users
+
 	 */
 	public void searchForNewUsers() {
 		try {
@@ -209,7 +203,6 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending a query request from the server, Getting the optional components for
 	 * a certain product.
-	 * 
 	 * @param restaurantName
 	 * @param productName
 	 */
@@ -228,6 +221,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
+	 * Sending the server a creatNewBusinessCustomer request.
+	 * @param orderNumber
+
 	 * Sending the server a search order request.
 	 * 
 	 * @param orderNumber
@@ -248,6 +244,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
+
 	 * Sending the server a "creatNewBusinessCustomer" request.
 	 * Updates the businessCustomers table
 	 * @param orderNumber
@@ -266,9 +263,9 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a request to select all CustomerAndbudget for HR approval.
+	 * Sending the server a request to select all the relevant CustomerAndbudget for HR approval.
 	 *
-	 * @param hrUserName,employerCompanyName
+	 * @param employerCompanyName
 	 * 
 	 */
 	public void selectCustomerAndbudget(String employerCompanyName) {
@@ -286,9 +283,7 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Sending the server a request to select all CustomerAndbudget for HR approval.
-	 *
 	 * @param hrUserName,employerCompanyName
-	 * 
 	 */
 	public void approveCustomerAsBusiness(String employerCompanyName, String customerId) {
 		try {
@@ -319,9 +314,7 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending the server a request to check if the business customer is already
 	 * created.
-	 * 
 	 * @param orderNumber
-	 * 
 	 */
 	public void checkIfBusinessCustomerExist(String hrUserName) {
 		try {
@@ -348,8 +341,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * supplier update order status
-	 * 
+	 * update order status and time (received & planned time)
 	 * @param receivedOrReady
 	 * @param orderNumber
 	 * @param time
@@ -369,8 +361,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * get order details
-	 * 
+	 * gets order details from orders table
 	 * @param restaurantName
 	 */
 	public void getOrderInfo(String restaurantName) {
@@ -384,12 +375,10 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-
 	}
 
 	/**
-	 * get customer details
-	 * 
+	 * gets customer details - name and phone number
 	 * @param deliveryNumber
 	 */
 	public void getCustomerInfo(String deliveryNumber) {
@@ -406,8 +395,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * supplier add new item to menu
-	 * 
+	 * adding new item to menu
 	 * @param product
 	 */
 	public void addItemToMenu(Product product) {
@@ -422,8 +410,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * supplier update item in menu
-	 * 
+	 * updates some details of specific item in menu
 	 * @param product
 	 */
 	public void editItemInMenu(Product product) {
@@ -438,6 +425,11 @@ public class ClientUI implements ClientIF {
 	}
 
 	
+	/**
+	 * deletes an item from restaurant menu
+	 * @param restaurant
+	 * @param dishName
+	 */
 	public void deleteItemFromMenu(String restaurant, String dishName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
@@ -451,6 +443,10 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	
+	/**
+	 * gets restaurant LOGO from DB
+	 * @param restaurant
+	 */
 	public void getSupplierImage(String restaurant) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -465,7 +461,6 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * A must implemented method from ChatIF interface.
-	 * 
 	 * @param message
 	 */
 	public void display(String message) {
@@ -473,7 +468,6 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Setting the message from the server to res.
-	 * 
 	 * @param message
 	 */
 	public void getResultFromServer(Object message) {
@@ -482,7 +476,6 @@ public class ClientUI implements ClientIF {
 
 	/**
 	 * Setting the user associated with this client.
-	 * 
 	 * @param User user
 	 */
 	public void setUser(ServerResponse user) {
@@ -532,7 +525,14 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-
+	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter pdf report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void viewORcheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -544,7 +544,32 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter revenue report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
+	public void viewORcheckRevenueQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("viewRevenueQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * function to CheckQuarterReport before enabling user to viewQuarterReport
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void CheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -568,7 +593,6 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-	
 	
 	public void checkUserNameForSupplier(String userName) {
 		try {
@@ -594,9 +618,7 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 			return;
 		}
-
 	}
-	
 	
 	public void changeClientPerrmisions(String userName, String newStatus) {
 		try {
@@ -643,10 +665,9 @@ public class ClientUI implements ClientIF {
 		return lastResponse;
 	}
 
-
 	/**
-	 * sends a report data request to server sql
-	 * @param arr  order : reportType,month,year,branch
+	 * sends a report data request to server SQL
+	 * @param arr order : reportType,month,year,branch
 	 */
 	public void getReport(ArrayList<String> arr) {
 		ServerResponse serverResponse = new ServerResponse("getReport");
@@ -670,7 +691,7 @@ public class ClientUI implements ClientIF {
 		ArrayList<String> arr = new ArrayList<>();
 		arr.add(quarter);
 		arr.add(year);
-		arr.add(branch); // arr= quarter,year,branch
+		arr.add(branch); // arr = quarter,year,branch
 		ServerResponse serverResponse = new ServerResponse("createQuarterlyRevenueReport");
 		serverResponse.setServerResponse(arr);
 		client.handleMessageFromClientUI(serverResponse);

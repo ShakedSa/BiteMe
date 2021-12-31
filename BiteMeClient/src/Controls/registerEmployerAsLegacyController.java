@@ -64,13 +64,21 @@ public class registerEmployerAsLegacyController implements Initializable {
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
-
+	
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 	
+	/**
+	 * creating new employer/company as business customer 
+	 * @param event
+	 */
 	@FXML
 	void registerBtnClicked(MouseEvent event) {
 		VImage.setVisible(false);
@@ -82,16 +90,16 @@ public class registerEmployerAsLegacyController implements Initializable {
 		}
 
 		// Creating request to create a New BusinessCustomer
-		String hrUserName = ((User) ClientGUI.client.getUser().getServerResponse()).getUserName();
-		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+		String hrUserName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getUserName();
+		String employerName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization();
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.createNewBusinessCustomer(hrUserName, employerCodeTxtField.getText().trim(),
+				ClientGUI.getClient().createNewBusinessCustomer(hrUserName, employerCodeTxtField.getText().trim(),
 						employerName);
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -109,15 +117,15 @@ public class registerEmployerAsLegacyController implements Initializable {
 		}
 
 		// checking server response - if there is no response:
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("Somthing went worng, Please try again");
 			return;
 		}
-		if (ClientGUI.client.getLastResponse().getMsg().equals("Already Registered")) {
-			errorMsg.setText(ClientGUI.client.getLastResponse().getMsg());
+		if (ClientGUI.getClient().getLastResponse().getMsg().equals("Already Registered")) {
+			errorMsg.setText(ClientGUI.getClient().getLastResponse().getMsg());
 			return;
 		}
-		if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+		if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
 			VImage.setVisible(true);
 			successMsg.setVisible(true);
 		}
@@ -125,7 +133,11 @@ public class registerEmployerAsLegacyController implements Initializable {
 		// (preventing a DB span abuse by clients)
 
 	}
-
+	
+	/**
+	 * checking that employer/company code is set by HR
+	 * @return
+	 */
 	private boolean checkInput() {
 		String employerCode = employerCodeTxtField.getText().trim();
 		if (employerCode.isEmpty()) {
@@ -135,13 +147,21 @@ public class registerEmployerAsLegacyController implements Initializable {
 		errorMsg.setText("");
 		return true;
 	}
-
+	
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToEmployerHRPanel(MouseEvent event) {
 		clearPage();
 		router.returnToEmployerHRPanel(event);
 	}
 
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
@@ -163,7 +183,7 @@ public class registerEmployerAsLegacyController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
-		hrCompanyName.setText(((User) ClientGUI.client.getUser().getServerResponse()).getOrganization());
+		hrCompanyName.setText(((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization());
 		
 	}
 
@@ -179,6 +199,9 @@ public class registerEmployerAsLegacyController implements Initializable {
 		this.stage = stage;
 	}
 	
+	/**
+	 * clearing the page 
+	 */
 	private void clearPage() {
 		employerCodeTxtField.clear();
 		VImage.setVisible(false);

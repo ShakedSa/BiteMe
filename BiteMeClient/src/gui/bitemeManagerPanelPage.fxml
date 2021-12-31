@@ -116,7 +116,7 @@
          </cursor>
       </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="488.0" onMouseClicked="#returnToHomePage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Label id="btn" fx:id="UploadRevenueQuarterlyReport" alignment="CENTER" layoutX="385.0" layoutY="329.0" onMouseClicked="#UploadRevenueQuarterlyReportClicked" prefHeight="25.0" prefWidth="400.0" text="Upload Revenue quarterly report">
+      <Label id="btn" fx:id="UploadRevenueQuarterlyReport" alignment="CENTER" layoutX="385.0" layoutY="329.0" onMouseClicked="#UploadRevenueQuarterlyReportClicked" prefHeight="25.0" prefWidth="400.0" text="Create Revenue quarterly report">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>

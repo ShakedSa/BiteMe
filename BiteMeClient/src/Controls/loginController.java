@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import Entities.User;
 import client.ClientGUI;
+import client.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -84,13 +85,13 @@ public class loginController implements Initializable {
 		if(!CheckUserInput(userName, password)) {
 			return;
 		}
-		ClientGUI.client.login(userName, password);
+		ClientGUI.getClient().login(userName, password);
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -117,10 +118,10 @@ public class loginController implements Initializable {
 	 * display relevant information.
 	 */
 	private boolean checkServerResponse() {
-		if(ClientGUI.client.getUser() == null) {
+		if(ClientGUI.getClient().getUser() == null) {
 			return false;
 		}
-		switch (ClientGUI.client.getUser().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getUser().getMsg().toLowerCase()) {
 		case "already logged in":
 			errorMsg.setText("This user is already logged in");
 			return false;
@@ -169,7 +170,7 @@ public class loginController implements Initializable {
 	 * Changing the current scene to homepage.
 	 */
 	private void changeScenes() {
-		if (ClientGUI.client.getUser() != null) {
+		if (ClientGUI.getClient().getUser() != null) {
 			router.getHomePageController().setProfile(true);
 		}else {
 			router.getHomePageController().setProfile(false);
@@ -237,4 +238,26 @@ public class loginController implements Initializable {
 	public void onEnter(ActionEvent ae){
 		loginClicked(null);
 	}
+
+	/**
+	 * @param passwordTxt the passwordTxt to set
+	 */
+	public void setPasswordTxt(String txt) {
+		this.passwordTxt.setText(txt);
+	}
+
+	/**
+	 * @param usernameTxt the usernameTxt to set
+	 */
+	public void setUsernameTxt(String txt) {
+		this.usernameTxt.setText(txt);
+	}
+
+	/**
+	 * @return the errorMsg
+	 */
+	public String getErrorMsg() {
+		return errorMsg.getText();
+	}
+
 }

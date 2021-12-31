@@ -90,13 +90,13 @@ public class createRevenueQuarterlyReportController implements Initializable{
     		return;
     	}
 		InvalidMsg.setVisible(false);
-		User user = (User) ClientGUI.client.getUser().getServerResponse();
+		User user = (User) ClientGUI.getClient().getUser().getServerResponse();
     	//request server to create a report with the relevant info:
 		Thread t = new Thread(() -> {
-			synchronized (ClientGUI.monitor) {
-		    	ClientGUI.client.createQuarterlyRevenueReport(monthBox.getValue(), yearBox.getValue(), user.getMainBranch().toString());
+			synchronized (ClientGUI.getMonitor()) {
+		    	ClientGUI.getClient().createQuarterlyRevenueReport(monthBox.getValue(), yearBox.getValue(), user.getMainBranch().toString());
 				try {
-					ClientGUI.monitor.wait();
+					ClientGUI.getMonitor().wait();
 				} catch (Exception e) {
 					e.printStackTrace();
 					return;
@@ -111,7 +111,7 @@ public class createRevenueQuarterlyReportController implements Initializable{
 			return;
 		}
     	//server response: "exists" if order exists, "created" if created succesfully.
-		ServerResponse response = ClientGUI.client.getLastResponse();
+		ServerResponse response = ClientGUI.getClient().getLastResponse();
     	if(response!=null && response.getDataType().equals("exists")) {
     		UploadMsgTxt.setVisible(false);
     		InvalidMsg.setVisible(true);

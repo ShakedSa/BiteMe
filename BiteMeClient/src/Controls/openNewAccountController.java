@@ -100,14 +100,15 @@ public class openNewAccountController implements Initializable {
 	 */
 	public void initTable() {
 		id = "";
+
 		//send a request to clientUI - get users from the db 
-		ClientGUI.client.searchForNewUsers();
+		ClientGUI.getClient().searchForNewUsers();
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -123,7 +124,7 @@ public class openNewAccountController implements Initializable {
 			return;
 		}
 		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
+		ServerResponse sr = ClientGUI.getClient().getLastResponse();
 		@SuppressWarnings("unchecked")
 		// get the server response- users that are in need of an account
 		ArrayList<NewAccountUser> response = (ArrayList<NewAccountUser>) sr.getServerResponse();

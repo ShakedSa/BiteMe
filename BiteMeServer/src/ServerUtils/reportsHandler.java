@@ -45,8 +45,10 @@ public class reportsHandler {
 	LocalDate currentDate=LocalDate.now();
 	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
 	int numOfOrders, totalEarnings, highestEarning=0;
-	int netIncome=0;
+	int netIncome=0,refunds=0,totalRefunds=0,highestRefunds=0;
 	String profitableRestaurant="";
+	String mostRefundsRestaurant="";
+	
 	document.addTitle("Monthly Report");
 	
 		try {
@@ -60,23 +62,31 @@ public class reportsHandler {
 			document.add(reportDetails);
 			// handling sql data:
 			// table: name,total orders, total income.
-				PdfPTable table = new PdfPTable(3);
-				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income");
+				PdfPTable table = new PdfPTable(4);
+				pdfConfigs.addTableHeader(table,"Restaurant Name","Total orders","Total income","Total Refunds");
 				for(String res: Restaurants) { // for each restaurant in branch:
+						refunds=mysqlConnection.getTotalRefunds(res,Month,Year);
 						numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
 						totalEarnings=mysqlConnection.getEarnings(res,Month,Year);
 						netIncome+=totalEarnings;
-						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
+						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings,refunds);
 						if(totalEarnings>=highestEarning) {
 							highestEarning=totalEarnings;
 							profitableRestaurant=res;
 						}
+						if(refunds>=highestRefunds) {
+							highestRefunds=refunds;
+							mostRefundsRestaurant=res;
+						}
+						totalRefunds+=refunds;
 				}
 				document.add(table);
-				font.setSize(25);
+				font.setSize(20);
+				document.add(new Paragraph("\nTotal refunds on branch : " + totalRefunds+ "\n",font));
+				document.add(new Paragraph("\nRestaurant with most Refunds: " + mostRefundsRestaurant + " with total refunds: " + highestRefunds,font));
 				document.add(new Paragraph("\nMost profitable restaurant: " + profitableRestaurant 
-						+ " that earned "+ highestEarning +" NIS"+"\n Total NET Income: "+netIncome,font));
-			document.close();
+						+ " that earned "+ highestEarning +" NIS"+"\nTotal NET Income: "+(netIncome-totalRefunds)+"\n",font));
+				document.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,8 +106,8 @@ public class reportsHandler {
 			if(is!=null)
 				is.close();
 			//delete temp file from server.
-			//File f = new File(Branch + "TempRevenueReport.pdf");
-			//f.delete();
+			File f = new File(Branch + "TempRevenueReport.pdf");
+			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 
 	}
@@ -182,8 +192,8 @@ public class reportsHandler {
 			if(is!=null)
 				is.close();
 			//delete temp file from server.
-		//	File f = new File(Branch + "TempOrdersReport.pdf");
-		//	f.delete();
+			File f = new File(Branch + "TempOrdersReport.pdf");
+			f.delete();
 		} catch (Exception e) {e.printStackTrace();}
 		
 
@@ -196,7 +206,6 @@ public class reportsHandler {
 	 * @param Month
 	 */
 	public static void createMonthlyPerformanceReportPdf(String Branch, String Month, String Year) {
-		ArrayList<Double> ratingAverages = new ArrayList<Double>();
 		Document document = new Document();
 		LocalDate currentDate=LocalDate.now();
 		ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
@@ -220,8 +229,7 @@ public class reportsHandler {
 							prepTime=mysqlConnection.getAvgPrepTime(res,Month,Year);
 							numOfOrders=mysqlConnection.getNumOfOrders(res,Month,Year);
 							delayedOrders=mysqlConnection.getDelayedOrders(res,Month,Year);
-							//int ratingAvg = mysqlConnection.getAvgRating(res,Month,Year);
-						//	ratingAverages.add((double) ratingAvg);
+
 							if(numOfOrders!=0)
 								delayedPercentage=(float)100*delayedOrders/numOfOrders;
 							else
@@ -257,8 +265,8 @@ public class reportsHandler {
 				if(is!=null)
 					is.close();
 				//delete temp file from server.
-			//	File f = new File(Branch + "TempPerformanceReport.pdf");
-			//	f.delete();
+				File f = new File(Branch + "TempPerformanceReport.pdf");
+				f.delete();
 			} catch (Exception e) {e.printStackTrace();}
 			
 
@@ -336,45 +344,24 @@ public class reportsHandler {
 	 * @param Month
 	 */ 
 	
-	//NEED TO ADD HISTOGRAM FOR RATINGS:
-	/*
-	 * 					//add ratings histogram : ratingAverages
-					PdfContentByte contentByte = writer.getDirectContent();
-					PdfTemplate template = contentByte.createTemplate(350, 350);
-					Graphics2D graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
-					Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
-				//	JFreeChart chart =pdfConfigs.generateHist(ratingAverages);
-					
-					if(!ratingAverages.isEmpty())
-					{
-						double[] values = ratingAverages.stream().mapToDouble(Double::doubleValue).toArray();
-				        HistogramDataset dataset = new HistogramDataset();
-				        dataset.addSeries("key", values, 5);
-
-				        JFreeChart chart = ChartFactory.createHistogram("Average Ratings in restaurants",
-				                   "Rating Average this month", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
-				        chart.draw(graphics2d, rectangle2d);
-						
-					}
-				graphics2d.dispose();
-				contentByte.addTemplate(template, 0, 0);
-	 */
 	public static ServerResponse quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
 		
 		// add check if report exists and return serverResponse with value.
 		if(mysqlConnection.checkReportExists(Branch, quarter, Year)) {
+			System.out.println("exists");
 			return new ServerResponse("exists");
+			
 		}
-		
-	Document document = new Document();
-	LocalDate currentDate=LocalDate.now();
-	ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
-	int numOfOrders, totalEarnings,highestEarning=0;
-	int quarterInt = Integer.parseInt(quarter);
-	String profitableRestaurant="";
-	int netIncome=0, endMonth=quarterInt*3, startMonth=endMonth-2;
-	ArrayList<Double> values = new ArrayList<Double>();
-	document.addTitle("Quarterly Revenue Report");
+		ArrayList<Double> ratingAverages = new ArrayList<Double>();
+		Document document = new Document();
+		LocalDate currentDate=LocalDate.now();
+		ArrayList<String> Restaurants= mysqlConnection.getRestaurantList(Branch);
+		int numOfOrders, totalEarnings,highestEarning=0;
+		int quarterInt = Integer.parseInt(quarter);
+		String profitableRestaurant="";
+		int netIncome=0, endMonth=quarterInt*3, startMonth=endMonth-2;
+		ArrayList<Double> values = new ArrayList<Double>();
+		document.addTitle("Quarterly Revenue Report");
 	
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Branch + "TempQRevenueReport.pdf"));
@@ -394,10 +381,14 @@ public class reportsHandler {
 				for(String res: Restaurants) { // for each restaurant in branch:
 					totalEarnings=0; // reset
 					numOfOrders=0;
+					int ratingAvg=0;
 					for(int i=startMonth; i<=endMonth;i++) {
 						numOfOrders+=mysqlConnection.getNumOfOrders(res,Integer.toString(i),Year);
 						totalEarnings+=mysqlConnection.getEarnings(res,Integer.toString(i),Year);
+						ratingAvg += mysqlConnection.getAvgRating(res,Integer.toString(i),Year);
+						
 					}
+						ratingAverages.add((double) (ratingAvg/3)); 
 						values.add((double) numOfOrders);
 						netIncome+=totalEarnings;
 						pdfConfigs.addRows(table,res,numOfOrders,totalEarnings);
@@ -420,6 +411,27 @@ public class reportsHandler {
 					chart.draw(graphics2d, rectangle2d);
 				graphics2d.dispose();
 				contentByte.addTemplate(template, 0, 0);
+				document.newPage();
+				//////////////////////////////////////
+				//add ratings histogram : ratingAverages
+				template = contentByte.createTemplate(350, 350);
+				graphics2d = template.createGraphics(350, 350,new DefaultFontMapper());
+				rectangle2d = new Rectangle2D.Double(0, 0, 350,350);
+				if(!ratingAverages.isEmpty())
+				{
+					double[] values1 = ratingAverages.stream().mapToDouble(Double::doubleValue).toArray();
+			        HistogramDataset dataset = new HistogramDataset();
+			        dataset.addSeries("key", values1, 5);
+
+			        chart = ChartFactory.createHistogram("Average Ratings in restaurants",
+			                   "Rating Average this quarter", "amount of restaurants", dataset, PlotOrientation.VERTICAL, false, true, false);
+			        chart.draw(graphics2d, rectangle2d);
+					
+				}
+			graphics2d.dispose();
+			contentByte.addTemplate(template, 0, 420);
+				
+				////////////////////////////
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();

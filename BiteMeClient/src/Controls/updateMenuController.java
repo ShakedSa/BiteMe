@@ -32,6 +32,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali 
+ * This class display a table - list of all the products of a
+ * specific restaurant/supplier It includes 3 buttons - add item, edit
+ * item and delete item from menu
+ */
 public class updateMenuController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
@@ -108,24 +114,27 @@ public class updateMenuController implements Initializable {
 	@FXML
 	private TableColumn<Product, TypeOfProduct> table_Type;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private Product product;
 
+	/**
+	 * This method get from DB list of products and create a table with them
+	 */
 	public void setMenu() {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getRestaurantMenu(restaurant);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getRestaurantMenu(restaurant);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
 				// get the server response- list of product (menu)
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
@@ -136,10 +145,17 @@ public class updateMenuController implements Initializable {
 		t.start();
 	}
 
+	/**
+	 * This method gets list of products and set a table
+	 * @param products
+	 */
 	public void setMenu(ArrayList<Product> products) {
 		setTable(products);
 	}
 
+	/**
+	 * initialize the next controller - addNewItemController
+	 */
 	@FXML
 	void addNewItemClicked(MouseEvent event) {
 		clearPage();
@@ -169,6 +185,9 @@ public class updateMenuController implements Initializable {
 		}
 	}
 
+	/**
+	 * initialize the next controller - editMenuItemController
+	 */
 	@FXML
 	void editItemClicked(MouseEvent event) {
 		clearPage();
@@ -204,6 +223,9 @@ public class updateMenuController implements Initializable {
 		}
 	}
 
+	/**
+	 * This method deletes an item from menu and display a feedback to screen
+	 */
 	@FXML
 	void deleteItemTxtClicked(MouseEvent event) {
 		if (product == null) {
@@ -213,10 +235,10 @@ public class updateMenuController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.deleteItemFromMenu(restaurant, product.getDishName());
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().deleteItemFromMenu(restaurant, product.getDishName());
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -226,55 +248,66 @@ public class updateMenuController implements Initializable {
 					return;
 				}
 
-				// get the server response- list of product (menu)
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				// get the server response- update list of product (menu)
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
-				// update the new menu after delete item
+				// update the table with the new menu, after delete item
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
 				Platform.runLater(() -> {
 					setMenu(response);
 					// display that the delete was successes
 					VImage.setVisible(true);
-					menuUpdatedSuccessfullyTxt.setText("The item was deleted successfully");				
+					menuUpdatedSuccessfullyTxt.setText("The item was deleted successfully");
 				});
 			}
 		});
 		t.start();
 	}
 
+	/**
+	 * present an explanation how supplier suppose to edit an item
+	 */
 	@FXML
 	void explainHowEdit(MouseEvent event) {
 		editExplanation.setVisible(true);
 	}
 
+	/**
+	 * close the explanation of how supplier suppose to edit an item
+	 */
 	@FXML
 	void closeExplainEdit(MouseEvent event) {
 		editExplanation.setVisible(false);
 	}
 
+	/**
+	 * present an explanation how supplier suppose to delete an item
+	 */
 	@FXML
 	void explainHowDelete(MouseEvent event) {
 		deleteExplanation.setVisible(true);
 	}
 
+	/**
+	 * close the explanation of how supplier suppose to delete an item
+	 */
 	@FXML
 	void closeExplainDelete(MouseEvent event) {
 		deleteExplanation.setVisible(false);
 	}
 
 	/**
-	 * checks the user information received from Server. display relevant
-	 * information.
+	 * Checks server response and display relevant information.
+	 * return true if the deleting was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
-			errorMsg.setText("Adding an item to menu was failed");
+		if (ClientGUI.getClient().getLastResponse() == null) {
+			errorMsg.setText("Deleting an item from menu was failed");
 			return false;
 		}
-
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "":
-			errorMsg.setText("Adding an item to menu was failed");
+			errorMsg.setText("Deleting an item from menu was failed");
 			return false;
 		case "success":
 			return true;
@@ -283,23 +316,35 @@ public class updateMenuController implements Initializable {
 		}
 	}
 
+	/**
+	 * Logout and change scene to home page
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 
+	/**
+	 * Changes scene to home page
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Changes scene to supplier panel
+	 */
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		clearPage();
@@ -323,6 +368,9 @@ public class updateMenuController implements Initializable {
 		clearPage();
 	}
 
+	/**
+	 * This method set visibility of buttons and text
+	 */
 	private void clearPage() {
 		VImage.setVisible(false);
 		menuUpdatedSuccessfullyTxt.setText("");
@@ -331,34 +379,31 @@ public class updateMenuController implements Initializable {
 		errorMsg.setText("");
 	}
 
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
 
-	public Scene getScene() {
-		return scene;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-	
-	//initialize the titles of the table
+	/**
+	 * This method initialize the titles of the table
+	 */
 	private void initTable() {
 		table_Type.setCellValueFactory(new PropertyValueFactory<>("type"));
 		table_DishName.setCellValueFactory(new PropertyValueFactory<>("dishName"));
 		table_Components.setCellValueFactory(new PropertyValueFactory<>("components"));
 		table_Price.setCellValueFactory(new PropertyValueFactory<>("price"));
 		table_Description.setCellValueFactory(new PropertyValueFactory<>("description"));
-		//menuTable.setEditable(true);
 	}
 
-	// set table columns and values
+	/**
+	 * This method set table columns and values
+	 * @param menu
+	 */
 	private void setTable(ArrayList<Product> menu) {
 		menuTable.setItems(getProduct(menu));
 	}
 
-	// change arrayList to ObservableList
+	/**
+	 * This method change arrayList to ObservableList
+	 * @param list
+	 * @return ObservableList of products - menu
+	 */
 	private ObservableList<Product> getProduct(ArrayList<Product> list) {
 		ObservableList<Product> menu = FXCollections.observableArrayList();
 		list.forEach(p -> {
@@ -374,8 +419,7 @@ public class updateMenuController implements Initializable {
 	}
 
 	/**
-	 * get the data of specific item that selected
-	 * 
+	 * This method get the data from the selected row
 	 * @param event
 	 */
 	@FXML
@@ -387,6 +431,7 @@ public class updateMenuController implements Initializable {
 	}
 
 	/**
+	 * This method set product
 	 * @param product the product to set
 	 */
 	public void setProduct(Product product) {
@@ -395,4 +440,15 @@ public class updateMenuController implements Initializable {
 		}
 	}
 
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+	
+	public Scene getScene() {
+		return scene;
+	}
+	
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 }

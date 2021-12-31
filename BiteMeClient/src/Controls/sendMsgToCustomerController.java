@@ -18,6 +18,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali 
+ * This class is creating a simulation of message that send to customer
+ */
 public class sendMsgToCustomerController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
@@ -55,20 +59,29 @@ public class sendMsgToCustomerController implements Initializable {
 	@FXML
 	private Text supplierPanelBtn;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
 	private Integer deliveryNumber;
 	private Order order;
-	
+
+	/**
+	 * This method is setting order info that received from
+	 * "supplierUpdateOrderController"
+	 * 
+	 * @param order
+	 * @param deliveryNumber
+	 */
 	public void setOrderInfo(Order order, int deliveryNumber) {
-		System.out.println("Order: " + order);
-		System.out.println("delivery num: " + deliveryNumber);
 		this.order = order;
 		this.deliveryNumber = deliveryNumber;
 		displayOrderInfo();
 		getCustomerInfo();
 	}
 
+	/**
+	 * This method approached to the server, get customer's name and phone number
+	 * And then set them into the appropriate variables
+	 */
 	private void displayOrderInfo() {
 		statusTxt.setText("Your order status from " + restaurantName + ": " + order.getStatus());
 		if (order.getStatus().equals("Received")) {
@@ -78,14 +91,13 @@ public class sendMsgToCustomerController implements Initializable {
 	}
 
 	private ArrayList<String> getCustomerInfo() {
-
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getCustomerInfo(deliveryNumber.toString());
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getCustomerInfo(deliveryNumber.toString());
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -101,41 +113,58 @@ public class sendMsgToCustomerController implements Initializable {
 			return null;
 		}
 		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
+		ServerResponse sr = ClientGUI.getClient().getLastResponse();
 		if (sr == null) {
 			return null;
 		}
 		@SuppressWarnings("unchecked")
-		ArrayList<String> response2 = (ArrayList<String>) sr.getServerResponse();
-		if (response2 == null) {
+		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
+		if (response == null) {
 			return null;
 		}
-		customerNameTxt.setText("Dear " + response2.get(1) + ",");
-		phoneNumberTxt.setText("Phone number: " + response2.get(0));
-		
-		return response2;
+
+		// set customer's name and phone number
+		customerNameTxt.setText("Dear " + response.get(1) + ",");
+		phoneNumberTxt.setText("Phone number: " + response.get(0));
+
+		return response;
 	}
 
+	/**
+	 * Change scene to the previous page
+	 */
 	@FXML
 	void closeMsgBtnClicked(MouseEvent event) {
 		router.getUpdateOrderTableController().updateOrderClicked(event);
 	}
 
+	/**
+	 * Logout and change scene to home page
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Changes scene to home page
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Changes scene to supplier panel
+	 */
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		router.returnToSupplierPanel(event);
@@ -153,9 +182,6 @@ public class sendMsgToCustomerController implements Initializable {
 		router = Router.getInstance();
 		router.setSendMsgToCustomerController(this);
 		setStage(router.getStage());
-		//displayMsg(res1, res2);
-		
-		
 	}
 
 	public void setScene(Scene scene) {
@@ -169,40 +195,4 @@ public class sendMsgToCustomerController implements Initializable {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-	
-	
-	
-//	Thread t = new Thread(new Runnable() {
-//		@Override
-//		public void run() {
-//			//ClientGUI.client.getOrderInfo(orderNumber);
-//			synchronized (ClientGUI.monitor) {
-//				try {
-//					ClientGUI.monitor.wait();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					return;
-//				}
-//			}
-//		}
-//	});
-//	t.start();
-//	ClientGUI.client.getOrderInfo(restaurantName);
-//	try {
-//		t.join();
-//	} catch (Exception e) {
-//		e.printStackTrace();
-//		return null;
-//	}
-//	// handle server response
-//	ServerResponse sr = ClientGUI.client.getLastResponse();
-//	if (sr == null) {
-//		return null;
-//	}
-//	@SuppressWarnings("unchecked")
-//	ArrayList<String> response1 = (ArrayList<String>) sr.getServerResponse();
-//	if (response1 == null) {
-//		return null;
-//	}
-
 }

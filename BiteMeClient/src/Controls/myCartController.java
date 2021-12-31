@@ -203,7 +203,7 @@ public class myCartController implements Initializable {
 		case "Received":
 			router.getOrderReceivedController().setAvatar();
 			router.getOrderReceivedController().setItemsCounter();
-			router.getOrderReceivedController().setRates((int) ClientGUI.client.getLastResponse().getServerResponse());
+			router.getOrderReceivedController().setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();

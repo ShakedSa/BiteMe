@@ -58,6 +58,10 @@ public class employerHRPanelController implements Initializable {
 	@FXML
 	private Label registerEmployerBtn;
 
+	/**
+	 * setting confirmBusinessAccount page
+	 * @param event
+	 */
 	@FXML
 	void confirmBusinessAccountBtnClicked(MouseEvent event) {
 		if (router.getConfirmBusinessAccountController() == null) {
@@ -89,7 +93,11 @@ public class employerHRPanelController implements Initializable {
 		
 		stage.show();
 	}
-
+	
+	/**
+	 * setting registerEmployer page
+	 * @param event
+	 */
 	@FXML
 	void registerEmployerBtnClicked(MouseEvent event) {
 		if (router.getRegisterEmployerAsLegacyController() == null) {

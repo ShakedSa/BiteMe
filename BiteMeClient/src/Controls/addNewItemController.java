@@ -27,6 +27,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali
+ *	This class is adding new item to the menu by supplier
+ */
 public class addNewItemController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
@@ -92,7 +96,7 @@ public class addNewItemController implements Initializable {
     private Rectangle leftArrowBtn;
 
 	private ObservableList<TypeOfProduct> list;
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents;
 	private Product product;
@@ -111,6 +115,9 @@ public class addNewItemController implements Initializable {
 		selectTypeBox.setItems(list);
 	}
 
+	/**
+	 * This method gets item details from supplier and save it in DB 
+	 */
 	@FXML
 	void addItemToMenuClicked(MouseEvent event) {
 		if (!checkInputs()) {
@@ -124,16 +131,18 @@ public class addNewItemController implements Initializable {
 			errorMsg.setText("Please enter optional components according the explanation");
 			return;
 		}
-		if (sizeCheckBox.isSelected()) { // checkSelectionSize(sizeCheckBox) 
+		if (sizeCheckBox.isSelected()) {
 			String size = "Size";
-			if (temp.equals("") == false) { // there are some free text components
+			// there are some free text components
+			if (temp.equals("") == false) { 
 				temp = temp + "," + size;
 			} else
 				temp = temp + size;
 		}
-		if (donenessCheckBox.isSelected()) { // checkSelectionSize(donenessCheckBox)
+		if (donenessCheckBox.isSelected()) {
 			String doneness = "Doneness";
-			if (temp.equals("") == false) { // there are some free text components or size
+			// there are some free text components or size
+			if (temp.equals("") == false) { 
 				temp = temp + "," + doneness;
 			} else
 				temp = temp + doneness;
@@ -150,14 +159,13 @@ public class addNewItemController implements Initializable {
 		} else
 			product = new Product(restaurant, typeOfProduct, itemName, null, price, description);
 		
-
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.addItemToMenu(product);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().addItemToMenu(product);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -179,36 +187,17 @@ public class addNewItemController implements Initializable {
 		}
 		else {
 			clearPage();
+			// item was added successfully
 			VImage.setVisible(true);
 			successMsg.setVisible(true);
 		}
-		/*
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ClientGUI.client.addItemToMenu(product);
-				synchronized (ClientGUI.monitor) {
-					try {
-						ClientGUI.monitor.wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-				if (!checkServerResponse()) {
-					return;
-				}
-				Platform.runLater(() -> {
-					clearPage();
-					VImage.setVisible(true);
-					successMsg.setVisible(true);
-				});
-			}
-		});
-		t.start();
-		*/
 	}
 
+	/**
+	 * This method checking if supplier input is valid
+	 * return false if there is an error
+	 * return true if the input is valid
+	 */
 	private boolean checkInputs() {
 		String itemName = itemsNameTxtField.getText();
 		String price = priceTxtField.getText();
@@ -248,16 +237,16 @@ public class addNewItemController implements Initializable {
 	}
 
 	/**
-	 * checks the user information received from Server. display relevant
-	 * information.
+	 * Checks server response and display relevant information.
+	 * return true if the adding was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
-			errorMsg.setText("This item already exist in menu !");
+		if (ClientGUI.getClient().getLastResponse() == null) {
+			errorMsg.setText("This item already exist in menu");
 			return false;
 		}
 
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "":
 			errorMsg.setText("Adding an item to menu was failed");
 			return false;
@@ -269,45 +258,69 @@ public class addNewItemController implements Initializable {
 		}
 	}
 
+	/**
+	 * display the explanation of how supplier suppose to write a component
+	 */
 	@FXML
 	void infoIconEnter(MouseEvent event) {
 		infoTxtArea.setVisible(true);
 	}
 
+	/**
+	 * close the explanation of how supplier suppose to write a component
+	 */
 	@FXML
 	void infoIconExit(MouseEvent event) {
 		infoTxtArea.setVisible(false);
 	}
 
+	/**
+	 * Logout and change scene to home page
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 
+	/**
+	 * Changes scene to home page
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Changes scene to supplier panel
+	 */
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		clearPage();
 		router.returnToSupplierPanel(event);
 	}
 
+	/**
+	 * Change scene to the previous page
+	 */
 	@FXML
 	void returnToUpdateMenu(MouseEvent event) {
 		clearPage();
 		router.getSupplierPanelController().updateMenuClicked(event);
 	}
 
+	/**
+	 * This method clear page, set visibility of buttons and text
+	 */
 	private void clearPage() {
 		errorMsg.setText("");
 		selectTypeBox.getSelectionModel().clearSelection();

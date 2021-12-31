@@ -77,7 +77,7 @@ public class viewMonthlyReportsController implements Initializable{
     
     @FXML
     void showReportClicked(MouseEvent event) {
-    	User user = (User) ClientGUI.client.getUser().getServerResponse();
+    	User user = (User) ClientGUI.getClient().getUser().getServerResponse();
     	ArrayList<String> arr = new ArrayList<>();
     	arr.add(reportTypeBox.getValue());
     	arr.add(monthBox.getValue());
@@ -88,10 +88,10 @@ public class viewMonthlyReportsController implements Initializable{
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-		    	ClientGUI.client.getReport(arr);
-				synchronized (ClientGUI.monitor) {
+		    	ClientGUI.getClient().getReport(arr);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -108,7 +108,7 @@ public class viewMonthlyReportsController implements Initializable{
 			return;
 		}
 		//check if report exists:
-		ServerResponse response = ClientGUI.client.getLastResponse();
+		ServerResponse response = ClientGUI.getClient().getLastResponse();
 		if(response==null) {
 			reportErrorMsg.setVisible(true);
 		}

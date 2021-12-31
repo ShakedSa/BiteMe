@@ -157,10 +157,10 @@ public class myOrdersController implements Initializable {
 	public void displayOpenOrders() {
 		createTable();
 		Thread t = new Thread(() -> {
-			synchronized (ClientGUI.monitor) {
-				ClientGUI.client.getCustomersOrder((Customer) (ClientGUI.client.getUser()).getServerResponse());
+			synchronized (ClientGUI.getMonitor()) {
+				ClientGUI.getClient().getCustomersOrder((Customer) (ClientGUI.getClient().getUser()).getServerResponse());
 				try {
-					ClientGUI.monitor.wait();
+					ClientGUI.getMonitor().wait();
 				} catch (Exception e) {
 					e.printStackTrace();
 					return;
@@ -174,7 +174,7 @@ public class myOrdersController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		ArrayList<Order> orders = (ArrayList<Order>) (ClientGUI.client.getLastResponse().getServerResponse());
+		ArrayList<Order> orders = (ArrayList<Order>) (ClientGUI.getClient().getLastResponse().getServerResponse());
 		tableTitle = new Label("Orders:");
 		tableTitle.setFont(new Font("Berlin Sans FB", 16));
 		tableTitle.setLayoutX(120);
@@ -206,10 +206,10 @@ public class myOrdersController implements Initializable {
 					return;
 				}
 				Thread th = new Thread(() -> {
-					synchronized (ClientGUI.monitor) {
-						ClientGUI.client.updateOrderReceived(order);
+					synchronized (ClientGUI.getMonitor()) {
+						ClientGUI.getClient().updateOrderReceived(order);
 						try {
-							ClientGUI.monitor.wait();
+							ClientGUI.getMonitor().wait();
 						} catch (Exception ex) {
 							ex.printStackTrace();
 							return;
@@ -223,7 +223,7 @@ public class myOrdersController implements Initializable {
 					ex.printStackTrace();
 					return;
 				}
-				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+				if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
 					errorMsg.setText("Table Updated");
 					errorMsg.setTextFill(Color.GREEN);
 					ordersObservable.remove(orderTable.getSelectionModel().getSelectedItem());

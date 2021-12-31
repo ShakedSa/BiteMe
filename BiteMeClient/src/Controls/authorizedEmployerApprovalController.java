@@ -87,14 +87,14 @@ public class authorizedEmployerApprovalController implements Initializable {
 	 * modifies: approvalTable
 	 */
 	public void initTable() {
-		ClientGUI.client.checkForApprovals();
+		ClientGUI.getClient().checkForApprovals();
 		// wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -110,7 +110,7 @@ public class authorizedEmployerApprovalController implements Initializable {
 			return;
 		}
 		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
+		ServerResponse sr = ClientGUI.getClient().getLastResponse();
 		@SuppressWarnings("unchecked")
 		// get the server response- Business employers that needs approval
 		ArrayList<BusinessCustomer> response = (ArrayList<BusinessCustomer>) sr.getServerResponse();
@@ -194,7 +194,7 @@ public class authorizedEmployerApprovalController implements Initializable {
 			return;
 		}
 		//send request to Client UI
-		ClientGUI.client.employerApproval(employerCode);
+		ClientGUI.getClient().employerApproval(employerCode);
 		BusinessCustomer selectedItem = approvalTable.getSelectionModel().getSelectedItem();
 		approvalTable.getItems().remove(selectedItem);
 		approvalSuccsess.setVisible(true);

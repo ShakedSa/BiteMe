@@ -27,13 +27,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Natali 
+ * This class display a table - all the orders of a specific
+ * restaurant with orders that in status: "Pending" OR "Received"
+ */
 public class updateOrderTableController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
-	
+
 	@FXML
 	private Text errorMsg;
 
@@ -79,38 +84,49 @@ public class updateOrderTableController implements Initializable {
 	@FXML
 	private ImageView updateOrderImage;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private Order order;
 
+	/**
+	 * This method get from DB list of order with status: "Pending" OR "Received"
+	 * and create a table with them
+	 */
 	public void setOrder() {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getOrderInfo(restaurant);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getOrderInfo(restaurant);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
 				// get the server response- list of orders
 				ArrayList<Order> response = (ArrayList<Order>) sr.getServerResponse();
-				setTable(response);
+				setOrder(response);
 				return;
 			}
 		});
 		t.start();
 	}
 
+	/**
+	 * This method gets list of orders and set a table
+	 * @param orders
+	 */
 	public void setOrder(ArrayList<Order> orders) {
 		setTable(orders);
 	}
 
+	/**
+	 * initialize the next controller - supplierUpdateOrderController
+	 */
 	@FXML
 	void updateOrderClicked(MouseEvent event) {
 		if (order == null) {
@@ -147,16 +163,25 @@ public class updateOrderTableController implements Initializable {
 		}
 	}
 
+	/**
+	 * close the explanation of how supplier suppose to update an order
+	 */
 	@FXML
 	void closeExplainUpdate(MouseEvent event) {
 		updateExplanation.setVisible(false);
 	}
 
+	/**
+	 * present an explanation how supplier suppose to update an order
+	 */
 	@FXML
 	void explainHowUpdate(MouseEvent event) {
 		updateExplanation.setVisible(true);
 	}
 
+	/**
+	 * This method get the data from the selected row
+	 */
 	@FXML
 	void getRowData(MouseEvent event) {
 		order = orderTable.getSelectionModel().getSelectedItem();
@@ -165,23 +190,35 @@ public class updateOrderTableController implements Initializable {
 		}
 	}
 
+	/**
+	 * Logout and change scene to home page
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Changes scene to profile
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		errorMsg.setText("");
 		router.showProfile();
 	}
 
+	/**
+	 * Changes scene to home page
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		errorMsg.setText("");
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Changes scene to supplier panel
+	 */
 	@FXML
 	void returnToSupplierPanel(MouseEvent event) {
 		errorMsg.setText("");
@@ -203,39 +240,37 @@ public class updateOrderTableController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 		initTable();
 		errorMsg.setText("");
+		updateExplanation.setVisible(false);
 	}
 
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
-
-	public Scene getScene() {
-		return scene;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	// initialize the titles of the table
+	/**
+	 * This method initialize the titles of the table
+	 */
 	private void initTable() {
 		table_OrderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
-		table_OrderTime.setCellValueFactory(new PropertyValueFactory<>("OrdeTime"));
+		table_OrderTime.setCellValueFactory(new PropertyValueFactory<>("OrderTime"));
 		table_ReceivedTime.setCellValueFactory(new PropertyValueFactory<>("orderRecieved"));
 		table_OrderStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-		// menuTable.setEditable(true);
 	}
 
-	// set table columns and values
+	/**
+	 * This method set table columns and values
+	 * @param orders
+	 */
 	private void setTable(ArrayList<Order> orders) {
 		orderTable.setItems(getOrder(orders));
 	}
 
-	// change arrayList to ObservableList
+	/**
+	 * This method change arrayList to ObservableList
+	 * @param list
+	 * @return ObservableList of orders
+	 */
 	private ObservableList<Order> getOrder(ArrayList<Order> list) {
 		ObservableList<Order> orders = FXCollections.observableArrayList();
 		list.forEach(p -> {
-			if (p.getOrdeTime() == null || p.getOrdeTime().equals("")) {
+			
+			if (p.getOrderTime() == null || p.getOrderTime().equals("")) {
 				p.setOrderTime("");
 			}
 			if (p.getOrderRecieved() == null || p.getOrderRecieved().equals("")) {
@@ -250,6 +285,7 @@ public class updateOrderTableController implements Initializable {
 	}
 
 	/**
+	 * This method set order
 	 * @param order the order to set
 	 */
 	public void setOrder(Order order) {
@@ -258,4 +294,15 @@ public class updateOrderTableController implements Initializable {
 		}
 	}
 
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 }

@@ -47,8 +47,8 @@ public class Client extends AbstractClient {
 	public void handleMessageFromServer(Object msg) {
 		if(msg==null) {
 			clientUI.setLastResponse(null);
-			synchronized (ClientGUI.monitor) {
-				ClientGUI.monitor.notifyAll();
+			synchronized (ClientGUI.getMonitor()) {
+				ClientGUI.getMonitor().notifyAll();
 			}
 			return;
 		}
@@ -58,8 +58,8 @@ public class Client extends AbstractClient {
 		else
 			clientUI.setLastResponse(serverResponse);
 		//notify gui that message received:
-		synchronized (ClientGUI.monitor) {
-			ClientGUI.monitor.notifyAll();
+		synchronized (ClientGUI.getMonitor()) {
+			ClientGUI.getMonitor().notifyAll();
 		}
 	}
 

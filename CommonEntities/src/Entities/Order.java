@@ -29,7 +29,7 @@ public class Order implements Serializable {
 		this.restaurantName = restaurantName;
 		this.products = products;
 		this.paymentMethod = paymentMethod;
-		OrderTime = orderTime;
+		this.OrderTime = orderTime;
 		this.orderPrice = orderPrice;
 		this.orderRecieved = orderRecieved;
 		this.dateTime = dateTime;
@@ -77,9 +77,9 @@ public class Order implements Serializable {
 	}
 
 	/**
-	 * @return the ordeTime
+	 * @return the orderTime
 	 */
-	public String getOrdeTime() {
+	public String getOrderTime() {
 		return OrderTime;
 	}
 
@@ -140,10 +140,10 @@ public class Order implements Serializable {
 	}
 
 	/**
-	 * @param ordeTime the ordeTime to set
+	 * @param orderTime the orderTime to set
 	 */
-	public void setOrderTime(String ordeTime) {
-		OrderTime = ordeTime;
+	public void setOrderTime(String orderTime) {
+		OrderTime = orderTime;
 	}
 
 	/**
