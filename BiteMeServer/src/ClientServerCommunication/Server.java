@@ -242,7 +242,6 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		mysqlConnection.createMonthlySuppliersReceipt(12, 2021);
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();
