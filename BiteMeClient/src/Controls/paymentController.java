@@ -336,7 +336,7 @@ public class paymentController implements Initializable {
 		 * On load disable for the user the option to select 'business account' if the
 		 * user is not an approved business account
 		 */
-		user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		if ((user.isBusiness() && !user.isApproved()) || !user.isBusiness()) {
 			selectPrivate(null);
 			businessRadio.setDisable(true);
@@ -352,12 +352,12 @@ public class paymentController implements Initializable {
 
 	@SuppressWarnings("unchecked")
 	public void checkRefunds() {
-		Customer user = (Customer) ClientGUI.client.getUser().getServerResponse();
+		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		Thread t = new Thread(() -> {
-			synchronized (ClientGUI.monitor) {
-				ClientGUI.client.getRefunds(user);
+			synchronized (ClientGUI.getMonitor()) {
+				ClientGUI.getClient().getRefunds(user);
 				try {
-					ClientGUI.monitor.wait();
+					ClientGUI.getMonitor().wait();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					return;
@@ -372,7 +372,7 @@ public class paymentController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		user.setRefunds((HashMap<String, Float>) ClientGUI.client.getLastResponse().getServerResponse());
+		user.setRefunds((HashMap<String, Float>) ClientGUI.getClient().getLastResponse().getServerResponse());
 		if (user.getRefunds().containsKey(router.getOrder().getRestaurantName())) {
 			refundCheck.setVisible(true);
 			refundAmount.setText("You got " + user.getRefunds().get(router.getOrder().getRestaurantName())

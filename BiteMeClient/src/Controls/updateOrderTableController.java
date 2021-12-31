@@ -84,7 +84,7 @@ public class updateOrderTableController implements Initializable {
 	@FXML
 	private ImageView updateOrderImage;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private Order order;
 
@@ -96,16 +96,16 @@ public class updateOrderTableController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getOrderInfo(restaurant);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getOrderInfo(restaurant);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
 				// get the server response- list of orders
 				ArrayList<Order> response = (ArrayList<Order>) sr.getServerResponse();

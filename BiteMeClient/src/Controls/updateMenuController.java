@@ -114,7 +114,7 @@ public class updateMenuController implements Initializable {
 	@FXML
 	private TableColumn<Product, TypeOfProduct> table_Type;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private Product product;
 
@@ -125,16 +125,16 @@ public class updateMenuController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getRestaurantMenu(restaurant);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getRestaurantMenu(restaurant);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
 				// get the server response- list of product (menu)
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
@@ -235,10 +235,10 @@ public class updateMenuController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.deleteItemFromMenu(restaurant, product.getDishName());
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().deleteItemFromMenu(restaurant, product.getDishName());
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -249,7 +249,7 @@ public class updateMenuController implements Initializable {
 				}
 
 				// get the server response- update list of product (menu)
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				@SuppressWarnings("unchecked")
 				// update the table with the new menu, after delete item
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
@@ -301,11 +301,11 @@ public class updateMenuController implements Initializable {
 	 * return true if the deleting was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("Deleting an item from menu was failed");
 			return false;
 		}
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "":
 			errorMsg.setText("Deleting an item from menu was failed");
 			return false;

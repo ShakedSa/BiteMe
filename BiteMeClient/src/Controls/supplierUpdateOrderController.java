@@ -120,7 +120,7 @@ public class supplierUpdateOrderController implements Initializable {
 	private Label updateOrderBtn;
 
 	private ObservableList<String> list;
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
 	private String orderNumber,status;
 	private String receivedOrReady;
@@ -159,17 +159,17 @@ public class supplierUpdateOrderController implements Initializable {
 				if (receivedOrReady.equals("Order Received")) {
 					order.setStatus("Received");
 					order.setOrderRecieved(nowTime);
-					ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, nowTime,
+					ClientGUI.getClient().UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, nowTime,
 							statusReceived);
 				} else { // Order Is Ready
 					order.setStatus("Ready");
 					order.setPlannedTime(plannedTime);
-					ClientGUI.client.UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, plannedTime,
+					ClientGUI.getClient().UpdateOrderStatus(restaurantName, receivedOrReady, orderNumber, plannedTime,
 							statusReady);
 				}
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -190,7 +190,7 @@ public class supplierUpdateOrderController implements Initializable {
 		}
 		
 		// save the return value from query - delivery number
-		deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+		deliveryNumber = (int) ClientGUI.getClient().getLastResponse().getServerResponse();
 
 		// display an error message if supplier didn't select any radio button
 		if (receivedOrReady.equals("Order Is Ready") && !includeDeliveryBtn.isSelected()
@@ -293,11 +293,11 @@ public class supplierUpdateOrderController implements Initializable {
 	 * return true if the update was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("update order was failed");
 			return false;
 		}
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "update order was failed":
 			return false;
 		case "success":
@@ -496,7 +496,7 @@ public class supplierUpdateOrderController implements Initializable {
 	 */
 	public int getDeliveryNumber() {
 		if (deliveryNumber == null) {
-			deliveryNumber = (int) ClientGUI.client.getLastResponse().getServerResponse();
+			deliveryNumber = (int) ClientGUI.getClient().getLastResponse().getServerResponse();
 		}
 		return deliveryNumber;
 	}

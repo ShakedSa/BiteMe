@@ -97,7 +97,7 @@ public class profileController implements Initializable {
 	public void initProfile() {
 		setAvatar();
 		setProfile();
-		User user = (User) ClientGUI.client.getUser().getServerResponse();
+		User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 		setBagVisibility(user.getUserType() == UserType.Customer); // hide bag on profile for non customers
 		firstNameTxt.setText(user.getFirstName());
 		lastNameTxt.setText(user.getLastName());
@@ -162,7 +162,7 @@ public class profileController implements Initializable {
 	 * Setting Profile page buttons to match user's permissions.
 	 */
 	public void setProfile() {
-		ServerResponse resUser = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.getClient().getUser();
 		hideAllBtns();
 		User user = (User) resUser.getServerResponse();
 		switch (user.getUserType()) {

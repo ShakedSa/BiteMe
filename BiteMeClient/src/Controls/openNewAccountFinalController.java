@@ -244,14 +244,14 @@ public class openNewAccountFinalController implements Initializable{
     	}
 		//values = userType,username,monthly bud,daily budget,credit card number,employer's name.
     	//modify user status, add customer table, add w4c:
-    	ClientGUI.client.openNewAccount(values);
+    	ClientGUI.getClient().openNewAccount(values);
     	//wait for response:
   		Thread t = new Thread(new Runnable() {
   			@Override
   			public void run() {
-  				synchronized (ClientGUI.monitor) {
+  				synchronized (ClientGUI.getMonitor()) {
   					try {
-  						ClientGUI.monitor.wait();
+  						ClientGUI.getMonitor().wait();
   					} catch (Exception e) {
   						e.printStackTrace();
   						return;
@@ -267,7 +267,7 @@ public class openNewAccountFinalController implements Initializable{
   			return;
   		}
   		//handle server response
-  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		ServerResponse sr = ClientGUI.getClient().getLastResponse();
   		if(sr==null) //server error:
   		{
   			updateSucess.setVisible(false);
@@ -357,13 +357,13 @@ public class openNewAccountFinalController implements Initializable{
 		setPrivateDataVisibility(false);
 		//get user type p.customer/b.customer/user with query and set visibility accordingly
 
-		ClientGUI.client.checkCustomerStatus(username);
+		ClientGUI.getClient().checkCustomerStatus(username);
   		Thread t = new Thread(new Runnable() {
   			@Override
   			public void run() {
-  				synchronized (ClientGUI.monitor) {
+  				synchronized (ClientGUI.getMonitor()) {
   					try {
-  						ClientGUI.monitor.wait();
+  						ClientGUI.getMonitor().wait();
   					} catch (Exception e) {
   						e.printStackTrace();
   						return;
@@ -379,7 +379,7 @@ public class openNewAccountFinalController implements Initializable{
   			return;
   		}
   		//handle server response
-  		ServerResponse sr = ClientGUI.client.getLastResponse();
+  		ServerResponse sr = ClientGUI.getClient().getLastResponse();
   		userType = sr.getDataType();
 		//set relevant comboBox values:
 		setAccountTypeComboBox(userType);

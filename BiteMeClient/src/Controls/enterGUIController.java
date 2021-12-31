@@ -79,7 +79,7 @@ public class enterGUIController implements Initializable {
 			errorMsg.setText("Must fill ip");
 			return;
 		}
-		ClientGUI.client = new ClientUI(ip, 5555);
+		ClientGUI.setClient(new ClientUI(ip, 5555));
 		AnchorPane mainContainer;
 		if (router.getHomePageController() == null) {
 			homePageController controller;

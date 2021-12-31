@@ -99,7 +99,7 @@ public class editMenuItemController implements Initializable {
 	private Text supplierPanelBtn;
 
 	private ObservableList<TypeOfProduct> list;
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents = new ArrayList<>();
 	private Product product;
@@ -167,10 +167,10 @@ public class editMenuItemController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.editItemInMenu(product);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().editItemInMenu(product);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -234,11 +234,11 @@ public class editMenuItemController implements Initializable {
 	 * return true if the update was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			return false;
 		}
 
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "":
 			errorMsg.setText("Edit an item in menu was failed");
 			return false;

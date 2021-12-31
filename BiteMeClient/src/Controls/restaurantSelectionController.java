@@ -280,15 +280,15 @@ public class restaurantSelectionController implements Initializable {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					synchronized (ClientGUI.monitor) {
-						ClientGUI.client.restaurantsRequest();
+					synchronized (ClientGUI.getMonitor()) {
+						ClientGUI.getClient().restaurantsRequest();
 						try {
-							ClientGUI.monitor.wait();
+							ClientGUI.getMonitor().wait();
 						} catch (Exception e) {
 							e.printStackTrace();
 							return;
 						}
-						resRestaurants = ClientGUI.client.getLastResponse();
+						resRestaurants = ClientGUI.getClient().getLastResponse();
 						restaurants = ((ArrayList<Supplier>) resRestaurants.getServerResponse());
 						if (restaurants != null) {
 							Platform.runLater(() -> createRestaurants(restaurants));
