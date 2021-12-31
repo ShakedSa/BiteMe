@@ -41,6 +41,9 @@ public class addNewSupplierTableController implements Initializable {
 
     @FXML
     private Text managerPanelBtn;
+    
+    @FXML
+	private Rectangle leftArrowBtn;
 
     @FXML
     private Text homePageBtn;
@@ -266,6 +269,8 @@ public class addNewSupplierTableController implements Initializable {
 		router = Router.getInstance();
 		router.setAddNewSupplierTableController(this);
 		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
+
 	}
 
     

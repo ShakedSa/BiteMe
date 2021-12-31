@@ -51,19 +51,15 @@ public class ceoPanelController implements Initializable{
     private Text profileBtn;
 
     @FXML
-    private Label viewAllReportBtn;
-
-    @FXML
     private Label viewPDFReportBtn;
 
     @FXML
     private Label viewRevenueReportBtn;
     
-    @FXML
-    void viewAllReportBtnClicked(MouseEvent event) {
-
-    }
-
+    /**
+     * set the viewPDFReport scene 
+     * @param event
+     */
     @FXML
     void viewPDFReportBtnClicked(MouseEvent event) {
     	if (router.getViewPDFQuarterlyReportController() == null) {
@@ -75,26 +71,55 @@ public class ceoPanelController implements Initializable{
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.setQuarterBoxes();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - View PDF Quarterly Report");
+				
 				stage.setScene(mainScene);
-				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
 		} else {
-			stage.setTitle("BiteMe - View PDF Quarterly Report");
+			router.getViewPDFQuarterlyReportController().setQuarterBoxes();
 			stage.setScene(router.getViewPDFQuarterlyReportController().getScene());
-			stage.show();
 		}
+    	stage.setTitle("BiteMe - View PDF Quarterly Report");
+    	stage.show();
     }
-
+    
+    /**
+     * set the viewPDFRevnueReport scene 
+     * @param event
+     */
     @FXML
     void viewRevenueReportBtnClicked(MouseEvent event) {
-
+    	if (router.getViewRevenueQuarterlyReportController() == null) {
+			AnchorPane mainContainer;
+			viewRevenueQuarterlyReportController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeViewRevenueQuarterlyReportPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setQuarterBoxes();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setScene(mainScene);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getViewRevenueQuarterlyReportController().setQuarterBoxes();
+			stage.setScene(router.getViewRevenueQuarterlyReportController().getScene());
+		}
+    	
+    	stage.setTitle("BiteMe - View Revenue Quarterly Report");
+    	stage.show();
     }
 
    

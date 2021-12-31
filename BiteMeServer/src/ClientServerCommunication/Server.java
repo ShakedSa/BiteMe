@@ -166,6 +166,10 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.viewORcheckQuarterReport(m.get(0), m.get(1), m.get(2)), client);
 			break;
+		case "viewRevenueQuarterReport":
+			m = (ArrayList<String>) serverResponse.getServerResponse();
+			this.sendToClient(mysqlConnection.viewORcheckRevenueQuarterReport(m.get(0), m.get(1), m.get(2)), client);
+			break;
 		/*
 		 * case "CheckQuarterReport": m = (ArrayList<String>)
 		 * serverResponse.getServerResponse();
@@ -240,7 +244,6 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
-		// reportsHandler.quarterlyRevenueReportPdf("North", "4", "2021");
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();
@@ -250,7 +253,7 @@ public class Server extends AbstractServer {
 		{//report updates needed for last report month+1:
 		//(no need next ones since server was off and no other data was collected)
 			reportsHandler.createAllReports(month+1, year);
-
+			controller.setMessage("Monthly reports were created.");
 		}
 		mysqlConnection.logoutAll();
 		controller.setMessage("Server listening for connections on port " + getPort());

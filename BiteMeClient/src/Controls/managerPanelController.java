@@ -167,6 +167,7 @@ public class managerPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -178,6 +179,8 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
+
+			router.getOpenNewAccountController().initTable();
 			stage.setTitle("BiteMe - Open New Account");
 			stage.setScene(router.getOpenNewAccountController().getScene());
 			stage.show();
@@ -266,7 +269,7 @@ public class managerPanelController implements Initializable {
 			}
 		} else {
 			stage.setTitle("BiteMe - Create Revenue Quarterly Report");
-			stage.setScene(router.getUploadQuarterlyReportController().getScene());
+			stage.setScene(router.getCreateRevenueQuarterlyReportController().getScene());
 			stage.show();
 		}
     }

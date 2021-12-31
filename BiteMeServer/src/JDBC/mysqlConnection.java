@@ -1006,7 +1006,7 @@ public class mysqlConnection {
 	 * @param quarter
 	 * @param year
 	 * @param branch
-	 * @param Func    {"View","Check"}
+	 * 
 	 */
 	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch) {
 		ServerResponse serverResponse = new ServerResponse("MyFile");
@@ -1029,6 +1029,49 @@ public class mysqlConnection {
 			file.setMybytearray(array);
 			serverResponse.setServerResponse(file);
 			serverResponse.setMsg("Success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
+	}
+	
+	/**
+	 * Query to get Revenue Quarterly Report OR to check if exists.
+	 * 
+	 * @param quarter
+	 * @param year
+	 * @param branch
+	 * 
+	 */
+	public static ServerResponse viewORcheckRevenueQuarterReport(String quarter, String year, String branch) {
+
+		ServerResponse serverResponse = new ServerResponse("MyFile");
+		try {
+
+			String query = "SELECT distinct Content FROM bitemedb.reports where date like ? and Title like ? and ReportType = 'QuarterlyRevenueReport' and BranchName = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, year + "%");
+			stmt.setString(2, "%Quarter" + quarter + "%");
+			stmt.setString(3, branch);
+			ResultSet rs = stmt.executeQuery();
+
+			if (!rs.next()) {
+				serverResponse.setMsg("NotExists");
+				serverResponse.setServerResponse(null);
+				return serverResponse;
+			}
+			
+			Blob blob = rs.getBlob(1);
+			MyFile file = new MyFile("Blob");
+			byte[] array = blob.getBytes(1, (int) blob.length());
+			file.initArray(array.length);
+			file.setMybytearray(array);
+			serverResponse.setServerResponse(file);
+			serverResponse.setMsg("Success");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg("Failed");
@@ -2507,6 +2550,54 @@ public class mysqlConnection {
 			return null;
 		}
 	return new ServerResponse("Success");
+	}
+
+	/**
+	 * @param restaurant
+	 * @param month
+	 * @param year
+	 * @return avg preparation time of orders for the restaurant in that month.
+	 */
+	public static int getAvgPrepTime(String restaurant, String month, String year) {
+		try {
+			String query = "SELECT AVG(60*Hour(timediff(CustomerReceived, OrderReceived))+"
+					+ "MINUTE(timediff(CustomerReceived, OrderReceived))) FROM bitemedb.orders WHERE OrderNumber "
+					+ "IN (SELECT OrderNumber FROM bitemedb.orders Where RestaurantName=?"
+					+ "and month(OrderTime) = ? and year(OrderTime) = ?)";
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurant);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static int getTotalRefunds(String restaurantName, String month, String year) {
+		PreparedStatement stmt;
+		String query;
+		int num = 0;
+		ResultSet rs;
+		// SELECT OrderNumber FROM bitemedb.orders where RestaurantName=?
+		try {
+			query = "SELECT SUM(RefundAmount) FROM bitemedb.orders WHERE OrderNumber IN (SELECT OrderNumber FROM bitemedb.orders where RestaurantName=? AND MONTH(OrderReceived)=? AND YEAR(OrderReceived)=?)";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, restaurantName);
+			stmt.setString(2, month);
+			stmt.setString(3, year);
+			rs = stmt.executeQuery();
+			if (rs.next())
+				num = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return num;
 	}
 }
 

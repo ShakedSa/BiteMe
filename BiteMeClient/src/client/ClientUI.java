@@ -223,6 +223,32 @@ public class ClientUI implements ClientIF {
 	/**
 	 * Sending the server a creatNewBusinessCustomer request.
 	 * @param orderNumber
+
+	 * Sending the server a search order request.
+	 * 
+	 * @param orderNumber
+	 * 
+	 */
+	public void searchOrder(String orderNumber, String restaurantName) {
+		try {
+			ArrayList<String> arr = new ArrayList<>();
+//			arr.addAll(Arrays.asList("searchOrder", orderNumber));
+			arr.addAll(Arrays.asList(orderNumber, restaurantName));
+			ServerResponse serverResponse = new ServerResponse("searchOrder");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
+	/**
+	 * Sending the server a createNewBusinessCustomer (employer/company) request.
+	 * 
+	 * @param String hrUserName, String employerCode, String employerCompanyName
+	 * 
+
 	 */
 	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
 		try {
@@ -238,8 +264,10 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a request to select all CustomerAndbudget for HR approval.
-	 * @param hrUserName,employerCompanyName
+	 * Sending the server a request to select all the relevant CustomerAndbudget for HR approval.
+	 *
+	 * @param employerCompanyName
+	 * 
 	 */
 	public void selectCustomerAndbudget(String employerCompanyName) {
 		try {
@@ -498,7 +526,14 @@ public class ClientUI implements ClientIF {
 		}
 
 	}
-
+	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter pdf report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void viewORcheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {
@@ -510,7 +545,32 @@ public class ClientUI implements ClientIF {
 			e.printStackTrace();
 		}
 	}
-	//function to CheckQuarterReport before enabling user to viewQuarterReport
+	
+	/**
+	 * sending a view request (is exists - therefore also used as a checker)
+	 * to the relevant quarter revenue report 
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
+	public void viewORcheckRevenueQuarterReport(String quarter, String Year, String branch) {
+		ArrayList<String> arr = new ArrayList<String>();
+		try {
+			arr.addAll(Arrays.asList(quarter, Year, branch));
+			ServerResponse serverResponse = new ServerResponse("viewRevenueQuarterReport");
+			serverResponse.setServerResponse(arr);
+			client.handleMessageFromClientUI(serverResponse);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * function to CheckQuarterReport before enabling user to viewQuarterReport
+	 * @param quarter
+	 * @param Year
+	 * @param branch
+	 */
 	public void CheckQuarterReport(String quarter, String Year, String branch) {
 		ArrayList<String> arr = new ArrayList<String>();
 		try {

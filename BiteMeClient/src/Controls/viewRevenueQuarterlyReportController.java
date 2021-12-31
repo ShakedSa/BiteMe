@@ -1,28 +1,24 @@
 package Controls;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.awt.Desktop;
+
 import Entities.MyFile;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -30,18 +26,17 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class viewPDFQuarterlyReportController implements Initializable {
-
+public class viewRevenueQuarterlyReportController implements Initializable {
 	public final UserType type = UserType.CEO;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
 	private MyFile result;
 	@FXML
-	private Text CEOPanelBtn;
+	private ComboBox<String> BranchBox;
 
 	@FXML
-	private Text textMsg;
+	private Text CEOPanelBtn;
 
 	@FXML
 	private Rectangle avatar;
@@ -56,22 +51,79 @@ public class viewPDFQuarterlyReportController implements Initializable {
 	private Text logoutBtn;
 
 	@FXML
-	private ComboBox<String> quarterBox;
-
-	@FXML
 	private Text profileBtn;
 
 	@FXML
-	private ComboBox<String> BranchBox;
+	private ComboBox<String> quarterBox;
+
+	@FXML
+	private Text textMsg;
 
 	@FXML
 	private Label viewPDFReportBtn;
 
 	@FXML
 	private ComboBox<String> yearBox;
+
+
 	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		router = Router.getInstance();
+		router.setViewRevenueQuarterlyReportController(this);
+		setStage(router.getStage());
+		router.setArrow(leftArrowBtn, -90);
+
+		setQuarterBoxes();
+
+		viewPDFReportBtn.setDisable(true);
+	}
+
 	
+	@FXML
+	void logoutClicked(MouseEvent event) {
+		router.logOut();
+	}
+
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page
+	 * @param event
+	 */
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+
+		clearSelections();
+		clearMsg();
+		router.showProfile();
+	}
 	
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page
+	 * @param event
+	 */
+	@FXML
+	void returnToCEOPanel(MouseEvent event) {
+
+		clearSelections();
+		clearMsg();
+		router.returnToCEOPanel(event);
+	}
+	
+	/**
+	 * clearing all the relevant selections and massages 
+	 * before leaving current page
+	 * @param event
+	 */
+	@FXML
+	void returnToHomePage(MouseEvent event) {
+
+		clearSelections();
+		clearMsg();
+		router.changeSceneToHomePage();
+	}
+
 	/** 
 	 * creating list of branches 
 	 */
@@ -80,7 +132,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		type.add("North");
 		type.add("Central");
 		type.add("South");
-
+		
 		BranchBox.setItems(FXCollections.observableArrayList(type));
 		BranchBox.setPromptText("Branch");
 
@@ -88,7 +140,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 
 	/**
 	 * creating list of months
-	 */ 
+	 */
 	private void setQuarterComboBox() {
 		ArrayList<String> quarter = new ArrayList<String>();
 
@@ -99,8 +151,9 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		quarterBox.setItems(FXCollections.observableArrayList(quarter));
 		quarterBox.setPromptText("Quarter");
 	}
+
 	/**
-	 * creating list of years
+	 *  creating list of years
 	 */
 	private void setYearComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
@@ -123,46 +176,24 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		setYearComboBox();
 
 	}
-	
-	@FXML
-	void logoutClicked(MouseEvent event) {
-		router.logOut();
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
 	}
-	
-	/**
-	 * clearing all the relevant selections and massages 
-	 * before leaving current page
-	 * @param event
-	 */
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		clearSelections();
-		clearMsg();
-		router.showProfile();
+
+	public Scene getScene() {
+		return scene;
 	}
-	
-	/**
-	 * clearing all the relevant selections and massages 
-	 * before leaving current page 
-	 * @param event
-	 */
-	@FXML
-	void returnToCEOPanel(MouseEvent event) {
-		clearSelections();
-		clearMsg();
-		router.returnToCEOPanel(event);
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
-	
+
 	/**
-	 * clearing all the relevant selections and massages 
-	 * before leaving current page
-	 * @param event
+	 * Setting the avatar image of the user.
 	 */
-	@FXML
-	void returnToHomePage(MouseEvent event) {
-		clearSelections();
-		clearMsg();
-		router.changeSceneToHomePage();
+	public void setAvatar() {
+		router.setAvatar(avatar);
 	}
 	
 	
@@ -182,7 +213,7 @@ public class viewPDFQuarterlyReportController implements Initializable {
 			@Override
 			public void run() {
 
-				ClientGUI.client.viewORcheckQuarterReport(quarter, year, branch);
+				ClientGUI.client.viewORcheckRevenueQuarterReport(quarter, year, branch);
 				synchronized (ClientGUI.monitor) {
 					try {
 						ClientGUI.monitor.wait();
@@ -218,8 +249,8 @@ public class viewPDFQuarterlyReportController implements Initializable {
 	}
 	
 	/**
-	 * downloading the report and opening quarterly report pdf, 
-	 * clearing the page boxes after
+	 * downloading the report and opening quarterly revenue pdf, 
+	 * clearing the page boxes after 
 	 * @param event
 	 */
 	@FXML
@@ -240,20 +271,20 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		}
 
 		try {
-			FileOutputStream out = new FileOutputStream(pdfToDownload);
-			byte[] buff = result.getMybytearray();
+		FileOutputStream out = new FileOutputStream(pdfToDownload);
+		byte[] buff = result.getMybytearray();
 
 			out.write(buff);
 			out.close();
-
+			
 			File toOpen = new File(pdfToDownload.getPath());
 			Desktop desktop = Desktop.getDesktop();
 			desktop.open(toOpen);
 		} catch (IOException e) {
-
+			
 			e.printStackTrace();
 		}
-
+		
 		Platform.runLater(() -> {
 			textMsg.setFill(Color.GREEN);
 			textMsg.setText("Finished!");
@@ -261,10 +292,11 @@ public class viewPDFQuarterlyReportController implements Initializable {
 			BranchBox.setOnAction(null);
 			yearBox.setOnAction(null);
 			clearSelections();
-			quarterBox.setOnAction(newevent -> searchOndb(newevent));
-			BranchBox.setOnAction(newevent -> searchOndb(newevent));
-			yearBox.setOnAction(newevent -> searchOndb(newevent));
+			quarterBox.setOnAction(newevent -> searchOndb(newevent) );
+			BranchBox.setOnAction(newevent -> searchOndb(newevent) );
+			yearBox.setOnAction(newevent -> searchOndb(newevent) );
 		});
+		
 
 	}
 	
@@ -293,41 +325,16 @@ public class viewPDFQuarterlyReportController implements Initializable {
 		clearMsg();
 		return true;
 	}
-
+	
 	/**
-	 * Setting the avatar image of the user.
+	 * clearing massage
 	 */
-	public void setAvatar() {
-		router.setAvatar(avatar);
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		router = Router.getInstance();
-		router.setViewPDFQuarterlyReportController(this);
-		setStage(router.getStage());
-		router.setArrow(leftArrowBtn, -90);
-		setQuarterBoxes();
-		viewPDFReportBtn.setDisable(true);
-	}
-
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
-
-	public Scene getScene() {
-		return scene;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
 	private void clearMsg() {
 		textMsg.setText("");
 
 	}
-
+	
+	
 	/**
 	 * clearing the selections 
 	 */

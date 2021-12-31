@@ -88,13 +88,20 @@ public class confirmBusinessAccountController implements Initializable {
 		router.logOut();
 	}
 
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		clearPage();
 		router.showProfile();
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * updating the database that HR approved the selected user as there employee (business customer) 
+	 * @param event
+	 */
 	@FXML
 	void confirmBtnClicked(MouseEvent event) {
 		clearPage();
@@ -139,6 +146,10 @@ public class confirmBusinessAccountController implements Initializable {
 			errorMsg.setText("No Customer is selected");
 		}
 	}
+	
+	/**
+	 * init the table with labels  
+	 */
 	private void initTable() {
 		table_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
 		table_FirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -148,20 +159,34 @@ public class confirmBusinessAccountController implements Initializable {
 		table_Dbudget.setCellValueFactory(new PropertyValueFactory<>("dailyBudget"));
 		customerTable.setEditable(true);
 	}
+	/**
+	 * setting relevant customers to show on HR boxPannel  
+	 */
 	public void setTable() {
 		customerTable.setItems(getCustomer());
 	}
-
+	
+	/**
+	 * setting relevant customers to show on HR boxPannel  
+	 */
 	private void setTable(ArrayList<Customer> list) {	
 		customerTable.setItems(getCustomer(list));	
 	}
 
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToEmployerHRPanel(MouseEvent event) {
 		clearPage();
 		router.returnToEmployerHRPanel(event);
 	}
 
+	/**
+	 * clearing relevant things before leaving current page
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearPage();
@@ -199,13 +224,19 @@ public class confirmBusinessAccountController implements Initializable {
 		this.stage = stage;
 	}
 
+	/**
+	 * clearing page
+	 */
 	private void clearPage() {
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
 		errorMsg.setText("");
 	}
 
-	@SuppressWarnings("unchecked")
+	/**
+	 * requesting customers and w4c info from database
+	 * @return Customers arrayList
+	 */
 	private ArrayList<Customer> CustomerAndbudget() {
 		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
 		Thread t = new Thread(new Runnable() {
@@ -238,7 +269,11 @@ public class confirmBusinessAccountController implements Initializable {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * converting the result arrayList from DataBase into observaleList
+	 * @return Customers observaleList
+	 */
 	private ObservableList<CustomerPlusBudget> getCustomer() {
 		ObservableList<CustomerPlusBudget> customers = FXCollections.observableArrayList();
 		ArrayList<Customer> list = CustomerAndbudget();
@@ -248,7 +283,12 @@ public class confirmBusinessAccountController implements Initializable {
 		}
 		return customers;
 	}
-
+	
+	/**
+	 * converting arrayList from the input into observaleList
+	 * @param Customers list
+	 * @return Customers observaleList
+	 */
 	private ObservableList<CustomerPlusBudget> getCustomer(ArrayList<Customer> list) {
 		ObservableList<CustomerPlusBudget> customers = FXCollections.observableArrayList();
 		for (Customer customer : list) {
@@ -258,7 +298,12 @@ public class confirmBusinessAccountController implements Initializable {
 		return customers;
 	}
 
-	protected class CustomerPlusBudget {
+	/**
+	 * private class that function as a shell to display relevant info on page box
+	 * @author aviel
+	 *
+	 */
+	private class CustomerPlusBudget {
 
 		private String id;
 		private String firstName;
