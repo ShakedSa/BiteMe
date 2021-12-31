@@ -83,10 +83,6 @@ public class Server extends AbstractServer {
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.getComponentsInProduct(m.get(0), m.get(1)), client);
 			break;
-		case "searchOrder":
-			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.searchOrder(m.get(0), m.get(1)), client);
-			break;
 		case "checkUser":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUsername(m.get(0)), client);

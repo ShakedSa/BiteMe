@@ -906,7 +906,6 @@ public class Router {
 
 	/**
 	 * Setting the order items
-	 * 
 	 * @param order
 	 */
 	public void setBagItems(ArrayList<Product> products) {
@@ -925,7 +924,6 @@ public class Router {
 
 	/**
 	 * Getting the order items
-	 * 
 	 * @return order
 	 */
 	public ArrayList<Product> getBagItems() {
@@ -1005,9 +1003,7 @@ public class Router {
 	/**
 	 * Global method generating array of strings. Usage : combo box in
 	 * deliveryMethodController & pickDateAndTimeController
-	 * 
 	 * @param size
-	 * 
 	 * @return String[]
 	 */
 	public String[] generator(int size) {
