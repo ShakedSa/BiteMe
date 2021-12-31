@@ -3,6 +3,7 @@ package Controls;
 import java.net.URL;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 
 import Entities.User;
@@ -118,15 +119,7 @@ public class viewIncomeReceiptController implements Initializable {
 	 */
 	private void setYearComboBox() {
 		ArrayList<String> type = new ArrayList<String>();
-		type.add("2016");
-		type.add("2017");
-		type.add("2018");
-		type.add("2019");
-		type.add("2020");
-		type.add("2021");
-
-		list = FXCollections.observableArrayList(type);
-		yearBox.setItems(list);
+		yearBox.getItems().addAll(generateYears());
 	}
 	
 	/**
@@ -154,7 +147,7 @@ public class viewIncomeReceiptController implements Initializable {
     @FXML
     void showReceiptClicked(MouseEvent event) {
     	String year = yearBox.getValue().toString();
-    	String month = monthBox.getValue().toString();
+    	String month = Integer.toString(monthBox.getValue().getValue());
     	ArrayList<String> date = new ArrayList<>();
     	date.add(0, restaurant);
     	date.add(1, month);
@@ -189,7 +182,7 @@ public class viewIncomeReceiptController implements Initializable {
 		ArrayList<String> response =  (ArrayList<String>)ClientGUI.getClient().getLastResponse().getServerResponse();
 		totalOrder = Float.parseFloat(response.get(0));
 		commissionPercent = Float.parseFloat(response.get(1));
-		totalCommission = totalOrder*commissionPercent;
+		totalCommission = totalOrder*(commissionPercent/100);
 		finalAmount = totalOrder - totalCommission;
 		displayReceipt();
     }
@@ -324,6 +317,19 @@ public class viewIncomeReceiptController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+	
+	/**
+	 * @return generated String[5] contains 5 last years from today
+	 */
+	private String[] generateYears() {
+		int currentYear=Calendar.getInstance().get(Calendar.YEAR);
+		String years_tmp[]= new String[5];
+		for(int i=0;i<5;i++)
+		{
+			years_tmp[i]=Integer.toString(currentYear-4+i);
+		}
+		return years_tmp;
 	}
 
 }

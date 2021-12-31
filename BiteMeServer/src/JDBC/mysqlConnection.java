@@ -2579,6 +2579,8 @@ public class mysqlConnection {
 				stmt.setDate(4, Date.valueOf("" + year + "-" +month + "-02"));
 				stmt.executeUpdate();
 			} catch (SQLException e) {
+				if(e instanceof SQLIntegrityConstraintViolationException)
+					return; // already exists, all good !
 				e.printStackTrace();
 			}
 			//end query
@@ -2622,18 +2624,20 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, month);
-			stmt.setString(2, year);
+			stmt.setString(3, year);
 			rs = stmt.executeQuery();
 			if (rs.next()) {
 				output.add(rs.getString(3));
 				output.add(Float.toString(rs.getFloat(2)));
 			}
+			else return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
 		ServerResponse response=new ServerResponse("ArrayList");
 		response.setServerResponse(output);
+		response.setMsg("success");
 		return response;
 	}
 
