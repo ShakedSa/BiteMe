@@ -82,11 +82,16 @@ public class Router {
 		return router;
 	}
 	
+	
+	/**
+	 * function that shows the current user profile 
+	 */
 	public void showProfile() {
 		AnchorPane mainContainer;
 		if (ProfileController == null) // first time clicking profile
 		{
 			try {
+				//change the page scene into the profile page
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
 				mainContainer = loader.load();
@@ -116,11 +121,15 @@ public class Router {
 		}
 	}
 	
+	
+	/**
+	 * logs out the user from the app
+	 */
 	public void logOut() {
 		ServerResponse resUser = ClientGUI.getClient().getUser();
 		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
-			if (user != null) {
+			if (user != null) { //reset all the app controllers
 				ClientGUI.getClient().logout(user.getUserName());
 				EmployerHRPanelController = null;
 				RegisterEmployerAsLegacyController = null;
@@ -167,6 +176,11 @@ public class Router {
 		stage.show();
 	}
 	
+	/**
+	 * sets the current user avatar depanding on his permissions
+	 * @param avatar
+	 * @return a Rectangle with the users avatar
+	 */
 	public Rectangle setAvatar(Rectangle avatar) {
 		try {
 			avatar.setArcWidth(65);
@@ -182,6 +196,11 @@ public class Router {
 		return avatar;
 	}
 	
+	
+	/**
+	 * checks the current logged in user and 
+	 * @return an avatar according to his permmisions
+	 */
 	ImagePattern getAvatarImage() {
 		ServerResponse userResponse = ClientGUI.getClient().getUser();
 		if (userResponse == null) {
@@ -207,6 +226,11 @@ public class Router {
 		}
 	}
 	
+	
+	/**
+	 * changes the current page scene into the app homepage
+	 * @param event
+	 */
 	void returnToSupplierPanel(MouseEvent event) {
 		if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
@@ -235,6 +259,12 @@ public class Router {
 		}
 	}
 	
+	
+	/**
+	 * sets the 'go back to the previous page' arrow inside an rectangle
+	 * @param arrow
+	 * @param rotationDegree
+	 */
 	public void setArrow(Rectangle arrow, int rotationDegree) {
 		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
 		arrow.setFill(pattern);
@@ -242,6 +272,11 @@ public class Router {
 		arrow.setRotate(rotationDegree);
 	}
 
+	
+	/**
+	 * changes the current page scene into the employersHR panel
+	 * @param event
+	 */
 	void returnToEmployerHRPanel(MouseEvent event) {
 		if (router.getEmployerHRPanelController() == null) {
 			AnchorPane mainContainer;
@@ -269,6 +304,11 @@ public class Router {
 		}
 	}
 
+	
+	/**
+	 * changes the current page scene into the manager panel
+	 * @param event
+	 */
 	void returnToManagerPanel(MouseEvent event) {
 		if (router.getManagerPanelController() == null) {
 			AnchorPane mainContainer;
@@ -296,6 +336,11 @@ public class Router {
 		}
 	}
 
+	
+	/**
+	 * changes the current page scene into the CEO panel
+	 * @param event
+	 */
 	void returnToCEOPanel(MouseEvent event) {
 		if (router.getCEOPanelController() == null) {
 			AnchorPane mainContainer;
@@ -323,6 +368,11 @@ public class Router {
 		}
 	}
 
+	
+	/**
+	 * changes the current page scene into the customer panel
+	 * @param event
+	 */
 	void returnToCustomerPanel(MouseEvent event) {
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
@@ -355,6 +405,11 @@ public class Router {
 		}
 	}
 
+	
+	/**
+	 * changes the current page scene into the 'My cart' page
+	 * @param lastPage
+	 */
 	public void changeToMyCart(String lastPage) {
 		if (router.getMyCartController() == null) {
 			AnchorPane mainContainer;
@@ -387,6 +442,7 @@ public class Router {
 		}
 	}
 
+	
 	/**
 	 * Setting the order items
 	 * @param order
@@ -406,8 +462,8 @@ public class Router {
 	}
 
 	/**
-	 * Getting the order items
-	 * @return order
+	 * Gets all of the order items
+	 * @return order = list of all the products in the order
 	 */
 	public ArrayList<Product> getBagItems() {
 		if (order == null || order.getProducts() == null) {
@@ -435,12 +491,13 @@ public class Router {
 	}
 	
 	/**
-	 * @return the stage
+	 * @return the current stage
 	 */
 	public Stage getStage() {
 		return stage;
 	}
 
+	
 	/**
 	 * @param stage the stage to set
 	 */
@@ -448,10 +505,19 @@ public class Router {
 		this.stage = stage;
 	}
 	
+	
+	/**
+	 * sets the order
+	 * @param order
+	 */
 	public void setOrder(Order order) {
 		this.order = order;
 	}
 
+	
+	/**
+	 * @return the order
+	 */
 	public Order getOrder() {
 		return order;
 	}
@@ -640,13 +706,14 @@ public class Router {
 	}
 
 	/**
-	 * @param confirmBusinessAccountController the confirmBusinessAccountController
-	 *                                         to set
+	 * setter for confirmBusinessAccountController
+	 * @param the confirmBusinessAccountController to set
 	 */
 	public void setConfirmBusinessAccountController(confirmBusinessAccountController confirmBusinessAccountController) {
 		ConfirmBusinessAccountController = confirmBusinessAccountController;
 	}
 
+	
 	/**
 	 * @param pickDateAndTimeController the pickDateAndTimeController to set
 	 */

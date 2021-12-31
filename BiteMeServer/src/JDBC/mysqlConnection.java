@@ -258,7 +258,6 @@ public class mysqlConnection {
 
 	/**
 	 * Query to update a client information in the db.
-	 * 
 	 * @return ServerResponse serverResponse
 	 */
 	public static void changeClientPerrmisions(String userName, String status) {
@@ -271,24 +270,6 @@ public class mysqlConnection {
 			stmt.setString(1, status);
 			stmt.setString(2, userName);
 			stmt.executeUpdate();
-			/*
-			 * //delete the client completlely from the db else if(status.equals("Delete"))
-			 * { //get the client id, to be able to delete from the w4c cards table query =
-			 * "SELECT * FROM bitemedb.customers WHERE UserName = ?"; stmt =
-			 * conn.prepareStatement(query); stmt.setString(1, userName); ResultSet rs =
-			 * stmt.executeQuery(); rs.next(); //delete the client from the w4c cards table
-			 * query = "delete from bitemedb.w4ccards where CustomerID = ?"; stmt =
-			 * conn.prepareStatement(query); stmt.setInt(1, rs.getInt(1)); // execute the
-			 * preparedstatement stmt.execute();
-			 * 
-			 * query = "delete from bitemedb.customers where UserName = ?"; stmt =
-			 * conn.prepareStatement(query); stmt.setString(1, userName); // execute the
-			 * preparedstatement stmt.execute();
-			 * 
-			 * query = "delete from bitemedb.users where UserName = ?"; stmt =
-			 * conn.prepareStatement(query); stmt.setString(1, userName); // execute the
-			 * preparedstatement stmt.execute();
-			 */
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("no man");
@@ -353,8 +334,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Query to add a new supplier the db.
-	 * 
+	 *exe a Query to add a new supplier to the db.
 	 * @return ServerResponse serverResponse
 	 */
 	public static void addNewSupplier(NewSupplier supplier) {
@@ -624,7 +604,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * creating new business customer
+	 * exe a query to create a new business customer
 	 * @param hrUserName,employerCode,employerCompanyName
 	 * @return ServerResponse
 	 */
@@ -740,45 +720,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Check if a user namename is exist and has no perrmissions
-	 * @param orderNumber
-	 * @return ServerResponse
-	 */
-	public static ServerResponse checkUserNameWithNoType(String username) {
-		ServerResponse serverResponse = new ServerResponse("ArrayList");
-		ArrayList<String> response = new ArrayList<>();
-		try {
-			PreparedStatement stmt;
-			String query = "SELECT * FROM bitemedb.users WHERE UserName = ?";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1, username);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				if (rs.getString(8).equals("User")) {
-					response.add(rs.getString(3));
-					response.add(rs.getString(4));
-					response.add(rs.getString(11));
-				} else {
-					serverResponse.setMsg("already has type");
-					return serverResponse;
-				}
-			} else {
-				serverResponse.setMsg("Error");
-				return serverResponse;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			serverResponse.setMsg(e.getMessage());
-			serverResponse.setServerResponse(null);
-			return serverResponse;
-		}
-		serverResponse.setMsg("Success");
-		serverResponse.setServerResponse(response);
-		return serverResponse;
-	}
-
-	/**
-	 * Check what accounts the user has
+	 * a query thats checks what accounts the received user has
 	 * @param orderNumber
 	 * @return ServerResponse
 	 */
@@ -794,7 +736,7 @@ public class mysqlConnection {
 			if (rs.next()) { //check if the username exist
 				response.add(rs.getString(3));
 				response.add(rs.getString(4));
-				if (rs.getString(8).equals("User")) { //check what is current permissions
+				if (rs.getString(8).equals("User")) { //check what is his current permissions
 					serverResponse.setMsg("both"); //we can open for him private and business account
 					return serverResponse;
 				} else if(rs.getString(8).equals("Customer") && !rs.getString(13).equals("Deleted")){
@@ -840,7 +782,7 @@ public class mysqlConnection {
 	}
 	
 	/**
-	 * Checks if a user name number is exist and has no type
+	 * Checks if a user name number is exist and has client permmissions
 	 * @param orderNumber
 	 * @return ServerResponse
 	 */
@@ -1285,6 +1227,10 @@ public class mysqlConnection {
 	}
 
 
+	/**
+	 * exe query to get all the unapproved businessCustomers
+	 * @return
+	 */
 	public static ServerResponse getEmployersForApproval() {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<BusinessCustomer> response = new ArrayList<>();
@@ -1578,7 +1524,7 @@ public class mysqlConnection {
 	}
 	
 	/**
-	 * get newly imported users from the DB
+	 * exe a query to get the newly imported users from the DB
 	 * @return
 	 */
 	public static ServerResponse getImportedUsers() {
@@ -2339,6 +2285,11 @@ public class mysqlConnection {
 		return false;
 	}
 
+	/**
+	 * exe a query to get the customers status by his username
+	 * @param username
+	 * @return
+	 */
 	public static ServerResponse checkCustomerStatus(String username) {
 		PreparedStatement stmt;
 		ServerResponse response = new ServerResponse();

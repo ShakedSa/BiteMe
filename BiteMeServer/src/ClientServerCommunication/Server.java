@@ -49,7 +49,6 @@ public class Server extends AbstractServer {
 	/**
 	 * Overridden method from AbstractServer. Handling message received from a
 	 * client. At this moment can handle message from only 1 single client.
-	 * 
 	 * @param msg
 	 * @param client
 	 */
@@ -85,10 +84,6 @@ public class Server extends AbstractServer {
 		case "checkUser":
 			m = (ArrayList<String>) serverResponse.getServerResponse();
 			this.sendToClient(mysqlConnection.checkUsername(m.get(0)), client);
-			break;
-		case "checkuserName":
-			m = (ArrayList<String>) serverResponse.getServerResponse();
-			this.sendToClient(mysqlConnection.checkUserNameWithNoType(m.get(0)), client);
 			break;
 		case "checkUserNameAccountType":
 			m = (ArrayList<String>) serverResponse.getServerResponse();

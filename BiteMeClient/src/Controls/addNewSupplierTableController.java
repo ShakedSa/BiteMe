@@ -97,7 +97,6 @@ public class addNewSupplierTableController implements Initializable {
   	 * modifies: approvalTable
   	 */
   	public void initTable(){
-
   		//send a request to clienUI to get all the new users data
   		ClientGUI.getClient().searchForNewUsers();
   		//wait for response

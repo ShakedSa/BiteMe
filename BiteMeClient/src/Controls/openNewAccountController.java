@@ -102,7 +102,7 @@ public class openNewAccountController implements Initializable {
 		id = "";
 
 		//send a request to clientUI - get users from the db 
-		ClientGUI.getClient().searchForNewUsers();
+		ClientGUI.getClient().findUsersInNeedOfAccount();
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
