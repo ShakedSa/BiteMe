@@ -759,4 +759,10 @@ public class ClientUI implements ClientIF {
 		client.handleMessageFromClientUI(serverResponse);
 	}
 
+	public void getSupplierReceipt(ArrayList<String> values) {
+		ServerResponse serverResponse = new ServerResponse("getSupplierReceipt");
+		serverResponse.setServerResponse(values);
+		client.handleMessageFromClientUI(serverResponse);
+	}
+
 }
