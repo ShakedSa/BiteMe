@@ -76,7 +76,7 @@ public class authorizedEmployerApprovalController implements Initializable {
 	@FXML
 	private Text approvalSuccsess1;
 
-	@FXML
+	@FXML 
 	private Text instructions;
 
 	private String employerCode = "";

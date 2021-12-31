@@ -95,6 +95,10 @@ public class updateUserInformationController implements Initializable{
     
 	
 	
+	/**
+	 * 
+	 * @param event
+	 */
 	@FXML
     void searchClicked(MouseEvent event) {
 		if(!checkValues()) {
@@ -160,7 +164,7 @@ public class updateUserInformationController implements Initializable{
 	
 	
 	
-	/**change the visibality of screen items
+	/**change the visibality of screens items
 	 * @param val
 	 */
 	private void enableEdit(boolean val) {
@@ -176,6 +180,10 @@ public class updateUserInformationController implements Initializable{
 		}
 	}
 	
+	/**
+	 * set the values of the comboBox according to the client status
+	 * @param status = Active/Froen/Unverified
+	 */
 	private void setUserOptions(String status) {
 		switch(status){
 			case "Active":
@@ -194,7 +202,8 @@ public class updateUserInformationController implements Initializable{
 	}
 	
 	
-	/**manager marks the option of freezing client account
+	/**
+	* manager chooses the option of freezing/activating the client account
 	* @param event
 	*/
 	@FXML
@@ -217,7 +226,8 @@ public class updateUserInformationController implements Initializable{
 	    }
 
 	 
-	/**manager marks the option of removing client account
+	/**
+	 * manager chooses the option of removing client account
 	* @param event
 	*/
 	@FXML
@@ -251,6 +261,10 @@ public class updateUserInformationController implements Initializable{
     	return true;
     }
     
+    /**
+     * send a request to ClientUI to change the chosen client status
+     * @param event
+     */
     @FXML
     void updateUserBtnClicked(MouseEvent event) {
     	if(!userNameTxtField.getText().equals(validUserName)) {
@@ -273,6 +287,9 @@ public class updateUserInformationController implements Initializable{
     	
     }
     
+    /**
+     * clears the manager choises
+     */
     private void clearChoises() {
     	action1.setSelected(false);
     	action1.setSelected(false);

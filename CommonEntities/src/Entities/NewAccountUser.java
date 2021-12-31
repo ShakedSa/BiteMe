@@ -17,7 +17,7 @@ public class NewAccountUser implements Serializable {
 		this.userName = userName;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.id = id;
+		this.id = id; 
 		this.email = email;
 		this.phone = phone;
 	}

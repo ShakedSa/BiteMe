@@ -119,7 +119,7 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending a query request from the server. add new supplier to the db
+	 * Sending a query request from the server. adds a new supplier to the db
 	 * @param restaurantName
 	 */
 	public void addNewSupplier(NewSupplier supplier) {
@@ -153,14 +153,12 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending a query request from the server. check for employers approvals
-	 * restaurant.
+	 * Sending a query request from the server. get data of employers thats need an approvals.
+	 * 
 	 * @param restaurantName
 	 */
 	public void checkForApprovals() {
 		try {
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("employersApproval");
 			ServerResponse serverResponse = new ServerResponse("employersApproval");
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
@@ -170,7 +168,9 @@ public class ClientUI implements ClientIF {
 	}
 	
 	/**
-	 * Sending a query request from the server. check for imported users
+	 * Sending a query request from the server.
+	 * get the data of the newly imported users
+
 	 */
 	public void searchForNewUsers() {
 		try {
@@ -182,13 +182,14 @@ public class ClientUI implements ClientIF {
 		}
 	}
 	/**
-	 * Sending a query request from the server. approve employer in the db
+	 * Sending a query request from the server.
+	 * approve the employer with the given employer code
+	 * 
 	 * @param employerCode
 	 */
 	public void employerApproval(String employerCode) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-			//arr.add("employerApproval");
 			arr.add(employerCode);
 			ServerResponse serverResponse = new ServerResponse("employerApproval");
 			serverResponse.setServerResponse(arr);
@@ -208,7 +209,6 @@ public class ClientUI implements ClientIF {
 	public void componentsInProduct(String restaurantName, String productName) {
 		try {
 			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("componentsInProduct");
 			arr.add(restaurantName);
 			arr.add(productName);
 			ServerResponse serverResponse = new ServerResponse("componentsInProduct");
@@ -244,11 +244,10 @@ public class ClientUI implements ClientIF {
 	}
 
 	/**
-	 * Sending the server a createNewBusinessCustomer (employer/company) request.
-	 * 
-	 * @param String hrUserName, String employerCode, String employerCompanyName
-	 * 
 
+	 * Sending the server a "creatNewBusinessCustomer" request.
+	 * Updates the businessCustomers table
+	 * @param orderNumber
 	 */
 	public void createNewBusinessCustomer(String hrUserName, String employerCode, String employerCompanyName) {
 		try {

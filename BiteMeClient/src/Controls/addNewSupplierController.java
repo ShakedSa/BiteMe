@@ -7,12 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import Entities.ImportedUser;
 import Entities.MyFile;
 import Entities.NewSupplier;
-import Entities.ServerResponse;
 import Entities.User;
-import Enums.BranchName;
 import Enums.UserType;
 import Util.InputValidation;
 import client.ClientGUI;
@@ -37,7 +34,7 @@ import javafx.stage.Stage;
  * This controller is incharge of adding new suppliers logic
  * @author Michael
  *
- */
+ */ 
 public class addNewSupplierController implements Initializable {
 
 	public final UserType type = UserType.BranchManager;
@@ -206,7 +203,8 @@ public class addNewSupplierController implements Initializable {
 	}
 	
 	
-	/**gets user information from the prev page and shows it in a text field
+	/**
+	 * gets user information from the prev page, and shows it in a text field
 	 * @param fName = user first name
 	 * @param lName = user last name
 	 * @param userName
@@ -218,7 +216,8 @@ public class addNewSupplierController implements Initializable {
 
 	
 	
-	/**check user input in all possible fields
+	/**
+	 * check user input in all possible fields
 	 * @return true if the fields are filled correctly
 	 */
 	private boolean checkInfoFields() {
@@ -271,7 +270,8 @@ public class addNewSupplierController implements Initializable {
     }
 	
 	
-	/**shows instructions label for correct address format 
+	/**
+	 * shows instructions label for correct address format 
 	 * @param event
 	 */
 	@FXML
@@ -289,7 +289,9 @@ public class addNewSupplierController implements Initializable {
 	}
 
 	
-	/**send request to client UI in order to add a new supplier
+	/**
+	 * if the fields has been filled correctly: sends request to clientUI in order
+	 *  to add a new supplier. else shows a message accordingly
 	 * @param event
 	 */
 	@FXML

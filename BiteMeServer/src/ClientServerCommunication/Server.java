@@ -14,7 +14,6 @@ import Entities.Product;
 import Entities.ServerResponse;
 import JDBC.mysqlConnection;
 import ServerUtils.DailyThread;
-import ServerUtils.pdfConfigs;
 import ServerUtils.reportsHandler;
 import gui.ServerGUIController;
 import ocsf.server.AbstractServer;
