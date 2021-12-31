@@ -100,7 +100,7 @@ public class orderReceivedController implements Initializable {
 			errorMsg.setText("Please select rate");
 			return;
 		}
-		ClientGUI.client.setRate(orderNumber, rates.get(choosenRate));
+		ClientGUI.getClient().setRate(orderNumber, rates.get(choosenRate));
 		errorMsg.setFill(Color.GREEN);
 		errorMsg.setText("Thank you for rating");
 		Set<ImageView> images = rates.keySet();

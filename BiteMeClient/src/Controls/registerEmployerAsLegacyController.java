@@ -90,16 +90,16 @@ public class registerEmployerAsLegacyController implements Initializable {
 		}
 
 		// Creating request to create a New BusinessCustomer
-		String hrUserName = ((User) ClientGUI.client.getUser().getServerResponse()).getUserName();
-		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+		String hrUserName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getUserName();
+		String employerName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization();
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.createNewBusinessCustomer(hrUserName, employerCodeTxtField.getText().trim(),
+				ClientGUI.getClient().createNewBusinessCustomer(hrUserName, employerCodeTxtField.getText().trim(),
 						employerName);
-				synchronized (ClientGUI.monitor) {
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -117,15 +117,15 @@ public class registerEmployerAsLegacyController implements Initializable {
 		}
 
 		// checking server response - if there is no response:
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("Somthing went worng, Please try again");
 			return;
 		}
-		if (ClientGUI.client.getLastResponse().getMsg().equals("Already Registered")) {
-			errorMsg.setText(ClientGUI.client.getLastResponse().getMsg());
+		if (ClientGUI.getClient().getLastResponse().getMsg().equals("Already Registered")) {
+			errorMsg.setText(ClientGUI.getClient().getLastResponse().getMsg());
 			return;
 		}
-		if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
+		if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
 			VImage.setVisible(true);
 			successMsg.setVisible(true);
 		}
@@ -183,7 +183,7 @@ public class registerEmployerAsLegacyController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 		VImage.setVisible(false);
 		successMsg.setVisible(false);
-		hrCompanyName.setText(((User) ClientGUI.client.getUser().getServerResponse()).getOrganization());
+		hrCompanyName.setText(((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization());
 		
 	}
 

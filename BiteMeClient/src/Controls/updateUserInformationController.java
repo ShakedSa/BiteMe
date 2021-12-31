@@ -101,16 +101,16 @@ public class updateUserInformationController implements Initializable{
     		return;
     	}
 
-		ClientGUI.client.checkUserNameIsClient(userNameTxtField.getText());
+		ClientGUI.getClient().checkUserNameIsClient(userNameTxtField.getText());
 
 		//wait for response
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.checkUserNameIsClient(userNameTxtField.getText());
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().checkUserNameIsClient(userNameTxtField.getText());
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -126,7 +126,7 @@ public class updateUserInformationController implements Initializable{
 			return;
 		}
 		//handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
+		ServerResponse sr = ClientGUI.getClient().getLastResponse();
 		if(sr == null) {
 			return;
 		}
@@ -264,7 +264,7 @@ public class updateUserInformationController implements Initializable{
     		Error.setVisible(true);
     		return;
     	}
-    	ClientGUI.client.changeClientPerrmisions(userNameTxtField.getText(), newStatus);
+    	ClientGUI.getClient().changeClientPerrmisions(userNameTxtField.getText(), newStatus);
     	Error.setVisible(false);
     	enableEdit(false);
     	updateSucess2.setVisible(true);

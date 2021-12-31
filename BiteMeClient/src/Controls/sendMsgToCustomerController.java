@@ -59,7 +59,7 @@ public class sendMsgToCustomerController implements Initializable {
 	@FXML
 	private Text supplierPanelBtn;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
 	private Integer deliveryNumber;
 	private Order order;
@@ -94,10 +94,10 @@ public class sendMsgToCustomerController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getCustomerInfo(deliveryNumber.toString());
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getCustomerInfo(deliveryNumber.toString());
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -113,7 +113,7 @@ public class sendMsgToCustomerController implements Initializable {
 			return null;
 		}
 		// handle server response
-		ServerResponse sr = ClientGUI.client.getLastResponse();
+		ServerResponse sr = ClientGUI.getClient().getLastResponse();
 		if (sr == null) {
 			return null;
 		}

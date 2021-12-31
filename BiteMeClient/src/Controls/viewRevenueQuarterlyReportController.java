@@ -213,21 +213,21 @@ public class viewRevenueQuarterlyReportController implements Initializable {
 			@Override
 			public void run() {
 
-				ClientGUI.client.viewORcheckRevenueQuarterReport(quarter, year, branch);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().viewORcheckRevenueQuarterReport(quarter, year, branch);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
 
-				if (ClientGUI.client.getLastResponse().getServerResponse() == null) {
+				if (ClientGUI.getClient().getLastResponse().getServerResponse() == null) {
 					String msg = "";
-					if (ClientGUI.client.getLastResponse().getMsg().equals("NotExists")) {
+					if (ClientGUI.getClient().getLastResponse().getMsg().equals("NotExists")) {
 						msg = "Quarter report does not exists";
-					} else if (ClientGUI.client.getLastResponse().getMsg().equals("Failed")) {
+					} else if (ClientGUI.getClient().getLastResponse().getMsg().equals("Failed")) {
 						msg = "Somthing went worng";
 					}
 					final String m = msg;
@@ -238,8 +238,8 @@ public class viewRevenueQuarterlyReportController implements Initializable {
 					viewPDFReportBtn.setDisable(true);
 					return;
 				}
-				if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
-					result = (MyFile) ClientGUI.client.getLastResponse().getServerResponse();
+				if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
+					result = (MyFile) ClientGUI.getClient().getLastResponse().getServerResponse();
 					viewPDFReportBtn.setDisable(false);
 					return;
 				}

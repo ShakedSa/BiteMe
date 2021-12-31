@@ -852,7 +852,6 @@ public class Router {
 	public confirmBusinessAccountController getConfirmBusinessAccountController() {
 		return ConfirmBusinessAccountController;
 	}
-
 	/**
 	 * @return the pickDateAndTimeController
 	 */

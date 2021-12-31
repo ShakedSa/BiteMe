@@ -108,14 +108,14 @@ public class confirmBusinessAccountController implements Initializable {
 		// return the ID of the selected customer on gui
 		try {
 			String customerID = customerTable.getSelectionModel().getSelectedItem().getId();
-			String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+			String employerName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization();
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					ClientGUI.client.approveCustomerAsBusiness(employerName, customerID);
-					synchronized (ClientGUI.monitor) {
+					ClientGUI.getClient().approveCustomerAsBusiness(employerName, customerID);
+					synchronized (ClientGUI.getMonitor()) {
 						try {
-							ClientGUI.monitor.wait();
+							ClientGUI.getMonitor().wait();
 						} catch (Exception e) {
 							e.printStackTrace();
 							return;
@@ -131,14 +131,14 @@ public class confirmBusinessAccountController implements Initializable {
 				return;
 			}
 
-			if (ClientGUI.client.getLastResponse() == null)
+			if (ClientGUI.getClient().getLastResponse() == null)
 				errorMsg.setText("No Response");
 
-			if (ClientGUI.client.getLastResponse().getMsg().equals("Update Failed"))
-				errorMsg.setText(ClientGUI.client.getLastResponse().getMsg());
+			if (ClientGUI.getClient().getLastResponse().getMsg().equals("Update Failed"))
+				errorMsg.setText(ClientGUI.getClient().getLastResponse().getMsg());
 
-			if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
-				setTable((ArrayList<Customer>) ClientGUI.client.getLastResponse().getServerResponse());
+			if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
+				setTable((ArrayList<Customer>) ClientGUI.getClient().getLastResponse().getServerResponse());
 				VImage.setVisible(true);
 				successMsg.setVisible(true);
 			}
@@ -238,14 +238,14 @@ public class confirmBusinessAccountController implements Initializable {
 	 * @return Customers arrayList
 	 */
 	private ArrayList<Customer> CustomerAndbudget() {
-		String employerName = ((User) ClientGUI.client.getUser().getServerResponse()).getOrganization();
+		String employerName = ((User) ClientGUI.getClient().getUser().getServerResponse()).getOrganization();
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.selectCustomerAndbudget(employerName);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().selectCustomerAndbudget(employerName);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -261,9 +261,9 @@ public class confirmBusinessAccountController implements Initializable {
 			return null;
 		}
 
-		if (ClientGUI.client.getLastResponse() != null) {
-			if (ClientGUI.client.getLastResponse().getMsg().equals("Success")) {
-				return (ArrayList<Customer>) ClientGUI.client.getLastResponse().getServerResponse();
+		if (ClientGUI.getClient().getLastResponse() != null) {
+			if (ClientGUI.getClient().getLastResponse().getMsg().equals("Success")) {
+				return (ArrayList<Customer>) ClientGUI.getClient().getLastResponse().getServerResponse();
 			}
 
 		}

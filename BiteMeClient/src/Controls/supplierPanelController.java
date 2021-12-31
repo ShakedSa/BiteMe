@@ -74,7 +74,7 @@ public class supplierPanelController implements Initializable {
 	@FXML
 	private Text errorMsg;
 
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 
 	/**
@@ -85,16 +85,16 @@ public class supplierPanelController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.getSupplierImage(restaurant);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().getSupplierImage(restaurant);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
 					}
 				}
-				ServerResponse sr = ClientGUI.client.getLastResponse();
+				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				MyFile myFile = (MyFile) sr.getServerResponse();
 				byte[] imageArr = myFile.getMybytearray();
 				BufferedImage img;

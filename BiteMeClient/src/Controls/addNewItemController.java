@@ -96,7 +96,7 @@ public class addNewItemController implements Initializable {
     private Rectangle leftArrowBtn;
 
 	private ObservableList<TypeOfProduct> list;
-	private User user = (User) ClientGUI.client.getUser().getServerResponse();
+	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 	private ArrayList<Component> optionalComponents;
 	private Product product;
@@ -162,10 +162,10 @@ public class addNewItemController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.client.addItemToMenu(product);
-				synchronized (ClientGUI.monitor) {
+				ClientGUI.getClient().addItemToMenu(product);
+				synchronized (ClientGUI.getMonitor()) {
 					try {
-						ClientGUI.monitor.wait();
+						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
 						e.printStackTrace();
 						return;
@@ -241,12 +241,12 @@ public class addNewItemController implements Initializable {
 	 * return true if the adding was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
-		if (ClientGUI.client.getLastResponse() == null) {
+		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("This item already exist in menu");
 			return false;
 		}
 
-		switch (ClientGUI.client.getLastResponse().getMsg().toLowerCase()) {
+		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {
 		case "":
 			errorMsg.setText("Adding an item to menu was failed");
 			return false;

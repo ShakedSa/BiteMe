@@ -310,13 +310,13 @@ public class addNewSupplierController implements Initializable {
 			image.setSize(mybytearray.length);
 			bis.read(image.getMybytearray(), 0, mybytearray.length);
 			//prepare fields for table bitemedb.suppliers
-			User user = (User) ClientGUI.client.getUser().getServerResponse();
+			User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 			NewSupplier newSupplier = new NewSupplier(userName,
 					restaurantTypeCombo.getValue(),restaurantNameTxtField.getText(),
 					restaurantAddressTxtField.getText(),image,
 					monthlyCommissionBox.getValue(), user.getMainBranch());
 			//send to clientUI
-			ClientGUI.client.addNewSupplier(newSupplier);
+			ClientGUI.getClient().addNewSupplier(newSupplier);
 			fis.close();
 			bis.close();
 			Error.setVisible(false);
