@@ -73,25 +73,21 @@ public class myOrdersController implements Initializable {
 	}
 	@FXML
 	void changeToCart(MouseEvent event) {
-		clearScreen();
 		router.changeToMyCart("MyOrders");
 	}
 
 	@FXML
 	void logOutBtnClicked(MouseEvent event) {
-		clearScreen();
 		router.logOut();
 	}
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
-		clearScreen();
 		router.showProfile();
 	}
 	
 	@FXML
     void returnToHomePage(MouseEvent event) {
-		clearScreen();
 		router.changeSceneToHomePage();
     }
 	
@@ -155,6 +151,7 @@ public class myOrdersController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void displayOpenOrders() {
+		clearScreen();
 		createTable();
 		Thread t = new Thread(() -> {
 			synchronized (ClientGUI.getMonitor()) {

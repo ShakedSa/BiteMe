@@ -62,6 +62,7 @@ public class orderReceivedController implements Initializable {
 	private int orderNumber;
 	@FXML
 	void changeToCart(MouseEvent event) {
+		router.setOrderReceivedController(null);
 		router.changeToMyCart("Received");
 	}
 
@@ -72,6 +73,7 @@ public class orderReceivedController implements Initializable {
 
 	@FXML
 	void returnToHome(MouseEvent event) {
+		router.setOrderReceivedController(null);
 		router.changeSceneToHomePage();
 	}
 	
@@ -82,6 +84,7 @@ public class orderReceivedController implements Initializable {
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
+		router.setOrderReceivedController(null);
 		router.getRestaurantselectionController().setItemsCounter();
 		router.getRestaurantMenuController().setAvatar();
 		stage.setTitle("BiteMe - Restaurants");
@@ -91,6 +94,7 @@ public class orderReceivedController implements Initializable {
 
 	@FXML
 	void showProfile(MouseEvent event) {
+		router.setOrderReceivedController(null);
 		router.showProfile();
 	}
 

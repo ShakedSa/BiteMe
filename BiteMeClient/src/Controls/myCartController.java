@@ -264,13 +264,13 @@ public class myCartController implements Initializable {
 	 * If the customer doesn't have an order yet, notify accordingly.
 	 */
 	public void displayOrder() {
+		root = new AnchorPane();
 		clearScreen();
 		setItemsCounter();
 		leftArrowBtn.setLayoutX(30);
 		leftArrowBtn.setLayoutY(405);
 		leftArrowBtn.setOnMouseClicked(e -> returnToLastPage(e));
 		leftArrowBtn.setCursor(Cursor.HAND);
-		root = new AnchorPane();
 		root.getChildren().add(leftArrowBtn);
 		cartTitle.setFont(new Font("Berlin Sans FB", 30));
 		cartTitle.setLayoutX(51);

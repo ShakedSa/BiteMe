@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import Entities.Customer;
 import Entities.MyFile;
 import Entities.NewSupplier;
@@ -12,6 +13,7 @@ import Entities.Order;
 import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
+import Entities.User;
 import JDBC.mysqlConnection;
 import ServerUtils.DailyThread;
 import ServerUtils.reportsHandler;
@@ -68,7 +70,7 @@ public class Server extends AbstractServer {
 			this.sendToClient(mysqlConnection.logout(m.get(0)), client);
 			break;
 		case "Restaurants":
-			this.sendToClient(mysqlConnection.getRestaurants(), client);
+			this.sendToClient(mysqlConnection.getRestaurants((User)serverResponse.getServerResponse()), client);
 			break;
 		case "favRestaurants":
 			this.sendToClient(mysqlConnection.favRestaurants(), client);

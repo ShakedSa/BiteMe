@@ -94,8 +94,7 @@ public class ClientUI implements ClientIF {
 	public void restaurantsRequest() {
 		try {
 			ServerResponse serverResponse = new ServerResponse("Restaurants");
-//			ArrayList<String> arr = new ArrayList<>();
-//			arr.add("getRestaurants");
+			serverResponse.setServerResponse((User)ClientGUI.getClient().getUser().getServerResponse());
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
