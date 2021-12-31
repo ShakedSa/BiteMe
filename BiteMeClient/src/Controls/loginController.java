@@ -79,7 +79,7 @@ public class loginController implements Initializable {
 	 * @param MouseEvent event.
 	 */
 	@FXML
-	void loginClicked(MouseEvent event) {
+	public void loginClicked(MouseEvent event) {
 		String userName = usernameTxt.getText();
 		String password = passwordTxt.getText();
 		if(!CheckUserInput(userName, password)) {
