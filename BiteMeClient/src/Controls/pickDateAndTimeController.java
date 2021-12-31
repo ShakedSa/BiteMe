@@ -83,6 +83,7 @@ public class pickDateAndTimeController implements Initializable {
 		LocalDate orderDate = datePicker.getValue();
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
+		
 		String newTime = orderDate.toString() + " " + hourToOrder + ":" + minuteToOrder;
 		router.getOrder().setDateTime(newTime);
 		errorMsg.setText("");
@@ -164,6 +165,13 @@ public class pickDateAndTimeController implements Initializable {
 		switch (LocalTime.now().compareTo(selectedTime)) {
 		case 1:
 			errorMsg.setText("Time of order must be greater or equals to now: " + LocalTime.now().toString());
+			return false;
+		}
+		LocalTime now = LocalTime.now();
+		int choosedTime = Integer.parseInt(hourToOrder) * 60 + Integer.parseInt(minuteToOrder);
+		int nowTime = now.getHour() * 60 + now.getMinute();
+		if(choosedTime - nowTime > 60) {
+			errorMsg.setText("Time for order must be up to 1 hour from now.");
 			return false;
 		}
 		/** If time selection is before now */
