@@ -69,7 +69,6 @@ public class Router {
 	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
 	private viewRevenueQuarterlyReportController ViewRevenueQuarterlyReportController;
 
-
 	/** State of the order application: */
 	/***************************************/
 	private Order order = new Order();
@@ -82,7 +81,388 @@ public class Router {
 			router = new Router();
 		return router;
 	}
+	
+	public void showProfile() {
+		AnchorPane mainContainer;
+		if (ProfileController == null) // first time clicking profile
+		{
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
+				mainContainer = loader.load();
+				ProfileController = loader.getController();
+				ProfileController.setAvatar();
+				ProfileController.initProfile();
+				ProfileController.setItemsCounter();
+				ProfileController.setLastScene(stage.getScene(), stage.getTitle());
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				ProfileController.setScene(mainScene);
+				stage.setTitle("BiteMe - Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else // profile already been clicked before (not necessarily same user)
+		{
+			ProfileController.initProfile();
+			ProfileController.setItemsCounter();
+			ProfileController.setLastScene(stage.getScene(), stage.getTitle());
+			stage.setTitle("BiteMe - Profile");
+			stage.setScene(ProfileController.getScene());
+			stage.show();
+		}
+	}
+	
+	public void logOut() {
+		ServerResponse resUser = ClientGUI.client.getUser();
+		if (resUser != null) {
+			User user = (User) resUser.getServerResponse();
+			if (user != null) {
+				ClientGUI.client.logout(user.getUserName());
+				EmployerHRPanelController = null;
+				RegisterEmployerAsLegacyController = null;
+				ConfirmBusinessAccountController = null;
+				AddNewItemController = null;
+				AddNewSupplierController = null;
+				AuthorizedEmployerApprovalController = null;
+				EditMenuItemController = null;
+				OpenNewAccountController = null;
+				RegisterEmployerAsLegacyController = null;
+				SendMsgToCustomerController = null;
+				SupplierUpdateOrderController = null;
+				UpdateMenuController = null;
+				UpdateUserInformationController = null;
+				UploadQuarterlyReportController = null;
+				ViewMonthlyReportsController = null;
+				ViewPDFQuarterlyReportController = null;
+				RestaurantMenuController = null;
+				RestaurantselectionController = null;
+				IdentifyController = null;
+				MyCartController = null;
+				PaymentController = null;
+				PickDateAndTimeController = null;
+				DeliveryMethodController = null;
+				ReviewOrderController = null;
+				OrderReceivedController = null;
+				SupplierPanelController = null;
+				CreateRevenueQuarterlyReportController=null;
+				order = new Order();
+				delivery = null;
+				orderDeliveryMethod = null;
+				ClientGUI.client.setUser(null);
+			}
+		}
+		router.getHomePageController().setProfile(false);
+		setBagItems(new ArrayList<>());
+		changeSceneToHomePage();
+	}
+	
+	public void changeSceneToHomePage() {
+		getHomePageController().setItemsCounter();
+		stage.setTitle("BiteMe - HomePage");
+		stage.setScene(router.getHomePageController().getScene());
+		stage.show();
+	}
+	
+	public Rectangle setAvatar(Rectangle avatar) {
+		try {
+			avatar.setArcWidth(65);
+			avatar.setArcHeight(65);
+			ImagePattern pattern = getAvatarImage();
+			avatar.setFill(pattern);
+			avatar.setEffect(new DropShadow(3, Color.BLACK));
+			avatar.setStyle("-fx-border-width: 0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return avatar;
+	}
+	
+	ImagePattern getAvatarImage() {
+		ServerResponse userResponse = ClientGUI.client.getUser();
+		if (userResponse == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		User user = (User) userResponse.getServerResponse();
+		if (user == null) {
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+		switch (user.getUserType()) {
+		case Supplier:
+			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
+		case BranchManager:
+			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+		case CEO:
+			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+		case Customer:
+			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
+		case EmployerHR:
+			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
+		default:
+			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+		}
+	}
+	
+	void returnToSupplierPanel(MouseEvent event) {
+		if (router.getSupplierPanelController() == null) {
+			AnchorPane mainContainer;
+			supplierPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setImage();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Supplier Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Supplier Panel");
+			stage.setScene(router.getSupplierPanelController().getScene());
+			stage.show();
+		}
+	}
+	
+	public void setArrow(Rectangle arrow, int rotationDegree) {
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
+		arrow.setFill(pattern);
+		arrow.setStyle("-fx-stroke: null;-fx-cursor: hand");
+		arrow.setRotate(rotationDegree);
+	}
 
+	void returnToEmployerHRPanel(MouseEvent event) {
+		if (router.getEmployerHRPanelController() == null) {
+			AnchorPane mainContainer;
+			employerHRPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Employer HR Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Employer HR Panel");
+			stage.setScene(router.getEmployerHRPanelController().getScene());
+			stage.show();
+		}
+	}
+
+	void returnToManagerPanel(MouseEvent event) {
+		if (router.getManagerPanelController() == null) {
+			AnchorPane mainContainer;
+			managerPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Manager Panel");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - Manager Panel");
+			stage.setScene(router.getManagerPanelController().getScene());
+			stage.show();
+		}
+	}
+
+	void returnToCEOPanel(MouseEvent event) {
+		if (router.getCEOPanelController() == null) {
+			AnchorPane mainContainer;
+			ceoPanelController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - CEO Home Page");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			stage.setTitle("BiteMe - CEO Panel");
+			stage.setScene(router.getCEOPanelController().getScene());
+			stage.show();
+		}
+	}
+
+	void returnToCustomerPanel(MouseEvent event) {
+		if (router.getRestaurantselectionController() == null) {
+			AnchorPane mainContainer;
+			restaurantSelectionController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.setRestaurants();
+				controller.setItemsCounter();
+				controller.setButtons();
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - Restaurants");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getRestaurantselectionController().setItemsCounter();
+			router.getRestaurantselectionController().setButtons();
+			stage.setTitle("BiteMe - Restaurants");
+			stage.setScene(router.getRestaurantselectionController().getScene());
+			stage.show();
+		}
+	}
+
+	public void changeToMyCart(String lastPage) {
+		if (router.getMyCartController() == null) {
+			AnchorPane mainContainer;
+			myCartController controller;
+			try {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("../gui/bitemeMyCartPage.fxml"));
+				mainContainer = loader.load();
+				controller = loader.getController();
+				controller.setAvatar();
+				controller.displayOrder();
+				controller.setLastPage(lastPage);
+				Scene mainScene = new Scene(mainContainer);
+				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				controller.setScene(mainScene);
+				stage.setTitle("BiteMe - My Cart");
+				stage.setScene(mainScene);
+				stage.show();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		} else {
+			router.getMyCartController().setAvatar();
+			router.getMyCartController().displayOrder();
+			router.getMyCartController().setLastPage(lastPage);
+			stage.setTitle("BiteMe - My Cart");
+			stage.setScene(router.getMyCartController().getScene());
+			stage.show();
+		}
+	}
+
+	/**
+	 * Setting the order items
+	 * @param order
+	 */
+	public void setBagItems(ArrayList<Product> products) {
+		if(order == null) {
+			return;
+		}
+		if (order.getProducts() == null || products == null) {
+			order.setProducts(products);
+			return;
+		}
+		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
+				.collect(Collectors.toList());
+		newProducts.addAll(products);
+		order.setProducts((ArrayList<Product>) newProducts);
+	}
+
+	/**
+	 * Getting the order items
+	 * @return order
+	 */
+	public ArrayList<Product> getBagItems() {
+		if (order == null || order.getProducts() == null) {
+			return new ArrayList<>();
+		}
+		return order.getProducts();
+	}
+
+	/**
+	 * Global method generating array of strings. Usage : combo box in
+	 * deliveryMethodController & pickDateAndTimeController
+	 * @param size
+	 * @return String[]
+	 */
+	public String[] generator(int size) {
+		String[] res = new String[size];
+		for (int i = 0; i < res.length; i++) {
+			if (i < 10) {
+				res[i] = "0" + i;
+			} else {
+				res[i] = i + "";
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * @return the stage
+	 */
+	public Stage getStage() {
+		return stage;
+	}
+
+	/**
+	 * @param stage the stage to set
+	 */
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+	
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	/**
+	 * @return the delivery
+	 */
+	public Delivery getDelivery() {
+		return delivery;
+	}
+	
 	/**
 	 * @param logincontroller the loginController to set
 	 */
@@ -472,7 +852,6 @@ public class Router {
 	public confirmBusinessAccountController getConfirmBusinessAccountController() {
 		return ConfirmBusinessAccountController;
 	}
-
 	/**
 	 * @return the pickDateAndTimeController
 	 */
@@ -586,369 +965,6 @@ public class Router {
 	}
 
 	/**
-	 * @return the stage
-	 */
-	public Stage getStage() {
-		return stage;
-	}
-
-	/**
-	 * @param stage the stage to set
-	 */
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	public void showProfile() {
-		AnchorPane mainContainer;
-		if (ProfileController == null) // first time clicking profile
-		{
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
-				mainContainer = loader.load();
-				ProfileController = loader.getController();
-				ProfileController.setAvatar();
-				ProfileController.initProfile();
-				ProfileController.setItemsCounter();
-				ProfileController.setLastScene(stage.getScene(), stage.getTitle());
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				ProfileController.setScene(mainScene);
-				stage.setTitle("BiteMe - Home Page");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else // profile already been clicked before (not necessarily same user)
-		{
-			ProfileController.initProfile();
-			ProfileController.setItemsCounter();
-			ProfileController.setLastScene(stage.getScene(), stage.getTitle());
-			stage.setTitle("BiteMe - Profile");
-			stage.setScene(ProfileController.getScene());
-			stage.show();
-		}
-	}
-
-	public void logOut() {
-		ServerResponse resUser = ClientGUI.getClient().getUser();
-		if (resUser != null) {
-			User user = (User) resUser.getServerResponse();
-			if (user != null) {
-				ClientGUI.getClient().logout(user.getUserName());
-				EmployerHRPanelController = null;
-				RegisterEmployerAsLegacyController = null;
-				ConfirmBusinessAccountController = null;
-				AddNewItemController = null;
-				AddNewSupplierController = null;
-				AuthorizedEmployerApprovalController = null;
-				EditMenuItemController = null;
-				OpenNewAccountController = null;
-				RegisterEmployerAsLegacyController = null;
-				SendMsgToCustomerController = null;
-				SupplierUpdateOrderController = null;
-				UpdateMenuController = null;
-				UpdateUserInformationController = null;
-				UploadQuarterlyReportController = null;
-				ViewMonthlyReportsController = null;
-				ViewPDFQuarterlyReportController = null;
-				RestaurantMenuController = null;
-				RestaurantselectionController = null;
-				IdentifyController = null;
-				MyCartController = null;
-				PaymentController = null;
-				PickDateAndTimeController = null;
-				DeliveryMethodController = null;
-				ReviewOrderController = null;
-				OrderReceivedController = null;
-				SupplierPanelController = null;
-        CreateRevenueQuarterlyReportController=null;
-				order = new Order();
-				delivery = null;
-				orderDeliveryMethod = null;
-				ClientGUI.getClient().setUser(null);
-			}
-		}
-		router.getHomePageController().setProfile(false);
-		setBagItems(new ArrayList<>());
-		changeSceneToHomePage();
-	}
-
-	public void changeSceneToHomePage() {
-		getHomePageController().setItemsCounter();
-		stage.setTitle("BiteMe - HomePage");
-		stage.setScene(router.getHomePageController().getScene());
-		stage.show();
-	}
-
-	public Rectangle setAvatar(Rectangle avatar) {
-		try {
-			avatar.setArcWidth(65);
-			avatar.setArcHeight(65);
-			ImagePattern pattern = getAvatarImage();
-			avatar.setFill(pattern);
-			avatar.setEffect(new DropShadow(3, Color.BLACK));
-			avatar.setStyle("-fx-border-width: 0");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return avatar;
-	}
-
-	ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.getClient().getUser();
-		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		User user = (User) userResponse.getServerResponse();
-		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-		switch (user.getUserType()) {
-		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
-		case BranchManager:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
-		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
-		case Customer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
-		case EmployerHR:
-			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
-		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
-		}
-	}
-	
-	public void setArrow(Rectangle arrow, int rotationDegree) {
-		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
-		arrow.setFill(pattern);
-		arrow.setStyle("-fx-stroke: null;-fx-cursor: hand");
-		arrow.setRotate(rotationDegree);
-	}
-
-	void returnToSupplierPanel(MouseEvent event) {
-		if (router.getSupplierPanelController() == null) {
-			AnchorPane mainContainer;
-			supplierPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				controller.setImage();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Supplier Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			stage.setTitle("BiteMe - Supplier Panel");
-			stage.setScene(router.getSupplierPanelController().getScene());
-			stage.show();
-		}
-	}
-
-	void returnToEmployerHRPanel(MouseEvent event) {
-		if (router.getEmployerHRPanelController() == null) {
-			AnchorPane mainContainer;
-			employerHRPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Employer HR Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			stage.setTitle("BiteMe - Employer HR Panel");
-			stage.setScene(router.getEmployerHRPanelController().getScene());
-			stage.show();
-		}
-	}
-
-	void returnToManagerPanel(MouseEvent event) {
-		if (router.getManagerPanelController() == null) {
-			AnchorPane mainContainer;
-			managerPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Manager Panel");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			stage.setTitle("BiteMe - Manager Panel");
-			stage.setScene(router.getManagerPanelController().getScene());
-			stage.show();
-		}
-	}
-
-	void returnToCEOPanel(MouseEvent event) {
-		if (router.getCEOPanelController() == null) {
-			AnchorPane mainContainer;
-			ceoPanelController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - CEO Home Page");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			stage.setTitle("BiteMe - CEO Panel");
-			stage.setScene(router.getCEOPanelController().getScene());
-			stage.show();
-		}
-	}
-
-	void returnToCustomerPanel(MouseEvent event) {
-		if (router.getRestaurantselectionController() == null) {
-			AnchorPane mainContainer;
-			restaurantSelectionController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				controller.setRestaurants();
-				controller.setItemsCounter();
-				controller.setButtons();
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - Restaurants");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			router.getRestaurantselectionController().setItemsCounter();
-			router.getRestaurantselectionController().setButtons();
-			stage.setTitle("BiteMe - Restaurants");
-			stage.setScene(router.getRestaurantselectionController().getScene());
-			stage.show();
-		}
-	}
-
-	public void changeToMyCart(String lastPage) {
-		if (router.getMyCartController() == null) {
-			AnchorPane mainContainer;
-			myCartController controller;
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeMyCartPage.fxml"));
-				mainContainer = loader.load();
-				controller = loader.getController();
-				controller.setAvatar();
-				controller.displayOrder();
-				controller.setLastPage(lastPage);
-				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
-				controller.setScene(mainScene);
-				stage.setTitle("BiteMe - My Cart");
-				stage.setScene(mainScene);
-				stage.show();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		} else {
-			router.getMyCartController().setAvatar();
-			router.getMyCartController().displayOrder();
-			router.getMyCartController().setLastPage(lastPage);
-			stage.setTitle("BiteMe - My Cart");
-			stage.setScene(router.getMyCartController().getScene());
-			stage.show();
-		}
-	}
-
-	/**
-	 * Setting the order items
-	 * @param order
-	 */
-	public void setBagItems(ArrayList<Product> products) {
-		if(order == null) {
-			return;
-		}
-		if (order.getProducts() == null || products == null) {
-			order.setProducts(products);
-			return;
-		}
-		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
-				.collect(Collectors.toList());
-		newProducts.addAll(products);
-		order.setProducts((ArrayList<Product>) newProducts);
-	}
-
-	/**
-	 * Getting the order items
-	 * @return order
-	 */
-	public ArrayList<Product> getBagItems() {
-		if (order == null || order.getProducts() == null) {
-			return new ArrayList<>();
-		}
-		return order.getProducts();
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	public Order getOrder() {
-		return order;
-	}
-
-	/**
-	 * @return the delivery
-	 */
-	public Delivery getDelivery() {
-		return delivery;
-	}
-
-	/**
 	 * @param delivery the delivery to set
 	 */
 	public void setDelivery(Delivery delivery) {
@@ -984,8 +1000,6 @@ public class Router {
 		OpenNewAccountFinalController = openNewAccountFinalController;
 	}
 	
-	
-
 	/**
 	 * @return the addNewSupplierTableController
 	 */
@@ -998,24 +1012,6 @@ public class Router {
 	 */
 	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
 		AddNewSupplierTableController = addNewSupplierTableController;
-	}
-
-	/**
-	 * Global method generating array of strings. Usage : combo box in
-	 * deliveryMethodController & pickDateAndTimeController
-	 * @param size
-	 * @return String[]
-	 */
-	public String[] generator(int size) {
-		String[] res = new String[size];
-		for (int i = 0; i < res.length; i++) {
-			if (i < 10) {
-				res[i] = "0" + i;
-			} else {
-				res[i] = i + "";
-			}
-		}
-		return res;
 	}
 
 }
