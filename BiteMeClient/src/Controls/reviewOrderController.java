@@ -129,6 +129,9 @@ public class reviewOrderController implements Initializable {
 						router.setOrder(new Order());
 						router.setDelivery(null);
 						router.setOrderDeliveryMethod(null);
+						clearOrderProcess();
+						root.setDisable(false);
+						circle.setVisible(false);
 						changeToRateUs();
 					});
 				} else {
@@ -137,6 +140,14 @@ public class reviewOrderController implements Initializable {
 			}
 		});
 		t.start();
+	}
+	
+	private void clearOrderProcess() {
+		router.setPaymentController(null);
+		router.setIdentifyController(null);
+		router.setPickDateAndTimeController(null);
+		router.setRestaurantMenuController(null);
+		router.setDeliveryMethodController(null);
 	}
 
 	private void changeToRateUs() {

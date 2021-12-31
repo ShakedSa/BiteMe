@@ -92,7 +92,7 @@
          </font>
       </Text>
       <ComboBox fx:id="deliveryMethodBox" layoutX="100.0" layoutY="230.0" prefWidth="150.0" promptText="Delivery Method" />
-      <Label fx:id="errorMsg" layoutX="551.0" layoutY="416.0" textFill="RED">
+      <Label fx:id="errorMsg" layoutX="500.0" layoutY="416.0" textFill="RED">
          <rotationAxis>
             <Point3D />
          </rotationAxis>

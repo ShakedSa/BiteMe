@@ -451,13 +451,14 @@ public class Router {
 		if(order == null) {
 			return;
 		}
-		if (order.getProducts() == null || products == null) {
+		if (order.getProducts() == null || products == null || products.size() == 0) {
 			order.setProducts(products);
 			return;
 		}
 		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
 				.collect(Collectors.toList());
 		newProducts.addAll(products);
+		System.out.println(newProducts);
 		order.setProducts((ArrayList<Product>) newProducts);
 	}
 

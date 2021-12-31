@@ -64,6 +64,8 @@ public class restaurantMenuController implements Initializable {
 	private ArrayList<Product> productsInOrder;
 
 	Label menuTitle;
+	
+	Pane overlayPane;
 
 //	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
 
@@ -108,6 +110,7 @@ public class restaurantMenuController implements Initializable {
 
 	@FXML
 	void logoutClicked(MouseEvent event) {
+		clearScreen();
 		router.logOut();
 	}
 
@@ -157,15 +160,21 @@ public class restaurantMenuController implements Initializable {
 		}
 	}
 
+	private void clearScreen() {
+		root.getChildren().removeAll(tabPane, overlayPane);
+		nextBtn.setDisable(false);
+		leftArrowBtn.setDisable(false);
+	}
+	
 	@FXML
 	void returnToHomePage(MouseEvent event) {
-		root.getChildren().remove(tabPane);
+		clearScreen();
 		router.changeSceneToHomePage();
 	}
 
 	@FXML
 	void returnToIdentify(MouseEvent event) {
-		root.getChildren().remove(tabPane);
+		clearScreen();
 		router.getIdentifyController().setItemsCounter();
 		stage.setTitle("BiteMe - Identification Page");
 		stage.setScene(router.getIdentifyController().getScene());
@@ -174,7 +183,7 @@ public class restaurantMenuController implements Initializable {
 
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
-		root.getChildren().remove(tabPane);
+		clearScreen();
 		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
@@ -310,7 +319,6 @@ public class restaurantMenuController implements Initializable {
 	 * @param tab
 	 * @param productsToAdd
 	 */
-	@SuppressWarnings("unchecked")
 	private void setTabContent(Tab tab, List<Product> productsToAdd) {
 		ScrollPane tabContent = new ScrollPane();
 		AnchorPane tabLabels = new AnchorPane();
@@ -342,8 +350,9 @@ public class restaurantMenuController implements Initializable {
 			 */
 			pane.setOnMouseClicked(e -> {
 				nextBtn.setDisable(true);
+				leftArrowBtn.setDisable(true);
 				/** Pane for the overlay screen. */
-				Pane overlayPane = new Pane();
+				overlayPane = new Pane();
 				root.getChildren().add(overlayPane);
 				overlayPane.getStyleClass().add("overlayLayout");
 				/** Close button, closing the overlay screen. */
@@ -352,6 +361,7 @@ public class restaurantMenuController implements Initializable {
 				/** Setting a close button for the "choose components" screen. */
 				closeBtn.setOnMouseClicked(clickedEvent -> {
 					nextBtn.setDisable(false);
+					leftArrowBtn.setDisable(false);
 					root.getChildren().remove(overlayPane);
 					ClientGUI.getClient().setLastResponse(null);
 				});
@@ -367,9 +377,12 @@ public class restaurantMenuController implements Initializable {
 					title.setLayoutY(60);
 					Label removeItem = new Label("Remove Item");
 					removeItem.setOnMouseClicked(evnt -> {
-						productsInOrder.remove(p);
+						List<Product> newList = productsInOrder.stream().filter(othr -> !othr.equals(p)).collect(Collectors.toList());
 						nextBtn.setDisable(false);
+						leftArrowBtn.setDisable(false);
 						root.getChildren().remove(overlayPane);
+						System.out.println(newList);
+						router.setBagItems((ArrayList<Product>)newList);
 						setItemsCounter();
 					});
 					removeItem.setId("addItem");
@@ -505,7 +518,7 @@ public class restaurantMenuController implements Initializable {
 					 */
 					plus.setOnMouseClicked(mEvent -> {
 						int count = Integer.parseInt(counter.getText());
-						if (count > 25) {
+						if (count == 25) {
 							return;
 						}
 						Platform.runLater(() -> calculateCurrentPrice(componentInProduct, initialProductPrice, price,
@@ -564,18 +577,6 @@ public class restaurantMenuController implements Initializable {
 						 */
 						p.setAmount(count);
 						productsInOrder.add(p);
-						/**
-						 * Checking if this is the first order of the user.<br>
-						 * if so create new order.<br>
-						 * else getting handled in the restaurant selection controller.
-						 */
-//						if (firstAdd.get()) {
-//							Order newOrder = new Order();
-//							System.out.println(restaurantName);
-//							newOrder.setRestaurantName(restaurantName);
-//							router.setOrder(newOrder);
-//							firstAdd.set(false);
-//						}
 						/**
 						 * Setting global state for the router, adding <productsInOrder> to router
 						 * singleton.

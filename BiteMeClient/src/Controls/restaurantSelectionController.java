@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -63,6 +64,7 @@ public class restaurantSelectionController implements Initializable {
 	private List<Rectangle> borders;
 
 	private ArrayList<Supplier> restaurants;
+	private HashMap<String, Image> restaurantsImages = new HashMap<>();
 	private IntegerProperty page = new SimpleIntegerProperty(0);
 
 	@FXML
@@ -421,19 +423,25 @@ public class restaurantSelectionController implements Initializable {
 		}
 		/** At all time display up to 6 restaurants */
 		for (int i = 0; i < restaurants.size() && i < 6; i++) {
-			MyFile file = restaurants.get(i).getRestaurantLogo();
-			byte[] imageArr = file.getMybytearray();
-			BufferedImage img;
-			try {
-				img = ImageIO.read(new ByteArrayInputStream(imageArr));
-				Image image = SwingFXUtils.toFXImage(img, null);
-				loadingText.get(i).setVisible(false);
-				resImages.get(i).setImage(image);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
+			Supplier supplier = restaurants.get(i);
+			if (restaurantsImages.get(supplier.getRestaurantName()) == null) {
+				MyFile file = supplier.getRestaurantLogo();
+				byte[] imageArr = file.getMybytearray();
+				BufferedImage img;
+				try {
+					img = ImageIO.read(new ByteArrayInputStream(imageArr));
+					Image image = SwingFXUtils.toFXImage(img, null);
+					resImages.get(i).setImage(image);
+					restaurantsImages.put(supplier.getRestaurantName(), image);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
+			} else {
+				resImages.get(i).setImage(restaurantsImages.get(supplier.getRestaurantName()));
 			}
-			String resName = restaurants.get(i).getRestaurantName();
+			loadingText.get(i).setVisible(false);
+			String resName = supplier.getRestaurantName();
 			resNameTexts.get(i).setText(resName);
 			Label resOrder = resOrders.get(i);
 			/**

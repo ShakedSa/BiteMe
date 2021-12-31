@@ -229,13 +229,14 @@ public class mysqlConnection {
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static ServerResponse getRestaurants() {
+	public static ServerResponse getRestaurants(User user) {
 		ServerResponse serverResponse = new ServerResponse("Restaurants");
 		PreparedStatement stmt;
 		ArrayList<Supplier> restaurants = new ArrayList<>();
 		try {
-			String query = "SELECT RestaurantName, RestaurantType, Image FROM bitemedb.suppliers ORDER BY RestaurantName";
+			String query = "SELECT RestaurantName, RestaurantType, Image FROM bitemedb.suppliers WHERE branch = ? ORDER BY RestaurantName";
 			stmt = conn.prepareStatement(query);
+			stmt.setString(1, user.getMainBranch().toString());
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Blob image = rs.getBlob(3);

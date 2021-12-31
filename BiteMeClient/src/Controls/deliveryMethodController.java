@@ -273,7 +273,7 @@ public class deliveryMethodController implements Initializable {
 		int nowTime = now.getHour() * 60 + now.getMinute();
 		/** If selection time is not at least 30minutes ahead of now. */
 		if (selectedTime - nowTime < 30) {
-			errorMsg.setText("Time of order must be at least 30minutes before now: " + now.toString());
+			errorMsg.setText("Time of order must be at least 30minutes before\nnow: " + now.toString());
 			return false;
 		}
 		/** Pre order is up to 2 hours from the order time. */
