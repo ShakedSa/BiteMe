@@ -117,11 +117,11 @@ public class Router {
 	}
 	
 	public void logOut() {
-		ServerResponse resUser = ClientGUI.client.getUser();
+		ServerResponse resUser = ClientGUI.getClient().getUser();
 		if (resUser != null) {
 			User user = (User) resUser.getServerResponse();
 			if (user != null) {
-				ClientGUI.client.logout(user.getUserName());
+				ClientGUI.getClient().logout(user.getUserName());
 				EmployerHRPanelController = null;
 				RegisterEmployerAsLegacyController = null;
 				ConfirmBusinessAccountController = null;
@@ -152,7 +152,7 @@ public class Router {
 				order = new Order();
 				delivery = null;
 				orderDeliveryMethod = null;
-				ClientGUI.client.setUser(null);
+				ClientGUI.getClient().setUser(null);
 			}
 		}
 		router.getHomePageController().setProfile(false);
@@ -183,7 +183,7 @@ public class Router {
 	}
 	
 	ImagePattern getAvatarImage() {
-		ServerResponse userResponse = ClientGUI.client.getUser();
+		ServerResponse userResponse = ClientGUI.getClient().getUser();
 		if (userResponse == null) {
 			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
 		}
