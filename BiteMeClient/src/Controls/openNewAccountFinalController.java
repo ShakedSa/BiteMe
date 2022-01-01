@@ -383,8 +383,8 @@ public class openNewAccountFinalController implements Initializable{
   		userType = sr.getDataType();
 		//set relevant comboBox values:
 		setAccountTypeComboBox(userType);
-		infoMsg.setText("You are creating account for " + id + ", " + fname + " " + lname +
-				", with Username : " + username);
+		infoMsg.setText("You are creating account for " + fname + " " + lname + " - ID: " +
+				id + ", Username: " + username);
 	}
 
 	public void setPrevScene(Scene prevScene) {

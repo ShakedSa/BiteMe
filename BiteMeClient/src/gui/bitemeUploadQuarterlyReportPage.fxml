@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.uploadQuarterlyReportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.uploadQuarterlyReportController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -25,12 +25,12 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Quarterly  Report">
+      <Text layoutX="57.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Quarterly  Report">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year">
+      <Text layoutX="57.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -76,14 +76,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Quarter" wrappingWidth="153.2197265625">
+      <Text layoutX="57.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Quarter" wrappingWidth="153.2197265625">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="monthBox" layoutX="283.0" layoutY="259.0" prefHeight="27.0" prefWidth="119.0" promptText="Quarter" />
-      <ComboBox fx:id="yearBox" layoutX="283.0" layoutY="200.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
-      <Text layoutX="134.0" layoutY="340.0" onMouseClicked="#ImportImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
+      <ComboBox fx:id="monthBox" layoutX="193.0" layoutY="259.0" prefHeight="27.0" prefWidth="119.0" promptText="Quarter" />
+      <ComboBox fx:id="yearBox" layoutX="193.0" layoutY="200.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
+      <Text layoutX="108.0" layoutY="336.0" onMouseClicked="#ImportImageClicked" strokeType="OUTSIDE" strokeWidth="0.0" text="Import PDF report">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -91,7 +91,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fx:id="ImportImage" fitHeight="50.0" fitWidth="39.0" layoutX="85.0" layoutY="309.0" onMouseClicked="#ImportImageClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ImportImage" fitHeight="50.0" fitWidth="39.0" layoutX="57.0" layoutY="309.0" onMouseClicked="#ImportImageClicked" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/upload.png" />
          </image>
@@ -99,19 +99,19 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Text fx:id="UploadMsgTxt" fill="#62d019" layoutX="134.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The report was uploaded successfully!" visible="false">
+      <Text fx:id="UploadMsgTxt" fill="#62d019" layoutX="98.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The report was uploaded successfully!" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="UploadMsgImg" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="UploadMsgImg" fitHeight="50.0" fitWidth="34.0" layoutX="57.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text fx:id="InvalidMsg" fill="#cf1b1b" layoutX="144.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid Path or file name !" visible="false">
+      <Text fx:id="InvalidMsg" fill="RED" layoutX="57.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid Path or file name !" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="499.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />

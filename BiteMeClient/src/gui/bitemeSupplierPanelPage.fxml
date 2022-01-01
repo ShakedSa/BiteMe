@@ -68,11 +68,6 @@
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
       </Label>
-      <Text fx:id="errorMsg" fill="RED" layoutX="140.0" layoutY="480.0" strokeType="OUTSIDE" strokeWidth="0.0">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
       <Text fx:id="loadingTxt" fill="#3180bc" layoutX="180.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Loading Logo...">
          <font>
             <Font name="Berlin Sans FB" size="24.0" />

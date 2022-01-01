@@ -25,17 +25,17 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View PDF Quarterly Report">
+      <Text layoutX="57.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View PDF Quarterly Report">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific quarter">
+      <Text layoutX="57.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific quarter">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="88.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Branch">
+      <Text layoutX="57.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select Branch">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -81,17 +81,17 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ComboBox fx:id="quarterBox" focusTraversable="false" layoutX="283.0" layoutY="320.0" onAction="#searchOndb" prefHeight="25.0" prefWidth="93.0" promptText="Quarter" />
-      <Text layoutX="88.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
+      <ComboBox fx:id="quarterBox" focusTraversable="false" layoutX="229.0" layoutY="320.0" onAction="#searchOndb" prefHeight="25.0" prefWidth="93.0" promptText="Quarter" />
+      <Text layoutX="57.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="283.0" layoutY="260.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Year" />
-      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="283.0" layoutY="200.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Branch" />
-      <Text fx:id="textMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <ComboBox fx:id="yearBox" focusTraversable="false" layoutX="229.0" layoutY="260.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Year" />
+      <ComboBox fx:id="BranchBox" focusTraversable="false" layoutX="229.0" layoutY="200.0" onAction="#searchOndb" prefHeight="27.0" prefWidth="93.0" promptText="Branch" />
+      <Text fx:id="textMsg" fill="RED" layoutX="57.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="500.0" onMouseClicked="#returnToCEOPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />

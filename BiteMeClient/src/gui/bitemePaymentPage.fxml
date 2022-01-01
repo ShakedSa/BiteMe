@@ -84,7 +84,7 @@
       <Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Please select payment method">
          <font>
-            <Font name="Berlin Sans FB" size="16.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
       <RadioButton fx:id="businessRadio" layoutX="105.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#selectBusiness" prefHeight="18.0" prefWidth="134.0" text="Business Account">

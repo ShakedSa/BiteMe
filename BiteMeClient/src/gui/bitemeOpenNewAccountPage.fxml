@@ -12,10 +12,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="871.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.openNewAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="871.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.openNewAccountController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
-      <Line endX="708.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
+      <Line endX="749.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/biteme-logo.gif" />
@@ -26,12 +26,12 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="57.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open New Account">
+      <Text layoutX="57.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open New Account">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="next" alignment="TOP_LEFT" layoutX="689.0" layoutY="522.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="126.0" text="Next">
+      <Label id="btn" fx:id="next" alignment="CENTER" layoutX="670.0" layoutY="497.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="139.0" text="Next">
 
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
@@ -73,12 +73,12 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="msg" fill="RED" layoutX="287.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An account is needed for several users ">
+      <Text fx:id="msg" fill="RED" layoutX="57.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An account is needed for several users ">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="instructions" layoutX="57.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step1:                                                                                         Please double click on the desired user and press Next:" wrappingWidth="450.3203125">
+      <Text fx:id="instructions" layoutX="57.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please double click on the desired user and then press Next:" wrappingWidth="450.3203125">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

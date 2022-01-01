@@ -25,12 +25,12 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="62.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Income Receipt">
+      <Text layoutX="57.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Income Receipt">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <Text layoutX="60.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific month">
+      <Text layoutX="57.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select specific month">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -60,7 +60,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <Label id="btn" fx:id="showReceiptBtn" alignment="CENTER" layoutX="99.0" layoutY="300.0" onMouseClicked="#showReceiptClicked" prefHeight="25.0" prefWidth="185.0" text="Show Receipt">
+      <Label id="btn" fx:id="showReceiptBtn" alignment="CENTER" layoutX="89.0" layoutY="296.0" onMouseClicked="#showReceiptClicked" prefHeight="25.0" prefWidth="185.0" text="Show Receipt">
          <font>
             <Font name="Berlin Sans FB" size="20.0" />
          </font>
@@ -68,18 +68,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <ComboBox fx:id="monthBox" layoutX="227.0" layoutY="236.0" prefHeight="20.0" prefWidth="119.0" promptText="Month" />
-      <Text layoutX="62.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
+      <ComboBox fx:id="monthBox" layoutX="220.0" layoutY="236.0" prefHeight="20.0" prefWidth="119.0" promptText="Month" />
+      <Text layoutX="57.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a year" wrappingWidth="119.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <ComboBox fx:id="yearBox" layoutX="227.0" layoutY="180.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
-      <Text fx:id="reportErrorMsg" fill="RED" layoutX="88.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This report doesn't exist" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
+      <ComboBox fx:id="yearBox" layoutX="220.0" layoutY="180.0" prefHeight="27.0" prefWidth="80.0" promptText="Year" />
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="499.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Text id="active" fx:id="supplierPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" onMouseClicked="#returnToSupplierPanel" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier Panel">
          <font>
@@ -147,9 +142,9 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="errorMsg" fill="RED" layoutX="60.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="57.0" layoutY="375.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
    </children>

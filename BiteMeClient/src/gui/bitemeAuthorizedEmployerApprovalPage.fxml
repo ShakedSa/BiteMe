@@ -14,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.authorizedEmployerApprovalController">
    <children>
-      <Label id="btn" fx:id="approvalBtn" alignment="CENTER" layoutX="620.0" layoutY="525.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="168.0" text="Approval">
+      <Label id="btn" fx:id="approvalBtn" alignment="CENTER" layoutX="628.0" layoutY="517.0" onMouseClicked="#approvalClicked" prefHeight="25.0" prefWidth="168.0" text="Approval">
          <font>
             <Font name="Berlin Sans FB" size="22.0" />
          </font>
@@ -34,7 +34,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="220.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
+      <Text layoutX="57.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -72,22 +72,22 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="noApprovals" fill="RED" layoutX="258.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval" visible="false">
+      <Text fx:id="noApprovals" fill="RED" layoutX="57.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No employers waiting for approval" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="approvalSuccsess1" fill="#62d019" layoutX="241.0" layoutY="523.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This Employer was approved successfully!" visible="false">
+      <Text fx:id="approvalSuccsess1" fill="#62d019" layoutX="102.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This Employer was approved successfully!">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="approvalSuccsess" fitHeight="50.0" fitWidth="34.0" layoutX="197.0" layoutY="496.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="approvalSuccsess" fitHeight="38.0" fitWidth="30.0" layoutX="64.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <TableView fx:id="approvalTable" layoutX="172.0" layoutY="263.0" onMousePressed="#copyTableData" prefHeight="194.0" prefWidth="497.0">
+      <TableView fx:id="approvalTable" layoutX="57.0" layoutY="237.0" onMousePressed="#copyTableData" prefHeight="197.0" prefWidth="565.0">
         <columns>
           <TableColumn fx:id="EmployerCode" prefWidth="115.0" text="EmployerCode" />
           <TableColumn fx:id="EmployeCompanyName" prefWidth="150.0" text="EmployeCompanyName" />
@@ -98,12 +98,12 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </TableView>
-      <Text fx:id="instructions" layoutX="274.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Double click on the employer that you want to approve, then press &quot;Approval&quot;" wrappingWidth="289.919921875">
+      <Text fx:id="instructions" layoutX="57.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please double click on the employer that you want to approve and then press &quot;Approval&quot;" wrappingWidth="695.2532348632812">
          <font>
-            <Font name="Berlin Sans FB" size="17.0" />
+            <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="80.0" layoutY="511.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="71.0" layoutY="512.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />

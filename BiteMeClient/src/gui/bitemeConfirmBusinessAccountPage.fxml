@@ -26,7 +26,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm Business Account">
+      <Text layoutX="57.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm Business Account">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -64,7 +64,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Label id="btn" fx:id="confirmBtn" alignment="CENTER" layoutX="284.0" layoutY="316.0" onMouseClicked="#confirmBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
+      <Label id="btn" fx:id="confirmBtn" alignment="CENTER" layoutX="284.0" layoutY="342.0" onMouseClicked="#confirmBtnClicked" prefHeight="25.0" prefWidth="148.0" text="Confirm">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -72,22 +72,22 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fx:id="errorMsg" fill="RED" layoutX="88.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="57.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="successMsg" fill="#62d019" layoutX="131.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business account was confirmed successfully!">
+      <Text fx:id="successMsg" fill="#62d019" layoutX="96.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Business account was confirmed successfully!" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="20.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="VImage" fitHeight="50.0" fitWidth="34.0" layoutX="87.0" layoutY="364.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="VImage" fitHeight="38.0" fitWidth="30.0" layoutX="61.0" layoutY="388.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <TableView fx:id="customerTable" layoutX="86.0" layoutY="165.0" prefHeight="141.0" prefWidth="550.0">
+      <TableView fx:id="customerTable" layoutX="57.0" layoutY="183.0" prefHeight="141.0" prefWidth="550.0">
         <columns>
           <TableColumn fx:id="table_ID" prefWidth="91.0" text="ID" />
           <TableColumn fx:id="table_FirstName" prefWidth="85.0" text="First Name" />

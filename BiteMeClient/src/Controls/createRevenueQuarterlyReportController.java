@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -43,6 +44,9 @@ public class createRevenueQuarterlyReportController implements Initializable{
 
     @FXML
     private Text logoutBtn;
+    
+    @FXML
+    private ImageView VImage;
 
     @FXML
     private Text managerPanelBtn;
@@ -114,10 +118,12 @@ public class createRevenueQuarterlyReportController implements Initializable{
 		ServerResponse response = ClientGUI.getClient().getLastResponse();
     	if(response!=null && response.getDataType().equals("exists")) {
     		UploadMsgTxt.setVisible(false);
+    		VImage.setVisible(false);
     		InvalidMsg.setVisible(true);
     	}
     	else {
     		UploadMsgTxt.setVisible(true);
+    		VImage.setVisible(true);
     		InvalidMsg.setVisible(false);
     	}
     }

@@ -83,6 +83,7 @@ public class identifyController implements Initializable {
 			errorMsg.setText("Failed to read QR code");
 			return;
 		} else {
+			errorMsg.setText("");
 			readingMsg.setText("Reading QR...");
 		}
 	}
