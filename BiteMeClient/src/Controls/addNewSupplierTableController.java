@@ -128,6 +128,7 @@ public class addNewSupplierTableController implements Initializable {
   		//check if any suck users are exists
   		if(response.size() == 0)
   		{
+  			approvalTable.refresh();
   			msg.setText("Currently no accounts are needed");
   			msg.setVisible(true);
   			next.setVisible(false);
@@ -194,6 +195,8 @@ public class addNewSupplierTableController implements Initializable {
     	id = "";
     	fName = "";
     	lName = "";
+    	approvalTable.refresh();
+
     }
     
     
