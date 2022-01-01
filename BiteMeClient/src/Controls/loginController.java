@@ -118,6 +118,7 @@ public class loginController implements Initializable {
 	 * display relevant information.
 	 */
 	private boolean checkServerResponse() {
+		System.out.println("test response");
 		if(ClientGUI.getClient().getUser() == null) {
 			return false;
 		}

@@ -305,7 +305,9 @@ public class reportsHandler {
 			//deNormalize values:
 			month=d.getMonth()+1;
 			year=d.getYear()+1900;
+			System.out.println(month + " " + year);
 		}
+		
 		else {//if no reports were ever made, return last month (to initialize empty reports on sql)
 			month=LocalDate.now().getMonthValue()-2;
 			year=LocalDate.now().getYear();
@@ -314,11 +316,9 @@ public class reportsHandler {
 				year--;
 			}
 		}
-		if(month==1) {
-			month=12;
-			year--;
-		}
 		int arr[] = {year,month};
+
+		System.out.println(year + " " +month);
 		return arr;
 	}
 	
