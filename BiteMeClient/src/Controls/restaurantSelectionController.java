@@ -224,16 +224,18 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@FXML
 	void moveLeftClicked(MouseEvent event) {
-		ArrayList<Supplier> prevPage = new ArrayList<>();
-		if (page.get() == 0) {
-			return;
+		if (restaurants.size() >= 6) {
+			ArrayList<Supplier> prevPage = new ArrayList<>();
+			if (page.get() == 0) {
+				return;
+			}
+			int counter = 0;
+			for (int i = (page.get() - 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
+				prevPage.add(restaurants.get(i));
+			}
+			page.set(page.get() - 1);
+			createRestaurants(prevPage);
 		}
-		int counter = 0;
-		for (int i = (page.get() - 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
-			prevPage.add(restaurants.get(i));
-		}
-		page.set(page.get() - 1);
-		createRestaurants(prevPage);
 	}
 
 	/**
@@ -243,14 +245,16 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@FXML
 	void moveRightClicked(MouseEvent event) {
-		ArrayList<Supplier> nextPage = new ArrayList<>();
-		int counter = 0;
-		for (int i = (page.get() + 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
-			nextPage.add(restaurants.get(i));
+		if (restaurants.size() >= 6) {
+			ArrayList<Supplier> nextPage = new ArrayList<>();
+			int counter = 0;
+			for (int i = (page.get() + 1) * 6; i < restaurants.size() && counter < 6; i++, counter++) {
+				nextPage.add(restaurants.get(i));
+			}
+			page.set(page.get() + 1);
+			if (nextPage.size() != 0)
+				createRestaurants(nextPage);
 		}
-		page.set(page.get() + 1);
-		if (nextPage.size() != 0)
-			createRestaurants(nextPage);
 	}
 
 	@FXML
@@ -279,8 +283,9 @@ public class restaurantSelectionController implements Initializable {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
-		User user = (User)ClientGUI.getClient().getUser().getServerResponse();
-		if (resRestaurants == null || ((ArrayList<Supplier>)resRestaurants.getServerResponse()).get(0).getMainBranch() != user.getMainBranch()) {
+		User user = (User) ClientGUI.getClient().getUser().getServerResponse();
+		if (resRestaurants == null || ((ArrayList<Supplier>) resRestaurants.getServerResponse()).get(0)
+				.getMainBranch() != user.getMainBranch()) {
 			Thread t = new Thread(new Runnable() {
 				@Override
 				public void run() {

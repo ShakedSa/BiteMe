@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class profileController implements Initializable {
-
+	
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -127,6 +127,11 @@ public class profileController implements Initializable {
 
 	@FXML
 	void returnToHomePage(MouseEvent event) {
+		router.changeSceneToHomePage();
+	}
+
+	@FXML
+	void returnToLastPage(MouseEvent event) {
 		stage.setScene(lastScene);
 		stage.setTitle(lastSceneTitle);
 	}
@@ -160,6 +165,7 @@ public class profileController implements Initializable {
 
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
+		leftArrowBtn.setVisible(true);
 		router.showProfile();
 	}
 
@@ -192,6 +198,7 @@ public class profileController implements Initializable {
 		logoutBtn.setStyle("-fx-cursor: hand;");
 		profileBtn.setStyle("-fx-cursor: hand;");
 		homePageBtn.setStyle("-fx-cursor: hand;");
+		leftArrowBtn.setVisible(true);
 	}
 
 	/**
@@ -288,7 +295,7 @@ public class profileController implements Initializable {
 		this.lastScene = lastScene;
 		this.lastSceneTitle = title;
 	}
-	
+
 	@FXML
 	void updateProfile(ActionEvent event) {
 		Thread t = new Thread(() -> {
@@ -302,18 +309,21 @@ public class profileController implements Initializable {
 					return;
 				}
 				if (ClientGUI.getClient().getLastResponse().getMsg() == "Failed") {
-					Platform.runLater(() -> {							
-						mainBranchCombo.getSelectionModel().select(((User)ClientGUI.getClient().getUser().getServerResponse()).getMainBranch());						
+					Platform.runLater(() -> {
+						mainBranchCombo.getSelectionModel()
+								.select(((User) ClientGUI.getClient().getUser().getServerResponse()).getMainBranch());
 					});
-				}else {
-					Platform.runLater(() -> {							
-						mainBranchCombo.getSelectionModel().select(newVal);						
-						((User)ClientGUI.getClient().getUser().getServerResponse()).setMainBranch(newVal);
+				} else {
+					Platform.runLater(() -> {
+						mainBranchCombo.getSelectionModel().select(newVal);
+						((User) ClientGUI.getClient().getUser().getServerResponse()).setMainBranch(newVal);
 					});
 				}
 			}
 		});
 		t.start();
+		leftArrowBtn.setVisible(false);
 	}
-
+	
+	
 }

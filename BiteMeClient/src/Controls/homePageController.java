@@ -249,17 +249,18 @@ public class homePageController implements Initializable {
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Restaurants");
 				stage.setScene(mainScene);
-				stage.show();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
 		} else {
 			router.getRestaurantselectionController().setItemsCounter();
+			router.getRestaurantselectionController().setRestaurants();
 			stage.setTitle("BiteMe - Restaurants");
 			stage.setScene(router.getRestaurantselectionController().getScene());
-			stage.show();
+			
 		}
+		stage.show();
 	}
 
 	/**

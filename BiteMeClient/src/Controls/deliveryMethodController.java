@@ -503,6 +503,12 @@ public class deliveryMethodController implements Initializable {
 	 * value.
 	 */
 	public void createCombo() {
+		createDeliveryMethodCombo();
+		createPrefixCombo();
+	}
+
+
+	private void createDeliveryMethodCombo() {
 		deliveryMethodBox.getItems().clear();
 		Customer customer = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
@@ -545,7 +551,8 @@ public class deliveryMethodController implements Initializable {
 		hourBox.getSelectionModel().select(0);
 		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(60)));
 		minutesBox.getItems().addAll(minuteOptions);
-		minutesBox.getSelectionModel().select(0);
+	}
+	private void createPrefixCombo() {
 		/** Creating the phone's prefix combo box */
 		ObservableList<String> phonePrefix = FXCollections
 				.observableArrayList(Arrays.asList("050", "052", "053", "054", "055", "057", "058"));
