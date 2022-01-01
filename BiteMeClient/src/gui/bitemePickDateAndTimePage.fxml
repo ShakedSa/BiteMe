@@ -91,7 +91,7 @@
 		<Circle fill="#1f93ff00" layoutX="608.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
 		<Text layoutX="101.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Please state the time of the order">
 			<font>
-				<Font name="Berlin Sans FB" size="16.0" />
+				<Font name="Berlin Sans FB" size="18.0" />
 			</font>
 		</Text>
 		<DatePicker fx:id="datePicker" editable="false" layoutX="102.0" layoutY="236.0" promptText="Pick Date">

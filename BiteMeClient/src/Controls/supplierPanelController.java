@@ -71,9 +71,6 @@ public class supplierPanelController implements Initializable {
 	@FXML
 	private Label updateOrderBtn;
 
-	@FXML
-	private Text errorMsg;
-
 	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurant = user.getOrganization();
 
@@ -224,6 +221,14 @@ public class supplierPanelController implements Initializable {
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
+	
+	/**
+	 * Changes scene to profile
+	 */
+	@FXML
+	void profileBtnClicked(MouseEvent event) {
+		router.showProfile();
+	}
 
 	/**
 	 * Setting the avatar image of the user.
@@ -252,11 +257,4 @@ public class supplierPanelController implements Initializable {
 		this.stage = stage;
 	}
 
-	/**
-	 * Changes scene to profile
-	 */
-	@FXML
-	void profileBtnClicked(MouseEvent event) {
-		router.showProfile();
-	}
 }

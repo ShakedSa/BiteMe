@@ -69,7 +69,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Before we start ordering" styleClass="title">
+      <Text layoutX="73.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Before we start ordering">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -83,8 +83,10 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
-      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Identify using one of the following methods:" styleClass="subtitle">
-      </Text>
+      <Text layoutX="73.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="subtitle" text="Identify using one of the following methods:">
+         <font>
+            <Font name="Berlin Sans FB" size="18.0" />
+         </font></Text>
       <Circle fill="DODGERBLUE" layoutX="230.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
       <Line endX="42.0" endY="9.0" layoutX="253.0" layoutY="104.0" startX="-14.0" startY="9.0" style="-fx-opacity: 0.3;" />
       <Circle fill="#1f93ff00" layoutX="304.0" layoutY="113.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />

@@ -97,7 +97,7 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fill="#3180bc" layoutX="208.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
+      <Text fill="#3180bc" layoutX="186.0" layoutY="450.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BiteMe">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>

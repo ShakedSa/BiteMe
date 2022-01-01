@@ -27,7 +27,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="88.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Client Information">
+      <Text layoutX="87.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Client Information">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
@@ -65,12 +65,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="88.0" layoutY="424.0" pickOnBounds="true" preserveRatio="true" visible="false">
-         <image>
-            <Image url="@../images/greenVLogo.gif" />
-         </image>
-      </ImageView>
-      <Label id="btn" fx:id="updateUserBtn" alignment="CENTER" layoutX="528.0" layoutY="512.0" onMouseClicked="#updateUserBtnClicked" prefHeight="25.0" prefWidth="253.0" text="Submit changes">
+      <Label id="btn" fx:id="updateUserBtn" alignment="CENTER" layoutX="539.0" layoutY="507.0" onMouseClicked="#updateUserBtnClicked" prefHeight="25.0" prefWidth="253.0" text="Submit changes">
          <font>
             <Font name="Berlin Sans FB" size="23.0" />
          </font>
@@ -78,62 +73,62 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fx:id="updateSucess2" fill="#62d019" layoutX="123.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Supplier was added successfully!" visible="false">
+      <Text fx:id="updateSucess2" fill="#62d019" layoutX="118.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Information client was updated successfully!" visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="21.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="87.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="updateSucess1" fitHeight="31.0" fitWidth="30.0" layoutX="87.0" layoutY="416.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <Text fx:id="userName" layoutX="89.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a client UserName">
+      <Text fx:id="userName" layoutX="87.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a client UserName">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="289.0" layoutY="191.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="262.0" layoutY="191.0" prefHeight="26.0" prefWidth="178.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="493.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
-      <Text fx:id="userNameError" fill="RED" layoutX="567.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate UserName" visible="false">
+      <Button fx:id="searchBtn" layoutX="455.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
+      <Text fx:id="userNameError" fill="RED" layoutX="529.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate UserName" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Text fx:id="Error" fill="RED" layoutX="87.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose one of the options" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Label fx:id="informUser" layoutX="87.0" layoutY="251.0" text="This User is currently:" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="userStatusLabel" fill="#62d019" layoutX="228.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" visible="false">
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </Text>
+      <Label fx:id="informUser1" layoutX="87.0" layoutY="291.0" text="Please choose the action that you wish to take: " visible="false">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
-      </Text>
-      <Text fx:id="Error" fill="RED" layoutX="525.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose one of the options" visible="false">
-         <font>
-            <Font name="Berlin Sans FB" size="18.0" />
-         </font>
-      </Text>
-      <Label fx:id="informUser" layoutX="87.0" layoutY="237.0" text="This User is currently:" visible="false">
-         <font>
-            <Font size="20.0" />
-         </font>
       </Label>
-      <Text fx:id="userStatusLabel" fill="#62d019" layoutX="313.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Active" visible="false">
+      <RadioButton fx:id="action1" layoutX="87.0" layoutY="328.0" mnemonicParsing="false" onMouseClicked="#freezeClientClicked" text="Freeze client account " visible="false">
          <font>
-            <Font name="Berlin Sans FB" size="22.0" />
-         </font>
-      </Text>
-      <Label fx:id="informUser1" layoutX="87.0" layoutY="304.0" text="Please choose the action that you wish to take: " visible="false">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <RadioButton fx:id="action1" layoutX="87.0" layoutY="344.0" mnemonicParsing="false" onMouseClicked="#freezeClientClicked" text="Freeze client account " visible="false">
-         <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="action2" layoutX="87.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" text="Permanently remove this client" visible="false">
+      <RadioButton fx:id="action2" layoutX="87.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" text="Permanently remove this client" visible="false">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font>
       </RadioButton>
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="53.0" layoutY="515.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="55.0" layoutY="494.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

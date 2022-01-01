@@ -26,7 +26,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text fx:id="updateOrderBtn" layoutX="591.0" layoutY="446.0" onMouseClicked="#updateOrderClicked" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0" text="Update order">
+      <Text fx:id="updateOrderBtn" layoutX="530.0" layoutY="446.0" onMouseClicked="#updateOrderClicked" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0" text="Update order">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -34,7 +34,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <TableView fx:id="orderTable" layoutX="115.0" layoutY="203.0" onMousePressed="#getRowData" prefHeight="200.0" prefWidth="593.0">
+      <TableView fx:id="orderTable" layoutX="67.0" layoutY="203.0" onMousePressed="#getRowData" prefHeight="200.0" prefWidth="593.0">
          <columns>
             <TableColumn fx:id="table_OrderNumber" editable="false" maxWidth="2500.0" prefWidth="120.0" text="Order Number" />
             <TableColumn fx:id="table_OrderTime" editable="false" prefWidth="99.0" text="Order Time" />
@@ -45,12 +45,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Text layoutX="282.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Order Status">
+      <Text layoutX="67.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update Order Status">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateOrderImage" fitHeight="46.0" fitWidth="34.0" layoutX="557.0" layoutY="421.0" onMouseClicked="#updateOrderClicked" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="updateOrderImage" fitHeight="46.0" fitWidth="34.0" layoutX="496.0" layoutY="421.0" onMouseClicked="#updateOrderClicked" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/edit-icon.gif" />
          </image>
@@ -91,13 +91,13 @@
          </font>
       </Text>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <TextArea fx:id="updateExplanation" editable="false" layoutX="539.0" layoutY="461.0" prefHeight="85.0" prefWidth="185.0" text="To update an order,&#10;click on the order in the&#10;table and then click here">
+      <TextArea fx:id="updateExplanation" editable="false" layoutX="478.0" layoutY="461.0" prefHeight="85.0" prefWidth="185.0" text="To update an order,&#10;click on the order in the&#10;table and then click here">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </TextArea>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="488.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text fx:id="errorMsg" fill="RED" layoutX="141.0" layoutY="437.0" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="67.0" layoutY="437.0" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>

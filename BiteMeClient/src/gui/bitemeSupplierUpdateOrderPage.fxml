@@ -112,14 +112,14 @@
             <Font name="Berlin Sans FB" size="13.0" />
          </font>
       </RadioButton>
-      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="successMsg" fill="#62d019" layoutX="166.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order was updated successfully!">
+      <Text fx:id="successMsg" fill="#62d019" layoutX="163.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order was updated successfully!">
          <font>
-            <Font name="Berlin Sans FB" size="18.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
       <ImageView fx:id="VImage" fitHeight="33.0" fitWidth="30.0" layoutX="130.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">

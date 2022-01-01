@@ -80,9 +80,6 @@ public class viewIncomeReceiptController implements Initializable {
     
     @FXML
     private Rectangle rect;
-
-    @FXML
-    private Text reportErrorMsg;
     
     @FXML
     private Line sumLine;
