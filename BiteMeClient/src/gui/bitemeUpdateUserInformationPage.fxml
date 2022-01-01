@@ -121,12 +121,12 @@
       </Label>
       <RadioButton fx:id="action1" layoutX="87.0" layoutY="328.0" mnemonicParsing="false" onMouseClicked="#freezeClientClicked" text="Freeze client account " visible="false">
          <font>
-            <Font size="16.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </RadioButton>
       <RadioButton fx:id="action2" layoutX="87.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" text="Permanently remove this client" visible="false">
          <font>
-            <Font size="16.0" />
+            <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </RadioButton>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="55.0" layoutY="494.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
