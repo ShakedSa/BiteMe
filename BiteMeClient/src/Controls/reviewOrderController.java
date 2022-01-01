@@ -45,6 +45,7 @@ public class reviewOrderController implements Initializable {
 	Label deliveryTitle;
 	Label deliveryInformation;
 	Label totalPrice;
+	Label priceBreakDown;
 
 	@FXML
 	private Rectangle avatar;
@@ -84,7 +85,8 @@ public class reviewOrderController implements Initializable {
 		/** Creating loading animation to display while server processing the data. */
 		Thread animation = new Thread(() -> {
 			Platform.runLater(() -> {
-				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+				root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation,
+						priceBreakDown, totalPrice);
 				root.setDisable(true);
 			});
 			circle.setVisible(true);
@@ -141,7 +143,7 @@ public class reviewOrderController implements Initializable {
 		});
 		t.start();
 	}
-	
+
 	private void clearOrderProcess() {
 		router.setPaymentController(null);
 		router.setIdentifyController(null);
@@ -175,7 +177,8 @@ public class reviewOrderController implements Initializable {
 		} else {
 			router.getOrderReceivedController().setAvatar();
 			router.getOrderReceivedController().setItemsCounter();
-			router.getOrderReceivedController().setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
+			router.getOrderReceivedController()
+					.setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();
@@ -252,7 +255,8 @@ public class reviewOrderController implements Initializable {
 	}
 
 	public void displayOrder() {
-		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, priceBreakDown,
+				totalPrice);
 		OrderDeliveryMethod fullOrder = router.getOrderDeliveryMethod();
 		Order order = fullOrder.getOrder();
 		ArrayList<Product> products = order.getProducts();
@@ -267,7 +271,7 @@ public class reviewOrderController implements Initializable {
 			nameLabel.setStyle("-fx-padding: 10 0");
 			priceLabel.setStyle("-fx-padding: 10 0");
 			nameLabel.setLayoutX(15);
-			priceLabel.setLayoutX(260);
+			priceLabel.setLayoutX(250);
 			if (i % 2 != 0) {
 				pane.setLayoutX(305);
 				pane.setLayoutY((i - 1) * 25 + 15);
@@ -289,10 +293,36 @@ public class reviewOrderController implements Initializable {
 		deliveryTitle.getStyleClass().addAll("subtitle", "deliveryTitle");
 		deliveryInformation = new Label(delivery.toString());
 		deliveryInformation.getStyleClass().addAll("fields", "deliveryInfo");
-		totalPrice = new Label("Total: " + fullOrder.getFinalPrice() + "\u20AA");
+		priceBreakDown = new Label("Price Break Down:\n");
+		priceBreakDown.getStyleClass().add("breakDown");
+		totalPrice = new Label(String.format("Order Price: %.2f\u20AA", order.getOrderPrice()));
+		totalPrice.setText(String.format("%s\nDelivery Price: %.2f\u20AA", totalPrice.getText(),
+				delivery.getDelievryPrice() + delivery.getDiscount()));
+		switch (fullOrder.getTypeOfOrder()) {
+		case preorderDelivery:
+			totalPrice.setText(
+					String.format("%s\nOrder Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));
+
+			priceBreakDown.setText(String.format("%s\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
+					fullOrder.getFinalPrice()));
+			break;
+		case sharedDelivery:
+			totalPrice.setText(
+					String.format("%s\nDelivery Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));
+			/*-----------------------------------------*/
+			priceBreakDown.setText(String.format("%s\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
+					fullOrder.getFinalPrice()));
+			break;
+		default:
+			/*-----------------------------------------*/
+			priceBreakDown.setText(String.format("%s\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
+					fullOrder.getFinalPrice()));
+			break;
+		}
 		totalPrice.getStyleClass().add("totalPrice");
 		if (root != null) {
-			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
+			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice,
+					priceBreakDown);
 			circle.toFront();
 		}
 	}

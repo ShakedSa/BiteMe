@@ -3,30 +3,24 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-import Entities.Customer;
 import Entities.Order;
 import Entities.Product;
 import client.ClientGUI;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -203,7 +197,8 @@ public class myCartController implements Initializable {
 		case "Received":
 			router.getOrderReceivedController().setAvatar();
 			router.getOrderReceivedController().setItemsCounter();
-			router.getOrderReceivedController().setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
+			router.getOrderReceivedController()
+					.setRates((int) ClientGUI.getClient().getLastResponse().getServerResponse());
 			stage.setTitle("BiteMe - BiteMe - Rate Us");
 			stage.setScene(router.getOrderReceivedController().getScene());
 			stage.show();
@@ -264,7 +259,9 @@ public class myCartController implements Initializable {
 	 * If the customer doesn't have an order yet, notify accordingly.
 	 */
 	public void displayOrder() {
-		root = new AnchorPane();
+		if (root == null) {
+			root = new AnchorPane();
+		}
 		clearScreen();
 		setItemsCounter();
 		leftArrowBtn.setLayoutX(30);
@@ -276,12 +273,17 @@ public class myCartController implements Initializable {
 		cartTitle.setLayoutX(51);
 		cartTitle.setLayoutY(41);
 		Order order = router.getOrder();
+		order.calculateOrderPrice();
 		ArrayList<Product> products = order.getProducts();
+		ArrayList<Product> productsInOrder = new ArrayList<>();
+		if (products != null) {
+			productsInOrder.addAll(products);
+		}
 		itemsTitle = new Label("Products:");
 		itemsTitle.setFont(new Font("Berlin Sans FB", 16));
 		itemsTitle.setLayoutX(140);
 		itemsTitle.setLayoutY(65);
-		if (products == null || products.size() == 0) {
+		if (productsInOrder.size() == 0) {
 			itemsTitle.setText("Cart is empty");
 			if (root != null) {
 				root.getChildren().addAll(cartTitle, itemsTitle);
@@ -291,14 +293,14 @@ public class myCartController implements Initializable {
 			Pane orderDisplayContent = new Pane();
 			int i = 0;
 			/** Creating the pane layout of the screen. */
-			for (Product p : products) {
+			for (Product p : productsInOrder) {
 				Pane pane = new Pane();
 				Label nameLabel = new Label(p.getDishName());
 				Label priceLabel = new Label(p.getPrice() + "\u20AA");
 				nameLabel.setStyle("-fx-padding: 10 0");
 				priceLabel.setStyle("-fx-padding: 10 0");
 				nameLabel.setLayoutX(15);
-				priceLabel.setLayoutX(260);
+				priceLabel.setLayoutX(250);
 				if (i % 2 != 0) {
 					pane.setLayoutX(305);
 					pane.setLayoutY((i - 1) * 25 + 15);
@@ -338,9 +340,9 @@ public class myCartController implements Initializable {
 			removeItem.setLayoutY(250);
 			/** On click event to remove all selected products. */
 			removeItem.setOnMouseClicked(e -> {
-				ArrayList<Product> newProducts = new ArrayList<>();
+				List<Product> newProducts = new ArrayList<>();
 				orderDisplayContent.getChildren().removeIf(pane -> pane.getStyleClass().contains("toRemove"));
-				products.forEach(p -> {
+				productsInOrder.forEach(p -> {
 					/** Creating new products list */
 					orderDisplayContent.getChildren().forEach(pane -> {
 						if (pane.getStyleClass().contains(p.getDishName())) {
@@ -348,7 +350,8 @@ public class myCartController implements Initializable {
 						}
 					});
 				});
-				router.setBagItems(newProducts);
+				List<Product> toRemove = products.stream().filter(p -> !newProducts.contains(p)).collect(Collectors.toList());
+				products.removeAll(toRemove);
 				clearScreen();
 				displayOrder();
 			});

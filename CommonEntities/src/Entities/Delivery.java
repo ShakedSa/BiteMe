@@ -117,11 +117,10 @@ public class Delivery implements Serializable {
 	public String toString() {
 		StringBuilder b = new StringBuilder("Delivery Details:\n");
 		if (orderAddress != null) {
-			b.append("Address: " + orderAddress + "\n");
+			b.append("Address: " + orderAddress);
+			return b.toString();
 		}
-		b.append("Delivery Price: " + deliveryPrice + "\u20AA\n");
-		b.append("Discount on your order: " + discount + "\u20AA");
-		return b.toString();
+		return "Take Away";
 	}
 
 }

@@ -586,13 +586,18 @@
 	-fx-translate-y: 390.0;
 }
 
-.totalPrice{
+.breakDown{
 	-fx-text-fill: #0a62a1;
-	-fx-translate-x: 600.0;
-	-fx-translate-y: 400.0;
-	-fx-font: 22.0px "Berlin Sans FB";	
+	-fx-translate-x: 550.0;
+	-fx-translate-y: 360.0;
+	-fx-font: 20.0px "Berlin Sans FB";	
 }
 
+.totalPrice{
+	-fx-translate-x: 550;
+	-fx-translate-y: 390;
+	-fx-font: 16px "Berlin Sans FB";
+}
 /*=========================== */
 /* End review order styling*/
 /*=========================== */

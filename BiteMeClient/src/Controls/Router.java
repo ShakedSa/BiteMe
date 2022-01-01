@@ -450,17 +450,11 @@ public class Router {
 	 */
 	public void setBagItems(ArrayList<Product> products) {
 		if(order == null) {
-			return;
-		}
-		if (order.getProducts() == null || products == null || products.size() == 0) {
+			order = new Order();
 			order.setProducts(products);
 			return;
 		}
-		List<Product> newProducts = order.getProducts().stream().filter(p -> !products.contains(p))
-				.collect(Collectors.toList());
-		newProducts.addAll(products);
-		System.out.println(newProducts);
-		order.setProducts((ArrayList<Product>) newProducts);
+		order.setProducts(products);
 	}
 
 	/**

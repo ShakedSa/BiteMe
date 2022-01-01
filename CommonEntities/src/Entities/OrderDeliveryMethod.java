@@ -109,13 +109,20 @@ public class OrderDeliveryMethod implements Serializable {
 		case sharedDelivery:
 			float deliveryPrice = delivery.getDelievryPrice();
 			int amount = ((SharedDelivery) delivery).getAmountOfPeople();
-			if (amount > 2) {
+			System.out.println(amount);
+			int deliveryDiscount = (amount - 1) * 5;
+			System.out.println(deliveryDiscount);
+			if(deliveryDiscount > 10) {
 				delivery.setDiscount(10);
-			} else {
-				delivery.setDiscount(amount * 5);
+			}else {
+				delivery.setDiscount(deliveryDiscount);
 			}
-			deliveryPrice -= delivery.getDiscount();
+			deliveryPrice -= delivery.getDiscount(); // Delivery price for each person in the order.
+			deliveryPrice *= amount; // Total delivery price in order.
+			delivery.setDeliveryPrice(deliveryPrice);
+			delivery.setDiscount(delivery.getDiscount() * amount);
 			price += deliveryPrice;
+			break;
 		default:
 			break;
 		}
@@ -123,7 +130,7 @@ public class OrderDeliveryMethod implements Serializable {
 	}
 
 	public String toString() {
-		StringBuilder b = new StringBuilder(order.toString() + "\n");
+		StringBuilder b = new StringBuilder("Delivery Type: " + typeOfOrder + "\n");
 		switch (typeOfOrder) {
 		case preorderDelivery:
 		case BasicDelivery:

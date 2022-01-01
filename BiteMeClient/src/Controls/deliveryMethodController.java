@@ -247,6 +247,11 @@ public class deliveryMethodController implements Initializable {
 			errorMsg.setText("Business code can't contain special characters");
 			return false;
 		}
+		W4CCard w4c = ((Customer)ClientGUI.getClient().getUser().getServerResponse()).getW4c();
+		if(!businessCode.equals(w4c.getEmployerID())) {
+			errorMsg.setText("Business Code is incorrect.");
+			return false;
+		}
 		return true;
 	}
 
@@ -275,7 +280,7 @@ public class deliveryMethodController implements Initializable {
 		int nowTime = now.getHour() * 60 + now.getMinute();
 		/** If selection time is not at least 30minutes ahead of now. */
 		if (selectedTime - nowTime < 30) {
-			errorMsg.setText("Time of order must be at least 30minutes before\nnow: " + now.toString());
+			errorMsg.setText("Time of order must be at least 30 minutes after\nnow: " + now.toString());
 			return false;
 		}
 		/** Pre order is up to 2 hours from the order time. */
