@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import Util.InputValidation;
@@ -227,8 +230,41 @@ public class pickDateAndTimeController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 		/** Setting the time and date to now. */
 		datePicker.setValue(LocalDate.now());
-		hourBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getHour()));
-		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute() + 1));
+		datePicker.setEditable(false);
+		incCurrentHourByOne();
+	}
+	/**
+	 * this method incCurrentHour By One with all the cases taking care of
+	 */
+	private void incCurrentHourByOne() {
+		int hour = LocalTime.now().getHour();
+		int minute = LocalTime.now().getMinute();
+		
+		if(minute==59) {
+			minute=0;
+			if(hour==23) {
+				hour=0;
+				Calendar date = Calendar.getInstance();
+				date.add(Calendar.DATE, 1);
+				datePicker.setValue(convertToLocalDateViaInstant(date.getTime()));		//		
+			}
+			else{
+				hour++;
+			}
+		}
+		else {
+			minute++;
+		}
+		hourBox.getSelectionModel().select(String.format("%02d", hour));
+		minutesBox.getSelectionModel().select(String.format("%02d", minute));
+		
+	}
+	
+	
+	private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+	    return dateToConvert.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDate();
 	}
 
 	public void setScene(Scene scene) {

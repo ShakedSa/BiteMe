@@ -239,7 +239,7 @@ public class addNewSupplierController implements Initializable {
     		return false;
     	}
     	//check that the address is in valid format
-    	if(!restaurantAddressTxtField.getText().matches("[a-zA-Z]+ \\d,( [a-zA-Z]+)+")) {
+    	if(!restaurantAddressTxtField.getText().matches("[a-zA-Z]+ \\d+,( [a-zA-Z]+)+")) {
     		Error.setVisible(true);
     		Error.setText("Address is not in the format");
     		return false;
@@ -410,6 +410,16 @@ public class addNewSupplierController implements Initializable {
 	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
+	}
+	
+	
+	/**
+	 * Change scene to the previous page
+	 */
+	@FXML
+	void returnToTablePage(MouseEvent event) {
+		reSetTheScreen();
+		router.getManagerPanelController().AddNewSupplierClicked(event);
 	}
 	
 	

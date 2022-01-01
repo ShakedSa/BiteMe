@@ -145,6 +145,7 @@
       <ComboBox fx:id="restaurantTypeCombo" layoutX="247.0" layoutY="327.0" prefHeight="25.0" prefWidth="178.0" />
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="80.0" layoutY="499.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Text fx:id="instructions" layoutX="57.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill the following information: " wrappingWidth="275.209228515625">
+
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
