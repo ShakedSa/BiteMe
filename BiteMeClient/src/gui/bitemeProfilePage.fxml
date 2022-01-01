@@ -147,7 +147,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="79.0" layoutY="489.0" onMouseClicked="#returnToHomePage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="79.0" layoutY="489.0" onMouseClicked="#returnToLastPage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ComboBox fx:id="mainBranchCombo" layoutX="574.0" layoutY="258.0" prefHeight="27.0" prefWidth="95.0" promptText="Branch" />
       <Button layoutX="574.0" layoutY="489.0" mnemonicParsing="false" onAction="#updateProfile" text="Update" />
    </children>
