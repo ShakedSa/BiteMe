@@ -428,7 +428,7 @@ public class Router {
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - My Cart");
 				stage.setScene(mainScene);
-				stage.show();
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
@@ -439,8 +439,9 @@ public class Router {
 			router.getMyCartController().setLastPage(lastPage);
 			stage.setTitle("BiteMe - My Cart");
 			stage.setScene(router.getMyCartController().getScene());
-			stage.show();
+			
 		}
+		stage.show();
 	}
 
 	
