@@ -153,7 +153,6 @@ public class mysqlConnection {
 						isBusiness = rs.getInt(3) == 0 ? false : true;
 						isApproved = rs.getInt(4) == 0 ? false : true;
 					}
-					System.out.println(isBusiness + " " + isApproved + " " + isPrivate);
 					W4CCard w4cCard = getW4CCard(cusID);
 					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,
@@ -652,9 +651,10 @@ public class mysqlConnection {
 
 	/**
 	 * updating customer to approved in DB and returning updated list of not
-	 * approved customers
-	 * @param hrUserName,employerCompanyName
-	 * @return ServerResponse
+	 * approved customers that related to this employerComapnyName
+	 * @param employerCompanyName
+	 * @param hrUserName
+	 * @return ArrayList-ServerResponse
 	 */
 	public static ServerResponse approveCustomerAsBusiness(String employerCompanyName, String customerId) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -675,8 +675,8 @@ public class mysqlConnection {
 
 	/**
 	 * selecting info of all Customers related to the HR that are not approved yet
-	 * @param hrUserName,employerCompanyName
-	 * @return ServerResponse
+	 * @param employerCompanyName
+	 * @return ArrayList-ServerResponse
 	 */
 	public static ServerResponse selectCustomerAndbudget(String employerCompanyName) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
@@ -967,7 +967,7 @@ public class mysqlConnection {
 	 * @param quarter
 	 * @param year
 	 * @param branch
-	 * 
+	 * @return MyFile-serverResponse
 	 */
 	public static ServerResponse viewORcheckQuarterReport(String quarter, String year, String branch) {
 		ServerResponse serverResponse = new ServerResponse("MyFile");
@@ -1004,7 +1004,7 @@ public class mysqlConnection {
 	 * @param quarter
 	 * @param year
 	 * @param branch
-	 * 
+	 * @return MyFile-serverResponse
 	 */
 	public static ServerResponse viewORcheckRevenueQuarterReport(String quarter, String year, String branch) {
 

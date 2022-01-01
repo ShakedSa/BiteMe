@@ -260,7 +260,11 @@ public class pickDateAndTimeController implements Initializable {
 		
 	}
 	
-	
+	/**
+	 * method to convert date type to localDate
+	 * @param dateToConvert
+	 * @return
+	 */
 	private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
 	    return dateToConvert.toInstant()
 	      .atZone(ZoneId.systemDefault())

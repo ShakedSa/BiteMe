@@ -165,7 +165,7 @@ public class deliveryMethodController implements Initializable {
 
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		hideBaseOnSelection(null);
+		//hideBaseOnSelection(null);
 		router.changeToMyCart("Delivery");
 	}
 
