@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="871.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.openNewAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="871.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.openNewAccountController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="749.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
@@ -73,7 +73,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Text fx:id="msg" fill="RED" layoutX="57.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An account is needed for several users ">
+      <Text fx:id="msg" fill="RED" layoutX="57.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
@@ -83,14 +83,14 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <TableView fx:id="approvalTable" layoutX="57.0" layoutY="226.0" onMousePressed="#copyTableData" prefHeight="194.0" prefWidth="774.0">
+      <TableView fx:id="approvalTable" layoutX="57.0" layoutY="229.0" onMousePressed="#copyTableData" prefHeight="194.0" prefWidth="761.0">
          <columns>
             <TableColumn fx:id="UserName" prefWidth="123.0" text="UserName" />
             <TableColumn fx:id="FirstName" prefWidth="131.0" text="First Name" />
-            <TableColumn fx:id="LastName" prefWidth="153.0" text="Last Name" />
-            <TableColumn fx:id="ID" prefWidth="127.0" text="ID" />
-            <TableColumn fx:id="Email" prefWidth="126.0" text="Email" />
-            <TableColumn fx:id="Phone" prefWidth="117.0" text="Phone" />
+            <TableColumn fx:id="LastName" prefWidth="123.0" text="Last Name" />
+            <TableColumn fx:id="ID" prefWidth="118.0" text="ID" />
+            <TableColumn fx:id="Email" prefWidth="138.0" text="Email" />
+            <TableColumn fx:id="Phone" prefWidth="138.0" text="Phone" />
          </columns>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />

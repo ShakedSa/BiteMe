@@ -116,7 +116,7 @@ public class authorizedEmployerApprovalController implements Initializable {
 		ArrayList<BusinessCustomer> response = (ArrayList<BusinessCustomer>) sr.getServerResponse();
 		// check if no one is waiting for approval
 		if (response.size() == 0) {
-			noApprovals.setText("No employers waiting for approvallll");
+			noApprovals.setText("No employers waiting for approval");
 			noApprovals.setVisible(true);
 			approvalBtn.setVisible(false);
 			instructions.setVisible(false);
@@ -126,13 +126,10 @@ public class authorizedEmployerApprovalController implements Initializable {
 			return;
 		}
 		setTable(response);
-		noApprovals.setText("Some employers are waiting for your approval");
-		noApprovals.setVisible(true);
 		approvalSuccsess.setVisible(false);
 		approvalSuccsess1.setVisible(false);
 		approvalBtn.setVisible(true);
 		instructions.setVisible(true);
-
 	}
 
 	

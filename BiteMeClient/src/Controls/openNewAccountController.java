@@ -137,8 +137,6 @@ public class openNewAccountController implements Initializable {
 			return;
 		}
 		setTable(response);
-		msg.setText("Some users are in need of an account");
-		msg.setVisible(true);
 		instructions.setVisible(true);
 	}
 

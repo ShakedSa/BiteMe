@@ -25,6 +25,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -345,12 +346,12 @@ public class addNewSupplierController implements Initializable {
     	imgToUpload = fc.showOpenDialog(router.getStage());
     	//check that the file is an image
     	if(!checkImageFormat() ) {
-    		UploadMsgTxt.setStyle("-fx-text-fill: green;");
+    		UploadMsgTxt.setFill(Color.GREEN);
     		UploadMsgTxt.setText("The image was uploaded successfully!");
     		UploadMsgTxt.setVisible(true);
     	}
     	else {
-    		UploadMsgTxt.setStyle("-fx-text-inner-color: #BA55D3;");
+    		UploadMsgTxt.setFill(Color.RED);
     		UploadMsgTxt.setText("File foramt must be: jpj, gif or png");
     		UploadMsgTxt.setVisible(true);
     	}
