@@ -81,7 +81,7 @@ public class addNewSupplierTableController implements Initializable {
     @FXML
     private TableColumn<NewAccountUser, String> Phone;
 
-    
+    private ObservableList<NewAccountUser> users = FXCollections.observableArrayList();;
     private String id = "";
     
     private String fName = "";
@@ -99,6 +99,7 @@ public class addNewSupplierTableController implements Initializable {
   	public void initTable(){
   		//send a request to clienUI to get all the new users data
   		ClientGUI.getClient().searchForNewUsers();
+  		users = FXCollections.observableArrayList();
   		//wait for response
   		Thread t = new Thread(new Runnable() {
   			@Override
@@ -161,7 +162,6 @@ public class addNewSupplierTableController implements Initializable {
 	 * @return ObservableList of NewAccountUser 
 	 */
 	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
-		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
 		//itarate through the arrayList
 		for (NewAccountUser customer : list2) {
 			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(),
@@ -179,12 +179,16 @@ public class addNewSupplierTableController implements Initializable {
      */
     @FXML
       void copyTableData(MouseEvent event) {
-      	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2){
+    	try {
+      	if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2
+      			&& approvalTable.getSelectionModel().getSelectedItem() != null){
               id = (approvalTable.getSelectionModel().getSelectedItem().getId());
               fName = (approvalTable.getSelectionModel().getSelectedItem().getFirstName());
               lName = (approvalTable.getSelectionModel().getSelectedItem().getLastName());
               userName = (approvalTable.getSelectionModel().getSelectedItem().getUserName());
       	}
+    	} catch (Exception e) {
+				e.printStackTrace();}
       }
       
     
@@ -196,7 +200,7 @@ public class addNewSupplierTableController implements Initializable {
     	fName = "";
     	lName = "";
     	approvalTable.refresh();
-
+    	users.removeAll(users);
     }
     
     
@@ -267,6 +271,7 @@ public class addNewSupplierTableController implements Initializable {
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
+	
 
     
     @Override
