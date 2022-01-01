@@ -153,6 +153,7 @@ public class mysqlConnection {
 						isBusiness = rs.getInt(3) == 0 ? false : true;
 						isApproved = rs.getInt(4) == 0 ? false : true;
 					}
+					System.out.println(isBusiness + " " + isApproved + " " + isPrivate);
 					W4CCard w4cCard = getW4CCard(cusID);
 					HashMap<String, Float> refunds = getRefund(cusID);
 					user = new Customer(userName, password, firstName, lastName, id, email, phoneNumber, userType,

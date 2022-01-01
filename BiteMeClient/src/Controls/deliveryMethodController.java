@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import Entities.Customer;
@@ -507,21 +509,24 @@ public class deliveryMethodController implements Initializable {
 		createPrefixCombo();
 	}
 
-
 	private void createDeliveryMethodCombo() {
 		deliveryMethodBox.getItems().clear();
 		Customer customer = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
-		ObservableList<String> typeOfOrders;
-		if (w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals("")) {
-			typeOfOrders = FXCollections.observableArrayList(
-					Arrays.asList(TypeOfOrder.BasicDelivery.toString(), TypeOfOrder.preorderDelivery.toString(),
-							TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
-		} else {
-			typeOfOrders = FXCollections.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
-					TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
-					TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
-		}
+
+		ObservableList<String> typeOfOrders = FXCollections.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
+				TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
+				TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+		// checks if the customer is business, approved by HR and has w4c - if true then
+		// add sharedDelivery option
+		if (customer.isBusiness() && customer.isApproved()) {
+			if (w4cCard.getEmployerID() == null || w4cCard.getEmployerID().equals("")) {
+				typeOfOrders = FXCollections.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
+						TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
+						TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+			}
+		} 
+		
 		deliveryMethodBox.getItems().addAll(typeOfOrders);
 		/**
 		 * Setting on change event listener. display the appropriate fields base on the
@@ -552,13 +557,15 @@ public class deliveryMethodController implements Initializable {
 		ObservableList<String> minuteOptions = FXCollections.observableArrayList(Arrays.asList(router.generator(60)));
 		minutesBox.getItems().addAll(minuteOptions);
 	}
+
 	private void createPrefixCombo() {
 		/** Creating the phone's prefix combo box */
 		ObservableList<String> phonePrefix = FXCollections
 				.observableArrayList(Arrays.asList("050", "052", "053", "054", "055", "057", "058"));
 		prefixPhoneNumberBox.getItems().addAll(phonePrefix);
 		prefixPhoneNumberBox.getSelectionModel().select("050");
-		ObservableList<String> amount = FXCollections.observableArrayList(Arrays.asList("2", "3", "4", "5", "6", "7", "8"));
+		ObservableList<String> amount = FXCollections
+				.observableArrayList(Arrays.asList("2", "3", "4", "5", "6", "7", "8"));
 		amountTextField.setItems(amount);
 		amountTextField.getSelectionModel().select("2");
 	}
