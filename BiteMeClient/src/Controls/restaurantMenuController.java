@@ -3,6 +3,7 @@ package Controls;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -64,7 +65,7 @@ public class restaurantMenuController implements Initializable {
 	private ArrayList<Product> productsInOrder;
 
 	Label menuTitle;
-	
+
 	Pane overlayPane;
 
 //	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
@@ -165,7 +166,7 @@ public class restaurantMenuController implements Initializable {
 		nextBtn.setDisable(false);
 		leftArrowBtn.setDisable(false);
 	}
-	
+
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearScreen();
@@ -372,17 +373,15 @@ public class restaurantMenuController implements Initializable {
 				 * If the product is already in the order, won't allow duplicate items.<br>
 				 * User can choose to remove item or not in the pop-up panel.
 				 */
-				if (productsInOrder.contains(p)) {
+				if (router.getOrder().getProducts() != null && router.getOrder().getProducts().contains(p)) {
 					title.setText("Product is already in the order.\nPlease remove it before re-selecting it.");
 					title.setLayoutY(60);
 					Label removeItem = new Label("Remove Item");
 					removeItem.setOnMouseClicked(evnt -> {
-						List<Product> newList = productsInOrder.stream().filter(othr -> !othr.equals(p)).collect(Collectors.toList());
+						router.getOrder().getProducts().remove(p);
 						nextBtn.setDisable(false);
 						leftArrowBtn.setDisable(false);
 						root.getChildren().remove(overlayPane);
-						System.out.println(newList);
-						router.setBagItems((ArrayList<Product>)newList);
 						setItemsCounter();
 					});
 					removeItem.setId("addItem");
@@ -581,10 +580,15 @@ public class restaurantMenuController implements Initializable {
 						 * Setting global state for the router, adding <productsInOrder> to router
 						 * singleton.
 						 */
-						router.setBagItems(productsInOrder);
+						if (router.getOrder().getProducts() == null) {
+							router.getOrder().setProducts(new ArrayList<>(Arrays.asList(p)));
+						} else {
+							router.getOrder().getProducts().add(p);
+						}
 						setItemsCounter();
 						root.getChildren().remove(overlayPane); // after <addItem> clicked, remove the overlay.
 						nextBtn.setDisable(false);
+						leftArrowBtn.setDisable(false);
 					});
 					/**
 					 * Add all the labels to the overlay.
