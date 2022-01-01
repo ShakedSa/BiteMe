@@ -1,31 +1,18 @@
 package Controls;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
-import Entities.MyFile;
-import Entities.ServerResponse;
-import Entities.User;
 import Enums.UserType;
-import client.ClientGUI;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -68,46 +55,8 @@ public class employerHRPanelController implements Initializable {
     private Text loadingTxt;
     
     @FXML
-    private ImageView supplierImage;
+    private ImageView hrImage;
     
-	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
-	private String restaurant = user.getOrganization();
-    
-    /**
-	 * This method approached to the DB and display the LOGO of the supplier -
-	 * restaurant in employer HR panel
-	 */
-	public void setImage() {
-		Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ClientGUI.getClient().getSupplierImage(restaurant);
-				synchronized (ClientGUI.getMonitor()) {
-					try {
-						ClientGUI.getMonitor().wait();
-					} catch (Exception e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-				ServerResponse sr = ClientGUI.getClient().getLastResponse();
-				MyFile myFile = (MyFile) sr.getServerResponse();
-				byte[] imageArr = myFile.getMybytearray();
-				BufferedImage img;
-				try {
-					img = ImageIO.read(new ByteArrayInputStream(imageArr));
-					Image image = SwingFXUtils.toFXImage(img, null);
-					loadingTxt.setVisible(false); // hide loading text
-					supplierImage.setImage(image);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				return;
-			}
-		});
-		t.start();
-	}
-
 	/**
 	 * setting confirmBusinessAccount page
 	 * @param event

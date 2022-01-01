@@ -143,6 +143,14 @@ public class viewIncomeReceiptController implements Initializable {
     
     @FXML
     void showReceiptClicked(MouseEvent event) {
+    	if (yearBox.getSelectionModel().getSelectedItem() == null) {
+    		errorMsg.setText("Please select a year");
+    		return;
+    	}
+		if (monthBox.getSelectionModel().getSelectedItem() == null) {
+			errorMsg.setText("Please select a month");
+			return;
+		}
     	String year = yearBox.getValue().toString();
     	String month = Integer.toString(monthBox.getValue().getValue());
     	ArrayList<String> date = new ArrayList<>();
@@ -185,6 +193,7 @@ public class viewIncomeReceiptController implements Initializable {
     }
     
     private void displayReceipt() {
+    	errorMsg.setText("");
 		dearRestaurantTxt.setVisible(true);
 		dearRestaurantTxt.setText("Dear " + restaurant + ",");
 		commissionPercentTxt.setVisible(true);
@@ -267,6 +276,10 @@ public class viewIncomeReceiptController implements Initializable {
 	 */
 	private void clearPage() {
 		errorMsg.setText("");
+		monthBox.getSelectionModel().clearSelection();
+		monthBox.setPromptText("Month");
+		yearBox.getSelectionModel().clearSelection();
+		yearBox.setPromptText("Year");
 		dearRestaurantTxt.setVisible(false);
 		commissionPercentTxt.setVisible(false);
 		//total order amount:
