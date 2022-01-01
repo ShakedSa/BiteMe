@@ -143,7 +143,7 @@
          </font>
       </Text>
       <ComboBox fx:id="restaurantTypeCombo" layoutX="311.0" layoutY="328.0" prefHeight="25.0" prefWidth="178.0" />
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="80.0" layoutY="499.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="80.0" layoutY="499.0" onMouseClicked="#returnToTablePage" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <Text fx:id="instructions" layoutX="88.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Step2,                                                                                         Please fill the following information: " wrappingWidth="450.3203125">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
