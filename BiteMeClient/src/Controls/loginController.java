@@ -123,7 +123,7 @@ public class loginController implements Initializable {
 			errorMsg.setText("User not authorized to use the system");
 			return false;
 		case "internal error":
-			errorMsg.setText("Server error, can't logged in");
+			errorMsg.setText("Server error, can't log in");
 			return false;
 		case "frozen":
 			errorMsg.setText("User is Frozen for now");
