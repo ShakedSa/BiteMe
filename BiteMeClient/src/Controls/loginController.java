@@ -24,7 +24,7 @@ import javafx.stage.Stage;
  * @author Natali
  * 
  * @version December 05 2021, v1.0
- */
+ **/
 public class loginController implements Initializable {
 
 	private Router router;
@@ -108,7 +108,8 @@ public class loginController implements Initializable {
 	 * display relevant information.
 	 */
 	private boolean checkServerResponse() {
-		if(ClientGUI.getClient().getUser() == null) {
+		if(null == ClientGUI.getClient().getUser()) {
+			errorMsg.setText("Something went wrong on server");
 			return false;
 		}
 		switch (ClientGUI.getClient().getUser().getMsg().toLowerCase()) {
