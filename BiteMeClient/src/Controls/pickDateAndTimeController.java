@@ -26,6 +26,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the view of the date and time selection page.
+ * 
+ * @author Shaked
+ */
 public class pickDateAndTimeController implements Initializable {
 
 	private Router router;
@@ -72,6 +77,11 @@ public class pickDateAndTimeController implements Initializable {
 	@FXML
 	private Label errorMsg;
 
+	/**
+	 * Method that moves the user to the next step of the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		if (!checkDate()) {
@@ -85,18 +95,26 @@ public class pickDateAndTimeController implements Initializable {
 		LocalDate orderDate = datePicker.getValue();
 		String hourToOrder = hourBox.getSelectionModel().getSelectedItem();
 		String minuteToOrder = minutesBox.getSelectionModel().getSelectedItem();
-		
+
 		String newTime = orderDate.toString() + " " + hourToOrder + ":" + minuteToOrder;
 		router.getOrder().setDateTime(newTime);
 		errorMsg.setText("");
 		changeToDelivery();
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("DateTime");
 	}
 
+	/**
+	 * Method that switch the scene to the next step of the order process.
+	 */
 	private void changeToDelivery() {
 		router = Router.getInstance();
 		if (router.getDeliveryMethodController() == null) {
@@ -172,7 +190,7 @@ public class pickDateAndTimeController implements Initializable {
 		LocalTime now = LocalTime.now();
 		int choosedTime = Integer.parseInt(hourToOrder) * 60 + Integer.parseInt(minuteToOrder);
 		int nowTime = now.getHour() * 60 + now.getMinute();
-		if(choosedTime - nowTime > 60) {
+		if (choosedTime - nowTime > 60) {
 			errorMsg.setText("Time for order must be up to 1 hour from now.");
 			return false;
 		}
@@ -180,21 +198,41 @@ public class pickDateAndTimeController implements Initializable {
 		return true;
 	}
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Method to switch scene to the user's profile.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void openProfile(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Method to return to Home Page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Method that switch to the previous step of the order process.
+	 * 
+	 * @param event
+	 * */
 	@FXML
 	void returnToMenuOrderPage(MouseEvent event) {
 		router.getRestaurantMenuController().setItemsCounter();
@@ -205,6 +243,11 @@ public class pickDateAndTimeController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Method that returns the user to the restaurant selection page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		router.getRestaurantselectionController().setItemsCounter();
@@ -221,6 +264,12 @@ public class pickDateAndTimeController implements Initializable {
 		router.setAvatar(avatar);
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -232,60 +281,81 @@ public class pickDateAndTimeController implements Initializable {
 		datePicker.setEditable(false);
 		incCurrentHourByOne();
 	}
+
 	/**
 	 * this method incCurrentHour By One with all the cases taking care of
 	 */
 	private void incCurrentHourByOne() {
 		int hour = LocalTime.now().getHour();
 		int minute = LocalTime.now().getMinute();
-		
-		if(minute==59) {
-			minute=0;
-			if(hour==23) {
-				hour=0;
+
+		if (minute == 59) {
+			minute = 0;
+			if (hour == 23) {
+				hour = 0;
 				Calendar date = Calendar.getInstance();
 				date.add(Calendar.DATE, 1);
-				datePicker.setValue(convertToLocalDateViaInstant(date.getTime()));		//		
-			}
-			else{
+				datePicker.setValue(convertToLocalDateViaInstant(date.getTime())); //
+			} else {
 				hour++;
 			}
-		}
-		else {
+		} else {
 			minute++;
 		}
 		hourBox.getSelectionModel().select(String.format("%02d", hour));
 		minutesBox.getSelectionModel().select(String.format("%02d", minute));
-		
+
 	}
-	
+
 	/**
 	 * method to convert date type to localDate
+	 * 
 	 * @param dateToConvert
 	 * @return
 	 */
 	private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
-	    return dateToConvert.toInstant()
-	      .atZone(ZoneId.systemDefault())
-	      .toLocalDate();
+		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setting the restaurant that was choosen by the user.
+	 * 
+	 * @param resName
+	 * */
 	public void setRestaurant(String restaurantName) {
 		this.restaurantName = restaurantName;
 	}
 
+	/**
+	 * Method to display the cart's item amount in this scene.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}

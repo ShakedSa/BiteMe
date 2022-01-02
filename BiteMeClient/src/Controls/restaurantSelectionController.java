@@ -44,6 +44,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the view of the restaurant selection page.
+ * 
+ * @author Shaked
+ */
 public class restaurantSelectionController implements Initializable {
 
 	private ServerResponse resRestaurants = null;
@@ -207,11 +212,21 @@ public class restaurantSelectionController implements Initializable {
 		createRestaurants(newRestaurants);
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("Restaurants");
 	}
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
@@ -257,6 +272,11 @@ public class restaurantSelectionController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method to return to Home Page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
@@ -279,7 +299,7 @@ public class restaurantSelectionController implements Initializable {
 	}
 
 	/**
-	 * Getting restaurants from the db.
+	 * Getting restaurants from the data base, based on the user's branch.
 	 */
 	@SuppressWarnings("unchecked")
 	public void setRestaurants() {
@@ -320,7 +340,8 @@ public class restaurantSelectionController implements Initializable {
 	}
 
 	/**
-	 * Displaying restaurants base on filtered list.
+	 * Hiding restaurants spots on the screen in range of 0 to 6 depend on the
+	 * user's selection.
 	 * 
 	 * @param amountToHide
 	 */
@@ -337,7 +358,7 @@ public class restaurantSelectionController implements Initializable {
 	}
 
 	/**
-	 * Private method filtering the restaurants by type.
+	 * Private method filtering the restaurants by the restaurant type.
 	 * 
 	 * @param type
 	 */
@@ -477,6 +498,12 @@ public class restaurantSelectionController implements Initializable {
 		}
 	}
 
+	/**
+	 * Private method to change scenes to Identify page. the first step in the order
+	 * process.
+	 * 
+	 * @param resName
+	 */
 	private void changeToIdentify(String resName) {
 		if (router.getIdentifyController() == null) {
 			AnchorPane mainContainer;
@@ -508,6 +535,12 @@ public class restaurantSelectionController implements Initializable {
 		}
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -517,19 +550,37 @@ public class restaurantSelectionController implements Initializable {
 		router.setArrow(rightArrowBtn, 90);
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Method to switch scene to the user's profile.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Method to display the cart's item amount in this scene.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}

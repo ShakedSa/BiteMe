@@ -27,6 +27,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the view of the payment method selection page.
+ * 
+ * @author Shaked
+ */
 public class paymentController implements Initializable {
 
 	private Router router;
@@ -85,16 +90,31 @@ public class paymentController implements Initializable {
 	@FXML
 	private TextArea refundAmount;
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("Payment");
 	}
 
+	/**
+	 * Method to switch scene to the next step in the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		errorMsg.setText("");
@@ -153,16 +173,33 @@ public class paymentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method to display the refund information(amount).
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void displayRefundAmount(MouseEvent event) {
 		refundAmount.setVisible(true);
 	}
 
+	/**
+	 * Method to hide the refund information.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void hideRefundAmount(MouseEvent event) {
 		refundAmount.setVisible(false);
 	}
 
+	/**
+	 * On click event handler for the refund check box.<br>
+	 * Calculating the price of the order depends on the refund selection and
+	 * changing the view state based on the payment method selected by the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void checkBalanceAfterRefund(ActionEvent event) {
 		if (refundCheck.isSelected()) {
@@ -184,16 +221,31 @@ public class paymentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Switch to profile scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void openProfile(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Switch to home page scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Switch to the previous step in the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToDeliveryMethod(MouseEvent event) {
 		router.getDeliveryMethodController().setItemsCounter();
@@ -203,6 +255,11 @@ public class paymentController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Switch to restaurants page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		router.getRestaurantselectionController().setItemsCounter();
@@ -326,6 +383,12 @@ public class paymentController implements Initializable {
 		bothRadio.setSelected(true);
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -350,6 +413,10 @@ public class paymentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Checking if the user got available refunds for this restaurant. <br>
+	 * Changing the view of the page accordingly.
+	 */
 	@SuppressWarnings("unchecked")
 	public void checkRefunds() {
 		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
@@ -380,22 +447,43 @@ public class paymentController implements Initializable {
 		}
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setting the item counter of the order.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
+	/**
+	 * Setting the avatar image of the user.
+	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}

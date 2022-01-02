@@ -26,7 +26,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * @author Eden Controller for customer identification by QR code/W4C id
+ * Controller for the view of the identification page.
+ * 
+ * @author Shaked
  */
 public class identifyController implements Initializable {
 
@@ -76,6 +78,12 @@ public class identifyController implements Initializable {
 	@FXML
 	private Label readingMsg;
 
+	/**
+	 * On click event handler for QR Code.<br>
+	 * Simulating reading from the user's w4c card.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void QRClicked(MouseEvent event) {
 		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
@@ -88,13 +96,21 @@ public class identifyController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		router.changeToMyCart("Identify");
 	}
 
 	/**
-	 * Onclick event handler for w4c code identification.
+	 * On click event handler for w4c code identification.<br>
+	 * Using the user's w4c personal code, not the QR code.<br>
+	 * After the authentication switch the scene to the next step in the order
+	 * process.
 	 * 
 	 * @param event
 	 */
@@ -118,6 +134,9 @@ public class identifyController implements Initializable {
 		changeToRestaurantMenuPage();
 	}
 
+	/**
+	 * Method that switch the scene to the menu page of the selected restaurant.
+	 */
 	public void changeToRestaurantMenuPage() {
 		Platform.runLater(() -> {
 			w4cCodeFieldTxt.clear();
@@ -156,13 +175,20 @@ public class identifyController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
 	/**
-	 * Onclick event listener to change scene back to home page.
+	 * Method to return to Home Page.
+	 * 
+	 * @param event
 	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
@@ -171,7 +197,9 @@ public class identifyController implements Initializable {
 	}
 
 	/**
-	 * Onclick event listener to change scene back to restaurants selection page.
+	 * Method that returns the user to the restaurant selection page.
+	 * 
+	 * @param event
 	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
@@ -182,6 +210,12 @@ public class identifyController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -190,10 +224,20 @@ public class identifyController implements Initializable {
 		router.setArrow(leftArrowBtn, -90);
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
@@ -214,19 +258,37 @@ public class identifyController implements Initializable {
 		router.setAvatar(avatar);
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Method to switch scene to the user's profile.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Method to display the cart's item amount in this scene.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
+	/**
+	 * Updating the w4c code text field.
+	 * 
+	 * @param input
+	 */
 	public void updateTextField(String input) {
 		w4cCodeFieldTxt.setText(input);
 	}

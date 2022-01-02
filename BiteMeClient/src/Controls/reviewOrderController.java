@@ -32,6 +32,11 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Controller for the view of the order review page.
+ * 
+ * @author Shaked
+ */
 public class reviewOrderController implements Initializable {
 
 	private Router router;
@@ -144,6 +149,10 @@ public class reviewOrderController implements Initializable {
 		t.start();
 	}
 
+	/**
+	 * Private method to reset the order process after the user finished with the
+	 * current one.
+	 */
 	private void clearOrderProcess() {
 		router.setPaymentController(null);
 		router.setIdentifyController(null);
@@ -152,6 +161,9 @@ public class reviewOrderController implements Initializable {
 		router.setDeliveryMethodController(null);
 	}
 
+	/**
+	 * Method to switch scene to Rate Us page.
+	 */
 	private void changeToRateUs() {
 		if (router.getOrderReceivedController() == null) {
 			AnchorPane mainContainer;
@@ -185,32 +197,53 @@ public class reviewOrderController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeToMyCart("Review");
 	}
 
+	/**
+	 * Switch to home page scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHome(MouseEvent event) {
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logOut(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Switch to profile scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void showProfile(MouseEvent event) {
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.showProfile();
 	}
 
+	/**
+	 * Method that switch to the previous step in the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToPaymentMethod(MouseEvent event) {
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.getOrderDeliveryMethod().calculateFinalPrice();
 		router.getPaymentController().setAvatar();
 		router.getPaymentController().setItemsCounter();
@@ -220,15 +253,25 @@ public class reviewOrderController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Switch to restaurants page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
-//		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice);
 		router.getRestaurantselectionController().setItemsCounter();
 		stage.setTitle("BiteMe - Restaurants");
 		stage.setScene(router.getRestaurantselectionController().getScene());
 		stage.show();
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -238,22 +281,46 @@ public class reviewOrderController implements Initializable {
 		router.setArrow(returnToPaymentMethod, -90);
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setting the item counter of the order.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
+	/**
+	 * Method that create the view of the review order page.<br>
+	 * Displaying the items in the order, delivery information and the final price
+	 * of the order.
+	 * 
+	 */
 	public void displayOrder() {
 		root.getChildren().removeAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, priceBreakDown,
 				totalPrice);
@@ -293,6 +360,7 @@ public class reviewOrderController implements Initializable {
 		deliveryTitle.getStyleClass().addAll("subtitle", "deliveryTitle");
 		deliveryInformation = new Label(delivery.toString());
 		deliveryInformation.getStyleClass().addAll("fields", "deliveryInfo");
+		/* Creating the break down of the price. */
 		priceBreakDown = new Label("Price Break Down:\n");
 		priceBreakDown.getStyleClass().add("breakDown");
 		totalPrice = new Label(String.format("Order Price: %.2f\u20AA", order.getOrderPrice()));
@@ -309,12 +377,10 @@ public class reviewOrderController implements Initializable {
 		case sharedDelivery:
 			totalPrice.setText(
 					String.format("%s\nDelivery Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));
-			/*-----------------------------------------*/
 			priceBreakDown.setText(String.format("%s\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
 					fullOrder.getFinalPrice()));
 			break;
 		default:
-			/*-----------------------------------------*/
 			priceBreakDown.setText(String.format("%s\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
 					fullOrder.getFinalPrice()));
 			break;

@@ -170,6 +170,9 @@ public class Router {
 		changeSceneToHomePage();
 	}
 	
+	/**
+	 * Method that switch scene to Home page.
+	 * */
 	public void changeSceneToHomePage() {
 		getHomePageController().setItemsCounter();
 		stage.setTitle("BiteMe - HomePage");

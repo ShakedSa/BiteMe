@@ -32,6 +32,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the view of the delivery method selection page.
+ * 
+ * @author Shaked
+ */
 public class deliveryMethodController implements Initializable {
 
 	private Router router;
@@ -156,14 +161,24 @@ public class deliveryMethodController implements Initializable {
 	@FXML
 	private Text businessStar;
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
-		//hideBaseOnSelection(null);
+		// hideBaseOnSelection(null);
 		router.changeToMyCart("Delivery");
 	}
 
@@ -245,8 +260,8 @@ public class deliveryMethodController implements Initializable {
 			errorMsg.setText("Business code can't contain special characters");
 			return false;
 		}
-		W4CCard w4c = ((Customer)ClientGUI.getClient().getUser().getServerResponse()).getW4c();
-		if(!businessCode.equals(w4c.getEmployerID())) {
+		W4CCard w4c = ((Customer) ClientGUI.getClient().getUser().getServerResponse()).getW4c();
+		if (!businessCode.equals(w4c.getEmployerID())) {
 			errorMsg.setText("Business Code is incorrect.");
 			return false;
 		}
@@ -457,7 +472,7 @@ public class deliveryMethodController implements Initializable {
 	}
 
 	/**
-	 * Initializing the router.
+	 * Initialize method. A required method from the Initializable interface.
 	 * 
 	 * @param location
 	 * @param resources
@@ -471,6 +486,10 @@ public class deliveryMethodController implements Initializable {
 		initFields();
 	}
 
+	/**
+	 * Private method to set default values for the text fields.<br>
+	 * Defualt values are the user's information.
+	 */
 	private void initFields() {
 		Customer user = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		firstNameTxtField.setText(user.getFirstName());
@@ -479,14 +498,29 @@ public class deliveryMethodController implements Initializable {
 		phoneNumberTxtField.setText(user.getPhoneNumber().substring(3));
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
@@ -498,6 +532,9 @@ public class deliveryMethodController implements Initializable {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
+	/**
+	 * Setting the avatar image of the user.
+	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
@@ -512,14 +549,19 @@ public class deliveryMethodController implements Initializable {
 		createPrefixCombo();
 	}
 
+	/**
+	 * Private method that creates the delivery's combo boxes and the hour and
+	 * minute combo boxes for preorder.
+	 */
 	private void createDeliveryMethodCombo() {
 		deliveryMethodBox.getItems().clear();
 		Customer customer = (Customer) ClientGUI.getClient().getUser().getServerResponse();
 		W4CCard w4cCard = customer.getW4c();
 
-		ObservableList<String> typeOfOrders = FXCollections.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
-				TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
-				TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
+		ObservableList<String> typeOfOrders = FXCollections
+				.observableArrayList(Arrays.asList(TypeOfOrder.BasicDelivery.toString(),
+						TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
+						TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
 		// checks if the customer is business, approved by HR and has w4c - if true then
 		// add sharedDelivery option
 		if (customer.isBusiness() && customer.isApproved()) {
@@ -528,8 +570,8 @@ public class deliveryMethodController implements Initializable {
 						TypeOfOrder.preorderDelivery.toString(), TypeOfOrder.sharedDelivery.toString(),
 						TypeOfOrder.takeaway.toString(), TypeOfOrder.RobotDelivery.toString()));
 			}
-		} 
-		
+		}
+
 		deliveryMethodBox.getItems().addAll(typeOfOrders);
 		/**
 		 * Setting on change event listener. display the appropriate fields base on the
@@ -561,6 +603,10 @@ public class deliveryMethodController implements Initializable {
 		minutesBox.getItems().addAll(minuteOptions);
 	}
 
+	/**
+	 * Private method that create the phone's prefixes combo box and the amount of
+	 * people in a shared delivery.
+	 */
 	private void createPrefixCombo() {
 		/** Creating the phone's prefix combo box */
 		ObservableList<String> phonePrefix = FXCollections

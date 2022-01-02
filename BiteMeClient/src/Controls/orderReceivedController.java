@@ -18,6 +18,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the view of the order received page.
+ * 
+ * @author Shaked
+ */
 public class orderReceivedController implements Initializable {
 
 	private Router router;
@@ -55,33 +60,60 @@ public class orderReceivedController implements Initializable {
 
 	@FXML
 	private Text rateTxt;
-	
-	@FXML 
+
+	@FXML
 	private Text displayedText;
-	
+
 	private int orderNumber;
+
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void changeToCart(MouseEvent event) {
 		router.setOrderReceivedController(null);
 		router.changeToMyCart("Received");
 	}
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logOut(MouseEvent event) {
 		router.logOut();
 	}
 
+	/**
+	 * Switch to home page scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHome(MouseEvent event) {
 		router.setOrderReceivedController(null);
 		router.changeSceneToHomePage();
 	}
-	
-	@FXML
-    void returnToHomePage(ActionEvent event) {
-		returnToHome(null);
-    }
 
+	/**
+	 * Call to action button event handler.<br>
+	 * switching to home page scene.
+	 * 
+	 * @param event
+	 */
+	@FXML
+	void returnToHomePage(ActionEvent event) {
+		returnToHome(null);
+	}
+
+	/**
+	 * Switch to restaurants page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		router.setOrderReceivedController(null);
@@ -92,12 +124,22 @@ public class orderReceivedController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Switch to profile scene.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void showProfile(MouseEvent event) {
 		router.setOrderReceivedController(null);
 		router.showProfile();
 	}
 
+	/**
+	 * Submitting the user's rating.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void sendRate(ActionEvent event) {
 		if (choosenRate == null) {
@@ -116,7 +158,7 @@ public class orderReceivedController implements Initializable {
 	}
 
 	/**
-	 * Initializing the router.
+	 * Initialize method. A required method from the Initializable interface.
 	 * 
 	 * @param location
 	 * @param resources
@@ -128,14 +170,29 @@ public class orderReceivedController implements Initializable {
 		setStage(router.getStage());
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
@@ -147,6 +204,9 @@ public class orderReceivedController implements Initializable {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 
+	/**
+	 * Setting the avatar image of the user.
+	 */
 	public void setAvatar() {
 		router.setAvatar(avatar);
 	}
@@ -154,6 +214,11 @@ public class orderReceivedController implements Initializable {
 	HashMap<ImageView, Integer> rates = new HashMap<>();
 	ImageView choosenRate = null;
 
+	/**
+	 * Creating the available rates for this order.
+	 * 
+	 * @param orderNumber
+	 */
 	public void setRates(int orderNumber) {
 		this.orderNumber = orderNumber;
 		displayedText.setText("Order #" + orderNumber + " was recieved,");
@@ -172,6 +237,11 @@ public class orderReceivedController implements Initializable {
 		}
 	}
 
+	/**
+	 * De-selecting all the rates.
+	 * 
+	 * @return true.
+	 */
 	private boolean checkSelected() {
 		Set<ImageView> images = rates.keySet();
 		for (ImageView image : images) {

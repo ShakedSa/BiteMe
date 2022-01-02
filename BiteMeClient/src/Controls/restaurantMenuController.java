@@ -42,12 +42,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
+ * Controller for the view of the restaurant menu page.
+ * 
  * @author Shaked
- *
- */
-/**
- * @author Shaked
- *
  */
 public class restaurantMenuController implements Initializable {
 
@@ -67,8 +64,6 @@ public class restaurantMenuController implements Initializable {
 	Label menuTitle;
 
 	Pane overlayPane;
-
-//	private static final BooleanProperty firstAdd = new SimpleBooleanProperty(true);
 
 	@FXML
 	private Rectangle avatar;
@@ -109,12 +104,22 @@ public class restaurantMenuController implements Initializable {
 	@FXML
 	private Text itemsCounter;
 
+	/**
+	 * Method to log out the user.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void logoutClicked(MouseEvent event) {
 		clearScreen();
 		router.logOut();
 	}
 
+	/**
+	 * Method that moves the user to the next step of the order process.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void nextOrderStep(MouseEvent event) {
 		if (itemsCounter.getText().equals("0")) {
@@ -161,18 +166,33 @@ public class restaurantMenuController implements Initializable {
 		}
 	}
 
+	/**
+	 * Private method to clear the scene when moving between pages in the
+	 * application.
+	 */
 	private void clearScreen() {
 		root.getChildren().removeAll(tabPane, overlayPane);
 		nextBtn.setDisable(false);
 		leftArrowBtn.setDisable(false);
 	}
 
+	/**
+	 * Method to return to Home Page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToHomePage(MouseEvent event) {
 		clearScreen();
 		router.changeSceneToHomePage();
 	}
 
+	/**
+	 * Method that moves the user to the previous step of the order
+	 * process(Identification).
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToIdentify(MouseEvent event) {
 		clearScreen();
@@ -182,6 +202,11 @@ public class restaurantMenuController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Method that returns the user to the restaurant selection page.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void returnToRestaurants(MouseEvent event) {
 		clearScreen();
@@ -191,6 +216,12 @@ public class restaurantMenuController implements Initializable {
 		stage.show();
 	}
 
+	/**
+	 * Initialize method. A required method from the Initializable interface.
+	 * 
+	 * @param location
+	 * @param resources
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
@@ -202,24 +233,49 @@ public class restaurantMenuController implements Initializable {
 		root.getChildren().add(menuTitle);
 	}
 
+	/**
+	 * Method to change scene to My Cart.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void changeToCart(MouseEvent event) {
 		root.getChildren().remove(tabPane);
 		router.changeToMyCart("Menu");
 	}
 
+	/**
+	 * Passing scene's reference.
+	 * 
+	 * @param scene
+	 */
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
+	/**
+	 * Getting this controller's scene.
+	 * 
+	 * @return Scene
+	 */
 	public Scene getScene() {
 		return scene;
 	}
 
+	/**
+	 * Setting the stage instance.
+	 * 
+	 * @param Stage stage
+	 */
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
 
+	/**
+	 * Setting the restaurant that was choosen by the user.
+	 * 
+	 * @param resName
+	 * */
 	public void setRestaurantName(String resName) {
 		this.restaurantName = resName;
 	}
@@ -232,7 +288,8 @@ public class restaurantMenuController implements Initializable {
 	}
 
 	/**
-	 * Setting menu for each restaurant.
+	 * Creating the menu for the restaurant.<br>
+	 * Getting the items from the data base.
 	 */
 	@SuppressWarnings("unchecked")
 	public void setMenu() {
@@ -271,7 +328,7 @@ public class restaurantMenuController implements Initializable {
 	}
 
 	/**
-	 * Creating the menu tab (currently not enabling to choose)
+	 * Creating the menu
 	 * 
 	 * @param menu
 	 */
@@ -314,8 +371,9 @@ public class restaurantMenuController implements Initializable {
 	}
 
 	/**
-	 * Creating tab content for each category: entrees, main dishes, desserts,
-	 * drinks.
+	 * Creating tab content for each category: entries, main dishes, desserts,
+	 * drinks. Setting on click event for each dish, displaying the optional
+	 * component.
 	 * 
 	 * @param tab
 	 * @param productsToAdd
@@ -607,11 +665,19 @@ public class restaurantMenuController implements Initializable {
 		tab.setContent(tabContent);
 	}
 
+	/**
+	 * Method to switch scene to the user's profile.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	void profileBtnClicked(MouseEvent event) {
 		router.showProfile();
 	}
 
+	/**
+	 * Method to display the cart's item amount in this scene.
+	 */
 	public void setItemsCounter() {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
