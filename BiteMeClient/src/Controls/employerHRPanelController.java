@@ -69,13 +69,13 @@ public class employerHRPanelController implements Initializable {
 			confirmBusinessAccountController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeConfirmBusinessAccountPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeConfirmBusinessAccountPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setTable();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Confirm Business Account");
 				stage.setScene(mainScene);
@@ -105,12 +105,12 @@ public class employerHRPanelController implements Initializable {
 
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeRegisterEmployerAsLegacyPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeRegisterEmployerAsLegacyPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Register Employer As Legacy");
 				stage.setScene(mainScene);

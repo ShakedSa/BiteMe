@@ -138,14 +138,14 @@ public class updateOrderTableController implements Initializable {
 			supplierUpdateOrderController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSupplierUpdateOrderPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeSupplierUpdateOrderPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setOrder(order);
 				controller.setAvatar();
 				controller.createCombos();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Update Order");
 				stage.setScene(mainScene);

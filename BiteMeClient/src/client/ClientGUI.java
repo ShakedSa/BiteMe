@@ -45,11 +45,11 @@ public class ClientGUI extends Application {
 		router.setStage(primaryStage);
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("../gui/EnterGUI.fxml"));
+			loader.setLocation(getClass().getResource("/gui/EnterGUI.fxml"));
 			mainContainer = loader.load();
 			controller = loader.getController();
 			Scene mainScene = new Scene(mainContainer);
-			mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+			mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 			primaryStage.setTitle("Connect to server");
 			primaryStage.setScene(mainScene);
 			primaryStage.setOnCloseRequest((EventHandler<WindowEvent>) new EventHandler<WindowEvent>() {

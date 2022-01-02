@@ -397,14 +397,14 @@ public class deliveryMethodController implements Initializable {
 			paymentController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemePaymentPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemePaymentPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setItemsCounter();
 				controller.checkRefunds();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Select Payment Method");
 				stage.setScene(mainScene);

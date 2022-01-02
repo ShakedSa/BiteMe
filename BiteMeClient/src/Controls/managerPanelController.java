@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
-import client.ClientGUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -99,14 +98,14 @@ public class managerPanelController implements Initializable {
 			addNewSupplierTableController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeAddNewSupplierTablePage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeAddNewSupplierTablePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.resetInfo();
 				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Add New Supplier");
 				stage.setScene(mainScene);
@@ -132,13 +131,13 @@ public class managerPanelController implements Initializable {
 			authorizedEmployerApprovalController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeAuthorizedEmployerApprovalPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeAuthorizedEmployerApprovalPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Authorized Employer Approval");
 				stage.setScene(mainScene);
@@ -163,13 +162,13 @@ public class managerPanelController implements Initializable {
 			openNewAccountController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeOpenNewAccountPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeOpenNewAccountPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Open New Account");
 				stage.setScene(mainScene);
@@ -194,13 +193,13 @@ public class managerPanelController implements Initializable {
 			updateUserInformationController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeUpdateUserInformationPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeUpdateUserInformationPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.resetScreen();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Update User Information");
 				stage.setScene(mainScene);
@@ -224,12 +223,12 @@ public class managerPanelController implements Initializable {
 			uploadQuarterlyReportController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeUploadQuarterlyReportPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeUploadQuarterlyReportPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Upload Quarterly Report");
 				stage.setScene(mainScene);
@@ -253,12 +252,12 @@ public class managerPanelController implements Initializable {
 			createRevenueQuarterlyReportController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeCreateRevenueQuarterlyReportPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeCreateRevenueQuarterlyReportPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Create Revenue Quarterly Report");
 				stage.setScene(mainScene);
@@ -281,12 +280,12 @@ public class managerPanelController implements Initializable {
 			viewMonthlyReportsController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeViewMonthlyReportsPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeViewMonthlyReportsPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - View Monthly Reports");
 				stage.setScene(mainScene);

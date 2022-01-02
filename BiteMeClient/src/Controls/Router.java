@@ -94,7 +94,7 @@ public class Router {
 			try {
 				//change the page scene into the profile page
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeProfilePage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeProfilePage.fxml"));
 				mainContainer = loader.load();
 				ProfileController = loader.getController();
 				ProfileController.setAvatar();
@@ -102,7 +102,7 @@ public class Router {
 				ProfileController.setItemsCounter();
 				ProfileController.setLastScene(stage.getScene(), stage.getTitle());
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				ProfileController.setScene(mainScene);
 				stage.setTitle("BiteMe - Home Page");
 				stage.setScene(mainScene);
@@ -208,25 +208,25 @@ public class Router {
 	ImagePattern getAvatarImage() {
 		ServerResponse userResponse = ClientGUI.getClient().getUser();
 		if (userResponse == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/guest-avatar.png").toString()));
 		}
 		User user = (User) userResponse.getServerResponse();
 		if (user == null) {
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/guest-avatar.png").toString()));
 		}
 		switch (user.getUserType()) {
 		case Supplier:
-			return new ImagePattern(new Image(getClass().getResource("../images/supplier-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/supplier-avatar.png").toString()));
 		case BranchManager:
-			return new ImagePattern(new Image(getClass().getResource("../images/manager-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/manager-avatar.png").toString()));
 		case CEO:
-			return new ImagePattern(new Image(getClass().getResource("../images/CEO-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/CEO-avatar.png").toString()));
 		case Customer:
-			return new ImagePattern(new Image(getClass().getResource("../images/random-user.gif").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/random-user.gif").toString()));
 		case EmployerHR:
-			return new ImagePattern(new Image(getClass().getResource("../images/HR-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/HR-avatar.png").toString()));
 		default:
-			return new ImagePattern(new Image(getClass().getResource("../images/guest-avatar.png").toString()));
+			return new ImagePattern(new Image(getClass().getResource("/images/guest-avatar.png").toString()));
 		}
 	}
 	
@@ -241,13 +241,13 @@ public class Router {
 			supplierPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSupplierPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeSupplierPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setImage();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Supplier Panel");
 				stage.setScene(mainScene);
@@ -270,7 +270,7 @@ public class Router {
 	 * @param rotationDegree
 	 */
 	public void setArrow(Rectangle arrow, int rotationDegree) {
-		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("../images/arrow.gif").toString()));
+		ImagePattern pattern = new ImagePattern(new Image(getClass().getResource("/images/arrow.gif").toString()));
 		arrow.setFill(pattern);
 		arrow.setStyle("-fx-stroke: null;-fx-cursor: hand");
 		arrow.setRotate(rotationDegree);
@@ -287,12 +287,12 @@ public class Router {
 			employerHRPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeEmployerHRPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeEmployerHRPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Employer HR Panel");
 				stage.setScene(mainScene);
@@ -319,12 +319,12 @@ public class Router {
 			managerPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeManagerPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeManagerPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Manager Panel");
 				stage.setScene(mainScene);
@@ -351,12 +351,12 @@ public class Router {
 			ceoPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeCEOPanelPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeCEOPanelPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - CEO Home Page");
 				stage.setScene(mainScene);
@@ -383,7 +383,7 @@ public class Router {
 			restaurantSelectionController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeRestaurantsPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
@@ -391,7 +391,7 @@ public class Router {
 				controller.setItemsCounter();
 				controller.setButtons();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Restaurants");
 				stage.setScene(mainScene);
@@ -420,14 +420,14 @@ public class Router {
 			myCartController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeMyCartPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeMyCartPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.displayOrder();
 				controller.setLastPage(lastPage);
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - My Cart");
 				stage.setScene(mainScene);

@@ -149,12 +149,12 @@ public class paymentController implements Initializable {
 			reviewOrderController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeReviewOrderPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeReviewOrderPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Review Order");
 				stage.setScene(mainScene);

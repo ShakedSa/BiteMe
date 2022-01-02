@@ -164,12 +164,12 @@ public class updateMenuController implements Initializable {
 			addNewItemController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeAddNewItemToMenuPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeAddNewItemToMenuPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Add New Item To Menu");
 				stage.setScene(mainScene);
@@ -200,13 +200,13 @@ public class updateMenuController implements Initializable {
 			editMenuItemController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeEditMenuItemPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeEditMenuItemPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setProduct(product);
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Edit Menu Item");
 				stage.setScene(mainScene);

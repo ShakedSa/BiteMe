@@ -204,14 +204,14 @@ public class openNewAccountController implements Initializable {
 			openNewAccountFinalController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeOpenNewAccountFinalPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeOpenNewAccountFinalPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.initScene(id, username, fName, lName);
 				controller.setPrevScene(scene);
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Open New Account");
 				stage.setScene(mainScene);

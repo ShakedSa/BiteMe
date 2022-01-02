@@ -238,13 +238,13 @@ public class profileController implements Initializable {
 			myOrdersController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeMyOrders.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.displayOpenOrders();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - My Orders");
 				stage.setScene(mainScene);
