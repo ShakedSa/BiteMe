@@ -391,14 +391,14 @@ public class mysqlConnection {
 		PreparedStatement stmt = null;
 		int monthlyCommision = Character.getNumericValue(supplier.getMonthlyCommision().charAt(0));
 		try {
-			// check that the resturant name and address are'nt already exist 
+			// check that the resturant name and address are'nt already exist
 			String query = "SELECT RestaurantName, RestaurantAddress FROM bitemedb.suppliers WHERE RestaurantName = ? AND RestaurantAddress = ? ";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, supplier.getResturantName());
 			stmt.setString(2, supplier.getResturantAddress());
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-					serverResponse.setMsg("already exist");
+			if (rs.next()) {
+				serverResponse.setMsg("already exist");
 				return serverResponse;
 			}
 			// give suppliers permissions to the chosen user
@@ -428,7 +428,6 @@ public class mysqlConnection {
 		return serverResponse;
 	}
 
-	
 	/**
 	 * Query to add a new supplier the db.
 	 * 
@@ -2448,33 +2447,35 @@ public class mysqlConnection {
 		int customerId = 0;
 		PreparedStatement stmt;
 		String query;
+		// avielCode:
+		String customerType = values.get(0);
 
 		// first, get customer's code for query 3 (check first to avoid adding invalid
 		// customer):
 		String empCode = "";
-		try {
-			query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName = ? AND IsApproved='1'";
-			stmt = conn.prepareStatement(query);
-			stmt.setString(1,values.get(5)); // customer's name
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next())
-				empCode = rs.getString(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+		if (customerType.equals("Business") || customerType.equals("Both")) {
+			try {
+				query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName = ? AND IsApproved='1'";
+				stmt = conn.prepareStatement(query);
+				System.out.println(values.get(5));
+				stmt.setString(1, values.get(5)); // customer's name
+				ResultSet rs = stmt.executeQuery();
+				if (rs.next())
+					empCode = rs.getString(1);
+				else {
+					return new ServerResponse("unApprovedEmployer");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			
 		}
-		if (!values.get(0).equals("Private")) // if business account:
-		{
-			if (empCode == null || empCode.equals(""))// cannot add new user.
-				return new ServerResponse("unApprovedEmployer");
-		}
-
 		// query 1: set new userType value on users table:
 		try {
-			query = "UPDATE bitemedb.users SET UserType = ? WHERE UserName = ?";
+			query = "UPDATE bitemedb.users SET UserType = 'Customer' WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, "Customer");
-			stmt.setString(2, values.get(1));
+			stmt.setString(1, values.get(1));
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2557,10 +2558,11 @@ public class mysqlConnection {
 					stmt.setInt(3, 0);
 					break;
 				}
-				stmt.execute();
+				stmt.executeUpdate();
 				ResultSet rs = stmt.getGeneratedKeys();
 				if (rs.next()) {
 					customerId = rs.getInt(1);
+					System.out.println(customerId);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -2582,10 +2584,17 @@ public class mysqlConnection {
 			stmt.setString(3, qrCode);
 			stmt.setString(4, values.get(4));// credit card number
 			stmt.setString(5, values.get(2)); // monthly budget
-			stmt.setString(6, values.get(3)); // daily budget
+			String dailyBudget = values.get(3);
+			if(dailyBudget.equals("")) {
+				dailyBudget="0";
+				stmt.setString(8, values.get(2)); // daily balance = monthly budget
+			}
+			else {
+				stmt.setString(8, values.get(3)); // daily balance=budget				
+			}
+			stmt.setString(6, dailyBudget); // daily budget
 			stmt.setString(7, values.get(2)); // monthly balance = budget
-			stmt.setString(8, values.get(3)); // daily balance=budget
-			switch (values.get(0)) {
+			switch (customerType) {
 			case "Private":
 				stmt.setString(2, null);// no employer code
 				break;
@@ -2599,7 +2608,7 @@ public class mysqlConnection {
 				stmt.setString(2, null);// no employer code
 				break;
 			}
-			stmt.execute();
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
