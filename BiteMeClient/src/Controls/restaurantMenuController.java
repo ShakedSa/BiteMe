@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import Entities.Component;
-import Entities.Order;
 import Entities.Product;
 import Enums.Doneness;
 import Enums.Size;
@@ -18,9 +17,7 @@ import Enums.UserType;
 import Util.LoadingAnimation;
 import client.ClientGUI;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.FloatProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +29,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -378,6 +374,7 @@ public class restaurantMenuController implements Initializable {
 	 * @param tab
 	 * @param productsToAdd
 	 */
+	@SuppressWarnings("unchecked")
 	private void setTabContent(Tab tab, List<Product> productsToAdd) {
 		ScrollPane tabContent = new ScrollPane();
 		AnchorPane tabLabels = new AnchorPane();
@@ -468,8 +465,32 @@ public class restaurantMenuController implements Initializable {
 					Label counter = new Label("1");
 					counter.getStyleClass().add("counter");
 					/** Components selected for this order */
+					Thread t = new Thread(() -> {
+						synchronized(ClientGUI.getMonitor()) {
+							ClientGUI.getClient().componentsInProduct(restaurantName, p.getDishName());
+							try {
+								ClientGUI.getMonitor().wait();
+							}catch(Exception ex) {
+								ex.printStackTrace();
+								return;
+							}
+						}
+					});
+					t.start();
+					try {
+						t.join();
+					}catch(Exception ex) {
+						ex.printStackTrace();
+						return;
+					}
+					ArrayList<Component> components;
+					if(ClientGUI.getClient().getLastResponse().getMsg().equals("Failed to get components")) {
+						components = null;
+					}else {
+						components = (ArrayList<Component>)ClientGUI.getClient().getLastResponse().getServerResponse();
+					}
 					ArrayList<Component> componentInProduct = new ArrayList<>();
-					if (p.getComponents() == null || p.getComponents().size() == 0) {
+					if (components == null || components.size() == 0) {
 						/** If this dish doens't have any optional components */
 						Label noComp = new Label(
 								"Product " + nameLabel.getText() + " doesn't have optional components");
@@ -480,7 +501,7 @@ public class restaurantMenuController implements Initializable {
 						ScrollPane componentContent = new ScrollPane();
 						AnchorPane componentLabels = new AnchorPane();
 						int j = 0;
-						for (Component c : p.getComponents()) {
+						for (Component c : components) {
 							/**
 							 * Checking what type of component c is.<br>
 							 * Displaying accordingly.
