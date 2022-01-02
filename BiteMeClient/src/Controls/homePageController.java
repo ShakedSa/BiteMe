@@ -197,13 +197,13 @@ public class homePageController implements Initializable {
 			myOrdersController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeMyOrders.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeMyOrders.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.displayOpenOrders();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - My Orders");
 				stage.setScene(mainScene);
@@ -239,13 +239,13 @@ public class homePageController implements Initializable {
 			restaurantSelectionController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeRestaurantsPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeRestaurantsPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurants();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Restaurants");
 				stage.setScene(mainScene);
@@ -275,12 +275,12 @@ public class homePageController implements Initializable {
 			loginController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeLoginPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeLoginPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Restaurants");
 				stage.setScene(mainScene);

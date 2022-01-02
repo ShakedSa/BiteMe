@@ -138,7 +138,7 @@ public class restaurantMenuController implements Initializable {
 			pickDateAndTimeController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemePickDateAndTimePage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemePickDateAndTimePage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
@@ -146,7 +146,7 @@ public class restaurantMenuController implements Initializable {
 				controller.setItemsCounter();
 				controller.createCombos();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Pick Date And Time");
 				stage.setScene(mainScene);

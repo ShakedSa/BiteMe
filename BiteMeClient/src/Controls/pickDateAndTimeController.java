@@ -122,14 +122,14 @@ public class pickDateAndTimeController implements Initializable {
 			deliveryMethodController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeSelectDeliveryMethodPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeSelectDeliveryMethodPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setItemsCounter();
 				controller.createCombo();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Select Delivery Method");
 				stage.setScene(mainScene);

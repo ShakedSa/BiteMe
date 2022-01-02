@@ -510,14 +510,14 @@ public class restaurantSelectionController implements Initializable {
 			identifyController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeIdentifyBeforeOrderPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeIdentifyBeforeOrderPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurantToOrder(resName);
 				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				stage.setTitle("BiteMe - Identification Page");
 				stage.setScene(mainScene);

@@ -148,14 +148,14 @@ public class identifyController implements Initializable {
 			restaurantMenuController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("../gui/bitemeMenuOrderPage.fxml"));
+				loader.setLocation(getClass().getResource("/gui/bitemeMenuOrderPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
 				controller.setRestaurantName(restaurantsName);
 				controller.setItemsCounter();
 				Scene mainScene = new Scene(mainContainer);
-				mainScene.getStylesheets().add(getClass().getResource("../gui/style.css").toExternalForm());
+				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
 				controller.setMenu();
 				stage.setTitle("BiteMe - " + restaurantsName + " Menu");

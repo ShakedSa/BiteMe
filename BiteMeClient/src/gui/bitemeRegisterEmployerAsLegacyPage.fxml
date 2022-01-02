@@ -25,7 +25,7 @@
             <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
-      <Text layoutX="87.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register Employer As Lgacy">
+      <Text layoutX="87.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register Employer As Legacy">
          <font>
             <Font name="Berlin Sans FB" size="30.0" />
          </font>
