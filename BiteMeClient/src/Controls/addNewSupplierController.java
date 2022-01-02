@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Entities.MyFile;
 import Entities.NewSupplier;
+import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import Util.InputValidation;
@@ -292,7 +293,7 @@ public class addNewSupplierController implements Initializable {
 	
 	/**
 	 * if the fields has been filled correctly: sends request to clientUI in order
-	 *  to add a new supplier. else shows a message accordingly
+	 * to add a new supplier. else shows a message accordingly
 	 * @param event
 	 */
 	@FXML
@@ -303,12 +304,10 @@ public class addNewSupplierController implements Initializable {
 		}
 		try {
 			MyFile image = new MyFile("Supplier Report");
-			
 			//convert file uploaded into a blob
 			byte[] mybytearray = new byte[(int) imgToUpload.length()];
 			FileInputStream fis = new FileInputStream(imgToUpload);
 			BufferedInputStream bis = new BufferedInputStream(fis);
-
 			image.initArray(mybytearray.length);
 			image.setSize(mybytearray.length);
 			bis.read(image.getMybytearray(), 0, mybytearray.length);
@@ -317,11 +316,39 @@ public class addNewSupplierController implements Initializable {
 			NewSupplier newSupplier = new NewSupplier(userName,
 					restaurantTypeCombo.getValue(),restaurantNameTxtField.getText(),
 					restaurantAddressTxtField.getText(),image,
-					monthlyCommissionBox.getValue(), user.getMainBranch());
-			//send to clientUI
+			monthlyCommissionBox.getValue(), user.getMainBranch());
 			ClientGUI.getClient().addNewSupplier(newSupplier);
 			fis.close();
 			bis.close();
+			//send to clientUI
+			Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					synchronized (ClientGUI.getMonitor()) {
+						try {
+							ClientGUI.getMonitor().wait();
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
+						}
+					}
+				}
+			});
+			t.start();
+			try {
+				t.join();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			//handle server response
+			ServerResponse sr = ClientGUI.getClient().getLastResponse();
+			if(sr.getMsg().equals("already exist")) {
+				System.out.println("112133");
+				Error.setVisible(true);
+				Error.setText("this supplier is already exist!");
+				return;
+			}
 			Error.setVisible(false);
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);

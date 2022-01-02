@@ -150,7 +150,7 @@
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="userInfo" fill="#3180bc" layoutX="477.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The image ">
+      <Text fx:id="userInfo" fill="#3180bc" layoutX="480.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The image ">
          <font>
             <Font name="Berlin Sans FB" size="18.0" />
          </font>
