@@ -17,6 +17,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -138,6 +139,7 @@ public class updateUserInformationController implements Initializable{
 		ArrayList<String> response = (ArrayList<String>) sr.getServerResponse();
 		//check if the username is a client
 		if(sr.getMsg().equals("is not client")) {
+			userNameError.setFill(Color.RED);
 			userNameError.setText("This username is not a client!");
 			userNameError.setVisible(true);
 			enableEdit(false);
@@ -146,13 +148,18 @@ public class updateUserInformationController implements Initializable{
 		//check if username is valid
 		if(sr.getMsg().equals("Error"))
 		{
+			userNameError.setFill(Color.RED);
 			userNameError.setText("This username doesn't exist");
 			userNameError.setVisible(true);
 			enableEdit(false);
 			return;
 		}
+		userNameError.setFill(Color.BLACK);
 		userNameError.setVisible(true);
 		userNameError.setText("Name: " + response.get(0) +" " + response.get(1));
+		if(response.get(2).equals("Active"))
+			userStatusLabel.setFill(Color.GREEN);
+		else userStatusLabel.setFill(Color.BLUE);
 		userStatusLabel.setText(response.get(2));
 		updateSucess1.setVisible(false);
     	updateSucess2.setVisible(false);
@@ -227,7 +234,7 @@ public class updateUserInformationController implements Initializable{
 
 	 
 	/**
-	 * manager chooses the option of removing client account
+	* manager chooses the option of removing client account
 	* @param event
 	*/
 	@FXML
@@ -249,12 +256,14 @@ public class updateUserInformationController implements Initializable{
     	if( InputValidation.checkSpecialCharacters(userNameTxtField.getText())) {
     		userNameError.setVisible(true);
     		enableEdit(false);
+    		userNameError.setFill(Color.RED);
     		userNameError.setText("User name can't contain special characters!");
     		return false;
     	}
     	if(userNameTxtField.getText().length() == 0) {
     		userNameError.setVisible(true);
     		enableEdit(false);
+    		userNameError.setFill(Color.RED);
     		userNameError.setText("User name must be filled!");
     		return false;
     	}
@@ -268,6 +277,7 @@ public class updateUserInformationController implements Initializable{
     @FXML
     void updateUserBtnClicked(MouseEvent event) {
     	if(!userNameTxtField.getText().equals(validUserName)) {
+    		userNameError.setFill(Color.RED);
     		userNameError.setText("UserName has to be searched first");
     		enableEdit(false);
     		userNameError.setVisible(true);

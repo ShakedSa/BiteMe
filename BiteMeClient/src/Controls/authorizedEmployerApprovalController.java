@@ -78,6 +78,8 @@ public class authorizedEmployerApprovalController implements Initializable {
 
 	@FXML 
 	private Text instructions;
+	
+	private ObservableList<BusinessCustomer> customers = FXCollections.observableArrayList();
 
 	private String employerCode = "";
 
@@ -116,6 +118,7 @@ public class authorizedEmployerApprovalController implements Initializable {
 		ArrayList<BusinessCustomer> response = (ArrayList<BusinessCustomer>) sr.getServerResponse();
 		// check if no one is waiting for approval
 		if (response.size() == 0) {
+			approvalTable.refresh();
 			noApprovals.setText("No employers waiting for approval");
 			noApprovals.setVisible(true);
 			approvalBtn.setVisible(false);
@@ -134,7 +137,8 @@ public class authorizedEmployerApprovalController implements Initializable {
 
 	
 	
-	/**prepare the table culomns
+	/**
+	 * prepare the table culomns
 	 * modifies:approvalTable
 	 * @param list
 	 */
@@ -149,12 +153,13 @@ public class authorizedEmployerApprovalController implements Initializable {
 
 	
 	
-	/**convert  arrayList to an ObservableList
+	/**
+	 * convert  arrayList to an ObservableList
 	 * @param list = employerCode, employeCompanyName, isApproved, hRname
 	 * @return ObservableList of type 'BusinessCustomer'
 	 */
 	private ObservableList<BusinessCustomer> getCustomer(ArrayList<BusinessCustomer> list) {
-		ObservableList<BusinessCustomer> customers = FXCollections.observableArrayList();
+		
 		for (BusinessCustomer customer : list) {
 			BusinessCustomer customerPlusBudget = new BusinessCustomer(customer.getEmployerCode(),
 					customer.getEmployeCompanyName(), customer.getIsApproved(), customer.getHRname());
@@ -163,13 +168,15 @@ public class authorizedEmployerApprovalController implements Initializable {
 		return customers;
 	}
 
-	/**after a table's row is double clicked, save the row values
+	/**
+	 * after a table's row is double clicked, save the row values
 	 * @param event
 	 * modifies: employerCode
 	 */
 	@FXML
 	void copyTableData(MouseEvent event) {
-		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+		if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2
+				&& approvalTable.getSelectionModel().getSelectedItem() != null) {
 			employerCode = (approvalTable.getSelectionModel().getSelectedItem().getEmployerCode());
 			approvalSuccsess.setVisible(false);
 			approvalSuccsess1.setVisible(false);
@@ -177,7 +184,8 @@ public class authorizedEmployerApprovalController implements Initializable {
 	}
 
 	
-	/**send a request to Client UI inorder to approve the selected supplier
+	/**
+	 * send a request to Client UI inorder to approve the selected supplier
 	 * @param event
 	 */
 	@FXML
@@ -198,6 +206,18 @@ public class authorizedEmployerApprovalController implements Initializable {
 		approvalSuccsess1.setVisible(true);
 		noApprovals.setVisible(false);
 		employerCode = "";
+	}
+	
+	/**
+	 * hides certain components when entering and leaving the page
+	 */
+	void reSetScreen() {
+		approvalSuccsess.setVisible(false);
+		approvalSuccsess1.setVisible(false);
+		noApprovals.setVisible(false);
+		approvalBtn.setVisible(false);
+		approvalTable.refresh();
+		customers.removeAll(customers);
 	}
 	
 	
