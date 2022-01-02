@@ -136,6 +136,8 @@ public class openNewAccountFinalController implements Initializable{
     @FXML 
     void openTheFields(ActionEvent event) {
     	if(accountCombo.getValue()==null) return;
+    	inputErrorTxt.setVisible(false);
+		srvErrorTxt.setVisible(false);
     	switch(accountCombo.getValue()) {
     	case "Private Account":
     		setEmployerDataVisibility(false);
@@ -202,6 +204,7 @@ public class openNewAccountFinalController implements Initializable{
      */
     @FXML
     void approvalClicked(MouseEvent event) {
+		srvErrorTxt.setVisible(false);
     	ArrayList<String> values = new ArrayList<String>();
     	// if input data is illegal show error message
 		if(illegalInput())
@@ -211,7 +214,6 @@ public class openNewAccountFinalController implements Initializable{
 		}
 		else
 			inputErrorTxt.setVisible(false);
-	
 		//insert relevant info for each type to the array list
     	switch(accountCombo.getValue()) {
     	
@@ -222,7 +224,7 @@ public class openNewAccountFinalController implements Initializable{
     		values.add("");
     		values.add(creditCardNumberTxtField.getText());
     		values.add("");
-
+    		break;
     	case "Business Account":
     		values.add("Business");
     		values.add(username);
@@ -230,7 +232,7 @@ public class openNewAccountFinalController implements Initializable{
     		values.add(dailyBudTxtField.getText());
     		values.add("");
     		values.add(employersNameTxtField.getText());
-    		
+    		break;
 
     	case "Business & Private Account" : 
     		values.add("Both");
@@ -239,8 +241,9 @@ public class openNewAccountFinalController implements Initializable{
     		values.add(dailyBudTxtField.getText());
     		values.add(creditCardNumberTxtField.getText());
     		values.add(employersNameTxtField.getText());
+    		break;
 		default:
-			break;
+			return;
     	}
 		//values = userType,username,monthly bud,daily budget,credit card number,employer's name.
     	//modify user status, add customer table, add w4c:
@@ -281,12 +284,16 @@ public class openNewAccountFinalController implements Initializable{
   			updateSucess.setVisible(true);
   			updateSucess1.setVisible(true);
   			srvErrorTxt.setVisible(false);
+  			return; // all good
   		}
-  		else { // error happend on server side.
+  		if(ans.equals("unApprovedEmployer")) {
+  			srvErrorTxt.setText("Employer name is not found or lacking permissions.");
+  		}
+  		 // error happend on server side.
   			updateSucess.setVisible(false);
   			updateSucess1.setVisible(false);
   			srvErrorTxt.setVisible(true);
-  		}
+  		
   		
     }
     
@@ -295,15 +302,46 @@ public class openNewAccountFinalController implements Initializable{
      * @return true if data is illegal in text boxes.
      */
     private boolean illegalInput() {
-    	if(accountCombo.getValue().equals("Private Account") && creditCardNumberTxtField.getText().equals(""))
+    	if(accountCombo.getValue()==null)
+    	{
+    		inputErrorTxt.setText("Please choose account permissions");
+			return true;
+    	}
+    	if(employersNameTxtField.getText().equals("")) {
+			inputErrorTxt.setText("Please enter employer's name");
+			return true;
+    	}
+    	if(accountCombo.getValue().equals("Private Account") && creditCardNumberTxtField.getText().equals("")) {
+			inputErrorTxt.setText("Please enter creditcard number");
+			return true;
+    	}
+    		
+    	if(accountCombo.getValue().equals("Business Account") && monthlyBudTxtField.getText().equals("")) {
+    		inputErrorTxt.setText("Please enter monthly budget");
     		return true;
-    	if(accountCombo.getValue().equals("Business Account") && monthlyBudTxtField.getText().equals(""))
-    		return true;
+    	}
+    		
     	if(accountCombo.getValue().equals("Business & Private Account") && (creditCardNumberTxtField.getText().equals("") ||monthlyBudTxtField.getText().equals("") ))
+    	{
+    		inputErrorTxt.setText("Creditcard and Monthly budget must be filled !");
     		return true;
-		return InputValidation.CheckIntegerInput(monthlyBudTxtField.getText()) ||
-				InputValidation.CheckIntegerInput(creditCardNumberTxtField.getText())||
-				InputValidation.CheckIntegerInput(dailyBudTxtField.getText());
+    	}
+    	if(InputValidation.CheckIntegerInput(monthlyBudTxtField.getText()))
+    	{
+    		inputErrorTxt.setText("Monthly budget must containt numbers only !");
+    		return true;
+    	}
+    	if(InputValidation.CheckIntegerInput(creditCardNumberTxtField.getText()))
+    	{
+    		inputErrorTxt.setText("Creditcard number must containt numbers only !");
+    		return true;
+    	}
+    	if(InputValidation.CheckIntegerInput(dailyBudTxtField.getText()))
+    	{
+    		inputErrorTxt.setText("Daily budget must containt numbers only !");
+    		return true;
+    	}
+		return false;
 	}
 
 	/**

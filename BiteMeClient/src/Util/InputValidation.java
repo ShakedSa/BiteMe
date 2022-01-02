@@ -30,7 +30,7 @@ public class InputValidation {
 	 * returns true if found any character besides 0-9.
 	 * 
 	 * @param String input
-	 * @return boolean
+	 * @return boolean true if found any character besides 0-9.
 	 */
 	public static boolean CheckIntegerInput(String input) {
 		Pattern p = Pattern.compile("[^0-9]$");
