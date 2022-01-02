@@ -50,7 +50,10 @@ public class openNewAccountFinalController implements Initializable{
     private Label approvalBtn;
 
     @FXML
-    private ImageView leftArrowBtn;
+	private Rectangle leftArrowBtn;
+    
+ //  @FXML
+ //   private ImageView leftArrowBtn;
 
     @FXML
     private Rectangle avatar;
@@ -355,6 +358,7 @@ public class openNewAccountFinalController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		router = Router.getInstance();
 		router.setOpenNewAccountFinalController(this);
+		router.setArrow(leftArrowBtn, -90);
 		setStage(router.getStage());
 		
 	}

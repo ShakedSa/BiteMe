@@ -726,6 +726,9 @@ public class ClientUI implements ClientIF {
 
 	}
 
+	/**
+	 * @return last ServerResponse received from the server
+	 */
 	public ServerResponse getLastResponse() {
 		return lastResponse;
 	}
@@ -795,6 +798,9 @@ public class ClientUI implements ClientIF {
 		client.handleMessageFromClientUI(serverResponse);
 	}
 
+	/**
+	 * @param values
+	 */
 	public void getSupplierReceipt(ArrayList<String> values) {
 		ServerResponse serverResponse = new ServerResponse("getSupplierReceipt");
 		serverResponse.setServerResponse(values);
