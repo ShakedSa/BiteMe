@@ -2440,9 +2440,9 @@ public class mysqlConnection {
 		// customer):
 		String empCode = "";
 		try {
-			query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName like ? AND IsApproved='1'";
+			query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName = ? AND IsApproved='1'";
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, "%" + values.get(5) + "%"); // customer's name
+			stmt.setString(1,values.get(5)); // customer's name
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next())
 				empCode = rs.getString(1);
