@@ -382,16 +382,27 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * exe a Query to add a new supplier to the db.
+	 * execute a Query to add a new supplier to the db.
 	 * 
 	 * @return ServerResponse serverResponse
 	 */
-	public static void addNewSupplier(NewSupplier supplier) {
+	public static ServerResponse addNewSupplier(NewSupplier supplier) {
+		ServerResponse serverResponse = new ServerResponse("newSupplier");
 		PreparedStatement stmt = null;
 		int monthlyCommision = Character.getNumericValue(supplier.getMonthlyCommision().charAt(0));
 		try {
-			// give supplier permissions to the chosen user
-			String query = "UPDATE bitemedb.users SET UserType = ?  WHERE UserName = ?";
+			// check that the resturant name and address are'nt already exist 
+			String query = "SELECT RestaurantName, RestaurantAddress FROM bitemedb.suppliers WHERE RestaurantName = ? AND RestaurantAddress = ? ";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, supplier.getResturantName());
+			stmt.setString(2, supplier.getResturantAddress());
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+					serverResponse.setMsg("already exist");
+				return serverResponse;
+			}
+			// give suppliers permissions to the chosen user
+			query = "UPDATE bitemedb.users SET UserType = ?  WHERE UserName = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "Supplier");
 			stmt.setString(2, supplier.getUserName());
@@ -411,11 +422,13 @@ public class mysqlConnection {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("no man");
+			System.out.println("query failed");
 		}
-		return;
+		serverResponse.setMsg("success");
+		return serverResponse;
 	}
 
+	
 	/**
 	 * Query to add a new supplier the db.
 	 * 

@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.updateUserInformationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="830.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controls.updateUserInformationController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eeeeee" height="85.0" layoutX="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="837.0" />
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
@@ -73,12 +73,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Label>
-      <Text fx:id="updateSucess2" fill="#62d019" layoutX="118.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Information client was updated successfully!" visible="false">
+      <Text fx:id="updateSucess2" fill="#62d019" layoutX="112.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Information client was updated successfully!" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <ImageView fx:id="updateSucess1" fitHeight="31.0" fitWidth="30.0" layoutX="87.0" layoutY="416.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="updateSucess1" fitHeight="31.0" fitWidth="30.0" layoutX="81.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/greenVLogo.gif" />
          </image>
@@ -88,13 +88,13 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Text>
-      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="262.0" layoutY="191.0" prefHeight="26.0" prefWidth="178.0">
+      <TextField fx:id="userNameTxtField" focusTraversable="false" layoutX="267.0" layoutY="193.0" prefHeight="26.0" prefWidth="136.0">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="455.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
-      <Text fx:id="userNameError" fill="RED" layoutX="529.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate UserName" visible="false">
+      <Button fx:id="searchBtn" layoutX="435.0" layoutY="192.0" mnemonicParsing="false" onMouseClicked="#searchClicked" text="Search" />
+      <Text fx:id="userNameError" fill="RED" layoutX="509.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Unable to locate UserName" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
@@ -124,7 +124,7 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="action2" layoutX="87.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" text="Permanently remove this client" visible="false">
+      <RadioButton fx:id="action2" layoutX="87.0" layoutY="367.0" mnemonicParsing="false" onMouseClicked="#removeClientClicked" prefHeight="22.0" prefWidth="253.0" text="Permanently remove this client" visible="false">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>

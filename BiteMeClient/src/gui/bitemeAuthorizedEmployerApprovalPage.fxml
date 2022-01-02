@@ -87,12 +87,12 @@
             <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
-      <TableView fx:id="approvalTable" layoutX="57.0" layoutY="238.0" onMousePressed="#copyTableData" prefHeight="197.0" prefWidth="565.0">
+      <TableView fx:id="approvalTable" layoutX="57.0" layoutY="238.0" onMousePressed="#copyTableData" prefHeight="197.0" prefWidth="512.0">
         <columns>
           <TableColumn fx:id="EmployerCode" prefWidth="115.0" text="EmployerCode" />
-          <TableColumn fx:id="EmployeCompanyName" prefWidth="150.0" text="EmployeCompanyName" />
-            <TableColumn fx:id="IsApproved" prefWidth="95.0" text="IsApproved" />
-            <TableColumn fx:id="HRname" prefWidth="136.0" text="HRname" />
+          <TableColumn fx:id="EmployeCompanyName" prefWidth="155.0" text="EmployeCompanyName" />
+            <TableColumn fx:id="IsApproved" prefWidth="118.0" text="IsApproved" />
+            <TableColumn fx:id="HRname" prefWidth="127.0" text="HRname" />
         </columns>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />

@@ -135,7 +135,7 @@ public class Server extends AbstractServer {
 			this.sendToClient(mysqlConnection.setRate(m.get(0), m.get(1)), client);
 			break;
 		case "newSupplier":
-			mysqlConnection.addNewSupplier((NewSupplier) serverResponse.getServerResponse());
+			this.sendToClient(mysqlConnection.addNewSupplier((NewSupplier) serverResponse.getServerResponse()), client);
 			break;
 		case "InsertOrder":
 			this.sendToClient(
