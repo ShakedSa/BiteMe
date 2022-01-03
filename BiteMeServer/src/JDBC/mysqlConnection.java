@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
 import Entities.CEO;
@@ -66,9 +64,9 @@ public class mysqlConnection {
 	/**
 	 * Default arguments for connection received from configuration file.
 	 */
-	public static String arg0 = ReadPropertyFile.getInstance().getProp("jdbcScheme");
-	public static String arg1 = ReadPropertyFile.getInstance().getProp("jdbcId");
-	public static String arg2 = ReadPropertyFile.getInstance().getProp("jdbcPass");
+	public static String arg0;
+	public static String arg1;
+	public static String arg2;
 	private static Connection conn;
 
 	/**
