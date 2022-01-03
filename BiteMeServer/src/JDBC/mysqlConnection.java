@@ -120,7 +120,7 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (rs.getString(8).equals("User") || rs.getString(13).equals("Unverified")) {
+				if (rs.getString(8).equals("User")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
