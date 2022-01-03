@@ -390,6 +390,8 @@ public class restaurantMenuController implements Initializable {
 			pane.setId("menuBtn");
 			pane.getChildren().add(nameLabel);
 			pane.getChildren().add(priceLabel);
+			/** Product's price */
+			final FloatProperty initialProductPrice = new SimpleFloatProperty(p.getPrice());
 			tabLabels.getChildren().add(pane);
 			if (i % 2 != 0) {
 				pane.setLayoutX(375);
@@ -434,6 +436,7 @@ public class restaurantMenuController implements Initializable {
 					Label removeItem = new Label("Remove Item");
 					removeItem.setOnMouseClicked(evnt -> {
 						router.getOrder().getProducts().remove(p);
+						p.setPrice(initialProductPrice.get());
 						nextBtn.setDisable(false);
 						leftArrowBtn.setDisable(false);
 						root.getChildren().remove(overlayPane);
@@ -457,8 +460,6 @@ public class restaurantMenuController implements Initializable {
 					/** Product's description. */
 					Label description = new Label(p.getDescription());
 					description.getStyleClass().add("componentDescription");
-					/** Product's price */
-					final FloatProperty initialProductPrice = new SimpleFloatProperty(p.getPrice());
 					Label price = new Label(String.format("Price %.2f \u20AA", initialProductPrice.get()));
 					price.getStyleClass().add("productPrice");
 					/** Counter to show how many product of this product are in the order. */

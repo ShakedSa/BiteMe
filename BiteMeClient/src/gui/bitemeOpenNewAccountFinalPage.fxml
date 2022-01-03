@@ -18,12 +18,12 @@
       <Line endX="749.0" endY="-222.0" layoutX="122.0" layoutY="308.0" startX="-122.0" startY="-222.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/biteme-logo.gif" />
+            <Image url="@../images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/bitme-slogan.gif" />
+            <Image url="@../images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Rectangle fx:id="avatar" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="635.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="52.0" />
@@ -119,7 +119,7 @@
       </Text>
       <ImageView fx:id="updateSucess1" fitHeight="50.0" fitWidth="34.0" layoutX="57.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../../../scene%20builder/images/greenVLogo.gif" />
+            <Image url="@../images/greenVLogo.gif" />
          </image>
       </ImageView>
       <Label fx:id="infoMsg" layoutX="57.0" layoutY="181.0">
@@ -136,7 +136,7 @@
       </Label>
       <ImageView fx:id="approvalBtn1" fitHeight="50.0" fitWidth="46.0" layoutX="790.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../scene%20builder/images/sendIcon.gif" />
+            <Image url="@../images/sendIcon.gif" />
          </image>
       </ImageView>
       <Text fx:id="inputErrorTxt" fill="RED" layoutX="57.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid input" visible="false">

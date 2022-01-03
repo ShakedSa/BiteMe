@@ -2602,18 +2602,21 @@ public class mysqlConnection {
 			stmt.setString(4, values.get(4));// credit card number
 			stmt.setString(5, values.get(2)); // monthly budget
 			String dailyBudget = values.get(3);
+//			if(dailyBudget.equals("")) {
+//				dailyBudget="0";
+//				stmt.setString(8, values.get(2)); // daily balance = monthly budget
+//			}
+//			else {
+//				stmt.setString(8, values.get(3)); // daily balance=budget				
+//			}
 			if(dailyBudget.equals("")) {
-				dailyBudget="0";
-				stmt.setString(8, values.get(2)); // daily balance = monthly budget
+				dailyBudget = "0";
 			}
-			else {
-				stmt.setString(8, values.get(3)); // daily balance=budget				
-			}
+			stmt.setString(8, dailyBudget);
 			stmt.setString(6, dailyBudget); // daily budget
 			stmt.setString(7, values.get(2)); // monthly balance = budget
 			switch (customerType) {
 			case "Private":
-
 				stmt.setInt(6, 0); // daily budget
 				stmt.setInt(8, 0); // daily balance
 				stmt.setInt(7, 0); // monthly balance
