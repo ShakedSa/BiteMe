@@ -68,28 +68,39 @@ public class createRevenueQuarterlyReportController implements Initializable{
  
     @FXML
     void logoutClicked(MouseEvent event) {
+    	
     	router.logOut();
     }
 
     
     @FXML
     void returnToHomePage(MouseEvent event) {
+    	clearMessages();
     	router.changeSceneToHomePage();
     }
 
     @FXML
     void returnToManagerPanel(MouseEvent event) {
+    	clearMessages();
     	router.returnToManagerPanel(event);
     }
 
+    void clearMessages() {
+    	UploadMsgTxt.setVisible(false);
+		VImage.setVisible(false);
+		InvalidMsg.setVisible(false);
+    }
     /**
      * this method sends request to the client in order to upload the report into the server's database.
      * @param event
      */
     @FXML
-    void uploadReportClicked(MouseEvent event) {
+    public void uploadReportClicked(MouseEvent event) {
     	if(checkLegality()) // check data legality, print error if illegal.
     	{
+    		UploadMsgTxt.setVisible(false);
+    		VImage.setVisible(false);
+    		InvalidMsg.setText("Invalid year or quarter");
     		InvalidMsg.setVisible(true);
     		return;
     	}
@@ -119,6 +130,7 @@ public class createRevenueQuarterlyReportController implements Initializable{
     	if(response!=null && response.getDataType().equals("exists")) {
     		UploadMsgTxt.setVisible(false);
     		VImage.setVisible(false);
+    		InvalidMsg.setText("Report for the selected date is already on the system");
     		InvalidMsg.setVisible(true);
     	}
     	else {
@@ -134,7 +146,7 @@ public class createRevenueQuarterlyReportController implements Initializable{
 	private boolean checkLegality() { // if month/year ==null or quarter isn't ended yet, return true
 		return monthBox.getValue() == null ||
 				yearBox.getValue() == null || 
-				(Integer.parseInt(monthBox.getValue())*3) >= LocalDate.now().getMonthValue();
+				(yearBox.getValue().equals(Integer.toString(LocalDate.now().getYear())) && (Integer.parseInt(monthBox.getValue())*3) >= LocalDate.now().getMonthValue());
 	}
 
 
@@ -183,5 +195,39 @@ public class createRevenueQuarterlyReportController implements Initializable{
 		return scene;
 	}
 
+
+	/**
+	 * @return the monthBox
+	 */
+	public ComboBox<String> getMonthBox() {
+		return monthBox;
+	}
+
+
+	/**
+	 * @return the yearBox
+	 */
+	public ComboBox<String> getYearBox() {
+		return yearBox;
+	}
+
+
+	/**
+	 * @return the invalidMsg
+	 */
+	public Text getInvalidMsg() {
+		return InvalidMsg;
+	}
+
+
+	/**
+	 * @return the uploadMsgTxt
+	 */
+	public Text getUploadMsgTxt() {
+		return UploadMsgTxt;
+	}
+
+	
+	
 }
 

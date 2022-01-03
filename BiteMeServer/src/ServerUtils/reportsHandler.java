@@ -329,6 +329,11 @@ public class reportsHandler {
 	public static void createQuarterlyReports(int month, int year, String[] Branches) {
 		int currentMonth= LocalDate.now().getMonthValue();
 		if(month%3==0 || (currentMonth-1)%3==0 ) {//quarter ended, create new quarter revenue report.
+			if(month==1)
+			{
+				month=12;
+				year--;
+			}
 			for(String branch:Branches)
     			reportsHandler.quarterlyRevenueReportPdf(branch, Integer.toString(month/3), Integer.toString(year));
 		}
@@ -342,7 +347,7 @@ public class reportsHandler {
 	 */ 
 	
 	public static ServerResponse quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
-		
+		System.out.println("branch: "+Branch + " Quarter: " + quarter + " year: " + Year);
 		// add check if report exists and return serverResponse with value.
 		if(mysqlConnection.checkReportExists(Branch, quarter, Year)) {
 			System.out.println("exists");
@@ -437,7 +442,7 @@ public class reportsHandler {
 		ArrayList<String> info = new ArrayList<String>();
 		//reportType,Month,Year,branch
 		info.add("QuarterlyRevenueReport");
-		info.add(quarter);
+		info.add(Integer.toString( Integer.parseInt(quarter)*3));
 		info.add(Year);
 		info.add(Branch);
 		//loading the temp report:

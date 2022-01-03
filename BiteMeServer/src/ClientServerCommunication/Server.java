@@ -248,20 +248,22 @@ public class Server extends AbstractServer {
 	 * sending a message to the gui.
 	 */
 	protected void serverStarted() {
+		mysqlConnection.logoutAll();
+		controller.setMessage("Server listening for connections on port " + getPort());
 		dailyThread = new DailyThread();
 		Thread t = new Thread(dailyThread);
 		t.start();
 		int date[]=reportsHandler.getLastReportDate();
 		int year=date[0],month=date[1];
-		if(year!=LocalDate.now().getYear() || month!=LocalDate.now().getMonthValue())
+		if(year!=LocalDate.now().getYear() || month!=(LocalDate.now().getMonthValue()))
 		{//report updates needed for last report month+1:
+			//check if new year:
+			if(LocalDate.now().getMonthValue()==1 && month==12)
+				return;
 		//(no need next ones since server was off and no other data was collected)
 			reportsHandler.createAllReports(month+1, year);
 			controller.setMessage("Monthly reports were created.");
 		}
-		mysqlConnection.logoutAll();
-		controller.setMessage("Server listening for connections on port " + getPort());
-
 	}
 
 	/**

@@ -51,9 +51,6 @@ public class openNewAccountFinalController implements Initializable{
 
     @FXML
 	private Rectangle leftArrowBtn;
-    
- //  @FXML
- //   private ImageView leftArrowBtn;
 
     @FXML
     private Rectangle avatar;
