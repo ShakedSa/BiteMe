@@ -91,6 +91,10 @@ public class managerPanelController implements Initializable {
 		router.setAvatar(avatar);
 	}
 
+	/**
+	 * Changing application scene to adding new supplier scene
+	 * @param event
+	 */
 	@FXML
 	void AddNewSupplierClicked(MouseEvent event) {
 		if (router.getAddNewSupplierTableController() == null) {
@@ -124,6 +128,10 @@ public class managerPanelController implements Initializable {
 		}
 	}
 
+	/**
+	 * Changing application scene to employer approval scene
+	 * @param event
+	 */
 	@FXML
 	void AuthorizedEmployerApprovalClicked(MouseEvent event) {
 		if (router.getAuthorizedEmployerApprovalController() == null) {
@@ -156,6 +164,10 @@ public class managerPanelController implements Initializable {
 		}
 	}
 
+	/**
+	 * Changing application scene to open new account scene
+	 * @param event
+	 */
 	@FXML
 	void OpenNewAccountClicked(MouseEvent event) {
 		if (router.getOpenNewAccountController() == null) {
@@ -187,6 +199,10 @@ public class managerPanelController implements Initializable {
 		}
 	}
 
+	/**
+	 * Changing application scene to update user info scene
+	 * @param event
+	 */
 	@FXML
 	void UpdateUserInformationClicked(MouseEvent event) {
 		if (router.getUpdateUserInformationController() == null) {
@@ -217,6 +233,10 @@ public class managerPanelController implements Initializable {
 		}
 	}
 
+	/**
+	 * Changing application scene to upload quarterly report scene
+	 * @param event
+	 */
 	@FXML
 	void UploadQuarterlyReportClicked(MouseEvent event) {
 		if (router.getUploadQuarterlyReportController() == null) {
@@ -246,6 +266,10 @@ public class managerPanelController implements Initializable {
 	}
 	
 
+    /**
+     * Changing application scene to upload revenue report scene
+     * @param event
+     */
     @FXML
     void UploadRevenueQuarterlyReportClicked(MouseEvent event) {
 		if (router.getCreateRevenueQuarterlyReportController() == null) {
@@ -274,6 +298,10 @@ public class managerPanelController implements Initializable {
 		}
     }
 
+	/**
+	 * Changing application scene to monthly reports viewing scene
+	 * @param event
+	 */
 	@FXML
 	void viewMonthlyReportsClicked(MouseEvent event) {
 		if (router.getViewMonthlyReportsController() == null) {

@@ -98,6 +98,9 @@ public class profileController implements Initializable {
 	private Text itemsCounter;
 	private String lastSceneTitle;
 
+	/**
+	 * this method will set up profile information with relevant data
+	 */
 	public void initProfile() {
 		setAvatar();
 		setProfile();
@@ -114,6 +117,10 @@ public class profileController implements Initializable {
 		statusTxt.setText(user.getStatus().toString());
 	}
 
+	/**
+	 * set up bag visibility accorting to val
+	 * @param val
+	 */
 	private void setBagVisibility(boolean val) {
 		bagImg.setVisible(val);
 		itemsCounter.setVisible(val);
@@ -215,19 +222,16 @@ public class profileController implements Initializable {
 
 	@FXML
 	void ceoBtnClicked(MouseEvent event) {
-		// router.getHomePageController().ceoBtnClicked(event);
 		router.returnToCEOPanel(event);
 	}
 
 	@FXML
 	void employerHRBtnClicked(MouseEvent event) {
-		// router.getHomePageController().employerHRBtnClicked(event);
 		router.returnToEmployerHRPanel(event);
 	}
 
 	@FXML
 	void managerBtnClicked(MouseEvent event) {
-		// router.getHomePageController().managerBtnClicked(event);
 		router.returnToManagerPanel(event);
 	}
 
@@ -264,7 +268,6 @@ public class profileController implements Initializable {
 
 	@FXML
 	void supplierBtnClicked(MouseEvent event) {
-		// router.getHomePageController().supplierBtnClicked(event);
 		router.returnToSupplierPanel(event);
 	}
 
@@ -296,6 +299,10 @@ public class profileController implements Initializable {
 		this.lastSceneTitle = title;
 	}
 
+	/**
+	 * this method will updated user's main branch according to his chosen value.
+	 * @param event
+	 */
 	@FXML
 	void updateProfile(ActionEvent event) {
 		Thread t = new Thread(() -> {
