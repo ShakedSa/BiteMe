@@ -219,7 +219,7 @@ public class openNewAccountFinalController implements Initializable{
 			inputErrorTxt.setVisible(false);
 		//insert relevant info for each type to the array list
     	switch(accountCombo.getValue()) {
-    	
+    	//values = userType,username,monthly bud,daily budget,credit card number,employer's name.
     	case "Private Account":
     		values.add("Private");
     		values.add(username);
@@ -310,10 +310,7 @@ public class openNewAccountFinalController implements Initializable{
     		inputErrorTxt.setText("Please choose account permissions");
 			return true;
     	}
-    	if(employersNameTxtField.getText().equals("")) {
-			inputErrorTxt.setText("Please enter employer's name");
-			return true;
-    	}
+
     	if(accountCombo.getValue().equals("Private Account") && creditCardNumberTxtField.getText().equals("")) {
 			inputErrorTxt.setText("Please enter creditcard number");
 			return true;
@@ -329,6 +326,12 @@ public class openNewAccountFinalController implements Initializable{
     		inputErrorTxt.setText("Creditcard and Monthly budget must be filled !");
     		return true;
     	}
+    	
+    	if(employersNameTxtField.getText().equals("") && accountCombo.getValue().contains("Business")) {
+			inputErrorTxt.setText("Please enter employer's name");
+			return true;
+    	}
+    	
     	if(InputValidation.CheckIntegerInput(monthlyBudTxtField.getText()))
     	{
     		inputErrorTxt.setText("Monthly budget must containt numbers only !");

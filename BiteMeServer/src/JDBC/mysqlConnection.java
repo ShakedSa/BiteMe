@@ -2573,6 +2573,23 @@ public class mysqlConnection {
 		// generate random qrcode:
 		Random rand = new Random();
 		String qrCode = Integer.toString(rand.nextInt(1999999999));
+		
+		
+		//get customer ID
+		try {
+			query = "SELECT CustomerID FROM bitemedb.customers where UserName= ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, values.get(1)); // user name
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next())
+				customerId = rs.getInt(1);
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 		// query 3 : insert info in w4c: TBD
 
 		try {
@@ -2596,6 +2613,11 @@ public class mysqlConnection {
 			stmt.setString(7, values.get(2)); // monthly balance = budget
 			switch (customerType) {
 			case "Private":
+
+				stmt.setInt(6, 0); // daily budget
+				stmt.setInt(8, 0); // daily balance
+				stmt.setInt(7, 0); // monthly balance
+				stmt.setInt(5, 0); // monthly budget
 				stmt.setString(2, null);// no employer code
 				break;
 			case "Business":
