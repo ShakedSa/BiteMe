@@ -30,8 +30,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * @author Natali
- * This class updates an order by supplier 
+ * @author Natali This class updates an order by supplier
  */
 public class SupplierUpdateOrderController implements Initializable {
 
@@ -43,9 +42,9 @@ public class SupplierUpdateOrderController implements Initializable {
 
 	@FXML
 	private Text PendingTxt;
-	
-    @FXML
-    private Text ReadyTxt;
+
+	@FXML
+	private Text ReadyTxt;
 
 	@FXML
 	private Text ReceivedTxt;
@@ -101,8 +100,8 @@ public class SupplierUpdateOrderController implements Initializable {
 	@FXML
 	private RadioButton notIncludeDeliveryBtn;
 
-    @FXML
-    private Text noUpdateTxt;
+	@FXML
+	private Text noUpdateTxt;
 
 	@FXML
 	private Text profileBtn;
@@ -125,7 +124,7 @@ public class SupplierUpdateOrderController implements Initializable {
 	private ObservableList<String> list;
 	private User user = (User) ClientGUI.getClient().getUser().getServerResponse();
 	private String restaurantName = user.getOrganization();
-	private String orderNumber,status;
+	private String orderNumber, status;
 	private String receivedOrReady;
 	private int orderNumberInt;
 	private Integer deliveryNumber = 0;
@@ -136,12 +135,14 @@ public class SupplierUpdateOrderController implements Initializable {
 	 */
 	@FXML
 	void UpdateOrderClicked(MouseEvent event) {
-		if (includeDeliveryBtn.isSelected() && !checkTime()) {
-			return;
-		}
 		if (updateDataComboBox.getValue() == null) {
 			errorMsg.setText("Please select the status of the order");
 			return;
+		}
+		if (order.getStatus().equals("Received") && deliveryType != TypeOfOrder.takeaway) {
+			if (!checkTime()) {
+				return;
+			}
 		}
 		errorMsg.setText("");
 		receivedOrReady = updateDataComboBox.getValue();
@@ -191,24 +192,16 @@ public class SupplierUpdateOrderController implements Initializable {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		// save the return value from query - delivery number
 		deliveryNumber = (int) ClientGUI.getClient().getLastResponse().getServerResponse();
-
-		// display an error message if supplier didn't select any radio button
-		if (receivedOrReady.equals("Order Is Ready") && !includeDeliveryBtn.isSelected()
-				&& !notIncludeDeliveryBtn.isSelected()) {
-			errorMsg.setText("Please select YES if order includes delivery and NO else");
-			return;
-		}
-		
 		// order update successfully
 		VImage.setVisible(true);
 		successMsg.setVisible(true);
 		// new message send to customer
-		newMsgImage.setVisible(true); 
+		newMsgImage.setVisible(true);
 		// can't update more than once
-		updateOrderBtn.setDisable(true); 
+		updateOrderBtn.setDisable(true);
 	}
 
 	/**
@@ -271,17 +264,16 @@ public class SupplierUpdateOrderController implements Initializable {
 			ReadyTxt.setVisible(false);
 			noUpdateTxt.setVisible(false);
 			updateOrderBtn.setDisable(false);
-		}
-		else { //order status is ready
+		} else { // order status is ready
 			ReadyTxt.setVisible(true);
 			noUpdateTxt.setVisible(true);
 			updateOrderBtn.setDisable(true);
-			if(deliveryType != TypeOfOrder.takeaway) {
+			if (deliveryType != TypeOfOrder.takeaway) {
 				updateDataComboBox.setVisible(true);
 				updateDataTxt.setVisible(true);
-			}else {
-			updateDataComboBox.setVisible(false);
-			updateDataTxt.setVisible(false);
+			} else {
+				updateDataComboBox.setVisible(false);
+				updateDataTxt.setVisible(false);
 			}
 		}
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -291,8 +283,8 @@ public class SupplierUpdateOrderController implements Initializable {
 	}
 
 	/**
-	 * Checks server response and display relevant information.
-	 * return true if the update was completed successfully and false else
+	 * Checks server response and display relevant information. return true if the
+	 * update was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.getClient().getLastResponse() == null) {
@@ -311,8 +303,8 @@ public class SupplierUpdateOrderController implements Initializable {
 	}
 
 	/**
-	 * When order status is ready and supplier selects YES - the order includes delivery,
-	 * and he needs to enter planned time
+	 * When order status is ready and supplier selects YES - the order includes
+	 * delivery, and he needs to enter planned time
 	 */
 	@FXML
 	void includeDeliveryBtnClicked(MouseEvent event) {
@@ -324,7 +316,8 @@ public class SupplierUpdateOrderController implements Initializable {
 	}
 
 	/**
-	 * When order status is ready and supplier selects NO - the order doesn't includes delivery 
+	 * When order status is ready and supplier selects NO - the order doesn't
+	 * includes delivery
 	 */
 	@FXML
 	void notIncludeDeliveryBtnClicked(MouseEvent event) {
@@ -402,6 +395,7 @@ public class SupplierUpdateOrderController implements Initializable {
 
 	/**
 	 * Private method generating <size> strings to add to the combo box.
+	 * 
 	 * @param size
 	 * @return String[]
 	 */
@@ -476,7 +470,6 @@ public class SupplierUpdateOrderController implements Initializable {
 		minutesBox.getSelectionModel().select(String.format("%02d", LocalTime.now().getMinute()));
 	}
 
-
 	/**
 	 * @return the selected order
 	 */
@@ -514,16 +507,17 @@ public class SupplierUpdateOrderController implements Initializable {
 	 * This method initialized this screen and set visibility of buttons and text
 	 */
 	private void setStartPage() {
-		Thread t  = new Thread(() -> {
-			synchronized(ClientGUI.getMonitor()) {
+		Thread t = new Thread(() -> {
+			synchronized (ClientGUI.getMonitor()) {
 				ClientGUI.getClient().getDeliveryInfo(order.getOrderNumber());
 				try {
 					ClientGUI.getMonitor().wait();
-				}catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return;
 				}
-				deliveryType = TypeOfOrder.valueOf((String)ClientGUI.getClient().getLastResponse().getServerResponse());
+				deliveryType = TypeOfOrder
+						.valueOf((String) ClientGUI.getClient().getLastResponse().getServerResponse());
 			}
 		});
 		errorMsg.setText("");
@@ -557,11 +551,11 @@ public class SupplierUpdateOrderController implements Initializable {
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
-	
+
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
