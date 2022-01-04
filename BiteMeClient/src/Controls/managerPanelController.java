@@ -99,7 +99,7 @@ public class managerPanelController implements Initializable {
 	void AddNewSupplierClicked(MouseEvent event) {
 		if (router.getAddNewSupplierTableController() == null) {
 			AnchorPane mainContainer;
-			addNewSupplierTableController controller;
+			AddNewSupplierTableController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeAddNewSupplierTablePage.fxml"));
@@ -172,7 +172,7 @@ public class managerPanelController implements Initializable {
 	void OpenNewAccountClicked(MouseEvent event) {
 		if (router.getOpenNewAccountController() == null) {
 			AnchorPane mainContainer;
-			openNewAccountController controller;
+			OpenNewAccountController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeOpenNewAccountPage.fxml"));

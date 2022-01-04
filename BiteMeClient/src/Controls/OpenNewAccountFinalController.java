@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  * @author Eden
  * This class is in charge of the logics and scene setup for opening new account page.
  */
-public class openNewAccountFinalController implements Initializable{
+public class OpenNewAccountFinalController implements Initializable{
 	public final UserType type= UserType.BranchManager;
 	private Router router;
 	private Stage stage;

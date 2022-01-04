@@ -46,13 +46,13 @@ public class Router {
 	private orderReceivedController OrderReceivedController;
 	// Manager Panel pages:
 	private addNewSupplierController AddNewSupplierController;
-	private addNewSupplierTableController AddNewSupplierTableController;
+	private AddNewSupplierTableController AddNewSupplierTableController;
 	private viewMonthlyReportsController ViewMonthlyReportsController;
 	private uploadQuarterlyReportController UploadQuarterlyReportController;
 	private updateUserInformationController UpdateUserInformationController;
 	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
-	private openNewAccountController OpenNewAccountController;
-	private openNewAccountFinalController OpenNewAccountFinalController;
+	private OpenNewAccountController OpenNewAccountController;
+	private OpenNewAccountFinalController OpenNewAccountFinalController;
 	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
 	private addNewItemController AddNewItemController;
@@ -662,7 +662,7 @@ public class Router {
 	/**
 	 * @param openNewAccountController the openNewAccountController to set
 	 */
-	public void setOpenNewAccountController(openNewAccountController openNewAccountController) {
+	public void setOpenNewAccountController(OpenNewAccountController openNewAccountController) {
 		OpenNewAccountController = openNewAccountController;
 	}
 
@@ -873,7 +873,7 @@ public class Router {
 	/**
 	 * @return the openNewAccountController
 	 */
-	public openNewAccountController getOpenNewAccountController() {
+	public OpenNewAccountController getOpenNewAccountController() {
 		return OpenNewAccountController;
 	}
 
@@ -1062,28 +1062,28 @@ public class Router {
 	/**
 	 * @return the openNewAccountFinalController
 	 */
-	public openNewAccountFinalController getOpenNewAccountFinalController() {
+	public OpenNewAccountFinalController getOpenNewAccountFinalController() {
 		return OpenNewAccountFinalController;
 	}
 
 	/**
 	 * @param openNewAccountFinalController the openNewAccountFinalController to set
 	 */
-	public void setOpenNewAccountFinalController(openNewAccountFinalController openNewAccountFinalController) {
+	public void setOpenNewAccountFinalController(OpenNewAccountFinalController openNewAccountFinalController) {
 		OpenNewAccountFinalController = openNewAccountFinalController;
 	}
 	
 	/**
 	 * @return the addNewSupplierTableController
 	 */
-	public addNewSupplierTableController getAddNewSupplierTableController() {
+	public AddNewSupplierTableController getAddNewSupplierTableController() {
 		return AddNewSupplierTableController;
 	}
 
 	/**
 	 * @param addNewSupplierTableController the addNewSupplierTableController to set
 	 */
-	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
+	public void setAddNewSupplierTableController(AddNewSupplierTableController addNewSupplierTableController) {
 		AddNewSupplierTableController = addNewSupplierTableController;
 	}
 	

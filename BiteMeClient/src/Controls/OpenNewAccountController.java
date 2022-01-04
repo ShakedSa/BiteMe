@@ -27,7 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class openNewAccountController implements Initializable { 
+public class OpenNewAccountController implements Initializable { 
 
 	public final UserType type = UserType.BranchManager;
 	private Router router;
@@ -214,7 +214,7 @@ public class openNewAccountController implements Initializable {
 		}
 		if (router.getOpenNewAccountFinalController() == null) {
 			AnchorPane mainContainer;
-			openNewAccountFinalController controller;
+			OpenNewAccountFinalController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeOpenNewAccountFinalPage.fxml"));

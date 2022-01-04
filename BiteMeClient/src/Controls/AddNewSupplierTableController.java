@@ -26,7 +26,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class addNewSupplierTableController implements Initializable {
+public class AddNewSupplierTableController implements Initializable {
 	
 	public final UserType type= UserType.BranchManager;
 	private Router router;
