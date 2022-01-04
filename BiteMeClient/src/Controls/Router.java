@@ -160,6 +160,7 @@ public class Router {
 				order = new Order();
 				delivery = null;
 				orderDeliveryMethod = null;
+				ViewIncomeReceiptController = null;
 				ClientGUI.getClient().setUser(null);
 			}
 		}
