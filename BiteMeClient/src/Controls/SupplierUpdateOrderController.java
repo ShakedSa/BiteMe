@@ -268,7 +268,7 @@ public class SupplierUpdateOrderController implements Initializable {
 			ReadyTxt.setVisible(true);
 			noUpdateTxt.setVisible(true);
 			updateOrderBtn.setDisable(true);
-			if (deliveryType != TypeOfOrder.takeaway) {
+			if (deliveryType != TypeOfOrder.takeaway && !order.getStatus().equals("Ready")) {
 				updateDataComboBox.setVisible(true);
 				updateDataTxt.setVisible(true);
 			} else {
