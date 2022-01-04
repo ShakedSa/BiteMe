@@ -303,7 +303,7 @@ public class ConfirmBusinessAccountController implements Initializable {
 	 * @author aviel
 	 *
 	 */
-	private class CustomerPlusBudget {
+	protected class CustomerPlusBudget {
 
 		private String id;
 		private String firstName;

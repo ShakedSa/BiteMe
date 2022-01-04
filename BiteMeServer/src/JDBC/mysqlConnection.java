@@ -736,7 +736,10 @@ public class mysqlConnection {
 				customer.setId(rs.getString(1));
 				customer.setFirstName(rs.getString(2));
 				customer.setLastName(rs.getString(3));
-				customer.setRole(rs.getString(4));
+				if(rs.getString(4).equals("NA"))
+					customer.setRole("Not mentioned");
+				else
+					customer.setRole(rs.getString(4));
 				w4c.setMonthlyBudget(rs.getFloat(5));
 				w4c.setDailyBudget(rs.getFloat(6));
 				customer.setW4c(w4c);
