@@ -135,8 +135,9 @@ public class OpenNewAccountController implements Initializable {
 			msg.setText("Currently no accounts are needed");
 			msg.setVisible(true);
 			next.setVisible(false);
-			next.setVisible(false);
 			return;
+		}else {
+			next.setVisible(true);
 		}
 		setTable(response);
 		instructions.setVisible(true);
@@ -179,6 +180,7 @@ public class OpenNewAccountController implements Initializable {
 	 */
 	public void reset() {
 		users.clear();
+		approvalTable.refresh();
 		msg.setVisible(false);
 	}
 
