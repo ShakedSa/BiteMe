@@ -41,6 +41,8 @@ public class paymentController implements Initializable {
 	private Scene scene;
 
 	Customer user;
+	
+	private float refundForBreakDown = 0;
 
 	@FXML
 	private Rectangle avatar;
@@ -119,7 +121,6 @@ public class paymentController implements Initializable {
 	void nextOrderStep(MouseEvent event) {
 		errorMsg.setText("");
 		W4CCard w4c = user.getW4c();
-		router.getOrderDeliveryMethod().setFinalPrice(checkRefundSelected());
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
 			if (w4c.getBalance() == 0 || w4c.getDailyBalance() == 0) {
 				if (user.isPrivate()) {
@@ -143,7 +144,9 @@ public class paymentController implements Initializable {
 		} else {
 			router.getOrder().setPaymentMethod(PaymentMethod.CreditCard);
 		}
-
+		router.getOrderDeliveryMethod().setFinalPrice(checkRefundSelected());
+		router.getOrderDeliveryMethod().setRefundForBreakDown(refundForBreakDown);
+		router.getOrderDeliveryMethod().setRefundSelected(refundCheck.isSelected());
 		if (router.getReviewOrderController() == null) {
 			AnchorPane mainContainer;
 			reviewOrderController controller;
@@ -168,6 +171,8 @@ public class paymentController implements Initializable {
 			router.getReviewOrderController().setItemsCounter();
 			stage.setTitle("BiteMe - Review Order");
 			stage.setScene(router.getReviewOrderController().getScene());
+			router.getOrderDeliveryMethod().setRefundForBreakDown(refundForBreakDown);
+			router.getOrderDeliveryMethod().setRefundSelected(refundCheck.isSelected());
 			stage.show();
 			router.getReviewOrderController().displayOrder();
 		}
@@ -274,16 +279,21 @@ public class paymentController implements Initializable {
 	 * And calculate the final price based on the user's refund amount..
 	 */
 	private float checkRefundSelected() {
+		System.out.println(refundCheck.isSelected());
 		final FloatProperty finalPrice = new SimpleFloatProperty(router.getOrderDeliveryMethod().getFinalPrice());
 		if (refundCheck.isSelected()) {
 			final FloatProperty refundAmount = new SimpleFloatProperty(
 					user.getRefunds().get(router.getOrder().getRestaurantName()));
 			if (refundAmount.get() >= finalPrice.get()) {
+				refundForBreakDown = finalPrice.get();
 				finalPrice.set(0);
 			} else {
+				refundForBreakDown = finalPrice.get() - refundAmount.get();
 				finalPrice.set(finalPrice.get() - refundAmount.get());
 			}
 		}
+		System.out.println(finalPrice.get());
+		System.out.println("Breakdown: " + refundForBreakDown);
 		return finalPrice.get();
 	}
 
@@ -361,6 +371,7 @@ public class paymentController implements Initializable {
 		}
 		privateRadio.setSelected(true);
 		privateRadio.requestFocus();
+		refundForBreakDown = checkRefundSelected();
 		showTextField(false);
 	}
 

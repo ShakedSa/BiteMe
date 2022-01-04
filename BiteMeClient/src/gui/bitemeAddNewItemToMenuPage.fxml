@@ -20,12 +20,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="57.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type">
@@ -127,7 +127,7 @@
       </Text>
       <ImageView fx:id="infoIcon" fitHeight="25.0" fitWidth="21.0" layoutX="391.0" layoutY="273.0" onMouseEntered="#infoIconEnter" onMouseExited="#infoIconExit" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/info-icon.png" />
+            <Image url="@/images/info-icon.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -145,7 +145,7 @@
       </Text>
       <ImageView fx:id="VImage" fitHeight="33.0" fitWidth="33.0" layoutX="128.0" layoutY="508.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/greenVLogo.gif" />
+            <Image url="@/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <CheckBox fx:id="sizeCheckBox" graphicTextGap="3.0" layoutX="220.0" layoutY="314.0" mnemonicParsing="false" text="Size">

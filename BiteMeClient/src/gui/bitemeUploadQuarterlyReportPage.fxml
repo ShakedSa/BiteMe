@@ -17,12 +17,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="57.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload Quarterly  Report">
@@ -93,7 +93,7 @@
       </Text>
       <ImageView fx:id="ImportImage" fitHeight="50.0" fitWidth="39.0" layoutX="57.0" layoutY="309.0" onMouseClicked="#ImportImageClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/upload.png" />
+            <Image url="@/images/upload.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -106,7 +106,7 @@
       </Text>
       <ImageView fx:id="UploadMsgImg" fitHeight="50.0" fitWidth="34.0" layoutX="57.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
-            <Image url="@../images/greenVLogo.gif" />
+            <Image url="@/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <Text fx:id="InvalidMsg" fill="RED" layoutX="57.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Invalid Path or file name !" visible="false">

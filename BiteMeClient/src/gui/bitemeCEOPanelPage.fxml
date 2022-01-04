@@ -16,22 +16,22 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="264.0" fitWidth="409.0" layoutX="39.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/CEOPanelImage.jpg" />
+            <Image url="@/images/CEOPanelImage.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="189.0" layoutY="348.0" pickOnBounds="true" preserveRatio="true" rotate="5.0">
          <image>
-            <Image url="@../images/managerPanelImage.png" />
+            <Image url="@/images/managerPanelImage.png" />
          </image>
       </ImageView>
       <Text id="active" fx:id="CEOPanelBtn" fill="#3180bc" layoutX="369.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CEO Panel">

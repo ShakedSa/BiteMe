@@ -48,7 +48,7 @@
       </Text>
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
-            <Image url="@../images/bag-icon.gif" />
+            <Image url="@/images/bag-icon.gif" />
          </image>
       </ImageView>
       <Circle fill="#1f93ff00" layoutX="554.0" layoutY="35.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
@@ -56,12 +56,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
@@ -87,7 +87,7 @@
       </Text>
       <ImageView fitHeight="126.0" fitWidth="107.0" layoutX="358.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/greenVLogo.gif" />
+            <Image url="@/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <Text fx:id="rateTxt" layoutX="582.0" layoutY="401.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rate our process">
@@ -97,7 +97,7 @@
       </Text>
       <ImageView fx:id="excellentRate" fitHeight="57.0" fitWidth="57.0" layoutX="750.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Excellent.gif" />
+            <Image url="@/images/Excellent.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -105,7 +105,7 @@
       </ImageView>
       <ImageView fx:id="goodRate" fitHeight="57.0" fitWidth="57.0" layoutX="693.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Very%20Good.gif" />
+            <Image url="@/images/VeryGood.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -113,7 +113,7 @@
       </ImageView>
       <ImageView fx:id="okRate" fitHeight="57.0" fitWidth="57.0" layoutX="635.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/OK.gif" />
+            <Image url="@/images/OK.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -121,7 +121,7 @@
       </ImageView>
       <ImageView fx:id="badRate" fitHeight="57.0" fitWidth="57.0" layoutX="577.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Not%20Good.gif" />
+            <Image url="@/images/NotGood.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -129,7 +129,7 @@
       </ImageView>
       <ImageView fx:id="veryBadRate" fitHeight="57.0" fitWidth="57.0" layoutX="519.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Very%20Bad.gif" />
+            <Image url="@/images/VeryBad.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

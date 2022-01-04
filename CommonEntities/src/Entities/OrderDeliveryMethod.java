@@ -16,6 +16,8 @@ public class OrderDeliveryMethod implements Serializable {
 	private TypeOfOrder typeOfOrder;
 	private Customer customerInfo;
 	private float finalPrice;
+	private boolean isRefundSelected = false;
+	private float refundForBreakDown = 0;
 
 	public OrderDeliveryMethod(Order order, Delivery delivery, TypeOfOrder typeOfOrder, Customer customerInfo) {
 		super();
@@ -93,6 +95,36 @@ public class OrderDeliveryMethod implements Serializable {
 	 */
 	public void setFinalPrice(float finalPrice) {
 		this.finalPrice = finalPrice;
+	}
+	
+	
+
+	/**
+	 * @return the isRefundSelected
+	 */
+	public boolean isRefundSelected() {
+		return isRefundSelected;
+	}
+
+	/**
+	 * @param isRefundSelected the isRefundSelected to set
+	 */
+	public void setRefundSelected(boolean isRefundSelected) {
+		this.isRefundSelected = isRefundSelected;
+	}
+
+	/**
+	 * @return the refundForBreakDown
+	 */
+	public float getRefundForBreakDown() {
+		return refundForBreakDown;
+	}
+
+	/**
+	 * @param refundForBreakDown the refundForBreakDown to set
+	 */
+	public void setRefundForBreakDown(float refundForBreakDown) {
+		this.refundForBreakDown = refundForBreakDown;
 	}
 
 	public void calculateFinalPrice() {
