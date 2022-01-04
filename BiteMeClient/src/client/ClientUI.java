@@ -242,26 +242,13 @@ public class ClientUI implements ClientIF {
 			return;
 		}
 	}
-
-	/**
-	 * Sending the server a creatNewBusinessCustomer request.
-	 * 
-	 * @param orderNumber
-	 * 
-	 *                    Sending the server a search order request.
-	 * 
-	 * @param orderNumber
-	 * 
-	 */
-	public void searchOrder(String orderNumber, String restaurantName) {
+	
+	public void getDeliveryInfo(int orderNumber) {
 		try {
-			ArrayList<String> arr = new ArrayList<>();
-//			arr.addAll(Arrays.asList("searchOrder", orderNumber));
-			arr.addAll(Arrays.asList(orderNumber, restaurantName));
-			ServerResponse serverResponse = new ServerResponse("searchOrder");
-			serverResponse.setServerResponse(arr);
+			ServerResponse serverResponse = new ServerResponse("GetDeliveryInfo");
+			serverResponse.setServerResponse(orderNumber);
 			client.handleMessageFromClientUI(serverResponse);
-		} catch (Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 			return;
 		}

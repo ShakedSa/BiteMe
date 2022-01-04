@@ -7,8 +7,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
 import Entities.Order;
 import Entities.User;
+import Enums.TypeOfOrder;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
@@ -34,6 +36,7 @@ import javafx.stage.Stage;
 public class SupplierUpdateOrderController implements Initializable {
 
 	public final UserType type = UserType.Supplier;
+	private TypeOfOrder deliveryType;
 	private Router router;
 	private Stage stage;
 	private Scene scene;
@@ -273,18 +276,17 @@ public class SupplierUpdateOrderController implements Initializable {
 			ReadyTxt.setVisible(true);
 			noUpdateTxt.setVisible(true);
 			updateOrderBtn.setDisable(true);
+			if(deliveryType != TypeOfOrder.takeaway) {
+				updateDataComboBox.setVisible(true);
+				updateDataTxt.setVisible(true);
+			}else {
 			updateDataComboBox.setVisible(false);
 			updateDataTxt.setVisible(false);
+			}
 		}
 		updateDataComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal == "Order Is Ready")
-				orderIsReady();
-			else {
-				includeDeliveryTxt.setVisible(false);
-				includeDeliveryBtn.setVisible(false);
-				notIncludeDeliveryBtn.setVisible(false);
-				notIncludeDelivery();
-			}
+				includeDelivery();
 		});
 	}
 
@@ -331,15 +333,6 @@ public class SupplierUpdateOrderController implements Initializable {
 		}
 		notIncludeDeliveryBtn.setSelected(true);
 		notIncludeDelivery();
-	}
-
-	/**
-	 * set visibility of order that is ready
-	 */
-	private void orderIsReady() {
-		includeDeliveryTxt.setVisible(true);
-		includeDeliveryBtn.setVisible(true);
-		notIncludeDeliveryBtn.setVisible(true);
 	}
 
 	/**
@@ -521,17 +514,29 @@ public class SupplierUpdateOrderController implements Initializable {
 	 * This method initialized this screen and set visibility of buttons and text
 	 */
 	private void setStartPage() {
+		Thread t  = new Thread(() -> {
+			synchronized(ClientGUI.getMonitor()) {
+				ClientGUI.getClient().getDeliveryInfo(order.getOrderNumber());
+				try {
+					ClientGUI.getMonitor().wait();
+				}catch(Exception e) {
+					e.printStackTrace();
+					return;
+				}
+				deliveryType = TypeOfOrder.valueOf((String)ClientGUI.getClient().getLastResponse().getServerResponse());
+			}
+		});
 		errorMsg.setText("");
 		deliveryNumber = null;
 		updateOrderBtn.setDisable(true);
 		updateDataComboBox.getSelectionModel().clearSelection();
-		includeDeliveryTxt.setVisible(false);
+//		includeDeliveryTxt.setVisible(false);
 		// not include delivery
-		notIncludeDeliveryBtn.setVisible(false);
-		notIncludeDeliveryBtn.setSelected(false);
+//		notIncludeDeliveryBtn.setVisible(false);
+//		notIncludeDeliveryBtn.setSelected(false);
 		// include delivery
-		includeDeliveryBtn.setSelected(false);
-		includeDeliveryBtn.setVisible(false);
+//		includeDeliveryBtn.setSelected(false);
+//		includeDeliveryBtn.setVisible(false);
 		enterPlannedTineTxt.setVisible(false);
 		// time check box
 		hourBox.setVisible(false);

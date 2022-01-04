@@ -736,7 +736,7 @@ public class mysqlConnection {
 				customer.setId(rs.getString(1));
 				customer.setFirstName(rs.getString(2));
 				customer.setLastName(rs.getString(3));
-				if(rs.getString(4).equals("NA"))
+				if (rs.getString(4).equals("NA"))
 					customer.setRole("Not mentioned");
 				else
 					customer.setRole(rs.getString(4));
@@ -2169,7 +2169,7 @@ public class mysqlConnection {
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, dishName);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next())
+			if (rs.next())
 				flag1 = 1; // there is a row to delete
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2203,7 +2203,7 @@ public class mysqlConnection {
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, dishName);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next())
+			if (rs.next())
 				flag2 = 1; // there is a row to delete
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2277,12 +2277,11 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		byte[] array;
 		MyFile file = new MyFile("Blob");
 		try {
 
-			
 			array = content.getBytes(1, (int) content.length());
 			file.initArray(array.length);
 			file.setMybytearray(array);
@@ -2290,7 +2289,7 @@ public class mysqlConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		serverResponse.setServerResponse(file);
 		return serverResponse;
 	}
@@ -2484,7 +2483,7 @@ public class mysqlConnection {
 				e.printStackTrace();
 				return null;
 			}
-			
+
 		}
 		// query 1: set new userType value on users table:
 		try {
@@ -2588,9 +2587,8 @@ public class mysqlConnection {
 		// generate random qrcode:
 		Random rand = new Random();
 		String qrCode = Integer.toString(rand.nextInt(1999999999));
-		
-		
-		//get customer ID
+
+		// get customer ID
 		try {
 			query = "SELECT CustomerID FROM bitemedb.customers where UserName= ?";
 			stmt = conn.prepareStatement(query);
@@ -2603,8 +2601,7 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
-		
-		
+
 		// query 3 : insert info in w4c: TBD
 
 		try {
@@ -2624,7 +2621,7 @@ public class mysqlConnection {
 //			else {
 //				stmt.setString(8, values.get(3)); // daily balance=budget				
 //			}
-			if(dailyBudget.equals("")) {
+			if (dailyBudget.equals("")) {
 				dailyBudget = "0";
 			}
 			stmt.setString(8, dailyBudget);
@@ -2806,6 +2803,33 @@ public class mysqlConnection {
 		response.setServerResponse(output);
 		response.setMsg("success");
 		return response;
+	}
+
+	/**
+	 * Query to get the type of delivery of a certain order.
+	 * 
+	 * @param orderNumber
+	 * 
+	 * @return ServerResponse
+	 */
+	public static ServerResponse getDeliveryInfo(int orderNumber) {
+		ServerResponse serverResponse = new ServerResponse("DeliveryInfo");
+		try {
+			PreparedStatement stmt;
+			String query = "SELECT DeliveryType FROM bitemedb.ordereddelivery O inner join bitemedb.delivery D WHERE O.DeliveryNumber = D.DeliveryNumber AND OrderNumber = ?";
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, orderNumber);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				serverResponse.setMsg("Success");
+				serverResponse.setServerResponse(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			serverResponse.setMsg("Failed to get delivery info");
+			serverResponse.setServerResponse(null);
+		}
+		return serverResponse;
 	}
 
 }
