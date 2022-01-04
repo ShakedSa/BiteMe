@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Enums.UserType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -69,11 +70,11 @@ public class EmployerHRPanelController implements Initializable {
 			ConfirmBusinessAccountController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/gui/bitemeConfirmBusinessAccountPage.fxml"));
+				loader.setLocation(getClass().getResource("../gui/bitemeConfirmBusinessAccountPage.fxml"));
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
-				controller.setTable();
+				//controller.setTable();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
 				controller.setScene(mainScene);
@@ -86,10 +87,10 @@ public class EmployerHRPanelController implements Initializable {
 			}
 		} else {
 			stage.setTitle("BiteMe - Confirm Business Account");
-			router.getConfirmBusinessAccountController().setTable();
 			stage.setScene(router.getConfirmBusinessAccountController().getScene());
 		}
 		
+		router.getConfirmBusinessAccountController().setTable();
 		stage.show();
 	}
 	
