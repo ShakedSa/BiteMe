@@ -3,7 +3,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,11 +26,6 @@
          </image>
       </ImageView>
       <Text fx:id="orderNumberTxt" layoutX="130.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0">
-         <font>
-            <Font name="Berlin Sans FB" size="16.0" />
-         </font>
-      </Text>
-      <Text fx:id="includeDeliveryTxt" layoutX="130.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Include Delivery?">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
@@ -102,16 +96,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <RadioButton fx:id="includeDeliveryBtn" focusTraversable="false" layoutX="333.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#includeDeliveryBtnClicked" text="Yes">
-         <font>
-            <Font name="Berlin Sans FB" size="13.0" />
-         </font>
-      </RadioButton>
-      <RadioButton fx:id="notIncludeDeliveryBtn" focusTraversable="false" layoutX="402.0" layoutY="314.0" mnemonicParsing="false" onMouseClicked="#notIncludeDeliveryBtnClicked" text="No">
-         <font>
-            <Font name="Berlin Sans FB" size="13.0" />
-         </font>
-      </RadioButton>
       <Text fx:id="errorMsg" fill="RED" layoutX="130.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />

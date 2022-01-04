@@ -284,6 +284,7 @@ public class UpdateOrderTableController implements Initializable {
 	 */
 	private void setTable(ArrayList<Order> orders) {
 		orderTable.setItems(getOrder(orders));
+		orderTable.refresh();
 	}
 
 	/**
