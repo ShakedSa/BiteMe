@@ -135,10 +135,21 @@ public class UpdateMenuController implements Initializable {
 					}
 				}
 				ServerResponse sr = ClientGUI.getClient().getLastResponse();
+				if(sr == null) {
+					setMenu(new ArrayList<Product>());
+		  			return;
+				}
 				@SuppressWarnings("unchecked")
 				// get the server response- list of product (menu)
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
-				setTable(response);
+				//check if menu is empty
+		  		if(response == null || response.size() == 0)
+		  		{
+		  			setMenu(new ArrayList<Product>());
+		  			return;
+		  		}
+		  		errorMsg.setText("");
+				setMenu(response);
 				return;
 			}
 		});
@@ -247,17 +258,13 @@ public class UpdateMenuController implements Initializable {
 				if (!checkServerResponse()) {
 					return;
 				}
-
-				// get the server response- update list of product (menu)
-				ServerResponse sr = ClientGUI.getClient().getLastResponse();
-				@SuppressWarnings("unchecked")
-				// update the table with the new menu, after delete item
-				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
 				Platform.runLater(() -> {
-					setMenu(response);
+					menu.remove(menuTable.getSelectionModel().getSelectedItem());
+					setMenu();
 					// display that the delete was successes
 					VImage.setVisible(true);
 					menuUpdatedSuccessfullyTxt.setText("The item was deleted successfully");
+					product = null;
 				});
 			}
 		});
@@ -309,6 +316,8 @@ public class UpdateMenuController implements Initializable {
 		case "":
 			errorMsg.setText("Deleting an item from menu was failed");
 			return false;
+		case "failed to get menu":
+			return true;
 		case "success":
 			return true;
 		default:
@@ -397,15 +406,17 @@ public class UpdateMenuController implements Initializable {
 	 */
 	private void setTable(ArrayList<Product> menu) {
 		menuTable.setItems(getProduct(menu));
+		menuTable.refresh();
 	}
 
+	ObservableList<Product> menu;
 	/**
 	 * This method change arrayList to ObservableList
 	 * @param list
 	 * @return ObservableList of products - menu
 	 */
 	private ObservableList<Product> getProduct(ArrayList<Product> list) {
-		ObservableList<Product> menu = FXCollections.observableArrayList();
+		menu = FXCollections.observableArrayList();
 		list.forEach(p -> {
 			if (p.getDescription() == null || p.getDescription().equals("")) {
 				p.setDescription("");

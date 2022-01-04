@@ -2115,7 +2115,7 @@ public class mysqlConnection {
 	 * @return arrayList of products - update menu
 	 */
 	public static ServerResponse deleteItemFromMenu(String restaurantName, String dishName) {
-		ServerResponse serverResponse = new ServerResponse("ArratList");
+		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		int flag1 = 0, flag2 = 0;
 		// delete from products table
 		try {
@@ -2163,8 +2163,9 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, dishName);
-			stmt.executeQuery();
-			flag1 = 1; // there is a row to delete
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				flag1 = 1; // there is a row to delete
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg(e.getMessage());
@@ -2196,8 +2197,9 @@ public class mysqlConnection {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, restaurantName);
 			stmt.setString(2, dishName);
-			stmt.executeQuery();
-			flag2 = 1; // there is a row to delete
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				flag2 = 1; // there is a row to delete
 		} catch (SQLException e) {
 			e.printStackTrace();
 			serverResponse.setMsg(e.getMessage());

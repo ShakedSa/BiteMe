@@ -279,7 +279,6 @@ public class PaymentController implements Initializable {
 	 * And calculate the final price based on the user's refund amount..
 	 */
 	private float checkRefundSelected() {
-		System.out.println(refundCheck.isSelected());
 		final FloatProperty finalPrice = new SimpleFloatProperty(router.getOrderDeliveryMethod().getFinalPrice());
 		if (refundCheck.isSelected()) {
 			final FloatProperty refundAmount = new SimpleFloatProperty(
@@ -292,8 +291,6 @@ public class PaymentController implements Initializable {
 				finalPrice.set(finalPrice.get() - refundAmount.get());
 			}
 		}
-		System.out.println(finalPrice.get());
-		System.out.println("Breakdown: " + refundForBreakDown);
 		return finalPrice.get();
 	}
 

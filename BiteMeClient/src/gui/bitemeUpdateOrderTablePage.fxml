@@ -97,12 +97,12 @@
          </font>
       </TextArea>
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="62.0" layoutY="488.0" onMouseClicked="#returnToSupplierPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
-      <Text fx:id="errorMsg" fill="RED" layoutX="67.0" layoutY="437.0" onMouseEntered="#explainHowUpdate" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="errorMsg" fill="RED" layoutX="67.0" layoutY="437.0" onMouseExited="#closeExplainUpdate" strokeType="OUTSIDE" strokeWidth="0.0">
          <font>
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
          <cursor>
-            <Cursor fx:constant="HAND" />
+            <Cursor fx:constant="DEFAULT" />
          </cursor>
       </Text>
    </children>
