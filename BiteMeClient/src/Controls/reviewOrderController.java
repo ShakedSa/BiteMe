@@ -51,7 +51,7 @@ public class reviewOrderController implements Initializable {
 	Label deliveryInformation;
 	Label totalPrice;
 	Label priceBreakDown;
-
+	
 	@FXML
 	private Rectangle avatar;
 
@@ -366,25 +366,23 @@ public class reviewOrderController implements Initializable {
 		totalPrice = new Label(String.format("Order Price: %.2f\u20AA", order.getOrderPrice()));
 		totalPrice.setText(String.format("%s\nDelivery Price: %.2f\u20AA", totalPrice.getText(),
 				delivery.getDelievryPrice() + delivery.getDiscount()));
+		if(fullOrder.isRefundSelected()) {
+			totalPrice.setText(String.format("%s\nRefund: %.2f\u20AA", totalPrice.getText(), fullOrder.getRefundForBreakDown()));
+		}
 		switch (fullOrder.getTypeOfOrder()) {
 		case preorderDelivery:
 			totalPrice.setText(
 					String.format("%s\nOrder Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));
-
-			priceBreakDown.setText(String.format("%s\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
-					fullOrder.getFinalPrice()));
 			break;
 		case sharedDelivery:
 			totalPrice.setText(
-					String.format("%s\nDelivery Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));
-			priceBreakDown.setText(String.format("%s\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
-					fullOrder.getFinalPrice()));
+					String.format("%s\nDelivery Discount: %.2f\u20AA", totalPrice.getText(), delivery.getDiscount()));		
 			break;
 		default:
-			priceBreakDown.setText(String.format("%s\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
-					fullOrder.getFinalPrice()));
 			break;
 		}
+		priceBreakDown.setText(String.format("%s\n\n\n\nFinal Price: %.2f\u20AA", priceBreakDown.getText(),
+				fullOrder.getFinalPrice()));
 		totalPrice.getStyleClass().add("totalPrice");
 		if (root != null) {
 			root.getChildren().addAll(orderDisplay, itemsTitle, deliveryTitle, deliveryInformation, totalPrice,

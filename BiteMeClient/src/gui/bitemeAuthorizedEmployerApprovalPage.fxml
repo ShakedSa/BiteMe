@@ -26,12 +26,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text layoutX="57.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorized Employer Approval">
@@ -84,7 +84,7 @@
       </Text>
       <ImageView fx:id="approvalSuccsess" fitHeight="38.0" fitWidth="30.0" layoutX="64.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/greenVLogo.gif" />
+            <Image url="@/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <TableView fx:id="approvalTable" layoutX="57.0" layoutY="238.0" onMousePressed="#copyTableData" prefHeight="197.0" prefWidth="512.0">

@@ -21,7 +21,7 @@
          </font></TextField>
       <ImageView blendMode="DARKEN" fitHeight="25.0" fitWidth="25.0" layoutX="19.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="786.0" AnchorPane.topAnchor="192.0">
          <image>
-            <Image url="@../images/search-icon.gif" />
+            <Image url="@/images/search-icon.gif" />
          </image>
       </ImageView>
       <Rectangle fx:id="border1" arcHeight="20.0" arcWidth="20.0" fill="#1f93ff00" height="188.0" layoutX="219.0" layoutY="164.0" stroke="BLACK" strokeType="INSIDE" width="136.0" />
@@ -97,7 +97,7 @@
       </Text>
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="30.0" onMouseClicked="#changeToCart">
          <image>
-            <Image url="@../images/bag-icon.gif" />
+            <Image url="@/images/bag-icon.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -108,12 +108,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="88.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Label id="order" fx:id="resOrder1" layoutX="247.0" layoutY="330.0" text="Order Now" textFill="WHITE">

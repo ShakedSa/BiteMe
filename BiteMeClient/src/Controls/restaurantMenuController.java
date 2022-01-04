@@ -436,6 +436,7 @@ public class restaurantMenuController implements Initializable {
 					Label removeItem = new Label("Remove Item");
 					removeItem.setOnMouseClicked(evnt -> {
 						router.getOrder().getProducts().remove(p);
+						productsInOrder.remove(p);
 						p.setPrice(initialProductPrice.get());
 						nextBtn.setDisable(false);
 						leftArrowBtn.setDisable(false);

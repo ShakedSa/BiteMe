@@ -18,12 +18,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Text fx:id="orderNumberTxt" layoutX="130.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0">
@@ -124,7 +124,7 @@
       </Text>
       <ImageView fx:id="VImage" fitHeight="33.0" fitWidth="30.0" layoutX="130.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/greenVLogo.gif" />
+            <Image url="@/images/greenVLogo.gif" />
          </image>
       </ImageView>
       <ComboBox fx:id="updateDataComboBox" editable="true" layoutX="333.0" layoutY="264.0" prefHeight="26.0" prefWidth="228.0" />
@@ -156,7 +156,7 @@
       <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="57.0" layoutY="490.0" onMouseClicked="#returnToUpdateOrderTable" stroke="BLACK" strokeType="INSIDE" width="52.0" />
       <ImageView fx:id="newMsgImage" fitHeight="38.0" fitWidth="43.0" layoutX="498.0" layoutY="31.0" onMouseClicked="#newMsgClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/newMsg.png" />
+            <Image url="@/images/newMsg.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />

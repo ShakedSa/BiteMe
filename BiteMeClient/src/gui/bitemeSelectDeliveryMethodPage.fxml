@@ -51,7 +51,7 @@
       </Text>
       <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="557.0" layoutY="27.0" onMouseClicked="#changeToCart">
          <image>
-            <Image url="@../images/bag-icon.gif" />
+            <Image url="@/images/bag-icon.gif" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -67,12 +67,12 @@
       <Line endX="729.0" layoutX="99.0" layoutY="85.0" startX="-100.0" strokeWidth="5.0" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/biteme-logo.gif" />
+            <Image url="@/images/biteme-logo.gif" />
          </image>
       </ImageView>
       <ImageView fitHeight="16.0" fitWidth="93.0" layoutX="128.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/bitme-slogan.gif" />
+            <Image url="@/images/bitme-slogan.gif" />
          </image>
       </ImageView>
       <Circle fill="DODGERBLUE" layoutX="240.0" layoutY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" style="-fx-opacity: 0.3;" />
