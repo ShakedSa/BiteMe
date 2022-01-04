@@ -390,6 +390,7 @@ public class openNewAccountFinalController implements Initializable{
 		this.fname=fname;
 		this.lname=lname;
 		this.username=username;
+		approvalBtn.setDisable(false);
 		inputErrorTxt.setVisible(false);
 		updateSucess.setVisible(false);
 		updateSucess1.setVisible(false);

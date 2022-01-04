@@ -179,6 +179,7 @@ public class managerPanelController implements Initializable {
 				mainContainer = loader.load();
 				controller = loader.getController();
 				controller.setAvatar();
+				controller.reset();
 				controller.initTable();
 				Scene mainScene = new Scene(mainContainer);
 				mainScene.getStylesheets().add(getClass().getResource("/gui/style.css").toExternalForm());
@@ -191,7 +192,7 @@ public class managerPanelController implements Initializable {
 				return;
 			}
 		} else {
-
+			router.getOpenNewAccountController().reset();
 			router.getOpenNewAccountController().initTable();
 			stage.setTitle("BiteMe - Open New Account");
 			stage.setScene(router.getOpenNewAccountController().getScene());

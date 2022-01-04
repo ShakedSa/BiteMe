@@ -92,8 +92,9 @@ public class openNewAccountController implements Initializable {
 	private String fName = "";
 	
 	private String lName = "";
-
 	
+	private ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+
 	/**
 	 * init the table with information of users thats needs a private/business account 
 	 * modifies: approvalTable
@@ -163,13 +164,17 @@ public class openNewAccountController implements Initializable {
 	 * @return ObservableList of the Class: NewAccountUser
 	 */
 	private ObservableList<NewAccountUser> getCustomer(ArrayList<NewAccountUser> list2) {
-		ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+		users = FXCollections.observableArrayList();
 		for (NewAccountUser customer : list2) {
 			NewAccountUser customerPlusBudget = new NewAccountUser(customer.getUserName(), customer.getFirstName(),
 					customer.getLastName(), customer.getId(), customer.getEmail(), customer.getPhone());
 			users.add(customerPlusBudget);
 		}
 		return users;
+	}
+	
+	public void reset() {
+		users.clear();
 	}
 
 	/**
