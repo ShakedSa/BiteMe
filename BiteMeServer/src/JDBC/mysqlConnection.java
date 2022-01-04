@@ -2740,7 +2740,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Private method to get the comission of a certain restaurant.
+	 * Private method to get the commission of a certain restaurant.
 	 * 
 	 * @param restaurantName
 	 * 
