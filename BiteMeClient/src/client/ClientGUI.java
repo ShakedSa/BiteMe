@@ -3,7 +3,7 @@ package client;
 import java.io.IOException;
 
 import Controls.Router;
-import Controls.enterGUIController;
+import Controls.EnterGUIController;
 import Entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -40,7 +40,7 @@ public class ClientGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		AnchorPane mainContainer;
-		enterGUIController controller;
+		EnterGUIController controller;
 		router=Router.getInstance();
 		router.setStage(primaryStage);
 		try {

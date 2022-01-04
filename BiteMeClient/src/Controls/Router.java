@@ -2,8 +2,6 @@ package Controls;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import Entities.Delivery;
 import Entities.Order;
@@ -26,49 +24,49 @@ import javafx.stage.Stage;
 public class Router {
 	private static Router router = null;
 	private Stage stage;
-	private loginController Logincontroller;
-	private enterGUIController Enterguicontroller;
-	private myCartController MyCartController;
-	private myOrdersController MyOrdersController;
-	private homePageController HomePageController;
-	private managerPanelController ManagerPanelController;
-	private supplierPanelController SupplierPanelController;
-	private ceoPanelController CEOPanelController;
-	private profileController ProfileController;
+	private LoginController Logincontroller;
+	private EnterGUIController Enterguicontroller;
+	private MyCartController MyCartController;
+	private MyOrdersController MyOrdersController;
+	private HomePageController HomePageController;
+	private ManagerPanelController ManagerPanelController;
+	private SupplierPanelController SupplierPanelController;
+	private CeoPanelController CEOPanelController;
+	private ProfileController ProfileController;
 	// Order Process pages:
-	private restaurantSelectionController RestaurantselectionController;
-	private identifyController IdentifyController;
-	private restaurantMenuController RestaurantMenuController;
-	private pickDateAndTimeController PickDateAndTimeController;
-	private deliveryMethodController DeliveryMethodController;
-	private reviewOrderController ReviewOrderController;
-	private paymentController PaymentController;
-	private orderReceivedController OrderReceivedController;
+	private RestaurantSelectionController RestaurantselectionController;
+	private IdentifyController IdentifyController;
+	private RestaurantMenuController RestaurantMenuController;
+	private PickDateAndTimeController PickDateAndTimeController;
+	private DeliveryMethodController DeliveryMethodController;
+	private ReviewOrderController ReviewOrderController;
+	private PaymentController PaymentController;
+	private OrderReceivedController OrderReceivedController;
 	// Manager Panel pages:
-	private addNewSupplierController AddNewSupplierController;
-	private addNewSupplierTableController AddNewSupplierTableController;
-	private viewMonthlyReportsController ViewMonthlyReportsController;
-	private uploadQuarterlyReportController UploadQuarterlyReportController;
-	private updateUserInformationController UpdateUserInformationController;
-	private authorizedEmployerApprovalController AuthorizedEmployerApprovalController;
-	private openNewAccountController OpenNewAccountController;
-	private openNewAccountFinalController OpenNewAccountFinalController;
-	private createRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
+	private AddNewSupplierController AddNewSupplierController;
+	private AddNewSupplierTableController AddNewSupplierTableController;
+	private ViewMonthlyReportsController ViewMonthlyReportsController;
+	private UploadQuarterlyReportController UploadQuarterlyReportController;
+	private UpdateUserInformationController UpdateUserInformationController;
+	private AuthorizedEmployerApprovalController AuthorizedEmployerApprovalController;
+	private OpenNewAccountController OpenNewAccountController;
+	private OpenNewAccountFinalController OpenNewAccountFinalController;
+	private CreateRevenueQuarterlyReportController CreateRevenueQuarterlyReportController;
 	// Supplier Panel pages:
-	private addNewItemController AddNewItemController;
-	private updateMenuController UpdateMenuController;
-	private editMenuItemController EditMenuItemController;
-	private supplierUpdateOrderController SupplierUpdateOrderController;
-	private sendMsgToCustomerController SendMsgToCustomerController;
-	private updateOrderTableController UpdateOrderTableController;
-	private viewIncomeReceiptController ViewIncomeReceiptController;
+	private AddNewItemController AddNewItemController;
+	private UpdateMenuController UpdateMenuController;
+	private EditMenuItemController EditMenuItemController;
+	private SupplierUpdateOrderController SupplierUpdateOrderController;
+	private SendMsgToCustomerController SendMsgToCustomerController;
+	private UpdateOrderTableController UpdateOrderTableController;
+	private ViewIncomeReceiptController ViewIncomeReceiptController;
 	// Employer HR Panel pages:
-	private employerHRPanelController EmployerHRPanelController;
-	private registerEmployerAsLegacyController RegisterEmployerAsLegacyController;
-	private confirmBusinessAccountController ConfirmBusinessAccountController;
+	private EmployerHRPanelController EmployerHRPanelController;
+	private RegisterEmployerAsLegacyController RegisterEmployerAsLegacyController;
+	private ConfirmBusinessAccountController ConfirmBusinessAccountController;
 	// CEO Panel pages:
-	private viewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
-	private viewRevenueQuarterlyReportController ViewRevenueQuarterlyReportController;
+	private ViewPDFQuarterlyReportController ViewPDFQuarterlyReportController;
+	private ViewRevenueQuarterlyReportController ViewRevenueQuarterlyReportController;
 
 	/** State of the order application: */
 	/***************************************/
@@ -238,7 +236,7 @@ public class Router {
 	void returnToSupplierPanel(MouseEvent event) {
 		if (router.getSupplierPanelController() == null) {
 			AnchorPane mainContainer;
-			supplierPanelController controller;
+			SupplierPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeSupplierPanelPage.fxml"));
@@ -284,7 +282,7 @@ public class Router {
 	void returnToEmployerHRPanel(MouseEvent event) {
 		if (router.getEmployerHRPanelController() == null) {
 			AnchorPane mainContainer;
-			employerHRPanelController controller;
+			EmployerHRPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeEmployerHRPanelPage.fxml"));
@@ -316,7 +314,7 @@ public class Router {
 	void returnToManagerPanel(MouseEvent event) {
 		if (router.getManagerPanelController() == null) {
 			AnchorPane mainContainer;
-			managerPanelController controller;
+			ManagerPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeManagerPanelPage.fxml"));
@@ -348,7 +346,7 @@ public class Router {
 	void returnToCEOPanel(MouseEvent event) {
 		if (router.getCEOPanelController() == null) {
 			AnchorPane mainContainer;
-			ceoPanelController controller;
+			CeoPanelController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeCEOPanelPage.fxml"));
@@ -380,7 +378,7 @@ public class Router {
 	void returnToCustomerPanel(MouseEvent event) {
 		if (router.getRestaurantselectionController() == null) {
 			AnchorPane mainContainer;
-			restaurantSelectionController controller;
+			RestaurantSelectionController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeRestaurantsPage.fxml"));
@@ -417,7 +415,7 @@ public class Router {
 	public void changeToMyCart(String lastPage) {
 		if (router.getMyCartController() == null) {
 			AnchorPane mainContainer;
-			myCartController controller;
+			MyCartController controller;
 			try {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/gui/bitemeMyCartPage.fxml"));
@@ -531,76 +529,76 @@ public class Router {
 	/**
 	 * @param logincontroller the loginController to set
 	 */
-	public void setLogincontroller(loginController logincontroller) {
+	public void setLogincontroller(LoginController logincontroller) {
 		Logincontroller = logincontroller;
 	}
 
 	/**
 	 * @param enterguicontroller the enterguiController to set
 	 */
-	public void setEnterguicontroller(enterGUIController enterGUIController) {
+	public void setEnterguicontroller(EnterGUIController enterGUIController) {
 		Enterguicontroller = enterGUIController;
 	}
 
 	/**
 	 * @param restaurantselectionController the restaurantselectionController to set
 	 */
-	public void setRestaurantselectionController(restaurantSelectionController restaurantSelectionController) {
+	public void setRestaurantselectionController(RestaurantSelectionController restaurantSelectionController) {
 		RestaurantselectionController = restaurantSelectionController;
 	}
 
 	/**
 	 * @param homePageController the homePageController to set
 	 */
-	public void setHomePageController(homePageController homePageController) {
+	public void setHomePageController(HomePageController homePageController) {
 		HomePageController = homePageController;
 	}
 	/**
 	 * @param managerPanelController the managerPanelController to set
 	 */
 	
-	public void setManagerPanelController(managerPanelController managerPanelController) {
+	public void setManagerPanelController(ManagerPanelController managerPanelController) {
 		ManagerPanelController = managerPanelController;
 	}
 
 	/**
 	 * @param supplierPanelController the supplierPanelController to set
 	 */
-	public void setSupplierPanelController(supplierPanelController supplierPanelController) {
+	public void setSupplierPanelController(SupplierPanelController supplierPanelController) {
 		SupplierPanelController = supplierPanelController;
 	}
 
 	/**
 	 * @param ceoPanelController the ceoPanelController to set
 	 */
-	public void setCEOPanelController(ceoPanelController ceoPanelController) {
+	public void setCEOPanelController(CeoPanelController ceoPanelController) {
 		CEOPanelController = ceoPanelController;
 	}
 
 	/**
 	 * @param restaurantMenuController the restaurantMenuController to set
 	 */
-	public void setRestaurantMenuController(restaurantMenuController restaurantMenuController) {
+	public void setRestaurantMenuController(RestaurantMenuController restaurantMenuController) {
 		RestaurantMenuController = restaurantMenuController;
 	}
 
 	/**
 	 * @param employerHRPanelController the employerHRPanelController to set
 	 */
-	public void setEmployerHRPanelController(employerHRPanelController employerHRPanelController) {
+	public void setEmployerHRPanelController(EmployerHRPanelController employerHRPanelController) {
 		EmployerHRPanelController = employerHRPanelController;
 	}
 
 	/**
 	 * @param identifyController the identifyController to set
 	 */
-	public void setIdentifyController(identifyController identifyController) {
+	public void setIdentifyController(IdentifyController identifyController) {
 		IdentifyController = identifyController;
 	}
 	/**
 	 * @return the uploadRevenueQuarterlyReportController
 	 */
-	public createRevenueQuarterlyReportController getCreateRevenueQuarterlyReportController() {
+	public CreateRevenueQuarterlyReportController getCreateRevenueQuarterlyReportController() {
 		return CreateRevenueQuarterlyReportController;
 	}
 
@@ -608,28 +606,28 @@ public class Router {
 	 * @param uploadRevenueQuarterlyReportController the uploadRevenueQuarterlyReportController to set
 	 */
 	public void setCreateRevenueQuarterlyReportController(
-			createRevenueQuarterlyReportController createRevenueQuarterlyReportController) {
+			CreateRevenueQuarterlyReportController createRevenueQuarterlyReportController) {
 		CreateRevenueQuarterlyReportController = createRevenueQuarterlyReportController;
 	}
 
 	/**
 	 * @param profileController the profileController to set
 	 */
-	public void setProfileController(profileController profileController) {
+	public void setProfileController(ProfileController profileController) {
 		ProfileController = profileController;
 	}
 
 	/**
 	 * @param addNewSupplierController the addNewSupplierController to set
 	 */
-	public void setAddNewSupplierController(addNewSupplierController addNewSupplierController) {
+	public void setAddNewSupplierController(AddNewSupplierController addNewSupplierController) {
 		AddNewSupplierController = addNewSupplierController;
 	}
 
 	/**
 	 * @param viewMonthlyReportsController the viewMonthlyReportsController to set
 	 */
-	public void setViewMonthlyReportsController(viewMonthlyReportsController viewMonthlyReportsController) {
+	public void setViewMonthlyReportsController(ViewMonthlyReportsController viewMonthlyReportsController) {
 		ViewMonthlyReportsController = viewMonthlyReportsController;
 	}
 
@@ -637,7 +635,7 @@ public class Router {
 	 * @param uploadQuarterlyReportController the uploadQuarterlyReportController to
 	 *                                        set
 	 */
-	public void setUploadQuarterlyReportController(uploadQuarterlyReportController uploadQuarterlyReportController) {
+	public void setUploadQuarterlyReportController(UploadQuarterlyReportController uploadQuarterlyReportController) {
 		UploadQuarterlyReportController = uploadQuarterlyReportController;
 	}
 
@@ -645,7 +643,7 @@ public class Router {
 	 * @param updateUserInformationController the updateUserInformationController to
 	 *                                        set
 	 */
-	public void setUpdateUserInformationController(updateUserInformationController updateUserInformationController) {
+	public void setUpdateUserInformationController(UpdateUserInformationController updateUserInformationController) {
 		UpdateUserInformationController = updateUserInformationController;
 	}
 
@@ -655,42 +653,42 @@ public class Router {
 	 *                                             to set
 	 */
 	public void setAuthorizedEmployerApprovalController(
-			authorizedEmployerApprovalController authorizedEmployerApprovalController) {
+			AuthorizedEmployerApprovalController authorizedEmployerApprovalController) {
 		AuthorizedEmployerApprovalController = authorizedEmployerApprovalController;
 	}
 
 	/**
 	 * @param openNewAccountController the openNewAccountController to set
 	 */
-	public void setOpenNewAccountController(openNewAccountController openNewAccountController) {
+	public void setOpenNewAccountController(OpenNewAccountController openNewAccountController) {
 		OpenNewAccountController = openNewAccountController;
 	}
 
 	/**
 	 * @param addNewItemController the addNewItemController to set
 	 */
-	public void setAddNewItemController(addNewItemController addNewItemController) {
+	public void setAddNewItemController(AddNewItemController addNewItemController) {
 		AddNewItemController = addNewItemController;
 	}
 
 	/**
 	 * @param updateMenuController the updateMenuController to set
 	 */
-	public void setUpdateMenuController(updateMenuController updateMenuController) {
+	public void setUpdateMenuController(UpdateMenuController updateMenuController) {
 		UpdateMenuController = updateMenuController;
 	}
 
 	/**
 	 * @param editMenuItemController the editMenuItemController to set
 	 */
-	public void setEditMenuItemController(editMenuItemController editMenuItemController) {
+	public void setEditMenuItemController(EditMenuItemController editMenuItemController) {
 		EditMenuItemController = editMenuItemController;
 	}
 
 	/**
 	 * @param supplierUpdateOrderController the supplierUpdateOrderController to set
 	 */
-	public void setSupplierUpdateOrderController(supplierUpdateOrderController supplierUpdateOrderController) {
+	public void setSupplierUpdateOrderController(SupplierUpdateOrderController supplierUpdateOrderController) {
 		SupplierUpdateOrderController = supplierUpdateOrderController;
 	}
 
@@ -700,7 +698,7 @@ public class Router {
 	 *                                           to set
 	 */
 	public void setRegisterEmployerAsLegacyController(
-			registerEmployerAsLegacyController registerEmployerAsLegacyController) {
+			RegisterEmployerAsLegacyController registerEmployerAsLegacyController) {
 		RegisterEmployerAsLegacyController = registerEmployerAsLegacyController;
 	}
 
@@ -708,7 +706,7 @@ public class Router {
 	 * setter for confirmBusinessAccountController
 	 * @param the confirmBusinessAccountController to set
 	 */
-	public void setConfirmBusinessAccountController(confirmBusinessAccountController confirmBusinessAccountController) {
+	public void setConfirmBusinessAccountController(ConfirmBusinessAccountController confirmBusinessAccountController) {
 		ConfirmBusinessAccountController = confirmBusinessAccountController;
 	}
 
@@ -716,14 +714,14 @@ public class Router {
 	/**
 	 * @param pickDateAndTimeController the pickDateAndTimeController to set
 	 */
-	public void setPickDateAndTimeController(pickDateAndTimeController pickDateAndTimeController) {
+	public void setPickDateAndTimeController(PickDateAndTimeController pickDateAndTimeController) {
 		PickDateAndTimeController = pickDateAndTimeController;
 	}
 
 	/**
 	 * @param sendMsgToCustomerController the sendMsgToCustomerController to set
 	 */
-	public void setSendMsgToCustomerController(sendMsgToCustomerController sendMsgToCustomerController) {
+	public void setSendMsgToCustomerController(SendMsgToCustomerController sendMsgToCustomerController) {
 		SendMsgToCustomerController = sendMsgToCustomerController;
 	}
 
@@ -731,7 +729,7 @@ public class Router {
 	 * @param viewPDFQuarterlyReportController the viewPDFQuarterlyReportController
 	 *                                         to set
 	 */
-	public void setViewPDFQuarterlyReportController(viewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
+	public void setViewPDFQuarterlyReportController(ViewPDFQuarterlyReportController viewPDFQuarterlyReportController) {
 		ViewPDFQuarterlyReportController = viewPDFQuarterlyReportController;
 	}
 	
@@ -740,20 +738,20 @@ public class Router {
 	 * @param viewRevenueQuarterlyReportController the viewRevenueQuarterlyReportController to set
 	 */
 	public void setViewRevenueQuarterlyReportController(
-			viewRevenueQuarterlyReportController viewRevenueQuarterlyReportController) {
+			ViewRevenueQuarterlyReportController viewRevenueQuarterlyReportController) {
 		ViewRevenueQuarterlyReportController = viewRevenueQuarterlyReportController;
 	}
 	
 	/**
 	 * @return the viewRevenueQuarterlyReportController
 	 */
-	public viewRevenueQuarterlyReportController getViewRevenueQuarterlyReportController() {
+	public ViewRevenueQuarterlyReportController getViewRevenueQuarterlyReportController() {
 		return ViewRevenueQuarterlyReportController;
 	}
 	/**
 	 * @param updateOrderTableController the updateOrderTableController to set
 	 */
-	public void setUpdateOrderTableController(updateOrderTableController updateOrderTableController) {
+	public void setUpdateOrderTableController(UpdateOrderTableController updateOrderTableController) {
 		UpdateOrderTableController = updateOrderTableController;
 	}
 
@@ -761,279 +759,279 @@ public class Router {
 	/**
 	 * @return the Logincontroller
 	 */
-	public loginController getLogincontroller() {
+	public LoginController getLogincontroller() {
 		return Logincontroller;
 	}
 
 	/**
 	 * @return the Enterguicontroller
 	 */
-	public enterGUIController getEnterguicontroller() {
+	public EnterGUIController getEnterguicontroller() {
 		return Enterguicontroller;
 	}
 
 	/**
 	 * @return the RestaurantselectionController
 	 */
-	public restaurantSelectionController getRestaurantselectionController() {
+	public RestaurantSelectionController getRestaurantselectionController() {
 		return RestaurantselectionController;
 	}
 	
 	/**
 	 * @return the HomePageController
 	 */
-	public homePageController getHomePageController() {
+	public HomePageController getHomePageController() {
 		return HomePageController;
 	}
 
 	/**
 	 * @return the ManagerPanelController
 	 */
-	public managerPanelController getManagerPanelController() {
+	public ManagerPanelController getManagerPanelController() {
 		return ManagerPanelController;
 	}
 
 	/**
 	 * @return the SupplierPanelController
 	 */
-	public supplierPanelController getSupplierPanelController() {
+	public SupplierPanelController getSupplierPanelController() {
 		return SupplierPanelController;
 	}
 
 	/**
 	 * @return the identifyController
 	 */
-	public identifyController getIdentifyController() {
+	public IdentifyController getIdentifyController() {
 		return IdentifyController;
 	}
 
 	/**
 	 * @return the restaurantMenuController
 	 */
-	public restaurantMenuController getRestaurantMenuController() {
+	public RestaurantMenuController getRestaurantMenuController() {
 		return RestaurantMenuController;
 	}
 
 	/**
 	 * @return the restaurantMenuController
 	 */
-	public ceoPanelController getCEOPanelController() {
+	public CeoPanelController getCEOPanelController() {
 		return CEOPanelController;
 	}
 
 	/**
 	 * @return the employerHRPanelController
 	 */
-	public employerHRPanelController getEmployerHRPanelController() {
+	public EmployerHRPanelController getEmployerHRPanelController() {
 		return EmployerHRPanelController;
 	}
 
 	/**
 	 * @return the employerHRPanelController
 	 */
-	public profileController getProfileController() {
+	public ProfileController getProfileController() {
 		return ProfileController;
 	}
 
 	/**
 	 * @return the addNewSupplierController
 	 */
-	public addNewSupplierController getAddNewSupplierController() {
+	public AddNewSupplierController getAddNewSupplierController() {
 		return AddNewSupplierController;
 	}
 
 	/**
 	 * @return the viewMonthlyReportController
 	 */
-	public viewMonthlyReportsController getViewMonthlyReportsController() {
+	public ViewMonthlyReportsController getViewMonthlyReportsController() {
 		return ViewMonthlyReportsController;
 	}
 
 	/**
 	 * @return the uploadQuarterlyReportController
 	 */
-	public uploadQuarterlyReportController getUploadQuarterlyReportController() {
+	public UploadQuarterlyReportController getUploadQuarterlyReportController() {
 		return UploadQuarterlyReportController;
 	}
 
 	/**
 	 * @return the updateUserInformationController
 	 */
-	public updateUserInformationController getUpdateUserInformationController() {
+	public UpdateUserInformationController getUpdateUserInformationController() {
 		return UpdateUserInformationController;
 	}
 
 	/**
 	 * @return the authorizedEmployerApprovalController
 	 */
-	public authorizedEmployerApprovalController getAuthorizedEmployerApprovalController() {
+	public AuthorizedEmployerApprovalController getAuthorizedEmployerApprovalController() {
 		return AuthorizedEmployerApprovalController;
 	}
 
 	/**
 	 * @return the openNewAccountController
 	 */
-	public openNewAccountController getOpenNewAccountController() {
+	public OpenNewAccountController getOpenNewAccountController() {
 		return OpenNewAccountController;
 	}
 
 	/**
 	 * @return the addNewItemController
 	 */
-	public addNewItemController getAddNewItemController() {
+	public AddNewItemController getAddNewItemController() {
 		return AddNewItemController;
 	}
 
 	/**
 	 * @return the updateMenuController
 	 */
-	public updateMenuController getUpdateMenuController() {
+	public UpdateMenuController getUpdateMenuController() {
 		return UpdateMenuController;
 	}
 
 	/**
 	 * @return the editMenuItemController
 	 */
-	public editMenuItemController getEditMenuItemController() {
+	public EditMenuItemController getEditMenuItemController() {
 		return EditMenuItemController;
 	}
 
 	/**
 	 * @return the supplierUpdateOrderController
 	 */
-	public supplierUpdateOrderController getSupplierUpdateOrderController() {
+	public SupplierUpdateOrderController getSupplierUpdateOrderController() {
 		return SupplierUpdateOrderController;
 	}
 
 	/**
 	 * @return the registerEmployerAsLegacyController
 	 */
-	public registerEmployerAsLegacyController getRegisterEmployerAsLegacyController() {
+	public RegisterEmployerAsLegacyController getRegisterEmployerAsLegacyController() {
 		return RegisterEmployerAsLegacyController;
 	}
 
 	/**
 	 * @return the confirmBusinessAccountController
 	 */
-	public confirmBusinessAccountController getConfirmBusinessAccountController() {
+	public ConfirmBusinessAccountController getConfirmBusinessAccountController() {
 		return ConfirmBusinessAccountController;
 	}
 	/**
 	 * @return the pickDateAndTimeController
 	 */
-	public pickDateAndTimeController getPickDateAndTimeController() {
+	public PickDateAndTimeController getPickDateAndTimeController() {
 		return PickDateAndTimeController;
 	}
 
 	/**
 	 * @return the deliveryMethodController
 	 */
-	public deliveryMethodController getDeliveryMethodController() {
+	public DeliveryMethodController getDeliveryMethodController() {
 		return DeliveryMethodController;
 	}
 
 	/**
 	 * @param deliveryMethodController the deliveryMethodController to set
 	 */
-	public void setDeliveryMethodController(deliveryMethodController deliveryMethodController) {
+	public void setDeliveryMethodController(DeliveryMethodController deliveryMethodController) {
 		DeliveryMethodController = deliveryMethodController;
 	}
 
 	/**
 	 * @return the paymentController
 	 */
-	public paymentController getPaymentController() {
+	public PaymentController getPaymentController() {
 		return PaymentController;
 	}
 
 	/**
 	 * @param paymentController the paymentController to set
 	 */
-	public void setPaymentController(paymentController paymentController) {
+	public void setPaymentController(PaymentController paymentController) {
 		PaymentController = paymentController;
 	}
 
 	/**
 	 * @return the reviewOrderController
 	 */
-	public reviewOrderController getReviewOrderController() {
+	public ReviewOrderController getReviewOrderController() {
 		return ReviewOrderController;
 	}
 
 	/**
 	 * @return the sendMsgToCustomerController
 	 */
-	public sendMsgToCustomerController getSendMsgToCustomerController() {
+	public SendMsgToCustomerController getSendMsgToCustomerController() {
 		return SendMsgToCustomerController;
 	}
 
 	/**
 	 * @return the viewPDFQuarterlyReportController
 	 */
-	public viewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
+	public ViewPDFQuarterlyReportController getViewPDFQuarterlyReportController() {
 		return ViewPDFQuarterlyReportController;
 	}
 	
 	/**
 	 * @return the viewIncomeReceiptController
 	 */
-	public viewIncomeReceiptController getViewIncomeReceiptController() {
+	public ViewIncomeReceiptController getViewIncomeReceiptController() {
 		return ViewIncomeReceiptController;
 	}
 
 	/**
 	 * @param reviewOrderController the reviewOrderController to set
 	 */
-	public void setReviewOrderController(reviewOrderController reviewOrderController) {
+	public void setReviewOrderController(ReviewOrderController reviewOrderController) {
 		ReviewOrderController = reviewOrderController;
 	}
 
 	/**
 	 * @return the myCartController
 	 */
-	public myCartController getMyCartController() {
+	public MyCartController getMyCartController() {
 		return MyCartController;
 	}
 
 	/**
 	 * @param myCartController the myCartController to set
 	 */
-	public void setMyCartController(myCartController myCartController) {
+	public void setMyCartController(MyCartController myCartController) {
 		MyCartController = myCartController;
 	}
 
 	/**
 	 * @return the orderReceivedController
 	 */
-	public orderReceivedController getOrderReceivedController() {
+	public OrderReceivedController getOrderReceivedController() {
 		return OrderReceivedController;
 	}
 
 	/**
 	 * @param orderReceivedController the orderReceivedController to set
 	 */
-	public void setOrderReceivedController(orderReceivedController orderReceivedController) {
+	public void setOrderReceivedController(OrderReceivedController orderReceivedController) {
 		OrderReceivedController = orderReceivedController;
 	}
 
 	/**
 	 * @return the myOrdersController
 	 */
-	public myOrdersController getMyOrdersController() {
+	public MyOrdersController getMyOrdersController() {
 		return MyOrdersController;
 	}
 
 	/**
 	 * @param myOrdersController the myOrdersController to set
 	 */
-	public void setMyOrdersController(myOrdersController myOrdersController) {
+	public void setMyOrdersController(MyOrdersController myOrdersController) {
 		MyOrdersController = myOrdersController;
 	}
 	
 	/**
 	 * @return the updateOrderTableController
 	 */
-	public updateOrderTableController getUpdateOrderTableController() {
+	public UpdateOrderTableController getUpdateOrderTableController() {
 		return UpdateOrderTableController;
 	}
 
@@ -1062,35 +1060,35 @@ public class Router {
 	/**
 	 * @return the openNewAccountFinalController
 	 */
-	public openNewAccountFinalController getOpenNewAccountFinalController() {
+	public OpenNewAccountFinalController getOpenNewAccountFinalController() {
 		return OpenNewAccountFinalController;
 	}
 
 	/**
 	 * @param openNewAccountFinalController the openNewAccountFinalController to set
 	 */
-	public void setOpenNewAccountFinalController(openNewAccountFinalController openNewAccountFinalController) {
+	public void setOpenNewAccountFinalController(OpenNewAccountFinalController openNewAccountFinalController) {
 		OpenNewAccountFinalController = openNewAccountFinalController;
 	}
 	
 	/**
 	 * @return the addNewSupplierTableController
 	 */
-	public addNewSupplierTableController getAddNewSupplierTableController() {
+	public AddNewSupplierTableController getAddNewSupplierTableController() {
 		return AddNewSupplierTableController;
 	}
 
 	/**
 	 * @param addNewSupplierTableController the addNewSupplierTableController to set
 	 */
-	public void setAddNewSupplierTableController(addNewSupplierTableController addNewSupplierTableController) {
+	public void setAddNewSupplierTableController(AddNewSupplierTableController addNewSupplierTableController) {
 		AddNewSupplierTableController = addNewSupplierTableController;
 	}
 	
 	/**
 	 * @param viewIncomeReceiptController the viewIncomeReceiptController to set
 	 */
-	public void setViewIncomeReceiptController(viewIncomeReceiptController viewIncomeReceiptController) {
+	public void setViewIncomeReceiptController(ViewIncomeReceiptController viewIncomeReceiptController) {
 		ViewIncomeReceiptController = viewIncomeReceiptController;
 	}
 
