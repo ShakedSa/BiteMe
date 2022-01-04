@@ -122,7 +122,7 @@ public class PaymentController implements Initializable {
 		errorMsg.setText("");
 		W4CCard w4c = user.getW4c();
 		if (businessRadio.isSelected() || bothRadio.isSelected()) {
-			if (w4c.getBalance() == 0 || w4c.getDailyBalance() == 0) {
+			if (w4c.getBalance() == 0 && w4c.getDailyBalance() == 0) {
 				if (user.isPrivate()) {
 					errorMsg.setText("Employer's balance is 0.\nPlease select a different type of payment method.");
 					return;
@@ -343,7 +343,7 @@ public class PaymentController implements Initializable {
 				businessRadio.setSelected(false);
 				businessRadio.setDisable(true);
 				errorMsg.setText(
-						"W4C card budget is lower than order price.\nYour account is not connected with private account, please ask the branch manager to accept your account as private before ordering.");
+						"W4C card budget is lower than order price.\nYour account is not connected with private account.\nPlease ask the branch manager to accept your account as private before ordering.");
 				nextOrderStep.setDisable(true);
 			}
 		} else {
