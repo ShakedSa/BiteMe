@@ -186,12 +186,15 @@ public class openNewAccountFinalController implements Initializable{
     @FXML
     void returnToPreviousScene(MouseEvent event) {
     	// if edit completed go back to manager menu
-
+    	approvalBtn.setDisable(false);
+    	router.setOpenNewAccountFinalController(null);
+		router.getOpenNewAccountController().initTable();
     	if(updateSucess.isVisible()) {
     		router.returnToManagerPanel(event);
     	}
     	// if regret go previous screen.
     	else {
+
     		stage.setTitle("BiteMe - Open New Account");
 			stage.setScene(prevScene);
 			stage.show();
@@ -284,6 +287,7 @@ public class openNewAccountFinalController implements Initializable{
   			updateSucess.setVisible(true);
   			updateSucess1.setVisible(true);
   			srvErrorTxt.setVisible(false);
+  			approvalBtn.setDisable(true);
   			return; // all good
   		}
   		if(ans.equals("unApprovedEmployer")) {
@@ -386,6 +390,7 @@ public class openNewAccountFinalController implements Initializable{
 		this.fname=fname;
 		this.lname=lname;
 		this.username=username;
+		approvalBtn.setDisable(false);
 		inputErrorTxt.setVisible(false);
 		updateSucess.setVisible(false);
 		updateSucess1.setVisible(false);
@@ -430,6 +435,7 @@ public class openNewAccountFinalController implements Initializable{
 	}
 
 	public void setPrevScene(Scene prevScene) {
+		
 		this.prevScene=prevScene;
 	}
 

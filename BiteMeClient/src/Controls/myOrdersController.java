@@ -126,6 +126,9 @@ public class myOrdersController implements Initializable {
 		itemsCounter.setText(router.getBagItems().size() + "");
 	}
 	
+	/**
+	 * private method to create table
+	 */
 	private void createTable() {
 		orderTable = new TableView<>();
 		TableColumn<Order, String> orderNumCol = new TableColumn<Order, String>("Order Number");

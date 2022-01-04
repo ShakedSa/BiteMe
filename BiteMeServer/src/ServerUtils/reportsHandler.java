@@ -347,10 +347,8 @@ public class reportsHandler {
 	 */ 
 	
 	public static ServerResponse quarterlyRevenueReportPdf(String Branch, String quarter, String Year) {
-		System.out.println("branch: "+Branch + " Quarter: " + quarter + " year: " + Year);
 		// add check if report exists and return serverResponse with value.
 		if(mysqlConnection.checkReportExists(Branch, quarter, Year)) {
-			System.out.println("exists");
 			return new ServerResponse("exists");
 			
 		}

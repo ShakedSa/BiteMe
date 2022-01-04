@@ -201,19 +201,19 @@ public class viewIncomeReceiptController implements Initializable {
 		//total order amount:
 		totalOrderTxt.setVisible(true);
 		totalOrderNum.setVisible(true);
-		totalOrderNum.setText(totalOrder + ""); 
+		totalOrderNum.setText(String.format("%.2f", totalOrder)); 
 		nis1.setVisible(true);
 		minusLine.setVisible(true);
 		//total commission amount:
 		totalCommissionTxt.setVisible(true);
 		totalCommissionNum.setVisible(true);
-		totalCommissionNum.setText(totalCommission + "");
+		totalCommissionNum.setText(String.format("%.2f", totalCommission));
 		nis2.setVisible(true);
 		sumLine.setVisible(true);
 		//final receipt amount:
 		finalAmountTxt.setVisible(true);
 		finalAmountNum.setVisible(true);
-		finalAmountNum.setText(finalAmount + "");
+		finalAmountNum.setText(String.format("%.2f", finalAmount));
 		nis3.setVisible(true);
 		rect.setVisible(true);
     }
@@ -225,6 +225,23 @@ public class viewIncomeReceiptController implements Initializable {
 	private boolean checkServerResponse() {
 		if (ClientGUI.getClient().getLastResponse() == null) {
 			errorMsg.setText("There is no receipt for this date");
+			dearRestaurantTxt.setVisible(false);
+			commissionPercentTxt.setVisible(false);
+			//total order amount:
+			totalOrderTxt.setVisible(false);
+			totalOrderNum.setVisible(false);
+			nis1.setVisible(false);
+			minusLine.setVisible(false);
+			//total commission amount:
+			totalCommissionTxt.setVisible(false);
+			totalCommissionNum.setVisible(false);
+			nis2.setVisible(false);
+			sumLine.setVisible(false);
+			//final receipt amount:
+			finalAmountTxt.setVisible(false);
+			finalAmountNum.setVisible(false);
+			nis3.setVisible(false);
+			rect.setVisible(false);
 			return false;
 		}
 		switch (ClientGUI.getClient().getLastResponse().getMsg().toLowerCase()) {

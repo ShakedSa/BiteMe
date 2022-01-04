@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-import Config.ReadPropertyFile;
 import Entities.BranchManager;
 import Entities.BusinessCustomer;
 import Entities.CEO;
@@ -66,9 +64,9 @@ public class mysqlConnection {
 	/**
 	 * Default arguments for connection received from configuration file.
 	 */
-	public static String arg0 = ReadPropertyFile.getInstance().getProp("jdbcScheme");
-	public static String arg1 = ReadPropertyFile.getInstance().getProp("jdbcId");
-	public static String arg2 = ReadPropertyFile.getInstance().getProp("jdbcPass");
+	public static String arg0;
+	public static String arg1;
+	public static String arg2;
 	private static Connection conn;
 
 	/**
@@ -122,7 +120,7 @@ public class mysqlConnection {
 					serverResponse.setServerResponse(null);
 					return serverResponse;
 				}
-				if (rs.getString(8).equals("User") || rs.getString(13).equals("Unverified")) {
+				if (rs.getString(8).equals("User")) {
 					serverResponse.setMsg("Not Authorized");
 					serverResponse.setServerResponse(null);
 					return serverResponse;
@@ -306,7 +304,6 @@ public class mysqlConnection {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("no man");
 		}
 		return;
 	}
@@ -459,7 +456,6 @@ public class mysqlConnection {
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("no man");
 		}
 		return;
 	}
@@ -2253,8 +2249,6 @@ public class mysqlConnection {
 	 * @param m order: reportType,month,year,branch
 	 * @return "fail" if report doesn't exists, report file otherwise.
 	 */
-	// SELECT * FROM bitemedb.reports WHERE MONTH(date)=11 AND YEAR(DATE)=2021 and
-	// BranchName="north" and ReportType like "%Perf%";
 	public static ServerResponse getMonthlyReport(ArrayList<String> m) {
 		PreparedStatement stmt;
 		Blob content;
@@ -2276,7 +2270,21 @@ public class mysqlConnection {
 			e.printStackTrace();
 			return null;
 		}
-		serverResponse.setServerResponse(content);
+		
+		byte[] array;
+		MyFile file = new MyFile("Blob");
+		try {
+
+			
+			array = content.getBytes(1, (int) content.length());
+			file.initArray(array.length);
+			file.setMybytearray(array);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		serverResponse.setServerResponse(file);
 		return serverResponse;
 	}
 
@@ -2732,7 +2740,7 @@ public class mysqlConnection {
 	}
 
 	/**
-	 * Private method to get the comission of a certain restaurant.
+	 * Private method to get the commission of a certain restaurant.
 	 * 
 	 * @param restaurantName
 	 * 
