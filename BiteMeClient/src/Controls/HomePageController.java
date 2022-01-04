@@ -455,7 +455,7 @@ public class HomePageController implements Initializable {
 	 * @param String[] res
 	 */
 	private void setFavDisplayed(ArrayList<Supplier> favRestaurants) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0;i < 3; i++) {
 			Supplier supplier = favRestaurants.get(i);
 			Supplier hideSupplier = favRestaurants.get(i + 3);
 			favListDisplayed.addLast(supplier);

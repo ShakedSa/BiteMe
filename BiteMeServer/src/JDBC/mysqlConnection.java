@@ -1587,14 +1587,15 @@ public class mysqlConnection {
 	 * 
 	 * @return
 	 */
-	public static ServerResponse getImportedUsers() {
+	public static ServerResponse getImportedUsers(BranchName branch) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<NewAccountUser> response = new ArrayList<>();
 		try {
 			PreparedStatement stmt;
-			String query = "SELECT * FROM bitemedb.users WHERE UserType = ?";
+			String query = "SELECT * FROM bitemedb.users WHERE UserType = ? AND MainBranch = ?";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "User");
+			stmt.setString(2, branch.toString());
 			ResultSet rs = stmt.executeQuery();
 			// save in response all newly imported users
 			while (rs.next()) {
@@ -1617,17 +1618,18 @@ public class mysqlConnection {
 	 * 
 	 * @return
 	 */
-	public static ServerResponse getAllUsersAndCustomers() {
+	public static ServerResponse getAllUsersAndCustomers(BranchName branch) {
 		ServerResponse serverResponse = new ServerResponse("ArrayList");
 		ArrayList<NewAccountUser> response = new ArrayList<>();
 		try {
 			PreparedStatement stmt;
-			String query = "SELECT * FROM bitemedb.users WHERE UserType = ? OR UserType = ?"
+			String query = "SELECT * FROM bitemedb.users WHERE (UserType = ? OR UserType = ?) AND MainBranch = ?"
 					+ " and UserName not in (SELECT UserName FROM bitemedb.customers"
 					+ " where (IsBusiness=1 and IsPrivate=1))";
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, "User");
 			stmt.setString(2, "Customer");
+			stmt.setString(3, branch.toString());
 			ResultSet rs = stmt.executeQuery();
 			// save in response all newly imported users
 			while (rs.next()) {

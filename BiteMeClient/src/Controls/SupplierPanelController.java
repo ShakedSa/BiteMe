@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 import Entities.MyFile;
 import Entities.ServerResponse;
+import Entities.Supplier;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
@@ -28,8 +29,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * @author Natali 
- * This class describes the supplier panel
+ * @author Natali This class describes the supplier panel
  */
 public class SupplierPanelController implements Initializable {
 
@@ -82,8 +82,8 @@ public class SupplierPanelController implements Initializable {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				ClientGUI.getClient().getSupplierImage(restaurant);
 				synchronized (ClientGUI.getMonitor()) {
+					ClientGUI.getClient().getSupplierImage(restaurant);
 					try {
 						ClientGUI.getMonitor().wait();
 					} catch (Exception e) {
@@ -93,15 +93,17 @@ public class SupplierPanelController implements Initializable {
 				}
 				ServerResponse sr = ClientGUI.getClient().getLastResponse();
 				MyFile myFile = (MyFile) sr.getServerResponse();
-				byte[] imageArr = myFile.getMybytearray();
-				BufferedImage img;
-				try {
-					img = ImageIO.read(new ByteArrayInputStream(imageArr));
-					Image image = SwingFXUtils.toFXImage(img, null);
-					loadingTxt.setVisible(false); // hide loading text
-					supplierImage.setImage(image);
-				} catch (IOException e) {
-					e.printStackTrace();
+				if (myFile != null && myFile.getMybytearray() != null) {
+					byte[] imageArr = myFile.getMybytearray();
+					BufferedImage img;
+					try {
+						img = ImageIO.read(new ByteArrayInputStream(imageArr));
+						Image image = SwingFXUtils.toFXImage(img, null);
+						loadingTxt.setVisible(false); // hide loading text
+						supplierImage.setImage(image);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 				return;
 			}
@@ -174,12 +176,12 @@ public class SupplierPanelController implements Initializable {
 			stage.show();
 		}
 	}
-	
+
 	/**
 	 * This method initialize the next controller - viewIncomeReceiptController
 	 */
-    @FXML
-    void viewIncomeReceiptClicked(MouseEvent event) {
+	@FXML
+	void viewIncomeReceiptClicked(MouseEvent event) {
 		if (router.getViewIncomeReceiptController() == null) {
 			AnchorPane mainContainer;
 			ViewIncomeReceiptController controller;
@@ -204,7 +206,7 @@ public class SupplierPanelController implements Initializable {
 			stage.setScene(router.getViewIncomeReceiptController().getScene());
 			stage.show();
 		}
-    }
+	}
 
 	/**
 	 * Logout and change scene to home page
@@ -221,7 +223,7 @@ public class SupplierPanelController implements Initializable {
 	void returnToHomePage(MouseEvent event) {
 		router.changeSceneToHomePage();
 	}
-	
+
 	/**
 	 * Changes scene to profile
 	 */

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Entities.NewAccountUser;
 import Entities.ServerResponse;
+import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
@@ -102,12 +103,13 @@ public class AddNewSupplierTableController implements Initializable {
   	 */
   	public void initTable(){
   		//send a request to clienUI to get all the new users data
-  		ClientGUI.getClient().searchForNewUsers();
   		users = FXCollections.observableArrayList();
+  		User user = (User)ClientGUI.getClient().getUser().getServerResponse();
   		//wait for response
   		Thread t = new Thread(new Runnable() {
   			@Override
   			public void run() {
+  				ClientGUI.getClient().searchForNewUsers(user.getMainBranch());
   				synchronized (ClientGUI.getMonitor()) {
   					try {
   						ClientGUI.getMonitor().wait();

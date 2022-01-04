@@ -14,6 +14,7 @@ import Entities.OrderDeliveryMethod;
 import Entities.Product;
 import Entities.ServerResponse;
 import Entities.User;
+import Enums.BranchName;
 import JDBC.mysqlConnection;
 import ServerUtils.DailyThread;
 import ServerUtils.reportsHandler;
@@ -194,10 +195,10 @@ public class Server extends AbstractServer {
 			this.sendToClient(reportsHandler.quarterlyRevenueReportPdf(m.get(2), m.get(0), m.get(1)),client);
 			break;
 		case "importedUsers":
-			this.sendToClient(mysqlConnection.getImportedUsers(), client);
+			this.sendToClient(mysqlConnection.getImportedUsers((BranchName)serverResponse.getServerResponse()), client);
 			break;
 		case "getUsersCustomersInfo":
-			this.sendToClient(mysqlConnection.getAllUsersAndCustomers(), client);
+			this.sendToClient(mysqlConnection.getAllUsersAndCustomers((BranchName)serverResponse.getServerResponse()), client);
 			break;
 		case "checkCustomerStatus":
 			m = (ArrayList<String>) serverResponse.getServerResponse();

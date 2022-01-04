@@ -177,9 +177,10 @@ public class ClientUI implements ClientIF {
 	 * Sending a query request from the server. get the data of the newly imported
 	 * users
 	 */
-	public void searchForNewUsers() {
+	public void searchForNewUsers(BranchName branch) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("importedUsers");
+			serverResponse.setServerResponse(branch);
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -191,9 +192,10 @@ public class ClientUI implements ClientIF {
 	 * Sending a query request from the server. get the data of users that are in
 	 * need of a new account
 	 */
-	public void findUsersInNeedOfAccount() {
+	public void findUsersInNeedOfAccount(BranchName branch) {
 		try {
 			ServerResponse serverResponse = new ServerResponse("getUsersCustomersInfo");
+			serverResponse.setServerResponse(branch);
 			client.handleMessageFromClientUI(serverResponse);
 		} catch (Exception e) {
 			e.printStackTrace();

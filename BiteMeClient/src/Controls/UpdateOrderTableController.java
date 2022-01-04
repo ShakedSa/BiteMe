@@ -10,6 +10,7 @@ import Entities.ServerResponse;
 import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -116,20 +117,24 @@ public class UpdateOrderTableController implements Initializable {
 				// check if there are no orders to update
 				if(response == null || response.size() == 0)
 		  		{
-					setTable(response);
-		  			errorMsg.setText("There are no orders waiting for update");
-		  			updateOrderBtn.setDisable(true);
-		  			updateOrderBtn.setVisible(false);
-		  			updateOrderImage.setDisable(true);
-		  			updateOrderImage.setVisible(false);
+					Platform.runLater(() -> {	
+						setTable(response);
+						errorMsg.setText("There are no orders waiting for update");
+						updateOrderBtn.setDisable(true);
+						updateOrderBtn.setVisible(false);
+						updateOrderImage.setDisable(true);
+						updateOrderImage.setVisible(false);
+					});
 		  			return;
 		  		}
-				errorMsg.setText("");
-	  			updateOrderBtn.setDisable(false);
-	  			updateOrderBtn.setVisible(true);
-	  			updateOrderImage.setDisable(false);
-	  			updateOrderImage.setVisible(true);
-				setTable(response);
+				Platform.runLater(() -> {					
+					errorMsg.setText("");
+					updateOrderBtn.setDisable(false);
+					updateOrderBtn.setVisible(true);
+					updateOrderImage.setDisable(false);
+					updateOrderImage.setVisible(true);
+					setTable(response);
+				});
 				return;
 			}
 		});

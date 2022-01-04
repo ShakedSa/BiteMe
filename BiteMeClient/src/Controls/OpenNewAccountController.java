@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Entities.NewAccountUser;
 import Entities.ServerResponse;
+import Entities.User;
 import Enums.UserType;
 import client.ClientGUI;
 import javafx.collections.FXCollections;
@@ -101,9 +102,9 @@ public class OpenNewAccountController implements Initializable {
 	 */
 	public void initTable() {
 		id = "";
-
+		User user = (User)ClientGUI.getClient().getUser().getServerResponse();
 		//send a request to clientUI - get users from the db 
-		ClientGUI.getClient().findUsersInNeedOfAccount();
+		ClientGUI.getClient().findUsersInNeedOfAccount(user.getMainBranch());
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {

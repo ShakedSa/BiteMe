@@ -62,6 +62,10 @@ public class MyFile implements Serializable {
 
 	public void setDescription(ArrayList<String> description) {
 		Description = description;
-	}	
+	}
+	
+	public String toString() {
+		return fileName + " " + Description;
+	}
 }
 

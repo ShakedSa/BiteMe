@@ -33,10 +33,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * @author Natali 
- * This class display a table - list of all the products of a
- * specific restaurant/supplier It includes 3 buttons - add item, edit
- * item and delete item from menu
+ * @author Natali This class display a table - list of all the products of a
+ *         specific restaurant/supplier It includes 3 buttons - add item, edit
+ *         item and delete item from menu
  */
 public class UpdateMenuController implements Initializable {
 
@@ -135,20 +134,19 @@ public class UpdateMenuController implements Initializable {
 					}
 				}
 				ServerResponse sr = ClientGUI.getClient().getLastResponse();
-				if(sr == null) {
-					setMenu(new ArrayList<Product>());
-		  			return;
+				if (sr == null) {
+					Platform.runLater(() -> setMenu(new ArrayList<Product>()));
+					return;
 				}
 				@SuppressWarnings("unchecked")
 				// get the server response- list of product (menu)
 				ArrayList<Product> response = (ArrayList<Product>) sr.getServerResponse();
-				//check if menu is empty
-		  		if(response == null || response.size() == 0)
-		  		{
-		  			setMenu(new ArrayList<Product>());
-		  			return;
-		  		}
-		  		errorMsg.setText("");
+				// check if menu is empty
+				if (response == null || response.size() == 0) {
+					Platform.runLater(() -> setMenu(new ArrayList<Product>()));
+					return;
+				}
+				errorMsg.setText("");
 				setMenu(response);
 				return;
 			}
@@ -158,6 +156,7 @@ public class UpdateMenuController implements Initializable {
 
 	/**
 	 * This method gets list of products and set a table
+	 * 
 	 * @param products
 	 */
 	public void setMenu(ArrayList<Product> products) {
@@ -304,8 +303,8 @@ public class UpdateMenuController implements Initializable {
 	}
 
 	/**
-	 * Checks server response and display relevant information.
-	 * return true if the deleting was completed successfully and false else
+	 * Checks server response and display relevant information. return true if the
+	 * deleting was completed successfully and false else
 	 */
 	private boolean checkServerResponse() {
 		if (ClientGUI.getClient().getLastResponse() == null) {
@@ -388,7 +387,6 @@ public class UpdateMenuController implements Initializable {
 		errorMsg.setText("");
 	}
 
-
 	/**
 	 * This method initialize the titles of the table
 	 */
@@ -402,6 +400,7 @@ public class UpdateMenuController implements Initializable {
 
 	/**
 	 * This method set table columns and values
+	 * 
 	 * @param menu
 	 */
 	private void setTable(ArrayList<Product> menu) {
@@ -410,8 +409,10 @@ public class UpdateMenuController implements Initializable {
 	}
 
 	ObservableList<Product> menu;
+
 	/**
 	 * This method change arrayList to ObservableList
+	 * 
 	 * @param list
 	 * @return ObservableList of products - menu
 	 */
@@ -431,6 +432,7 @@ public class UpdateMenuController implements Initializable {
 
 	/**
 	 * This method get the data from the selected row
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -443,6 +445,7 @@ public class UpdateMenuController implements Initializable {
 
 	/**
 	 * This method set product
+	 * 
 	 * @param product the product to set
 	 */
 	public void setProduct(Product product) {
@@ -454,11 +457,11 @@ public class UpdateMenuController implements Initializable {
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
-	
+
 	public Scene getScene() {
 		return scene;
 	}
-	
+
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
