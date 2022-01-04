@@ -174,8 +174,12 @@ public class OpenNewAccountController implements Initializable {
 		return users;
 	}
 	
+	/**
+	 * hides certain components when leaving and entering the page
+	 */
 	public void reset() {
 		users.clear();
+		msg.setVisible(false);
 	}
 
 	/**

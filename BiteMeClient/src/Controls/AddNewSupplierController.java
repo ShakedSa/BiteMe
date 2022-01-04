@@ -344,7 +344,6 @@ public class AddNewSupplierController implements Initializable {
 			//handle server response
 			ServerResponse sr = ClientGUI.getClient().getLastResponse();
 			if(sr.getMsg().equals("already exist")) {
-				System.out.println("112133");
 				Error.setVisible(true);
 				Error.setText("this supplier is already exist!");
 				return;
@@ -353,7 +352,7 @@ public class AddNewSupplierController implements Initializable {
 			updateSucess.setVisible(true);
 			updateSucess1.setVisible(true);
 			UploadMsgTxt.setVisible(false);
-			addSupplierBtn.setDisable(true);
+			addSupplierBtn.setVisible(false);
 		}
 		catch (Exception e) {
 			System.out.println("Error sending (Files msg) to Server");

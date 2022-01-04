@@ -86,7 +86,8 @@ public class AddNewSupplierTableController implements Initializable {
     @FXML
     private TableColumn<NewAccountUser, String> Phone;
 
-    private ObservableList<NewAccountUser> users = FXCollections.observableArrayList();;
+    private ObservableList<NewAccountUser> users = FXCollections.observableArrayList();
+    
     private String id = "";
     
     private String fName = "";
@@ -136,12 +137,13 @@ public class AddNewSupplierTableController implements Initializable {
   		if(response.size() == 0)
   		{
   			approvalTable.refresh();
-  			msg.setText("Currently no accounts are needed");
+  			msg.setText("Currently no suppliers can be added");
   			msg.setVisible(true);
   			next.setVisible(false);
   			next.setVisible(false);
   			return;
   		}
+  		next.setVisible(true);
   		setTable( response);
   			instructions.setVisible(true);		
   	}
@@ -205,8 +207,9 @@ public class AddNewSupplierTableController implements Initializable {
     	id = "";
     	fName = "";
     	lName = "";
-    	approvalTable.refresh();
     	users.removeAll(users);
+    	approvalTable.refresh();
+    	msg.setText("");
     }
     
     
