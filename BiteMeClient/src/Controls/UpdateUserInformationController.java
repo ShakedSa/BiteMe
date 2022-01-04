@@ -301,7 +301,7 @@ public class UpdateUserInformationController implements Initializable{
      */
     private void clearChoises() {
     	action1.setSelected(false);
-    	action1.setSelected(false);
+    	action2.setSelected(false);
     	newStatus = "";
     }
     public void resetScreen() {
@@ -310,6 +310,7 @@ public class UpdateUserInformationController implements Initializable{
     	userNameError.setVisible(false);
     	userNameTxtField.clear();
     	newStatus = "";
+    	clearChoises();
     }
     
     

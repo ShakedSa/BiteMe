@@ -2472,7 +2472,6 @@ public class mysqlConnection {
 			try {
 				query = "SELECT EmployerCode FROM bitemedb.businesscustomer where EmployeCompanyName = ? AND IsApproved='1'";
 				stmt = conn.prepareStatement(query);
-				System.out.println(values.get(5));
 				stmt.setString(1, values.get(5)); // customer's name
 				ResultSet rs = stmt.executeQuery();
 				if (rs.next())
@@ -2577,7 +2576,6 @@ public class mysqlConnection {
 				ResultSet rs = stmt.getGeneratedKeys();
 				if (rs.next()) {
 					customerId = rs.getInt(1);
-					System.out.println(customerId);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
