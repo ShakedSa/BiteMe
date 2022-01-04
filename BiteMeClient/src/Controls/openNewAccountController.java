@@ -27,7 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class openNewAccountController implements Initializable {
+public class openNewAccountController implements Initializable { 
 
 	public final UserType type = UserType.BranchManager;
 	private Router router;
@@ -101,7 +101,6 @@ public class openNewAccountController implements Initializable {
 	 */
 	public void initTable() {
 		id = "";
-
 		//send a request to clientUI - get users from the db 
 		ClientGUI.getClient().findUsersInNeedOfAccount();
 		Thread t = new Thread(new Runnable() {
@@ -137,6 +136,8 @@ public class openNewAccountController implements Initializable {
 			next.setVisible(false);
 			return;
 		}
+		msg.setVisible(false);
+		next.setVisible(true);
 		setTable(response);
 		instructions.setVisible(true);
 	}
@@ -173,10 +174,17 @@ public class openNewAccountController implements Initializable {
 		return users;
 	}
 	
+	
+	/**
+	 * resets certain components in the screen
+	 */
 	public void reset() {
-		users.clear();
+		approvalTable.refresh();
+    	users.removeAll(users);
+    	msg.setVisible(false);
 	}
 
+	
 	/**
 	 * when a table row is double clicked- save the row data
 	 * modifies: id, username, fName, lName

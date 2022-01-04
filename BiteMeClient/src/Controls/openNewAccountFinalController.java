@@ -188,6 +188,7 @@ public class openNewAccountFinalController implements Initializable{
     	// if edit completed go back to manager menu
     	approvalBtn.setDisable(false);
     	router.setOpenNewAccountFinalController(null);
+    	router.getOpenNewAccountController().reset();
 		router.getOpenNewAccountController().initTable();
     	if(updateSucess.isVisible()) {
     		router.returnToManagerPanel(event);

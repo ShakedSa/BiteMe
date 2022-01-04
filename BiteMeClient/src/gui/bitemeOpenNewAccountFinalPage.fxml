@@ -150,6 +150,6 @@
          </font>
       </Text>
       <Text fill="RED" layoutX="195.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="521.0" onMouseClicked="#returnToManagerPanel" stroke="BLACK" strokeType="INSIDE" width="52.0" />
+      <Rectangle fx:id="leftArrowBtn" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="50.0" layoutX="82.0" layoutY="521.0" onMouseClicked="#returnToPreviousScene" stroke="BLACK" strokeType="INSIDE" width="52.0" />
    </children>
 </AnchorPane>

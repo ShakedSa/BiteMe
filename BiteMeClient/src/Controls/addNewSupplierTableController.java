@@ -98,7 +98,7 @@ public class addNewSupplierTableController implements Initializable {
   	 */
   	public void initTable(){
   		//send a request to clienUI to get all the new users data
-  		ClientGUI.getClient().searchForNewUsers();
+  		ClientGUI.getClient().findUsersInNeedOfAccount();
   		users = FXCollections.observableArrayList();
   		//wait for response
   		Thread t = new Thread(new Runnable() {
@@ -136,6 +136,7 @@ public class addNewSupplierTableController implements Initializable {
   			next.setVisible(false);
   			return;
   		}
+  		msg.setVisible(false);
   		setTable( response);
   			instructions.setVisible(true);		
   	}
@@ -201,6 +202,8 @@ public class addNewSupplierTableController implements Initializable {
     	lName = "";
     	approvalTable.refresh();
     	users.removeAll(users);
+    	msg.setVisible(false);
+    	
     }
     
     
